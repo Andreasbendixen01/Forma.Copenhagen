@@ -1,4 +1,4 @@
-{{ 'forma-dashboard.css' | asset_url | stylesheet_tag }}
+ {{ 'forma-dashboard.css' | asset_url | stylesheet_tag }}
 
 {% if true %}
 
@@ -91,10 +91,8 @@
               </a>
 
 
-              <a
-              href="/pages/your-forma-my-desires"
-              class="forma-home-card"
-            >
+              <a href="?forma=saved" class="forma-home-card" data-forma-route="saved">
+              
               <span class="forma-home-card__number">
                 03
               </span>
@@ -3059,7 +3057,7 @@
 
   showView(getRoute());
 
-})();
+();
 </script>
 
 {% endstyle %}
