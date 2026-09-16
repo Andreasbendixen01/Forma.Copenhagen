@@ -110,7 +110,7 @@
         "logo": "shopify://shop_images/FORMA-logo-transparent_white.png",
         "logo_max_width": 140,
         "logo_mobile_max_width": 120,
-        "menu": "mega-menu",
+        "menu": "",
         "sidebar_menu": "",
         "customer_account_menu": "customer-account-main-menu",
         "menu_open_trigger": "hover",
