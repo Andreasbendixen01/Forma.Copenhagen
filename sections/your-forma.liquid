@@ -15,171 +15,164 @@
       <div class="forma-dashboard__container">
 
 
-        <!-- ==================================================
-             HOME
-             ================================================== -->
+        <!-- HOME NAVIGATION -->
 
-        <section
-          class="forma-member-view"
-          data-forma-view="home"
-        >
+<section class="forma-home-navigation">
 
-          {% render 'forma-dashboard-hero' %}
+  <div class="forma-home-navigation__header">
 
-          {% render 'forma-dashboard-overview' %}
+    <p class="forma-dashboard-section__eyebrow">
+      Your Forma
+    </p>
 
+    <h2 class="forma-home-navigation__title">
+      Everything that makes your Forma yours.
+    </h2>
 
-          <!-- HOME NAVIGATION -->
-
-          <section class="forma-home-navigation">
-
-            <div class="forma-home-navigation__header">
-
-              <p class="forma-dashboard-section__eyebrow">
-                Your Forma
-              </p>
-
-              <h2 class="forma-home-navigation__title">
-                Everything that makes your Forma yours.
-              </h2>
-
-            </div>
+  </div>
 
 
-            <div class="forma-home-navigation__grid">
+  <div class="forma-home-navigation__grid">
 
 
-              <a
-                href="?forma=home"
-                class="forma-home-card forma-home-card--dark"
-                data-forma-route="home"
-              >
-                <span class="forma-home-card__number">01</span>
+    <!-- 01 — HOME -->
 
-                <div class="forma-home-card__content">
-                  <h3>Home</h3>
+    <a
+      href="/pages/your-forma"
+      class="forma-home-card forma-home-card--dark"
+    >
+      <span class="forma-home-card__number">01</span>
 
-                  <p>
-                    Your Forma at a glance.
-                  </p>
-                </div>
+      <div class="forma-home-card__content">
+        <h3>Home</h3>
 
-                <span class="forma-home-card__arrow">
-                  →
-                </span>
-              </a>
+        <p>
+          Your Forma at a glance.
+        </p>
+      </div>
 
-
-              <a href="/pages/your-forma-for-you" class="forma-home-card" data-forma-route="for-you">
-                <span class="forma-home-card__number">02</span>
-
-                <div class="forma-home-card__content">
-                  <h3>For You</h3>
-
-                  <p>
-                    A personal edit shaped around you.
-                  </p>
-                </div>
-
-                <span class="forma-home-card__arrow">
-                  →
-                </span>
-              </a>
+      <span class="forma-home-card__arrow">
+        →
+      </span>
+    </a>
 
 
-              <a href="?forma=saved" class="forma-home-card" data-forma-route="saved">
+    <!-- 02 — FOR YOU -->
 
-              <span class="forma-home-card__number">
-                03
-              </span>
+    <a
+      href="/pages/your-forma-for-you"
+      class="forma-home-card"
+    >
+      <span class="forma-home-card__number">02</span>
 
-              <div class="forma-home-card__content">
+      <div class="forma-home-card__content">
+        <h3>For You</h3>
 
-                <h3>
-                  My Desires
-                </h3>
+        <p>
+          A personal edit shaped around you.
+        </p>
+      </div>
 
-                <p>
-                  Everything you want to keep close.
-                </p>
-
-              </div>
-
-              <span
-                class="forma-home-card__arrow"
-                aria-hidden="true"
-              >
-                →
-              </span>
-            </a>
+      <span class="forma-home-card__arrow">
+        →
+      </span>
+    </a>
 
 
-              <a
-                href="?forma=collections"
-                class="forma-home-card"
-                data-forma-route="collections"
-              >
-                <span class="forma-home-card__number">04</span>
+    <!-- 03 — MY DESIRES -->
 
-                <div class="forma-home-card__content">
-                  <h3>Collections</h3>
+    <a
+      href="/pages/your-forma-my-desires"
+      class="forma-home-card"
+    >
+      <span class="forma-home-card__number">03</span>
 
-                  <p>
-                    Your own worlds within Forma.
-                  </p>
-                </div>
+      <div class="forma-home-card__content">
+        <h3>My Desires</h3>
 
-                <span class="forma-home-card__arrow">
-                  →
-                </span>
-              </a>
+        <p>
+          Everything you want to keep close.
+        </p>
+      </div>
 
-
-              <a
-                href="?forma=passport"
-                class="forma-home-card"
-                data-forma-route="passport"
-              >
-                <span class="forma-home-card__number">05</span>
-
-                <div class="forma-home-card__content">
-                  <h3>Passport</h3>
-
-                  <p>
-                    Your membership and Forma journey.
-                  </p>
-                </div>
-
-                <span class="forma-home-card__arrow">
-                  →
-                </span>
-              </a>
+      <span
+        class="forma-home-card__arrow"
+        aria-hidden="true"
+      >
+        →
+      </span>
+    </a>
 
 
-              <a
-                href="?forma=activity"
-                class="forma-home-card"
-                data-forma-route="activity"
-              >
-                <span class="forma-home-card__number">06</span>
+    <!-- 04 — COLLECTIONS -->
 
-                <div class="forma-home-card__content">
-                  <h3>Activity</h3>
+    <a
+      href="/pages/your-forma-collections"
+      class="forma-home-card"
+    >
+      <span class="forma-home-card__number">04</span>
 
-                  <p>
-                    Your journey across Forma.
-                  </p>
-                </div>
+      <div class="forma-home-card__content">
+        <h3>Collections</h3>
 
-                <span class="forma-home-card__arrow">
-                  →
-                </span>
-              </a>
+        <p>
+          Your own worlds within Forma.
+        </p>
+      </div>
+
+      <span class="forma-home-card__arrow">
+        →
+      </span>
+    </a>
 
 
-            </div>
+    <!-- 05 — PASSPORT -->
 
-          </section>
+    <a
+      href="/pages/your-forma-passport"
+      class="forma-home-card"
+    >
+      <span class="forma-home-card__number">05</span>
+
+      <div class="forma-home-card__content">
+        <h3>Passport</h3>
+
+        <p>
+          Your membership and Forma journey.
+        </p>
+      </div>
+
+      <span class="forma-home-card__arrow">
+        →
+      </span>
+    </a>
+
+
+    <!-- 06 — ACTIVITY -->
+
+    <a
+      href="/pages/your-forma-activity"
+      class="forma-home-card"
+    >
+      <span class="forma-home-card__number">06</span>
+
+      <div class="forma-home-card__content">
+        <h3>Activity</h3>
+
+        <p>
+          Your journey across Forma.
+        </p>
+      </div>
+
+      <span class="forma-home-card__arrow">
+        →
+      </span>
+    </a>
+
+
+  </div>
+
+</section>
 
         </section>
 
