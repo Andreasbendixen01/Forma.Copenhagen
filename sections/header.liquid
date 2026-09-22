@@ -257,7 +257,7 @@
   {%- if shop.customer_accounts_enabled -%}
   <li class="header__account-link sm-max:hidden">
     <a
-      href="{% if customer %}/pages/your-forma{% else %}/pages/sign-in{% endif %}"
+      href="{% if customer %}/pages/your-forma{% else %}/account/login{% endif %}"
       aria-label="{% if customer %}Open Your Forma{% else %}Sign in to Forma{% endif %}"
       data-forma-account-link
     >
