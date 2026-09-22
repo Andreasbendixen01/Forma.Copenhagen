@@ -2,6 +2,7 @@
   class="forma-dashboard__hero"
   data-forma-dashboard-hero
 >
+
   <div class="forma-dashboard__hero-main">
 
     <p
@@ -26,14 +27,56 @@
 
   </div>
 
+
   <div class="forma-dashboard__hero-footer">
 
-    <p
-      class="forma-dashboard__hero-context"
-      data-forma-hero-context
-    >
-      Curated by your journey.
-    </p>
+    <div class="forma-dashboard__hero-context">
+
+      <p
+        class="forma-dashboard__hero-context"
+        data-forma-hero-context
+      >
+        Curated by your journey.
+      </p>
+
+      <div
+        class="forma-profile-progress"
+        data-forma-profile-progress
+      >
+
+        <div class="forma-profile-progress__top">
+
+          <span>
+            Profile
+          </span>
+
+          <span
+            data-forma-profile-progress-value
+          >
+            0%
+          </span>
+
+        </div>
+
+        <div
+          class="forma-profile-progress__track"
+          aria-hidden="true"
+        >
+          <div
+            class="forma-profile-progress__bar"
+            data-forma-profile-progress-bar
+            style="width: 0%;"
+          ></div>
+        </div>
+
+        <p class="forma-profile-progress__text">
+          Complete your profile to make Forma more personal.
+        </p>
+
+      </div>
+
+    </div>
+
 
     <button
       type="button"
@@ -45,4 +88,5 @@
     </button>
 
   </div>
+
 </header>
