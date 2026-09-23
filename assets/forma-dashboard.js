@@ -17,10 +17,6 @@
     return;
   }
 
-  /* ========================================================
-     FORMA PROFILE CHECK
-     ======================================================== */
-
   if (!window.Forma?.profile) {
     console.error(
       "[Forma Dashboard] Forma Profile must load first."
@@ -33,8 +29,20 @@
      DOM ELEMENTS
      ======================================================== */
 
+  const greetingElement = dashboard.querySelector(
+    "[data-forma-hero-greeting]"
+  );
+
   const profileName = dashboard.querySelector(
     "[data-forma-profile-name]"
+  );
+
+  const heroMessage = dashboard.querySelector(
+    "[data-forma-hero-message]"
+  );
+
+  const heroContext = dashboard.querySelector(
+    "[data-forma-hero-context]"
   );
 
   const profileStatus = dashboard.querySelector(
@@ -69,63 +77,111 @@
     "[data-forma-edit-profile]"
   );
 
-  const heroGreeting = dashboard.querySelector(
-    "[data-forma-hero-greeting]"
-  );
-
   /* ========================================================
-     DYNAMIC GREETING
+     TIME OF DAY
      ======================================================== */
 
-  function getGreeting() {
+  function getTimeOfDay() {
     const hour = new Date().getHours();
 
-    /*
-     * 04:00–10:59
-     * Good morning
-     */
-
-    if (hour >= 4 && hour < 11) {
-      return "Good morning";
+    if (hour >= 5 && hour < 11) {
+      return "morning";
     }
 
-    /*
-     * 11:00–17:59
-     * Good afternoon
-     */
-
-    if (hour >= 11 && hour < 18) {
-      return "Good afternoon";
+    if (hour >= 11 && hour < 14) {
+      return "midday";
     }
 
-    /*
-     * 18:00–22:59
-     * Good evening
-     */
+    if (hour >= 14 && hour < 18) {
+      return "afternoon";
+    }
 
     if (hour >= 18 && hour < 23) {
-      return "Good evening";
+      return "evening";
     }
 
-    /*
-     * 23:00–03:59
-     * Good night
-     */
-
-    return "Good night";
+    return "night";
   }
 
-  function renderGreeting() {
-    if (!heroGreeting) {
-      return;
+  function getGreeting() {
+    const timeOfDay = getTimeOfDay();
+
+    switch (timeOfDay) {
+      case "morning":
+        return "Good morning";
+
+      case "midday":
+        return "Good afternoon";
+
+      case "afternoon":
+        return "Good afternoon";
+
+      case "evening":
+        return "Good evening";
+
+      default:
+        return "Good night";
+    }
+  }
+
+  function getHeroMessage() {
+    const timeOfDay = getTimeOfDay();
+
+    switch (timeOfDay) {
+      case "morning":
+        return "Start your day with your Forma.";
+
+      case "midday":
+        return "A curated edit for the rest of your day.";
+
+      case "afternoon":
+        return "Discover what fits your day.";
+
+      case "evening":
+        return "Take a moment. Explore your Forma.";
+
+      default:
+        return "A little inspiration before you call it a night.";
+    }
+  }
+
+  function getHeroContext() {
+    const timeOfDay = getTimeOfDay();
+
+    switch (timeOfDay) {
+      case "morning":
+        return "Curated for the day ahead.";
+
+      case "midday":
+        return "Your Forma, whenever you need it.";
+
+      case "afternoon":
+        return "Curated around your journey.";
+
+      case "evening":
+        return "Curated for your evening.";
+
+      default:
+        return "A little inspiration, whenever you need it.";
+    }
+  }
+
+  function renderDynamicHero() {
+    if (greetingElement) {
+      greetingElement.textContent = getGreeting();
     }
 
-    heroGreeting.textContent =
-      getGreeting();
+    if (heroMessage) {
+      heroMessage.textContent = getHeroMessage();
+    }
+
+    if (heroContext) {
+      heroContext.textContent = getHeroContext();
+    }
   }
 
   /* ========================================================
-     PROFILE HELPERS
+     PROFILE
      ======================================================== */
 
   function hasValue(value) {
@@ -165,10 +221,6 @@
     );
   }
 
-  /* ========================================================
-     PROFILE RENDER
-     ======================================================== */
-
   function renderProfile(profile) {
     const firstName = String(
       profile?.identity?.firstName || ""
@@ -177,9 +229,7 @@
     const completion =
       calculateProfileCompletion(profile);
 
-    /* ------------------------------------------------------
-       PROFILE NAME
-       ------------------------------------------------------ */
+    /* NAME */
 
     if (profileName) {
       profileName.textContent =
@@ -188,36 +238,26 @@
           : "";
     }
 
-    /* ------------------------------------------------------
-       PROFILE STATUS
-       ------------------------------------------------------ */
+    /* PROFILE STATUS */
 
     if (profileStatus) {
       profileStatus.textContent =
         `${completion}%`;
     }
 
-    /* ------------------------------------------------------
-       PROFILE PROGRESS VALUE
-       ------------------------------------------------------ */
+    /* PROFILE PROGRESS */
 
     if (profileProgressValue) {
       profileProgressValue.textContent =
         `${completion}%`;
     }
 
-    /* ------------------------------------------------------
-       PROFILE PROGRESS BAR
-       ------------------------------------------------------ */
-
     if (profileProgressBar) {
       profileProgressBar.style.width =
         `${completion}%`;
     }
 
-    /* ------------------------------------------------------
-       PROFILE PROGRESS MESSAGE
-       ------------------------------------------------------ */
+    /* PROFILE MESSAGE */
 
     if (profileProgressText) {
 
@@ -256,7 +296,6 @@
         0
       );
     } catch (error) {
-
       console.warn(
         "[Forma Dashboard] Could not read followed brands.",
         error
@@ -273,7 +312,6 @@
         0
       );
     } catch (error) {
-
       console.warn(
         "[Forma Dashboard] Could not read saved products.",
         error
@@ -290,7 +328,6 @@
         0
       );
     } catch (error) {
-
       console.warn(
         "[Forma Dashboard] Could not read recently viewed products.",
         error
@@ -323,18 +360,12 @@
      ======================================================== */
 
   function openProfileEditor() {
-
-    if (!window.Forma.events) {
-      return;
-    }
-
     window.Forma.events.emit(
       "forma:onboarding-open"
     );
   }
 
   if (editProfileButton) {
-
     editProfileButton.addEventListener(
       "click",
       openProfileEditor
@@ -348,7 +379,6 @@
   window.Forma.events.on(
     "forma:profile-updated",
     event => {
-
       const profile =
         event?.detail?.profile ||
         window.Forma.profile.get();
@@ -360,7 +390,6 @@
   window.Forma.events.on(
     "forma:profile-reset",
     event => {
-
       const profile =
         event?.detail?.profile ||
         window.Forma.profile.get();
@@ -372,7 +401,6 @@
   window.Forma.events.on(
     "forma:onboarding-completed",
     event => {
-
       const profile =
         event?.detail?.profile ||
         window.Forma.profile.get();
@@ -409,12 +437,21 @@
      INITIAL RENDER
      ======================================================== */
 
-  renderGreeting();
+  renderDynamicHero();
 
   renderProfile(
     window.Forma.profile.get()
   );
 
   renderStats();
+
+  /* ========================================================
+     KEEP GREETING CURRENT
+     ======================================================== */
+
+  setInterval(
+    renderDynamicHero,
+    60000
+  );
 
 })();
