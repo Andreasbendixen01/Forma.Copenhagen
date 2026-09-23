@@ -5,6 +5,10 @@
 (function () {
   "use strict";
 
+  /* ========================================================
+     DASHBOARD
+     ======================================================== */
+
   const dashboard = document.querySelector(
     "[data-forma-dashboard]"
   );
@@ -13,6 +17,10 @@
     return;
   }
 
+  /* ========================================================
+     FORMA PROFILE CHECK
+     ======================================================== */
+
   if (!window.Forma?.profile) {
     console.error(
       "[Forma Dashboard] Forma Profile must load first."
@@ -20,39 +28,6 @@
 
     return;
   }
-
-  /* ========================================================
-   DYNAMIC GREETING
-   ======================================================== */
-
-function getGreeting() {
-  const hour = new Date().getHours();
-
-  if (hour >= 4 && hour < 11) {
-    return "Good morning";
-  }
-
-  if (hour >= 11 && hour < 18) {
-    return "Good afternoon";
-  }
-
-  if (hour >= 18 && hour < 23) {
-    return "Good evening";
-  }
-
-  return "Good night";
-}
-
-function renderGreeting() {
-  const greeting =
-    dashboard.querySelector(
-      "[data-forma-hero-greeting]"
-    );
-
-  if (greeting) {
-    greeting.textContent = getGreeting();
-  }
-}
 
   /* ========================================================
      DOM ELEMENTS
@@ -67,16 +42,16 @@ function renderGreeting() {
   );
 
   const profileProgressValue = dashboard.querySelector(
-  "[data-forma-profile-progress-value]"
-);
+    "[data-forma-profile-progress-value]"
+  );
 
-const profileProgressBar = dashboard.querySelector(
-  "[data-forma-profile-progress-bar]"
-);
+  const profileProgressBar = dashboard.querySelector(
+    "[data-forma-profile-progress-bar]"
+  );
 
-const profileProgressText = dashboard.querySelector(
-  "[data-forma-profile-progress-text]"
-);
+  const profileProgressText = dashboard.querySelector(
+    "[data-forma-profile-progress-text]"
+  );
 
   const followingCount = dashboard.querySelector(
     "[data-forma-following-count]"
@@ -94,8 +69,63 @@ const profileProgressText = dashboard.querySelector(
     "[data-forma-edit-profile]"
   );
 
+  const heroGreeting = dashboard.querySelector(
+    "[data-forma-hero-greeting]"
+  );
+
   /* ========================================================
-     PROFILE
+     DYNAMIC GREETING
+     ======================================================== */
+
+  function getGreeting() {
+    const hour = new Date().getHours();
+
+    /*
+     * 04:00–10:59
+     * Good morning
+     */
+
+    if (hour >= 4 && hour < 11) {
+      return "Good morning";
+    }
+
+    /*
+     * 11:00–17:59
+     * Good afternoon
+     */
+
+    if (hour >= 11 && hour < 18) {
+      return "Good afternoon";
+    }
+
+    /*
+     * 18:00–22:59
+     * Good evening
+     */
+
+    if (hour >= 18 && hour < 23) {
+      return "Good evening";
+    }
+
+    /*
+     * 23:00–03:59
+     * Good night
+     */
+
+    return "Good night";
+  }
+
+  function renderGreeting() {
+    if (!heroGreeting) {
+      return;
+    }
+
+    heroGreeting.textContent =
+      getGreeting();
+  }
+
+  /* ========================================================
+     PROFILE HELPERS
      ======================================================== */
 
   function hasValue(value) {
@@ -135,62 +165,85 @@ const profileProgressText = dashboard.querySelector(
     );
   }
 
+  /* ========================================================
+     PROFILE RENDER
+     ======================================================== */
+
   function renderProfile(profile) {
-  const firstName = String(
-    profile?.identity?.firstName || ""
-  ).trim();
+    const firstName = String(
+      profile?.identity?.firstName || ""
+    ).trim();
 
-  const completion =
-    calculateProfileCompletion(profile);
+    const completion =
+      calculateProfileCompletion(profile);
 
-  if (profileName) {
-    profileName.textContent =
-      firstName
-        ? `, ${firstName}`
-        : "";
-  }
+    /* ------------------------------------------------------
+       PROFILE NAME
+       ------------------------------------------------------ */
 
-  if (profileStatus) {
-    profileStatus.textContent =
-      `${completion}%`;
-  }
-
-  if (profileProgressValue) {
-    profileProgressValue.textContent =
-      `${completion}%`;
-  }
-
-  if (profileProgressBar) {
-    profileProgressBar.style.width =
-      `${completion}%`;
-  }
-
-  if (profileProgressText) {
-
-    if (completion >= 100) {
-
-      profileProgressText.textContent =
-        "Your profile is complete.";
-
-    } else if (completion >= 75) {
-
-      profileProgressText.textContent =
-        "You're almost there. Complete your profile.";
-
-    } else if (completion >= 50) {
-
-      profileProgressText.textContent =
-        "Keep going to make Forma more personal.";
-
-    } else {
-
-      profileProgressText.textContent =
-        "Complete your profile to make Forma more personal.";
-
+    if (profileName) {
+      profileName.textContent =
+        firstName
+          ? `, ${firstName}`
+          : "";
     }
 
+    /* ------------------------------------------------------
+       PROFILE STATUS
+       ------------------------------------------------------ */
+
+    if (profileStatus) {
+      profileStatus.textContent =
+        `${completion}%`;
+    }
+
+    /* ------------------------------------------------------
+       PROFILE PROGRESS VALUE
+       ------------------------------------------------------ */
+
+    if (profileProgressValue) {
+      profileProgressValue.textContent =
+        `${completion}%`;
+    }
+
+    /* ------------------------------------------------------
+       PROFILE PROGRESS BAR
+       ------------------------------------------------------ */
+
+    if (profileProgressBar) {
+      profileProgressBar.style.width =
+        `${completion}%`;
+    }
+
+    /* ------------------------------------------------------
+       PROFILE PROGRESS MESSAGE
+       ------------------------------------------------------ */
+
+    if (profileProgressText) {
+
+      if (completion >= 100) {
+
+        profileProgressText.textContent =
+          "Your profile is complete.";
+
+      } else if (completion >= 75) {
+
+        profileProgressText.textContent =
+          "You're almost there. Complete your profile.";
+
+      } else if (completion >= 50) {
+
+        profileProgressText.textContent =
+          "Keep going to make Forma more personal.";
+
+      } else {
+
+        profileProgressText.textContent =
+          "Complete your profile to make Forma more personal.";
+
+      }
+    }
   }
-}
 
   /* ========================================================
      DASHBOARD STATS
@@ -203,6 +256,7 @@ const profileProgressText = dashboard.querySelector(
         0
       );
     } catch (error) {
+
       console.warn(
         "[Forma Dashboard] Could not read followed brands.",
         error
@@ -219,6 +273,7 @@ const profileProgressText = dashboard.querySelector(
         0
       );
     } catch (error) {
+
       console.warn(
         "[Forma Dashboard] Could not read saved products.",
         error
@@ -235,6 +290,7 @@ const profileProgressText = dashboard.querySelector(
         0
       );
     } catch (error) {
+
       console.warn(
         "[Forma Dashboard] Could not read recently viewed products.",
         error
@@ -245,6 +301,7 @@ const profileProgressText = dashboard.querySelector(
   }
 
   function renderStats() {
+
     if (followingCount) {
       followingCount.textContent =
         String(getFollowingCount());
@@ -266,15 +323,23 @@ const profileProgressText = dashboard.querySelector(
      ======================================================== */
 
   function openProfileEditor() {
+
+    if (!window.Forma.events) {
+      return;
+    }
+
     window.Forma.events.emit(
       "forma:onboarding-open"
     );
   }
 
-  editProfileButton?.addEventListener(
-    "click",
-    openProfileEditor
-  );
+  if (editProfileButton) {
+
+    editProfileButton.addEventListener(
+      "click",
+      openProfileEditor
+    );
+  }
 
   /* ========================================================
      PROFILE EVENTS
@@ -283,6 +348,7 @@ const profileProgressText = dashboard.querySelector(
   window.Forma.events.on(
     "forma:profile-updated",
     event => {
+
       const profile =
         event?.detail?.profile ||
         window.Forma.profile.get();
@@ -294,6 +360,7 @@ const profileProgressText = dashboard.querySelector(
   window.Forma.events.on(
     "forma:profile-reset",
     event => {
+
       const profile =
         event?.detail?.profile ||
         window.Forma.profile.get();
@@ -305,6 +372,7 @@ const profileProgressText = dashboard.querySelector(
   window.Forma.events.on(
     "forma:onboarding-completed",
     event => {
+
       const profile =
         event?.detail?.profile ||
         window.Forma.profile.get();
@@ -318,34 +386,35 @@ const profileProgressText = dashboard.querySelector(
      ======================================================== */
 
   window.Forma.events.on(
-  "forma:saved-products-updated",
-  renderStats
-);
+    "forma:saved-products-updated",
+    renderStats
+  );
 
- window.Forma.events.on(
-  "forma:followed-brands-updated",
-  renderStats
-);
+  window.Forma.events.on(
+    "forma:followed-brands-updated",
+    renderStats
+  );
 
-window.Forma.events.on(
-  "forma:recently-viewed-updated",
-  renderStats
-);
+  window.Forma.events.on(
+    "forma:recently-viewed-updated",
+    renderStats
+  );
 
   window.addEventListener(
     "forma:activity-updated",
     renderStats
   );
 
-/* ========================================================
-   INITIAL RENDER
-   ======================================================== */
+  /* ========================================================
+     INITIAL RENDER
+     ======================================================== */
 
-renderGreeting();
+  renderGreeting();
 
-renderProfile(
-  window.Forma.profile.get()
-);
+  renderProfile(
+    window.Forma.profile.get()
+  );
 
-renderStats();
+  renderStats();
+
 })();
