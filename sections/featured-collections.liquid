@@ -295,6 +295,109 @@
 
     }
 
+    /* =========================================================
+   FORMA – PRODUCT CAROUSEL ARROWS
+   ========================================================= */
+
+#shopify-section-{{ section.id }} .forma-product-carousel {
+  position: relative;
+}
+
+/* Arrow containers */
+#shopify-section-{{ section.id }} .forma-product-carousel
+.floating-controls-container__control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto;
+}
+
+/* Left arrow */
+#shopify-section-{{ section.id }} .forma-product-carousel
+.floating-controls-container__control:first-child {
+  left: 18px;
+}
+
+/* Right arrow */
+#shopify-section-{{ section.id }} .forma-product-carousel
+.floating-controls-container__control:last-child {
+  right: 18px;
+}
+
+/* Remove the round button styling */
+#shopify-section-{{ section.id }} .forma-product-carousel
+.prev-next-button {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+
+  background: transparent !important;
+  box-shadow: none !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #111 !important;
+}
+
+/* Arrow size */
+#shopify-section-{{ section.id }} .forma-product-carousel
+.prev-next-button svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 1.4;
+}
+
+/* Subtle hover */
+#shopify-section-{{ section.id }} .forma-product-carousel
+.prev-next-button:hover {
+  opacity: 0.55;
+}
+
+/* Disabled previous arrow */
+#shopify-section-{{ section.id }} .forma-product-carousel
+.prev-next-button:disabled {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* Mobile */
+@media screen and (max-width: 699px) {
+
+  #shopify-section-{{ section.id }} .forma-product-carousel
+  .floating-controls-container__control:first-child {
+    left: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .forma-product-carousel
+  .floating-controls-container__control:last-child {
+    right: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .forma-product-carousel
+  .prev-next-button {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+  }
+
+  #shopify-section-{{ section.id }} .forma-product-carousel
+  .prev-next-button svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
   </style>
 
 
@@ -437,13 +540,10 @@
                     {%- assign product_carousel_id = 'featured-collections-product-list-carousel-' | append: block.id -%}
 
 
-                    <product-list
-                      class="
-                        floating-controls-container
-                        floating-controls-container--inside
-                        floating-controls-container--on-hover
-                      "
-                    >
+                    <product-list 
+                    class="floating-controls-container 
+                    floating-controls-container--inside 
+                    forma-product-carousel">
 
 
                       <!-- PREVIOUS -->
