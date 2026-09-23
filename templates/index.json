@@ -127,7 +127,7 @@
         "collection_hUTcgC": {
           "type": "collection",
           "settings": {
-            "collection": "",
+            "collection": "the-forma-edit",
             "products_count": 8,
             "title": "",
             "link_url": "",
@@ -140,12 +140,6 @@
       ],
       "name": "t:sections.featured_collections.presets.featured_collections.name",
       "settings": {
-        "show_editorial_card": true,
-        "editorial_eyebrow": "Curated by FORMA",
-        "editorial_title": "Our Edit",
-        "editorial_text": "A considered selection of wardrobe essentials, chosen for form, function and longevity.",
-        "editorial_button": "",
-        "editorial_link": "",
         "color_scheme": "",
         "separate_section_with_border": true,
         "hide_product_information": false,
@@ -154,7 +148,6 @@
         "products_per_row_desktop": 4,
         "horizontal_spacing_factor": 1,
         "vertical_spacing_factor": 1,
-        "subheading": "THE FORMA EDIT",
         "hide_collection_title": false
       }
     }
