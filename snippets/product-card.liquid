@@ -3,7 +3,7 @@
   PRODUCT CARD COMPONENT
   ----------------------------------------------------------------------------------------------------------------------
 
-  This component is used in collection and featured collection to render a single product as a card
+  Forma product card with image carousel navigation
 {%- endcomment -%}
 
 {%- liquid
@@ -35,12 +35,6 @@
   {% endif %}
   handle="{{ product.handle | escape }}"
 >
-
-  {%- comment -%}
-    --------------------------------------------------------------------------------------------------------------------
-    PRODUCT MEDIA
-    --------------------------------------------------------------------------------------------------------------------
-  {%- endcomment -%}
 
   {%- if product.media.size > 0 -%}
 
@@ -85,12 +79,6 @@
         data-forma-product-carousel
         data-media-count="{{ carousel_media_count }}"
       >
-
-        {%- comment -%}
-          ----------------------------------------------------------------------------------------------------------------
-          SLIDES
-          ----------------------------------------------------------------------------------------------------------------
-        {%- endcomment -%}
 
         <div class="forma-product-carousel__slides">
 
@@ -165,9 +153,9 @@
 
 
         {%- comment -%}
-          ----------------------------------------------------------------------------------------------------------------
-          PREVIOUS / NEXT BUTTONS
-          ----------------------------------------------------------------------------------------------------------------
+          ====================================================================
+          FORMA IMAGE CAROUSEL ARROWS
+          ====================================================================
         {%- endcomment -%}
 
         {%- if carousel_media_count > 1 -%}
@@ -178,8 +166,15 @@
             data-forma-carousel-prev
             aria-label="Previous image"
           >
-            <span aria-hidden="true">‹</span>
+            <svg
+              viewBox="0 0 12 20"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M10 1 2 10l8 9"></path>
+            </svg>
           </button>
+
 
           <button
             type="button"
@@ -187,25 +182,37 @@
             data-forma-carousel-next
             aria-label="Next image"
           >
-            <span aria-hidden="true">›</span>
+            <svg
+              viewBox="0 0 12 20"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="m2 1 8 9-8 9"></path>
+            </svg>
           </button>
 
         {%- endif -%}
 
+
       </div>
+
 
       {%- if show_quick_buy and product.available -%}
 
         {%- if product.variants.size == 1 and product.selling_plan_groups.size == 0 -%}
 
           <product-form>
+
             {%- form 'product', product -%}
 
               <input type="hidden" name="on_success" value="force_open_drawer">
               <input type="hidden" name="quantity" value="1">
               <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
-              <button type="submit" class="product-card__quick-add-button">
+              <button
+                type="submit"
+                class="product-card__quick-add-button"
+              >
                 <span class="sr-only">
                   {{ 'product.general.add_to_cart_button' | t }}
                 </span>
@@ -214,6 +221,7 @@
               </button>
 
             {%- endform -%}
+
           </product-form>
 
         {%- else -%}
@@ -251,9 +259,9 @@
 
 
   {%- comment -%}
-    --------------------------------------------------------------------------------------------------------------------
-    PRODUCT INFO
-    --------------------------------------------------------------------------------------------------------------------
+    ========================================================================
+    PRODUCT INFORMATION
+    ========================================================================
   {%- endcomment -%}
 
   <div class="product-card__info empty:hidden">
@@ -399,262 +407,475 @@
 
 
 <style>
-  /* ========================================================================
-     FORMA PRODUCT IMAGE CAROUSEL
-     ======================================================================== */
 
-  .forma-product-carousel__viewport {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
+/* ========================================================================
+   FORMA PRODUCT IMAGE CAROUSEL
+   ======================================================================== */
 
-  .forma-product-carousel__slides {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
+.forma-product-carousel {
+  position: relative !important;
+}
 
-  .forma-product-carousel__slide {
-    position: absolute;
-    inset: 0;
-    display: block;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 180ms ease;
-  }
+.forma-product-carousel__viewport {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+}
 
-  .forma-product-carousel__slide.is-active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    z-index: 1;
-  }
-
-  .forma-product-carousel__slide img {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
+.forma-product-carousel__slides {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+}
 
 
-  /* ========================================================================
-     ARROWS
-     ======================================================================== */
+/* ========================================================================
+   SLIDES
+   ======================================================================== */
+
+.forma-product-carousel__slide {
+  position: absolute !important;
+  inset: 0 !important;
+
+  display: block !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  opacity: 0 !important;
+  visibility: hidden !important;
+
+  pointer-events: none !important;
+
+  transition: opacity 180ms ease !important;
+}
+
+.forma-product-carousel__slide.is-active {
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  pointer-events: auto !important;
+
+  z-index: 1 !important;
+}
+
+.forma-product-carousel__slide img {
+  display: block !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  object-fit: cover;
+}
+
+
+/* ========================================================================
+   FORMA ARROWS
+   ======================================================================== */
+
+.forma-product-carousel__arrow {
+  position: absolute !important;
+
+  top: 50% !important;
+
+  width: 42px !important;
+  height: 52px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+
+  background: transparent !important;
+  box-shadow: none !important;
+
+  color: #111111 !important;
+
+  cursor: pointer !important;
+
+  transform: translateY(-50%) !important;
+
+  opacity: 0.9 !important;
+  visibility: visible !important;
+
+  pointer-events: auto !important;
+
+  z-index: 100 !important;
+
+  -webkit-appearance: none !important;
+  appearance: none !important;
+
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease !important;
+}
+
+
+/* LEFT */
+
+.forma-product-carousel__arrow--prev {
+  left: 8px !important;
+}
+
+
+/* RIGHT */
+
+.forma-product-carousel__arrow--next {
+  right: 8px !important;
+}
+
+
+/* ========================================================================
+   ARROW ICON
+   ======================================================================== */
+
+.forma-product-carousel__arrow svg {
+  display: block !important;
+
+  width: 10px !important;
+  height: 18px !important;
+
+  overflow: visible !important;
+}
+
+.forma-product-carousel__arrow svg path {
+  fill: none !important;
+
+  stroke: currentColor !important;
+
+  stroke-width: 1.25 !important;
+
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+
+/* ========================================================================
+   HOVER
+   ======================================================================== */
+
+.forma-product-carousel__arrow:hover {
+  opacity: 1 !important;
+}
+
+.forma-product-carousel__arrow--prev:hover {
+  transform: translate(-2px, -50%) !important;
+}
+
+.forma-product-carousel__arrow--next:hover {
+  transform: translate(2px, -50%) !important;
+}
+
+
+/* ========================================================================
+   FOCUS
+   ======================================================================== */
+
+.forma-product-carousel__arrow:focus {
+  outline: none !important;
+}
+
+.forma-product-carousel__arrow:focus-visible {
+  outline: 1px solid currentColor !important;
+  outline-offset: 2px !important;
+}
+
+
+/* ========================================================================
+   MOBILE
+   ======================================================================== */
+
+@media screen and (max-width: 699px) {
 
   .forma-product-carousel__arrow {
-    position: absolute;
-    top: 50%;
-    z-index: 5;
+    width: 32px !important;
+    height: 44px !important;
 
-    width: 34px;
-    height: 34px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-    margin: 0;
-
-    border: 0;
-    background: transparent;
-
-    color: #111;
-    cursor: pointer;
-
-    transform: translateY(-50%);
-
-    opacity: 0;
-    visibility: hidden;
-
-    transition:
-      opacity 160ms ease,
-      visibility 160ms ease;
-  }
-
-  .forma-product-carousel__arrow span {
-    display: block;
-
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 25px;
-    font-weight: 300;
-    line-height: 1;
-
-    transform: translateY(-1px);
+    opacity: 0.9 !important;
   }
 
   .forma-product-carousel__arrow--prev {
-    left: 8px;
+    left: 4px !important;
   }
 
   .forma-product-carousel__arrow--next {
-    right: 8px;
+    right: 4px !important;
   }
 
-
-  /* Show arrows when hovering the image */
-
-  .forma-product-carousel__viewport:hover
-  .forma-product-carousel__arrow {
-    opacity: 1;
-    visibility: visible;
+  .forma-product-carousel__arrow svg {
+    width: 8px !important;
+    height: 16px !important;
   }
 
+}
 
-  /* Keep arrows visible while keyboard navigating */
-
-  .forma-product-carousel__arrow:focus-visible {
-    opacity: 1;
-    visibility: visible;
-
-    outline: 1px solid currentColor;
-    outline-offset: 3px;
-  }
-
-
-  /* Slightly softer on hover */
-
-  .forma-product-carousel__arrow:hover {
-    opacity: 0.55 !important;
-  }
-
-
-  /* ========================================================================
-     MOBILE
-     ======================================================================== */
-
-  @media screen and (max-width: 699px) {
-
-    .forma-product-carousel__arrow {
-      width: 32px;
-      height: 32px;
-
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .forma-product-carousel__arrow--prev {
-      left: 5px;
-    }
-
-    .forma-product-carousel__arrow--next {
-      right: 5px;
-    }
-
-    .forma-product-carousel__arrow span {
-      font-size: 23px;
-    }
-
-  }
 </style>
 
 
 <script>
-  /* ========================================================================
-     FORMA PRODUCT IMAGE CAROUSEL
-     ======================================================================== */
 
-  if (!window.formaProductCarouselInitialized) {
+(function() {
 
-    window.formaProductCarouselInitialized = true;
+  /* ======================================================================
+     FORMA PRODUCT CAROUSEL
+     ====================================================================== */
 
-    document.addEventListener('click', function(event) {
+  function initFormaProductCarousels() {
 
-      const nextButton = event.target.closest('[data-forma-carousel-next]');
-      const prevButton = event.target.closest('[data-forma-carousel-prev]');
+    const viewports = document.querySelectorAll(
+      '[data-forma-product-carousel]'
+    );
 
-      if (!nextButton && !prevButton) {
+    viewports.forEach(function(viewport) {
+
+      if (viewport.dataset.formaCarouselInitialized === 'true') {
         return;
       }
 
-      event.preventDefault();
-      event.stopPropagation();
+      viewport.dataset.formaCarouselInitialized = 'true';
 
-      const viewport = event.target.closest('[data-forma-product-carousel]');
 
-      if (!viewport) {
-        return;
-      }
+      /* ================================================================
+         NEXT
+         ================================================================ */
+
+      const nextButton = viewport.querySelector(
+        '[data-forma-carousel-next]'
+      );
+
+
+      /* ================================================================
+         PREVIOUS
+         ================================================================ */
+
+      const prevButton = viewport.querySelector(
+        '[data-forma-carousel-prev]'
+      );
+
+
+      /* ================================================================
+         SLIDES
+         ================================================================ */
 
       const slides = Array.from(
-        viewport.querySelectorAll('[data-forma-carousel-slide]')
+        viewport.querySelectorAll(
+          '[data-forma-carousel-slide]'
+        )
       );
+
 
       if (slides.length < 2) {
         return;
       }
 
-      let currentIndex = slides.findIndex(function(slide) {
-        return slide.classList.contains('is-active');
-      });
 
-      if (currentIndex < 0) {
-        currentIndex = 0;
-      }
+      /* ================================================================
+         CHANGE SLIDE
+         ================================================================ */
 
-      let newIndex;
+      function changeSlide(direction) {
 
-      if (nextButton) {
-        newIndex = (currentIndex + 1) % slides.length;
-      } else {
-        newIndex = (currentIndex - 1 + slides.length) % slides.length;
-      }
+        let currentIndex = slides.findIndex(function(slide) {
 
-      slides.forEach(function(slide, index) {
+          return slide.classList.contains('is-active');
 
-        const isActive = index === newIndex;
+        });
 
-        slide.classList.toggle('is-active', isActive);
 
-        slide.setAttribute(
-          'aria-hidden',
-          isActive ? 'false' : 'true'
-        );
-
-        if (isActive) {
-          slide.removeAttribute('tabindex');
-        } else {
-          slide.setAttribute('tabindex', '-1');
+        if (currentIndex < 0) {
+          currentIndex = 0;
         }
 
-      });
 
-    });
+        let newIndex;
 
 
-    /* Keyboard navigation */
+        if (direction === 'next') {
 
-    document.addEventListener('keydown', function(event) {
+          newIndex =
+            (currentIndex + 1) % slides.length;
 
-      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
-        return;
+        } else {
+
+          newIndex =
+            (currentIndex - 1 + slides.length) % slides.length;
+
+        }
+
+
+        slides.forEach(function(slide, index) {
+
+          const isActive =
+            index === newIndex;
+
+
+          slide.classList.toggle(
+            'is-active',
+            isActive
+          );
+
+
+          slide.setAttribute(
+            'aria-hidden',
+            isActive ? 'false' : 'true'
+          );
+
+
+          if (isActive) {
+
+            slide.removeAttribute(
+              'tabindex'
+            );
+
+          } else {
+
+            slide.setAttribute(
+              'tabindex',
+              '-1'
+            );
+
+          }
+
+        });
+
       }
 
-      const activeElement = document.activeElement;
 
-      const viewport = activeElement
-        ? activeElement.closest('[data-forma-product-carousel]')
-        : null;
+      /* ================================================================
+         NEXT CLICK
+         ================================================================ */
 
-      if (!viewport) {
-        return;
+      if (nextButton) {
+
+        nextButton.addEventListener(
+          'click',
+          function(event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            changeSlide('next');
+
+          }
+        );
+
       }
 
-      const button = event.key === 'ArrowRight'
-        ? viewport.querySelector('[data-forma-carousel-next]')
-        : viewport.querySelector('[data-forma-carousel-prev]');
 
-      if (button) {
-        event.preventDefault();
-        button.click();
+      /* ================================================================
+         PREVIOUS CLICK
+         ================================================================ */
+
+      if (prevButton) {
+
+        prevButton.addEventListener(
+          'click',
+          function(event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            changeSlide('prev');
+
+          }
+        );
+
       }
+
+
+      /* ================================================================
+         KEYBOARD
+         ================================================================ */
+
+      viewport.addEventListener(
+        'keydown',
+        function(event) {
+
+          if (event.key === 'ArrowRight') {
+
+            event.preventDefault();
+
+            changeSlide('next');
+
+          }
+
+          if (event.key === 'ArrowLeft') {
+
+            event.preventDefault();
+
+            changeSlide('prev');
+
+          }
+
+        }
+      );
 
     });
 
   }
+
+
+  /* ======================================================================
+     INITIAL LOAD
+     ====================================================================== */
+
+  if (
+    document.readyState === 'loading'
+  ) {
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      initFormaProductCarousels
+    );
+
+  } else {
+
+    initFormaProductCarousels();
+
+  }
+
+
+  /* ======================================================================
+     SHOPIFY THEME EDITOR / AJAX
+     ====================================================================== */
+
+  document.addEventListener(
+    'shopify:section:load',
+    function() {
+
+      setTimeout(
+        initFormaProductCarousels,
+        100
+      );
+
+    }
+  );
+
+
+  /* ======================================================================
+     SHOPIFY SECTION RE-RENDER
+     ====================================================================== */
+
+  document.addEventListener(
+    'shopify:section:reorder',
+    function() {
+
+      setTimeout(
+        initFormaProductCarousels,
+        100
+      );
+
+    }
+  );
+
+
+})();
+
 </script>
