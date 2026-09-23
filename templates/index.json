@@ -120,9 +120,47 @@
         "title": "",
         "content": ""
       }
+    },
+    "featured_collections_KVhnaK": {
+      "type": "featured-collections",
+      "blocks": {
+        "collection_hUTcgC": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "products_count": 8,
+            "title": "",
+            "link_url": "",
+            "link_text": "View all"
+          }
+        }
+      },
+      "block_order": [
+        "collection_hUTcgC"
+      ],
+      "name": "t:sections.featured_collections.presets.featured_collections.name",
+      "settings": {
+        "show_editorial_card": true,
+        "editorial_eyebrow": "Curated by FORMA",
+        "editorial_title": "Our Edit",
+        "editorial_text": "A considered selection of wardrobe essentials, chosen for form, function and longevity.",
+        "editorial_button": "",
+        "editorial_link": "",
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "hide_product_information": false,
+        "stack_products": false,
+        "products_per_row_mobile": "2",
+        "products_per_row_desktop": 4,
+        "horizontal_spacing_factor": 1,
+        "vertical_spacing_factor": 1,
+        "subheading": "THE FORMA EDIT",
+        "hide_collection_title": false
+      }
     }
   },
   "order": [
-    "collection_list_Q8bn9L"
+    "collection_list_Q8bn9L",
+    "featured_collections_KVhnaK"
   ]
 }
