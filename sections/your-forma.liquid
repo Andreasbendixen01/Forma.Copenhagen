@@ -3296,6 +3296,144 @@
   margin-top: 80px;
 }
 
+/* ==========================================================
+   FORMA HOME CARDS — VISUAL LAYOUT
+   ========================================================== */
+
+.forma-home-navigation__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 80px;
+  border-top: 1px solid rgba(23, 23, 23, 0.14);
+  border-left: 1px solid rgba(23, 23, 23, 0.14);
+}
+
+.forma-home-card {
+  position: relative;
+  min-height: 365px;
+  padding: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-sizing: border-box;
+
+  border-right: 1px solid rgba(23, 23, 23, 0.14);
+  border-bottom: 1px solid rgba(23, 23, 23, 0.14);
+
+  background: #f7f7f4;
+  color: #171717;
+  text-decoration: none;
+
+  transition:
+    background-color 300ms ease,
+    color 300ms ease;
+}
+
+/* Nummer */
+.forma-home-card__number {
+  position: absolute;
+  top: 42px;
+  left: 42px;
+
+  margin: 0;
+
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  color: rgba(23, 23, 23, 0.45);
+}
+
+/* Pil */
+.forma-home-card__arrow {
+  position: absolute;
+  top: 38px;
+  right: 42px;
+
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 300;
+
+  transition:
+    transform 300ms ease,
+    opacity 300ms ease;
+}
+
+/* Tekstområdet */
+.forma-home-card__content {
+  position: relative;
+  z-index: 2;
+  padding: 0;
+}
+
+/* Navnene beholder deres nuværende størrelse */
+.forma-home-card__content h3 {
+  margin: 0 0 18px;
+}
+
+/* Beskrivelsen */
+.forma-home-card__content p {
+  margin: 0;
+}
+
+/* Første kort — mørkt */
+.forma-home-card--dark {
+  background: #171717;
+  color: #ffffff;
+}
+
+.forma-home-card--dark .forma-home-card__number {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+/* Hover */
+.forma-home-card:hover {
+  background: #171717;
+  color: #ffffff;
+}
+
+.forma-home-card:hover .forma-home-card__number {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.forma-home-card:hover .forma-home-card__arrow {
+  transform: translateX(5px);
+}
+
+.forma-home-card--dark:hover {
+  background: #222222;
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media screen and (max-width: 749px) {
+
+  .forma-home-navigation__grid {
+    grid-template-columns: 1fr;
+    margin-top: 56px;
+  }
+
+  .forma-home-card {
+    min-height: 300px;
+    padding: 28px;
+  }
+
+  .forma-home-card__number {
+    top: 28px;
+    left: 28px;
+  }
+
+  .forma-home-card__arrow {
+    top: 25px;
+    right: 28px;
+  }
+
+}
+
+
 
 /* ==========================================================
    MOBILE
@@ -3339,184 +3477,7 @@
 
 }
 
-/* ==========================================================
-   FORMA — NAVIGATION CARDS
-   ========================================================== */
 
-.forma-home-navigation__grid {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-
-  /* Mere luft mellem hero og kortene */
-  margin-top: 110px;
-
-  /* Kortene skal starte helt fra venstre */
-  margin-left: 0;
-  margin-right: 0;
-
-  border-top: 1px solid rgba(0, 0, 0, 0.14);
-  border-left: 1px solid rgba(0, 0, 0, 0.14);
-}
-
-
-/* ==========================================================
-   INDIVIDUELLE KORT
-   ========================================================== */
-
-.forma-home-navigation__grid > * {
-  position: relative;
-
-  min-height: 365px;
-
-  box-sizing: border-box;
-
-  border-right: 1px solid rgba(0, 0, 0, 0.14);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.14);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-
-  padding: 42px;
-}
-
-
-/* ==========================================================
-   NUMMER
-   ========================================================== */
-
-.forma-home-navigation__grid > *::before {
-  position: absolute;
-
-  top: 42px;
-  left: 42px;
-
-  font-size: 10px;
-  line-height: 1;
-  letter-spacing: 0.08em;
-
-  color: rgba(0, 0, 0, 0.35);
-}
-
-
-/* Nummerering */
-.forma-home-navigation__grid > *:nth-child(1)::before {
-  content: "01";
-}
-
-.forma-home-navigation__grid > *:nth-child(2)::before {
-  content: "02";
-}
-
-.forma-home-navigation__grid > *:nth-child(3)::before {
-  content: "03";
-}
-
-.forma-home-navigation__grid > *:nth-child(4)::before {
-  content: "04";
-}
-
-.forma-home-navigation__grid > *:nth-child(5)::before {
-  content: "05";
-}
-
-.forma-home-navigation__grid > *:nth-child(6)::before {
-  content: "06";
-}
-
-
-/* ==========================================================
-   PIL
-   ========================================================== */
-
-.forma-home-navigation__grid > *::after {
-  content: "→";
-
-  position: absolute;
-
-  top: 36px;
-  right: 38px;
-
-  font-size: 24px;
-  line-height: 1;
-
-  color: rgba(0, 0, 0, 0.45);
-
-  transition:
-    transform 0.3s ease,
-    color 0.3s ease;
-}
-
-
-/* ==========================================================
-   HOVER
-   ========================================================== */
-
-.forma-home-navigation__grid > *:hover::after {
-  transform: translateX(6px);
-  color: #000;
-}
-
-
-/* ==========================================================
-   FØRSTE KORT — DARK / ACTIVE
-   ========================================================== */
-
-.forma-home-navigation__grid > *:first-child {
-  background: #171717;
-  color: #fff;
-}
-
-.forma-home-navigation__grid > *:first-child::before {
-  color: rgba(255, 255, 255, 0.38);
-}
-
-.forma-home-navigation__grid > *:first-child::after {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.forma-home-navigation__grid > *:first-child:hover::after {
-  color: #fff;
-}
-
-
-/* ==========================================================
-   BESKRIVELSER
-   ========================================================== */
-
-.forma-home-navigation__grid > * p {
-  margin-bottom: 0;
-}
-
-
-/* ==========================================================
-   MOBILE
-   ========================================================== */
-
-@media screen and (max-width: 749px) {
-
-  .forma-home-navigation__grid {
-    grid-template-columns: 1fr;
-    margin-top: 80px;
-  }
-
-  .forma-home-navigation__grid > * {
-    min-height: 300px;
-    padding: 28px;
-  }
-
-  .forma-home-navigation__grid > *::before {
-    top: 28px;
-    left: 28px;
-  }
-
-  .forma-home-navigation__grid > *::after {
-    top: 25px;
-    right: 26px;
-  }
-
-}
 
 {% endstyle %}
 
