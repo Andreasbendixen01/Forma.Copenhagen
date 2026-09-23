@@ -3214,6 +3214,54 @@
 
 }
 
+/* ==========================================================
+   FORMA — YOUR FORMA FIRST SCREEN
+   ========================================================== */
+
+.forma-home-navigation {
+  min-height: calc(100svh - 72px);
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* The greeting */
+.forma-home-navigation__header {
+  flex-shrink: 0;
+}
+
+/* Push the stats bar toward the bottom */
+.forma-home-navigation .forma-dashboard__overview {
+  margin-top: auto;
+}
+
+/* Create breathing room before the navigation cards */
+.forma-home-navigation__grid {
+  margin-top: 80px;
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media screen and (max-width: 749px) {
+
+  .forma-home-navigation {
+    min-height: auto;
+  }
+
+  .forma-home-navigation .forma-dashboard__overview {
+    margin-top: 80px;
+  }
+
+  .forma-home-navigation__grid {
+    margin-top: 56px;
+  }
+
+}
+
 {% endstyle %}
 
 {% schema %}
