@@ -3,7 +3,7 @@
   <style>
 
     /* =========================================================
-       FORMA EDIT — BASE
+       BASE
        ========================================================= */
 
     #shopify-section-{{ section.id }} {
@@ -18,13 +18,13 @@
        ========================================================= */
 
     #shopify-section-{{ section.id }} .section-spacing {
-      padding-top: 1.5rem !important;
+      padding-top: 1rem !important;
       padding-bottom: 2.5rem !important;
     }
 
 
     /* =========================================================
-       FORMA EDIT HEADER
+       HEADER
        ========================================================= */
 
     #shopify-section-{{ section.id }} .forma-edit-section-header {
@@ -34,10 +34,8 @@
       align-items: flex-end;
       justify-content: space-between;
 
-      gap: 2rem;
-
-      margin: 0 0 1.25rem 0 !important;
-      padding: 0;
+      margin: 0 0 0.55rem 0 !important;
+      padding: 0 !important;
 
       text-align: left;
     }
@@ -58,22 +56,17 @@
       margin: 0 !important;
       padding: 0 !important;
 
-      font-family:
-        Didot,
-        "Bodoni 72",
-        "Bodoni MT",
-        Georgia,
-        "Times New Roman",
-        serif !important;
+      font-family: inherit !important;
 
-      font-size: 34px !important;
+      font-size: 22px !important;
 
       font-weight: 400 !important;
+
       font-style: normal !important;
 
-      line-height: 1.05 !important;
+      line-height: 1.1 !important;
 
-      letter-spacing: -0.02em !important;
+      letter-spacing: 0 !important;
 
       color: #111111 !important;
 
@@ -83,61 +76,31 @@
 
 
     /* =========================================================
-       SUBHEADING
-       ========================================================= */
-
-    #shopify-section-{{ section.id }} .forma-edit-section-header__subheading {
-      display: block;
-
-      margin: 0.4rem 0 0 !important;
-      padding: 0;
-
-      font-family: inherit;
-
-      font-size: 0.65rem;
-
-      font-weight: 400;
-
-      line-height: 1.2;
-
-      letter-spacing: 0.14em;
-
-      text-transform: uppercase;
-
-      color: #111111 !important;
-
-      opacity: 0.55;
-    }
-
-
-    /* =========================================================
-       VIEW ALL — HIGH END EDITORIAL LINK
+       VIEW ALL
        ========================================================= */
 
     #shopify-section-{{ section.id }} .forma-edit-section-header__link {
-      position: relative;
-
       display: inline-flex;
 
       align-items: center;
 
-      gap: 0.45rem;
+      gap: 0.35rem;
 
       flex-shrink: 0;
 
-      margin: 0 0 0.2rem 0;
+      margin: 0 2px -0.15rem 0 !important;
 
-      padding: 0;
+      padding: 0 !important;
 
-      font-family: inherit;
+      font-family: inherit !important;
 
-      font-size: 0.65rem;
+      font-size: 0.65rem !important;
 
-      font-weight: 500;
+      font-weight: 400 !important;
 
-      line-height: 1;
+      line-height: 1 !important;
 
-      letter-spacing: 0.16em;
+      letter-spacing: 0.08em;
 
       text-transform: uppercase;
 
@@ -145,11 +108,9 @@
 
       text-decoration: none !important;
 
-      opacity: 0.8;
+      opacity: 0.7;
 
-      transition:
-        opacity 0.25s ease,
-        transform 0.25s ease;
+      transition: opacity 0.2s ease;
     }
 
 
@@ -160,17 +121,15 @@
 
       display: inline-block;
 
-      font-size: 0.85rem;
+      font-size: 0.8rem;
 
-      font-weight: 300;
+      font-weight: 400;
 
       line-height: 1;
 
       letter-spacing: 0;
 
-      transform: translateX(0);
-
-      transition: transform 0.25s ease;
+      transition: transform 0.2s ease;
     }
 
 
@@ -180,7 +139,7 @@
 
 
     #shopify-section-{{ section.id }} .forma-edit-section-header__link:hover::after {
-      transform: translateX(4px);
+      transform: translateX(3px);
     }
 
 
@@ -216,7 +175,7 @@
 
 
     /* =========================================================
-       REMOVE EXTRA TOP SPACING FROM CAROUSEL
+       CAROUSEL — REMOVE EXTRA SPACING
        ========================================================= */
 
     #shopify-section-{{ section.id }} .featured-collections-carousel {
@@ -243,18 +202,18 @@
 
 
       #shopify-section-{{ section.id }} .section-spacing {
-        padding-top: 1.75rem !important;
+        padding-top: 1.25rem !important;
         padding-bottom: 3rem !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header {
-        margin-bottom: 1.25rem !important;
+        margin-bottom: 0.45rem !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header__title {
-        font-size: 34px !important;
+        font-size: 22px !important;
       }
 
     }
@@ -267,49 +226,25 @@
     @media screen and (max-width: 699px) {
 
       #shopify-section-{{ section.id }} .section-spacing {
-        padding-top: 1.25rem !important;
+        padding-top: 0.9rem !important;
         padding-bottom: 2rem !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header {
-        align-items: flex-end;
-
-        gap: 1rem;
-
-        margin-bottom: 1rem !important;
+        margin-bottom: 0.4rem !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header__title {
-        font-size: 26px !important;
-
-        line-height: 1.05 !important;
-      }
-
-
-      #shopify-section-{{ section.id }} .forma-edit-section-header__subheading {
-        margin-top: 0.35rem !important;
-
-        font-size: 0.58rem;
-
-        letter-spacing: 0.13em;
+        font-size: 19px !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header__link {
-        margin-bottom: 0.1rem;
+        font-size: 0.58rem !important;
 
-        font-size: 0.58rem;
-
-        letter-spacing: 0.14em;
-
-        gap: 0.3rem;
-      }
-
-
-      #shopify-section-{{ section.id }} .forma-edit-section-header__link::after {
-        font-size: 0.75rem;
+        margin-right: 2px !important;
       }
 
     }
@@ -350,10 +285,6 @@
               <h2 class="forma-edit-section-header__title">
                 The Forma Edit
               </h2>
-
-              <p class="forma-edit-section-header__subheading">
-                Curated by FORMA
-              </p>
 
             </div>
 
@@ -600,65 +531,44 @@
 
   "max_blocks": 5,
 
-
   "settings": [
 
     {
       "type": "color_scheme",
-
       "id": "color_scheme",
-
       "label": "t:global.colors.scheme",
-
       "default": "scheme-1"
     },
 
-
     {
       "type": "checkbox",
-
       "id": "separate_section_with_border",
-
       "label": "t:global.section.separate_section_with_border",
-
       "default": true
     },
 
-
     {
       "type": "checkbox",
-
       "id": "hide_product_information",
-
       "label": "t:global.product_list.hide_product_information",
-
       "info": "t:global.product_list.hide_product_information_info"
     },
 
-
     {
       "type": "header",
-
       "content": "t:global.product_list.product_list_category"
     },
 
-
     {
       "type": "checkbox",
-
       "id": "stack_products",
-
       "label": "t:global.product_list.stack_products",
-
       "default": false
     },
 
-
     {
       "type": "select",
-
       "id": "products_per_row_mobile",
-
       "label": "t:global.product_list.products_per_row_mobile",
 
       "options": [
@@ -677,90 +587,58 @@
       "visible_if": "{{ section.settings.stack_products }}"
     },
 
-
     {
       "type": "range",
-
       "id": "products_per_row_desktop",
-
       "min": 2,
-
       "max": 6,
-
       "label": "t:global.product_list.products_per_row_desktop",
-
       "info": "t:global.product_list.products_per_row_desktop_info",
-
       "default": 4,
 
       "visible_if": "{{ section.settings.stack_products }}"
     },
 
-
     {
       "type": "header",
-
       "content": "t:global.product_list.spacing_category",
-
       "info": "t:global.product_list.spacing_category_info"
     },
 
-
     {
       "type": "range",
-
       "min": 0.2,
-
       "max": 2,
-
       "step": 0.1,
-
       "id": "horizontal_spacing_factor",
-
       "label": "Horizontal spacing factor",
-
       "default": 1
     },
-
 
     {
       "type": "range",
-
       "min": 0.2,
-
       "max": 2,
-
       "step": 0.1,
-
       "id": "vertical_spacing_factor",
-
       "label": "Vertical spacing factor",
-
       "default": 1
     },
-
 
     {
       "type": "header",
-
       "content": "t:global.section.header_category"
     },
 
-
     {
       "type": "checkbox",
-
       "id": "hide_collection_title",
-
       "label": "t:sections.featured_collections.hide_collection_title",
-
       "info": "t:sections.featured_collections.hide_collection_title_info",
-
       "default": false
     }
 
   ],
-
 
   "blocks": [
 
@@ -769,62 +647,41 @@
 
       "name": "t:sections.featured_collections.blocks.collection.name",
 
-
       "settings": [
 
         {
           "type": "collection",
-
           "id": "collection",
-
           "label": "t:sections.featured_collections.blocks.collection.collection"
         },
 
-
         {
           "type": "range",
-
           "id": "products_count",
-
           "min": 2,
-
           "max": 50,
-
           "label": "t:global.product_list.products_to_show",
-
           "default": 8
         },
 
-
         {
           "type": "inline_richtext",
-
           "id": "title",
-
           "label": "t:global.text.heading",
-
           "info": "t:sections.featured_collections.blocks.collection.title_info"
         },
 
-
         {
           "type": "url",
-
           "id": "link_url",
-
           "label": "t:global.text.link_url",
-
           "info": "t:sections.featured_collections.blocks.collection.default_link_url"
         },
 
-
         {
           "type": "text",
-
           "id": "link_text",
-
           "label": "t:global.text.link_text",
-
           "default": "View all"
         }
 
@@ -833,7 +690,6 @@
     }
 
   ],
-
 
   "presets": [
 
