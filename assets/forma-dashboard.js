@@ -33,6 +33,18 @@
     "[data-forma-profile-status]"
   );
 
+  const profileProgressValue = dashboard.querySelector(
+  "[data-forma-profile-progress-value]"
+);
+
+const profileProgressBar = dashboard.querySelector(
+  "[data-forma-profile-progress-bar]"
+);
+
+const profileProgressText = dashboard.querySelector(
+  "[data-forma-profile-progress-text]"
+);
+
   const followingCount = dashboard.querySelector(
     "[data-forma-following-count]"
   );
@@ -91,25 +103,61 @@
   }
 
   function renderProfile(profile) {
-    const firstName = String(
-      profile?.identity?.firstName || ""
-    ).trim();
+  const firstName = String(
+    profile?.identity?.firstName || ""
+  ).trim();
 
-    if (profileName) {
-      profileName.textContent =
-        firstName
-          ? `, ${firstName}`
-          : "";
-    }
+  const completion =
+    calculateProfileCompletion(profile);
 
-    if (profileStatus) {
-      const completion =
-        calculateProfileCompletion(profile);
-
-      profileStatus.textContent =
-        `${completion}%`;
-    }
+  if (profileName) {
+    profileName.textContent =
+      firstName
+        ? `, ${firstName}`
+        : "";
   }
+
+  if (profileStatus) {
+    profileStatus.textContent =
+      `${completion}%`;
+  }
+
+  if (profileProgressValue) {
+    profileProgressValue.textContent =
+      `${completion}%`;
+  }
+
+  if (profileProgressBar) {
+    profileProgressBar.style.width =
+      `${completion}%`;
+  }
+
+  if (profileProgressText) {
+
+    if (completion >= 100) {
+
+      profileProgressText.textContent =
+        "Your profile is complete.";
+
+    } else if (completion >= 75) {
+
+      profileProgressText.textContent =
+        "You're almost there. Complete your profile.";
+
+    } else if (completion >= 50) {
+
+      profileProgressText.textContent =
+        "Keep going to make Forma more personal.";
+
+    } else {
+
+      profileProgressText.textContent =
+        "Complete your profile to make Forma more personal.";
+
+    }
+
+  }
+}
 
   /* ========================================================
      DASHBOARD STATS
@@ -236,20 +284,20 @@
      STAT EVENTS
      ======================================================== */
 
-  window.addEventListener(
-    "forma:saved-updated",
-    renderStats
-  );
+  window.Forma.events.on(
+  "forma:saved-products-updated",
+  renderStats
+);
 
-  window.addEventListener(
-    "forma:followed-brands-updated",
-    renderStats
-  );
+ window.Forma.events.on(
+  "forma:followed-brands-updated",
+  renderStats
+);
 
-  window.addEventListener(
-    "forma:recently-viewed-updated",
-    renderStats
-  );
+window.Forma.events.on(
+  "forma:recently-viewed-updated",
+  renderStats
+);
 
   window.addEventListener(
     "forma:activity-updated",
