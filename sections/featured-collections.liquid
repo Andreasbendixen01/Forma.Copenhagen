@@ -3,7 +3,7 @@
   <style>
 
     /* =========================================================
-       BASE
+       FORMA EDIT — LES DEUX INSPIRED
        ========================================================= */
 
     #shopify-section-{{ section.id }} {
@@ -14,11 +14,11 @@
 
 
     /* =========================================================
-       SECTION SPACING
+       SECTION
        ========================================================= */
 
     #shopify-section-{{ section.id }} .section-spacing {
-      padding-top: 1.25rem !important;
+      padding-top: 1rem !important;
       padding-bottom: 2.5rem !important;
     }
 
@@ -34,8 +34,8 @@
       align-items: flex-end;
       justify-content: space-between;
 
-      margin: 0 0 0.75rem 0 !important;
-      padding: 0 !important;
+      margin: 0 0 1rem 0 !important;
+      padding: 0 10px !important;
 
       text-align: left;
     }
@@ -46,17 +46,16 @@
        ========================================================= */
 
     #shopify-section-{{ section.id }} .forma-edit-section-header__content {
-      min-width: 0;
-
       display: flex;
       flex-direction: column;
-
       align-items: flex-start;
+
+      min-width: 0;
     }
 
 
     /* =========================================================
-       TITLE
+       HEADING
        ========================================================= */
 
     #shopify-section-{{ section.id }} .forma-edit-section-header__title {
@@ -65,9 +64,9 @@
       margin: 0 !important;
       padding: 0 !important;
 
-      font-family: inherit !important;
+      font-family: Georgia, "Times New Roman", serif !important;
 
-      font-size: 24px !important;
+      font-size: 17px !important;
 
       font-weight: 400 !important;
 
@@ -93,18 +92,20 @@
 
       align-items: center;
 
-      gap: 0.3rem;
+      gap: 4px;
 
-      margin: 0.35rem 0 0 0 !important;
+      margin: 5px 0 0 0 !important;
       padding: 0 !important;
 
-      font-family: inherit !important;
+      font-family: Georgia, "Times New Roman", serif !important;
 
-      font-size: 13px !important;
+      font-size: 12px !important;
 
       font-weight: 400 !important;
 
-      line-height: 1.2 !important;
+      font-style: normal !important;
+
+      line-height: 1.15 !important;
 
       letter-spacing: 0 !important;
 
@@ -114,34 +115,38 @@
 
       text-decoration: none !important;
 
-      opacity: 0.85;
+      opacity: 1;
 
       transition: opacity 0.2s ease;
     }
 
+
+    /* Arrow */
 
     #shopify-section-{{ section.id }} .forma-edit-section-header__link::after {
       content: "→";
 
       display: inline-block;
 
-      font-size: 15px;
+      font-family: Georgia, "Times New Roman", serif !important;
 
-      line-height: 1;
+      font-size: 13px;
 
       font-weight: 400;
+
+      line-height: 1;
 
       transition: transform 0.2s ease;
     }
 
 
     #shopify-section-{{ section.id }} .forma-edit-section-header__link:hover {
-      opacity: 1;
+      opacity: 0.65;
     }
 
 
     #shopify-section-{{ section.id }} .forma-edit-section-header__link:hover::after {
-      transform: translateX(3px);
+      transform: translateX(2px);
     }
 
 
@@ -164,15 +169,8 @@
 
       min-width: 0;
 
-      flex: 1 1 100%;
-
       margin: 0 !important;
       padding: 0 !important;
-    }
-
-
-    #shopify-section-{{ section.id }} .forma-edit-products .product-list {
-      width: 100%;
     }
 
 
@@ -181,23 +179,53 @@
        ========================================================= */
 
     #shopify-section-{{ section.id }} .featured-collections-carousel {
-      margin-top: 0 !important;
-      padding-top: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
 
 
     #shopify-section-{{ section.id }} .featured-collections-carousel__item {
-      margin-top: 0 !important;
-      padding-top: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
 
 
     /* =========================================================
-       CAROUSEL CONTROLS
+       PRODUCT LIST
+       ========================================================= */
+
+    #shopify-section-{{ section.id }} .product-list {
+      margin-top: 0 !important;
+    }
+
+
+    /* =========================================================
+       CAROUSEL ARROWS
        ========================================================= */
 
     #shopify-section-{{ section.id }} .floating-controls-container {
-      margin-top: 0 !important;
+      position: relative;
+    }
+
+
+    #shopify-section-{{ section.id }} .floating-controls-container__control {
+      z-index: 5;
+    }
+
+
+    /* Keep controls subtle */
+
+    #shopify-section-{{ section.id }} .prev-next-button {
+      width: 32px !important;
+      height: 32px !important;
+
+      background: transparent !important;
+
+      border: none !important;
+
+      box-shadow: none !important;
+
+      opacity: 0.75;
     }
 
 
@@ -213,23 +241,25 @@
 
 
       #shopify-section-{{ section.id }} .section-spacing {
-        padding-top: 1.5rem !important;
+        padding-top: 1rem !important;
         padding-bottom: 3rem !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header {
-        margin-bottom: 0.7rem !important;
+        margin-bottom: 1rem !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header__title {
-        font-size: 24px !important;
+        font-size: 17px !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header__link {
-        font-size: 13px !important;
+        font-size: 12px !important;
       }
 
     }
@@ -242,25 +272,25 @@
     @media screen and (max-width: 699px) {
 
       #shopify-section-{{ section.id }} .section-spacing {
-        padding-top: 1rem !important;
+        padding-top: 0.9rem !important;
         padding-bottom: 2rem !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header {
-        margin-bottom: 0.6rem !important;
+        margin-bottom: 0.85rem !important;
+        padding-left: 6px !important;
+        padding-right: 6px !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header__title {
-        font-size: 20px !important;
+        font-size: 16px !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header__link {
-        font-size: 12px !important;
-
-        margin-top: 0.3rem !important;
+        font-size: 11px !important;
       }
 
     }
@@ -342,7 +372,6 @@
               "
               {{ block.shopify_attributes }}
             >
-
 
               {%- capture product_list -%}
 
