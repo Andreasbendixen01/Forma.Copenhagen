@@ -2302,13 +2302,17 @@
     padding: clamp(64px, 9vw, 140px) 0;
   }
 
-  .forma-dashboard__hero {
-  min-height: clamp(520px, 68vw, 860px);
-  padding: clamp(36px, 5vw, 72px) 0 clamp(48px, 7vw, 96px);
+ .forma-dashboard__hero {
+  min-height: calc(100svh - 72px);
+  box-sizing: border-box;
+
+  padding: clamp(36px, 5vw, 72px) 0 0;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: clamp(80px, 12vw, 180px);
+
+  gap: 0;
 }
 
   .forma-dashboard__hero-main {
