@@ -22,6 +22,39 @@
   }
 
   /* ========================================================
+   DYNAMIC GREETING
+   ======================================================== */
+
+function getGreeting() {
+  const hour = new Date().getHours();
+
+  if (hour >= 4 && hour < 11) {
+    return "Good morning";
+  }
+
+  if (hour >= 11 && hour < 18) {
+    return "Good afternoon";
+  }
+
+  if (hour >= 18 && hour < 23) {
+    return "Good evening";
+  }
+
+  return "Good night";
+}
+
+function renderGreeting() {
+  const greeting =
+    dashboard.querySelector(
+      "[data-forma-hero-greeting]"
+    );
+
+  if (greeting) {
+    greeting.textContent = getGreeting();
+  }
+}
+
+  /* ========================================================
      DOM ELEMENTS
      ======================================================== */
 
@@ -304,13 +337,15 @@ window.Forma.events.on(
     renderStats
   );
 
-  /* ========================================================
-     INITIAL RENDER
-     ======================================================== */
+/* ========================================================
+   INITIAL RENDER
+   ======================================================== */
 
-  renderProfile(
-    window.Forma.profile.get()
-  );
+renderGreeting();
 
-  renderStats();
+renderProfile(
+  window.Forma.profile.get()
+);
+
+renderStats();
 })();
