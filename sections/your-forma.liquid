@@ -3215,7 +3215,7 @@
 }
 
 /* ==========================================================
-   FORMA — YOUR FORMA FIRST SCREEN
+   FORMA — YOUR FORMA / HERO STYLE
    ========================================================== */
 
 .forma-home-navigation {
@@ -3226,17 +3226,69 @@
   flex-direction: column;
 }
 
-/* The greeting */
+
+/* ==========================================================
+   HERO POSITION
+   ========================================================== */
+
 .forma-home-navigation__header {
+  padding-top: clamp(150px, 17vh, 230px);
   flex-shrink: 0;
 }
 
-/* Push the stats bar toward the bottom */
+
+/* ==========================================================
+   EYEBROW
+   ========================================================== */
+
+.forma-home-navigation__eyebrow {
+  margin-bottom: 24px;
+}
+
+
+/* ==========================================================
+   MAIN GREETING
+   ========================================================== */
+
+.forma-home-navigation__title {
+  max-width: 900px;
+
+  font-size: clamp(72px, 7.2vw, 118px);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+
+  margin: 0;
+}
+
+
+/* ==========================================================
+   SUPPORTING TEXT
+   ========================================================== */
+
+.forma-home-navigation__subtitle {
+  max-width: 720px;
+
+  margin-top: 64px;
+
+  font-size: clamp(42px, 4.2vw, 68px);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+
+/* ==========================================================
+   STATS — PUSH TO BOTTOM OF FIRST SCREEN
+   ========================================================== */
+
 .forma-home-navigation .forma-dashboard__overview {
   margin-top: auto;
 }
 
-/* Create breathing room before the navigation cards */
+
+/* ==========================================================
+   NAVIGATION CARDS
+   ========================================================== */
+
 .forma-home-navigation__grid {
   margin-top: 80px;
 }
@@ -3250,6 +3302,30 @@
 
   .forma-home-navigation {
     min-height: auto;
+  }
+
+  .forma-home-navigation__header {
+    padding-top: 110px;
+  }
+
+  .forma-home-navigation__eyebrow {
+    margin-bottom: 18px;
+  }
+
+  .forma-home-navigation__title {
+    max-width: 100%;
+
+    font-size: clamp(54px, 14vw, 76px);
+    line-height: 0.94;
+  }
+
+  .forma-home-navigation__subtitle {
+    max-width: 100%;
+
+    margin-top: 40px;
+
+    font-size: clamp(32px, 8vw, 48px);
+    line-height: 1;
   }
 
   .forma-home-navigation .forma-dashboard__overview {
