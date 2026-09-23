@@ -18,7 +18,7 @@
        ========================================================= */
 
     #shopify-section-{{ section.id }} .section-spacing {
-      padding-top: 1rem !important;
+      padding-top: 1.25rem !important;
       padding-bottom: 2.5rem !important;
     }
 
@@ -34,7 +34,7 @@
       align-items: flex-end;
       justify-content: space-between;
 
-      margin: 0 0 0.55rem 0 !important;
+      margin: 0 0 0.75rem 0 !important;
       padding: 0 !important;
 
       text-align: left;
@@ -42,13 +42,22 @@
 
 
     /* =========================================================
-       TITLE
+       HEADER CONTENT
        ========================================================= */
 
     #shopify-section-{{ section.id }} .forma-edit-section-header__content {
       min-width: 0;
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: flex-start;
     }
 
+
+    /* =========================================================
+       TITLE
+       ========================================================= */
 
     #shopify-section-{{ section.id }} .forma-edit-section-header__title {
       display: block !important;
@@ -58,13 +67,13 @@
 
       font-family: inherit !important;
 
-      font-size: 22px !important;
+      font-size: 24px !important;
 
       font-weight: 400 !important;
 
       font-style: normal !important;
 
-      line-height: 1.1 !important;
+      line-height: 1.15 !important;
 
       letter-spacing: 0 !important;
 
@@ -84,50 +93,43 @@
 
       align-items: center;
 
-      gap: 0.35rem;
+      gap: 0.3rem;
 
-      flex-shrink: 0;
-
-      margin: 0 2px -0.15rem 0 !important;
-
+      margin: 0.35rem 0 0 0 !important;
       padding: 0 !important;
 
       font-family: inherit !important;
 
-      font-size: 0.65rem !important;
+      font-size: 13px !important;
 
       font-weight: 400 !important;
 
-      line-height: 1 !important;
+      line-height: 1.2 !important;
 
-      letter-spacing: 0.08em;
+      letter-spacing: 0 !important;
 
-      text-transform: uppercase;
+      text-transform: none !important;
 
       color: #111111 !important;
 
       text-decoration: none !important;
 
-      opacity: 0.7;
+      opacity: 0.85;
 
       transition: opacity 0.2s ease;
     }
 
-
-    /* Elegant arrow */
 
     #shopify-section-{{ section.id }} .forma-edit-section-header__link::after {
       content: "→";
 
       display: inline-block;
 
-      font-size: 0.8rem;
-
-      font-weight: 400;
+      font-size: 15px;
 
       line-height: 1;
 
-      letter-spacing: 0;
+      font-weight: 400;
 
       transition: transform 0.2s ease;
     }
@@ -175,7 +177,7 @@
 
 
     /* =========================================================
-       CAROUSEL — REMOVE EXTRA SPACING
+       CAROUSEL
        ========================================================= */
 
     #shopify-section-{{ section.id }} .featured-collections-carousel {
@@ -191,6 +193,15 @@
 
 
     /* =========================================================
+       CAROUSEL CONTROLS
+       ========================================================= */
+
+    #shopify-section-{{ section.id }} .floating-controls-container {
+      margin-top: 0 !important;
+    }
+
+
+    /* =========================================================
        DESKTOP
        ========================================================= */
 
@@ -202,18 +213,23 @@
 
 
       #shopify-section-{{ section.id }} .section-spacing {
-        padding-top: 1.25rem !important;
+        padding-top: 1.5rem !important;
         padding-bottom: 3rem !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header {
-        margin-bottom: 0.45rem !important;
+        margin-bottom: 0.7rem !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header__title {
-        font-size: 22px !important;
+        font-size: 24px !important;
+      }
+
+
+      #shopify-section-{{ section.id }} .forma-edit-section-header__link {
+        font-size: 13px !important;
       }
 
     }
@@ -226,25 +242,25 @@
     @media screen and (max-width: 699px) {
 
       #shopify-section-{{ section.id }} .section-spacing {
-        padding-top: 0.9rem !important;
+        padding-top: 1rem !important;
         padding-bottom: 2rem !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header {
-        margin-bottom: 0.4rem !important;
+        margin-bottom: 0.6rem !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header__title {
-        font-size: 19px !important;
+        font-size: 20px !important;
       }
 
 
       #shopify-section-{{ section.id }} .forma-edit-section-header__link {
-        font-size: 0.58rem !important;
+        font-size: 12px !important;
 
-        margin-right: 2px !important;
+        margin-top: 0.3rem !important;
       }
 
     }
@@ -286,21 +302,21 @@
                 The Forma Edit
               </h2>
 
+
+              {%- if section.blocks.size == 1 and section.blocks.first.settings.link_text != blank -%}
+
+                {%- assign header_link = section.blocks.first.settings.link_url | default: section.blocks.first.settings.collection.url | default: '#' -%}
+
+                <a
+                  href="{{ header_link }}"
+                  class="forma-edit-section-header__link"
+                >
+                  {{ section.blocks.first.settings.link_text }}
+                </a>
+
+              {%- endif -%}
+
             </div>
-
-
-            {%- if section.blocks.size == 1 and section.blocks.first.settings.link_text != blank -%}
-
-              {%- assign header_link = section.blocks.first.settings.link_url | default: section.blocks.first.settings.collection.url | default: '#' -%}
-
-              <a
-                href="{{ header_link }}"
-                class="forma-edit-section-header__link"
-              >
-                {{ section.blocks.first.settings.link_text }}
-              </a>
-
-            {%- endif -%}
 
           </div>
 
