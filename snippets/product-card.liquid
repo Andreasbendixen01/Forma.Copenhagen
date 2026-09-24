@@ -1,11 +1,3 @@
-{%- comment -%}
-  ----------------------------------------------------------------------------------------------------------------------
-  PRODUCT CARD COMPONENT
-  ----------------------------------------------------------------------------------------------------------------------
-
-  Forma product card with image carousel navigation
-{%- endcomment -%}
-
 {%- liquid
   if hide_product_information
     assign show_badges = false
@@ -15,7 +7,6 @@
     assign show_prices = false
     assign show_swatches = false
     assign show_quick_buy = show_quick_buy | default: settings.show_quick_buy, allow_false: true
-    assign show_secondary_image = show_secondary_image | default: settings.show_secondary_image, allow_false: true
   else
     assign show_badges = show_badges | default: true, allow_false: true
     assign show_rating = show_rating | default: settings.show_product_rating, allow_false: true
@@ -23,7 +14,6 @@
     assign show_quick_buy = show_quick_buy | default: settings.show_quick_buy, allow_false: true
     assign show_title = true
     assign show_prices = true
-    assign show_secondary_image = show_secondary_image | default: settings.show_secondary_image, allow_false: true
     assign show_swatches = show_swatches | default: true, allow_false: true
   endif
 -%}
@@ -45,105 +35,51 @@
       {%- endif -%}
 
       {%- capture sizes -%}
-        {%- assign products_per_row_desktop = section.settings.products_per_row_desktop | default: 3 -%}
-
-        {%- if stacked -%}
-          (max-width: 699px) calc(100vw / {{ section.settings.products_per_row_mobile | default: 2 }}),
-          (max-width: 999px) calc(100vw / {{ 3 | at_most: products_per_row_desktop }} - 64px),
-          calc((100vw - 96px) / {{ products_per_row_desktop }} - (24px / {{ products_per_row_desktop }} * {{ products_per_row_desktop | minus: 1 }}))
-        {%- else -%}
-          (max-width: 699px) 74vw,
-          (max-width: 999px) 38vw,
-          calc((100vw - 96px) / {{ products_per_row_desktop }} - (24px / {{ products_per_row_desktop }} * {{ products_per_row_desktop | minus: 1 }}))
-        {%- endif -%}
+        (max-width: 699px) 74vw,
+        (max-width: 999px) 38vw,
+        calc((100vw - 96px) / 4)
       {%- endcapture -%}
 
-      {%- liquid
-        assign main_media_loading_strategy = null
-
-        if section.index > 3 or position > 3
-          assign main_media_loading_strategy = 'lazy'
-        endif
-
-        assign featured_media = product.metafields.custom.card_image.value | default: product.featured_media
-
-        assign carousel_media_count = product.media.size
-
-        if featured_media != blank and featured_media.id != product.featured_media.id
-          assign carousel_media_count = carousel_media_count | plus: 1
-        endif
-      -%}
 
       <div
         class="forma-product-carousel__viewport"
-        data-forma-product-carousel
-        data-media-count="{{ carousel_media_count }}"
+        data-forma-carousel
       >
 
         <div class="forma-product-carousel__slides">
 
-          {%- if featured_media != blank -%}
-
-            <a
-              href="{{ product.url }}"
-              class="forma-product-carousel__slide is-active"
-              data-forma-carousel-slide
-              data-slide-index="0"
-              draggable="false"
-              data-instant
-            >
-              {%- capture main_image_classes -%}
-                product-card__image product-card__image--primary
-                {% if settings.product_image_aspect_ratio contains 'crop' %}object-cover{% endif %}
-                aspect-{{ settings.product_image_aspect_ratio | split: '_' | first }}
-              {%- endcapture -%}
-
-              {{
-                featured_media
-                | image_url: width: featured_media.width
-                | image_tag:
-                  loading: main_media_loading_strategy,
-                  sizes: sizes,
-                  widths: '200,300,400,500,600,700,800,1000,1200,1400,1600,1800',
-                  draggable: 'false',
-                  class: main_image_classes
-              }}
-            </a>
-
-          {%- endif -%}
-
-
-          {%- assign slide_index = 0 -%}
+          {%- assign image_index = 0 -%}
 
           {%- for media in product.media -%}
 
-            {%- if media.id != featured_media.id -%}
-
-              {%- assign slide_index = slide_index | plus: 1 -%}
+            {%- if media.media_type == 'image' -%}
 
               <a
                 href="{{ product.url }}"
-                class="forma-product-carousel__slide"
-                data-forma-carousel-slide
-                data-slide-index="{{ slide_index }}"
-                draggable="false"
+                class="forma-product-carousel__slide {% if image_index == 0 %}is-active{% endif %}"
+                data-forma-slide
+                data-slide-index="{{ image_index }}"
+                aria-hidden="{% if image_index == 0 %}false{% else %}true{% endif %}"
+                {% if image_index != 0 %}
+                  tabindex="-1"
+                {% endif %}
                 data-instant
-                aria-hidden="true"
-                tabindex="-1"
               >
 
                 {{
                   media
                   | image_url: width: media.width
                   | image_tag:
-                    loading: 'lazy',
+                    loading: image_index == 0 ? 'eager' : 'lazy',
                     sizes: sizes,
-                    widths: '200,300,400,500,600,700,800,1000,1200,1400,1600,1800',
-                    draggable: 'false',
-                    class: 'product-card__image'
+                    widths: '300,400,500,600,700,800,1000,1200,1400,1600,1800',
+                    class: 'product-card__image',
+                    draggable: 'false'
                 }}
 
               </a>
+
+              {%- assign image_index = image_index | plus: 1 -%}
 
             {%- endif -%}
 
@@ -152,53 +88,38 @@
         </div>
 
 
-        {%- comment -%}
-          ====================================================================
-          FORMA IMAGE CAROUSEL ARROWS
-          ====================================================================
-        {%- endcomment -%}
+        {%- if image_index > 1 -%}
 
-        {%- comment -%}
-         FORMA PRODUCT IMAGE NAVIGATION
-         Render navigation whenever the product has media.
-         JavaScript handles whether navigation is actually possible.
-  {%- endcomment -%}
-
-  {%- if product.media.size > 0 -%}
-
-    <button
-      type="button"
-      class="forma-product-carousel__arrow forma-product-carousel__arrow--prev"
-      data-forma-carousel-prev
-      aria-label="Previous image"
-    >
-      <svg
-        viewBox="0 0 12 20"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <path d="M10 1 2 10l8 9"></path>
-      </svg>
-    </button>
+          <button
+            type="button"
+            class="forma-carousel-arrow forma-carousel-arrow--prev"
+            data-forma-prev
+            aria-label="Previous product image"
+          >
+            <svg
+              viewBox="0 0 12 20"
+              aria-hidden="true"
+            >
+              <path d="M10 1 2 10l8 9"></path>
+            </svg>
+          </button>
 
 
-    <button
-      type="button"
-      class="forma-product-carousel__arrow forma-product-carousel__arrow--next"
-      data-forma-carousel-next
-      aria-label="Next image"
-    >
-      <svg
-        viewBox="0 0 12 20"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <path d="m2 1 8 9-8 9"></path>
-      </svg>
-    </button>
+          <button
+            type="button"
+            class="forma-carousel-arrow forma-carousel-arrow--next"
+            data-forma-next
+            aria-label="Next product image"
+          >
+            <svg
+              viewBox="0 0 12 20"
+              aria-hidden="true"
+            >
+              <path d="m2 1 8 9-8 9"></path>
+            </svg>
+          </button>
 
-{%- endif -%}
-
+        {%- endif -%}
 
       </div>
 
@@ -211,9 +132,23 @@
 
             {%- form 'product', product -%}
 
-              <input type="hidden" name="on_success" value="force_open_drawer">
-              <input type="hidden" name="quantity" value="1">
-              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <input
+                type="hidden"
+                name="on_success"
+                value="force_open_drawer"
+              >
+
+              <input
+                type="hidden"
+                name="quantity"
+                value="1"
+              >
+
+              <input
+                type="hidden"
+                name="id"
+                value="{{ product.selected_or_first_available_variant.id }}"
+              >
 
               <button
                 type="submit"
@@ -224,6 +159,7 @@
                 </span>
 
                 {%- render 'icon' with 'plus' -%}
+
               </button>
 
             {%- endform -%}
@@ -246,6 +182,7 @@
             </span>
 
             {%- render 'icon' with 'plus' -%}
+
           </button>
 
           <quick-buy-modal
@@ -264,19 +201,7 @@
   {%- endif -%}
 
 
-  {%- comment -%}
-    ========================================================================
-    PRODUCT INFORMATION
-    ========================================================================
-  {%- endcomment -%}
-
   <div class="product-card__info empty:hidden">
-
-    {%- assign text_class = '' -%}
-
-    {%- if settings.product_card_text_font == 'heading' -%}
-      {%- assign text_class = 'h6' -%}
-    {%- endif -%}
 
     {%- if show_title or show_prices or show_vendor and product.vendor != blank -%}
 
@@ -284,42 +209,33 @@
 
         {%- if show_vendor and product.vendor != blank -%}
 
-          {%- capture vendor_class -%}
-            smallcaps {% if settings.product_card_text_font == 'heading' %}heading{% endif %}
-          {%- endcapture -%}
-
-          {%- render 'vendor' with product.vendor, class: vendor_class -%}
+          {%- render 'vendor',
+            product.vendor,
+            class: 'smallcaps'
+          -%}
 
         {%- endif -%}
 
 
-        {%- if show_title or show_prices -%}
+        {%- if show_title -%}
 
-          <div class="v-stack justify-items-center gap-1">
+          <a
+            href="{{ product.url }}"
+            class="product-title"
+            data-instant
+          >
+            {{ product.title }}
+          </a>
 
-            {%- if show_title -%}
-
-              <a
-                href="{{ product.url }}"
-                class="product-title {% if text_class != blank %}{{ text_class }}{% endif %} {% if settings.product_title_max_lines > 0 %}line-clamp{% endif %}"
-                {% if settings.product_title_max_lines > 0 %}
-                  style="--line-clamp-count: {{ settings.product_title_max_lines }}"
-                {% endif %}
-                data-instant
-              >
-                {{- product.title -}}
-              </a>
-
-            {%- endif -%}
+        {%- endif -%}
 
 
-            {%- if show_prices -%}
+        {%- if show_prices -%}
 
-              {%- render 'price-list', product: product, context: 'card' -%}
-
-            {%- endif -%}
-
-          </div>
+          {%- render 'price-list',
+            product: product,
+            context: 'card'
+          -%}
 
         {%- endif -%}
 
@@ -331,66 +247,58 @@
     {%- if show_swatches and settings.product_color_display != 'hide' -%}
 
       {%- liquid
+
         assign matched_product_option = null
-        assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ','
+
+        assign color_label_list =
+          'general.label.color'
+          | t
+          | replace: ', ', ','
+          | downcase
+          | split: ','
 
         for color_label in color_label_list
+
           if product.options_by_name[color_label] != blank
-            assign matched_product_option = product.options_by_name[color_label]
+
+            assign matched_product_option =
+              product.options_by_name[color_label]
+
             break
+
           endif
+
         endfor
 
-        if matched_product_option == blank
-          for product_option in product.options_with_values
-            assign values_with_swatch = product_option.values | where: 'swatch'
-
-            if values_with_swatch.size > 0
-              assign matched_product_option = product_option
-              break
-            endif
-          endfor
-        endif
       -%}
 
 
       {%- if matched_product_option != blank -%}
 
-        {%- case settings.product_color_display -%}
+        <fieldset class="h-stack wrap justify-center gap-1">
 
-          {%- when 'count' -%}
+          <legend class="sr-only">
+            {{ matched_product_option.name }}
+          </legend>
 
-            <p class="smallcaps text-subdued">
-              {{- 'product.general.available_colors_count' | t: count: matched_product_option.values.size -}}
-            </p>
+          {%- capture param_name -%}
+            swatch-{{ quick_buy_context }}-{{ section.id }}-{{ block.id }}-{{ product.id }}-{{ matched_product_option.position }}
+          {%- endcapture -%}
 
-          {%- when 'swatch' -%}
+          {%- for option_value in matched_product_option.values -%}
 
-            <fieldset class="h-stack wrap justify-center gap-1">
+            {%- render 'option-value',
+              type: 'swatch',
+              option_value: option_value,
+              param_name: param_name,
+              option_position: matched_product_option.position,
+              output_variant_media: true,
+              size: 'sm'
+            -%}
 
-              <legend class="sr-only">
-                {{ matched_product_option.name }}
-              </legend>
+          {%- endfor -%}
 
-              {%- capture param_name -%}
-                swatch-{{ quick_buy_context }}-{{ section.id }}-{{ block.id }}-{{ product.id }}-{{ matched_product_option.position }}
-              {%- endcapture -%}
-
-              {%- liquid
-                for option_value in matched_product_option.values
-                  render 'option-value',
-                    type: 'swatch',
-                    option_value: option_value,
-                    param_name: param_name,
-                    option_position: matched_product_option.position,
-                    output_variant_media: true,
-                    size: 'sm'
-                endfor
-              -%}
-
-            </fieldset>
-
-        {%- endcase -%}
+        </fieldset>
 
       {%- endif -%}
 
@@ -414,43 +322,49 @@
 
 <style>
 
-/* ========================================================================
-   FORMA PRODUCT IMAGE CAROUSEL
-   ======================================================================== */
+/* ============================================================
+   FORMA PRODUCT CAROUSEL
+   ============================================================ */
 
 .forma-product-carousel {
   position: relative !important;
 }
 
+
 .forma-product-carousel__viewport {
   position: relative !important;
+
   width: 100% !important;
   height: 100% !important;
+
   overflow: hidden !important;
-  isolation: isolate !important;
 }
+
+
+/* ============================================================
+   SLIDES
+   ============================================================ */
 
 .forma-product-carousel__slides {
   position: relative !important;
+
   width: 100% !important;
   height: 100% !important;
 }
 
 
-/* ========================================================================
-   SLIDES
-   ======================================================================== */
-
 .forma-product-carousel__slide {
   position: absolute !important;
-  inset: 0 !important;
 
-  display: block !important;
+  inset: 0 !important;
 
   width: 100% !important;
   height: 100% !important;
 
+  display: block !important;
+
   opacity: 0 !important;
+
   visibility: hidden !important;
 
   pointer-events: none !important;
@@ -458,14 +372,17 @@
   transition: opacity 180ms ease !important;
 }
 
+
 .forma-product-carousel__slide.is-active {
   opacity: 1 !important;
+
   visibility: visible !important;
 
   pointer-events: auto !important;
 
-  z-index: 1 !important;
+  z-index: 2 !important;
 }
+
 
 .forma-product-carousel__slide img {
   display: block !important;
@@ -473,137 +390,76 @@
   width: 100% !important;
   height: 100% !important;
 
-  object-fit: cover;
+  object-fit: cover !important;
 }
 
 
 /* ============================================================
-   FORMA PRODUCT IMAGE ARROWS
+   ARROWS
    ============================================================ */
 
-.forma-product-carousel {
-  position: relative !important;
-}
-
-.forma-product-carousel__viewport {
-  position: relative !important;
-  width: 100% !important;
-  height: 100% !important;
-  overflow: hidden !important;
-}
-
-.forma-product-carousel__arrow {
+.forma-carousel-arrow {
   position: absolute !important;
 
   top: 50% !important;
 
-  width: 38px !important;
-  height: 60px !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  width: 42px !important;
+  height: 64px !important;
 
   padding: 0 !important;
   margin: 0 !important;
 
+  display: flex !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  border: 0 !important;
+
   background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
 
-  color: #111111 !important;
-
-  opacity: 1 !important;
-  visibility: visible !important;
-
-  pointer-events: auto !important;
+  color: #111 !important;
 
   cursor: pointer !important;
 
+  z-index: 999 !important;
+
+  opacity: 0.9 !important;
+
   transform: translateY(-50%) !important;
 
-  z-index: 9999 !important;
+  pointer-events: auto !important;
+
+  visibility: visible !important;
 
   -webkit-appearance: none !important;
   appearance: none !important;
+
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease !important;
 }
 
-.forma-product-carousel__arrow--prev {
+
+.forma-carousel-arrow--prev {
   left: 4px !important;
 }
 
-.forma-product-carousel__arrow--next {
+
+.forma-carousel-arrow--next {
   right: 4px !important;
 }
 
-.forma-product-carousel__arrow svg {
-  display: block !important;
 
+.forma-carousel-arrow svg {
   width: 9px !important;
-  height: 17px !important;
-
-  overflow: visible !important;
-}
-
-.forma-product-carousel__arrow svg path {
-  fill: none !important;
-
-  stroke: #111111 !important;
-  stroke-width: 1.25 !important;
-
-  stroke-linecap: round !important;
-  stroke-linejoin: round !important;
-}
-
-.forma-product-carousel__arrow:hover {
-  opacity: 0.55 !important;
-}
-
-.forma-product-carousel__arrow--prev:hover {
-  transform: translate(-2px, -50%) !important;
-}
-
-.forma-product-carousel__arrow--next:hover {
-  transform: translate(2px, -50%) !important;
-}
-
-@media screen and (max-width: 699px) {
-
-  .forma-product-carousel__arrow {
-    width: 32px !important;
-    height: 50px !important;
-  }
-
-  .forma-product-carousel__arrow--prev {
-    left: 2px !important;
-  }
-
-  .forma-product-carousel__arrow--next {
-    right: 2px !important;
-  }
-
-  .forma-product-carousel__arrow svg {
-    width: 8px !important;
-    height: 16px !important;
-  }
-
-}
-
-
-/* ========================================================================
-   ARROW ICON
-   ======================================================================== */
-
-.forma-product-carousel__arrow svg {
-  display: block !important;
-
-  width: 10px !important;
   height: 18px !important;
 
-  overflow: visible !important;
+  display: block !important;
 }
 
-.forma-product-carousel__arrow svg path {
+
+.forma-carousel-arrow svg path {
   fill: none !important;
 
   stroke: currentColor !important;
@@ -611,63 +467,46 @@
   stroke-width: 1.25 !important;
 
   stroke-linecap: round !important;
+
   stroke-linejoin: round !important;
 }
 
 
-/* ========================================================================
-   HOVER
-   ======================================================================== */
-
-.forma-product-carousel__arrow:hover {
-  opacity: 1 !important;
+.forma-carousel-arrow:hover {
+  opacity: 0.55 !important;
 }
 
-.forma-product-carousel__arrow--prev:hover {
+
+.forma-carousel-arrow--prev:hover {
   transform: translate(-2px, -50%) !important;
 }
 
-.forma-product-carousel__arrow--next:hover {
+
+.forma-carousel-arrow--next:hover {
   transform: translate(2px, -50%) !important;
 }
 
 
-/* ========================================================================
-   FOCUS
-   ======================================================================== */
-
-.forma-product-carousel__arrow:focus {
-  outline: none !important;
-}
-
-.forma-product-carousel__arrow:focus-visible {
-  outline: 1px solid currentColor !important;
-  outline-offset: 2px !important;
-}
-
-
-/* ========================================================================
+/* ============================================================
    MOBILE
-   ======================================================================== */
+   ============================================================ */
 
 @media screen and (max-width: 699px) {
 
-  .forma-product-carousel__arrow {
+  .forma-carousel-arrow {
     width: 32px !important;
-    height: 44px !important;
-
-    opacity: 0.9 !important;
+    height: 48px !important;
   }
 
-  .forma-product-carousel__arrow--prev {
-    left: 4px !important;
+  .forma-carousel-arrow--prev {
+    left: 2px !important;
   }
 
-  .forma-product-carousel__arrow--next {
-    right: 4px !important;
+  .forma-carousel-arrow--next {
+    right: 2px !important;
   }
 
-  .forma-product-carousel__arrow svg {
+  .forma-carousel-arrow svg {
     width: 8px !important;
     height: 16px !important;
   }
@@ -679,210 +518,150 @@
 
 <script>
 
-(function() {
+(function () {
 
-  /* ======================================================================
-     FORMA PRODUCT CAROUSEL
-     ====================================================================== */
+  function initFormaCarousels() {
 
-  function initFormaProductCarousels() {
-
-    const viewports = document.querySelectorAll(
-      '[data-forma-product-carousel]'
-    );
-
-    viewports.forEach(function(viewport) {
-
-      if (viewport.dataset.formaCarouselInitialized === 'true') {
-        return;
-      }
-
-      viewport.dataset.formaCarouselInitialized = 'true';
-
-
-      /* ================================================================
-         NEXT
-         ================================================================ */
-
-      const nextButton = viewport.querySelector(
-        '[data-forma-carousel-next]'
+    const carousels =
+      document.querySelectorAll(
+        '[data-forma-carousel]'
       );
 
 
-      /* ================================================================
-         PREVIOUS
-         ================================================================ */
+    carousels.forEach(function (carousel) {
 
-      const prevButton = viewport.querySelector(
-        '[data-forma-carousel-prev]'
-      );
-
-
-      /* ================================================================
-         SLIDES
-         ================================================================ */
-
-      const slides = Array.from(
-        viewport.querySelectorAll(
-          '[data-forma-carousel-slide]'
-        )
-      );
-
-
-      if (slides.length < 2) {
+      if (
+        carousel.dataset.formaInitialized === 'true'
+      ) {
         return;
       }
 
 
-      /* ================================================================
-         CHANGE SLIDE
-         ================================================================ */
-
-      function changeSlide(direction) {
-
-        let currentIndex = slides.findIndex(function(slide) {
-
-          return slide.classList.contains('is-active');
-
-        });
+      carousel.dataset.formaInitialized = 'true';
 
 
-        if (currentIndex < 0) {
-          currentIndex = 0;
-        }
+      const slides =
+        Array.from(
+          carousel.querySelectorAll(
+            '[data-forma-slide]'
+          )
+        );
 
 
-        let newIndex;
+      const prev =
+        carousel.querySelector(
+          '[data-forma-prev]'
+        );
 
 
-        if (direction === 'next') {
-
-          newIndex =
-            (currentIndex + 1) % slides.length;
-
-        } else {
-
-          newIndex =
-            (currentIndex - 1 + slides.length) % slides.length;
-
-        }
+      const next =
+        carousel.querySelector(
+          '[data-forma-next]'
+        );
 
 
-        slides.forEach(function(slide, index) {
-
-          const isActive =
-            index === newIndex;
-
-
-          slide.classList.toggle(
-            'is-active',
-            isActive
-          );
+      if (
+        slides.length < 2
+      ) {
+        return;
+      }
 
 
-          slide.setAttribute(
-            'aria-hidden',
-            isActive ? 'false' : 'true'
-          );
+      let currentIndex = 0;
 
 
-          if (isActive) {
+      function showSlide(index) {
 
-            slide.removeAttribute(
-              'tabindex'
+        currentIndex =
+          (index + slides.length)
+          % slides.length;
+
+
+        slides.forEach(
+          function (slide, i) {
+
+            const active =
+              i === currentIndex;
+
+
+            slide.classList.toggle(
+              'is-active',
+              active
             );
 
-          } else {
 
             slide.setAttribute(
-              'tabindex',
-              '-1'
+              'aria-hidden',
+              active
+                ? 'false'
+                : 'true'
+            );
+
+
+            if (active) {
+
+              slide.removeAttribute(
+                'tabindex'
+              );
+
+            } else {
+
+              slide.setAttribute(
+                'tabindex',
+                '-1'
+              );
+
+            }
+
+          }
+        );
+
+      }
+
+
+      if (prev) {
+
+        prev.addEventListener(
+          'click',
+          function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            showSlide(
+              currentIndex - 1
             );
 
           }
-
-        });
-
-      }
-
-
-      /* ================================================================
-         NEXT CLICK
-         ================================================================ */
-
-      if (nextButton) {
-
-        nextButton.addEventListener(
-          'click',
-          function(event) {
-
-            event.preventDefault();
-            event.stopPropagation();
-
-            changeSlide('next');
-
-          }
         );
 
       }
 
 
-      /* ================================================================
-         PREVIOUS CLICK
-         ================================================================ */
+      if (next) {
 
-      if (prevButton) {
-
-        prevButton.addEventListener(
+        next.addEventListener(
           'click',
-          function(event) {
+          function (event) {
 
             event.preventDefault();
+
             event.stopPropagation();
 
-            changeSlide('prev');
+            showSlide(
+              currentIndex + 1
+            );
 
           }
         );
 
       }
-
-
-      /* ================================================================
-         KEYBOARD
-         ================================================================ */
-
-      viewport.addEventListener(
-        'keydown',
-        function(event) {
-
-          if (event.key === 'ArrowRight') {
-
-            event.preventDefault();
-
-            changeSlide('next');
-
-          }
-
-          if (event.key === 'ArrowLeft') {
-
-            event.preventDefault();
-
-            changeSlide('prev');
-
-          }
-
-        }
-      );
 
     });
 
   }
 
-
-  /* ======================================================================
-     INITIAL LOAD
-     ====================================================================== */
 
   if (
     document.readyState === 'loading'
@@ -890,26 +669,22 @@
 
     document.addEventListener(
       'DOMContentLoaded',
-      initFormaProductCarousels
+      initFormaCarousels
     );
 
   } else {
 
-    initFormaProductCarousels();
+    initFormaCarousels();
 
   }
 
 
-  /* ======================================================================
-     SHOPIFY THEME EDITOR / AJAX
-     ====================================================================== */
-
   document.addEventListener(
     'shopify:section:load',
-    function() {
+    function () {
 
       setTimeout(
-        initFormaProductCarousels,
+        initFormaCarousels,
         100
       );
 
@@ -917,16 +692,12 @@
   );
 
 
-  /* ======================================================================
-     SHOPIFY SECTION RE-RENDER
-     ====================================================================== */
-
   document.addEventListener(
     'shopify:section:reorder',
-    function() {
+    function () {
 
       setTimeout(
-        initFormaProductCarousels,
+        initFormaCarousels,
         100
       );
 
