@@ -158,40 +158,46 @@
           ====================================================================
         {%- endcomment -%}
 
-        {%- if carousel_media_count > 1 -%}
+        {%- comment -%}
+         FORMA PRODUCT IMAGE NAVIGATION
+         Render navigation whenever the product has media.
+         JavaScript handles whether navigation is actually possible.
+  {%- endcomment -%}
 
-          <button
-            type="button"
-            class="forma-product-carousel__arrow forma-product-carousel__arrow--prev"
-            data-forma-carousel-prev
-            aria-label="Previous image"
-          >
-            <svg
-              viewBox="0 0 12 20"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path d="M10 1 2 10l8 9"></path>
-            </svg>
-          </button>
+  {%- if product.media.size > 0 -%}
+
+    <button
+      type="button"
+      class="forma-product-carousel__arrow forma-product-carousel__arrow--prev"
+      data-forma-carousel-prev
+      aria-label="Previous image"
+    >
+      <svg
+        viewBox="0 0 12 20"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="M10 1 2 10l8 9"></path>
+      </svg>
+    </button>
 
 
-          <button
-            type="button"
-            class="forma-product-carousel__arrow forma-product-carousel__arrow--next"
-            data-forma-carousel-next
-            aria-label="Next image"
-          >
-            <svg
-              viewBox="0 0 12 20"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path d="m2 1 8 9-8 9"></path>
-            </svg>
-          </button>
+    <button
+      type="button"
+      class="forma-product-carousel__arrow forma-product-carousel__arrow--next"
+      data-forma-carousel-next
+      aria-label="Next image"
+    >
+      <svg
+        viewBox="0 0 12 20"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="m2 1 8 9-8 9"></path>
+      </svg>
+    </button>
 
-        {%- endif -%}
+{%- endif -%}
 
 
       </div>
@@ -471,17 +477,28 @@
 }
 
 
-/* ========================================================================
-   FORMA ARROWS
-   ======================================================================== */
+/* ============================================================
+   FORMA PRODUCT IMAGE ARROWS
+   ============================================================ */
+
+.forma-product-carousel {
+  position: relative !important;
+}
+
+.forma-product-carousel__viewport {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
 
 .forma-product-carousel__arrow {
   position: absolute !important;
 
   top: 50% !important;
 
-  width: 42px !important;
-  height: 52px !important;
+  width: 38px !important;
+  height: 60px !important;
 
   display: flex !important;
   align-items: center !important;
@@ -490,45 +507,86 @@
   padding: 0 !important;
   margin: 0 !important;
 
-  border: 0 !important;
-  border-radius: 0 !important;
-
   background: transparent !important;
+  border: none !important;
   box-shadow: none !important;
 
   color: #111111 !important;
+
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  pointer-events: auto !important;
 
   cursor: pointer !important;
 
   transform: translateY(-50%) !important;
 
-  opacity: 0.9 !important;
-  visibility: visible !important;
-
-  pointer-events: auto !important;
-
-  z-index: 100 !important;
+  z-index: 9999 !important;
 
   -webkit-appearance: none !important;
   appearance: none !important;
-
-  transition:
-    opacity 160ms ease,
-    transform 160ms ease !important;
 }
-
-
-/* LEFT */
 
 .forma-product-carousel__arrow--prev {
-  left: 8px !important;
+  left: 4px !important;
 }
 
-
-/* RIGHT */
-
 .forma-product-carousel__arrow--next {
-  right: 8px !important;
+  right: 4px !important;
+}
+
+.forma-product-carousel__arrow svg {
+  display: block !important;
+
+  width: 9px !important;
+  height: 17px !important;
+
+  overflow: visible !important;
+}
+
+.forma-product-carousel__arrow svg path {
+  fill: none !important;
+
+  stroke: #111111 !important;
+  stroke-width: 1.25 !important;
+
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+.forma-product-carousel__arrow:hover {
+  opacity: 0.55 !important;
+}
+
+.forma-product-carousel__arrow--prev:hover {
+  transform: translate(-2px, -50%) !important;
+}
+
+.forma-product-carousel__arrow--next:hover {
+  transform: translate(2px, -50%) !important;
+}
+
+@media screen and (max-width: 699px) {
+
+  .forma-product-carousel__arrow {
+    width: 32px !important;
+    height: 50px !important;
+  }
+
+  .forma-product-carousel__arrow--prev {
+    left: 2px !important;
+  }
+
+  .forma-product-carousel__arrow--next {
+    right: 2px !important;
+  }
+
+  .forma-product-carousel__arrow svg {
+    width: 8px !important;
+    height: 16px !important;
+  }
+
 }
 
 
