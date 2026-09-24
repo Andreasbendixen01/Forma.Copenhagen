@@ -169,27 +169,23 @@
           ----------------------------------------------------------------------------------------------------------------
         {%- endcomment -%}
 
-        {%- if carousel_media_count > 1 -%}
+        <button
+        type="button"
+        class="forma-product-carousel__arrow forma-product-carousel__arrow--prev"
+        data-forma-carousel-prev
+        aria-label="Previous image"
+      >
+        <span aria-hidden="true">‹</span>
+      </button>
 
-          <button
-            type="button"
-            class="forma-product-carousel__arrow forma-product-carousel__arrow--prev"
-            data-forma-carousel-prev
-            aria-label="Previous image"
-          >
-            <span aria-hidden="true">‹</span>
-          </button>
-
-          <button
-            type="button"
-            class="forma-product-carousel__arrow forma-product-carousel__arrow--next"
-            data-forma-carousel-next
-            aria-label="Next image"
-          >
-            <span aria-hidden="true">›</span>
-          </button>
-
-        {%- endif -%}
+      <button
+        type="button"
+        class="forma-product-carousel__arrow forma-product-carousel__arrow--next"
+        data-forma-carousel-next
+        aria-label="Next image"
+      >
+        <span aria-hidden="true">›</span>
+      </button>
 
       </div>
 
@@ -669,8 +665,24 @@ if (!window.formaProductCarouselInitialized) {
 
 
     if (slides.length < 2) {
-      return;
+    if (nextButton) {
+      nextButton.style.display = 'none';
     }
+
+    if (prevButton) {
+      prevButton.style.display = 'none';
+    }
+
+    return;
+  }
+
+  if (nextButton) {
+    nextButton.style.display = '';
+  }
+
+  if (prevButton) {
+    prevButton.style.display = '';
+  }
 
 
     let currentIndex = slides.findIndex(function(slide) {
