@@ -172,24 +172,23 @@
           ----------------------------------------------------------------------------------------------------------------
         {%- endcomment -%}
 
-        {%- if carousel_media_count > 1 -%}
+        <button
+        type="button"
+        class="forma-product-carousel__arrow forma-product-carousel__arrow--prev"
+        data-forma-carousel-prev
+        aria-label="Previous image"
+      >
+        <span aria-hidden="true">‹</span>
+      </button>
 
-          <button
-            type="button"
-            class="forma-product-carousel__arrow forma-product-carousel__arrow--prev"
-            data-forma-carousel-prev
-            aria-label="Previous image"
-          >
-            <svg
-              viewBox="0 0 12 20"
-              width="12"
-              height="20"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path d="M10 1L2 10L10 19"></path>
-            </svg>
-          </button>
+      <button
+        type="button"
+        class="forma-product-carousel__arrow forma-product-carousel__arrow--next"
+        data-forma-carousel-next
+        aria-label="Next image"
+      >
+        <span aria-hidden="true">›</span>
+      </button>
 
 
           <button
@@ -468,18 +467,20 @@
 
 <style>
 
-/* ========================================================================
+/* =========================================================
    FORMA PRODUCT IMAGE CAROUSEL
-   ======================================================================== */
+   ========================================================= */
+
+.forma-product-carousel {
+  position: relative !important;
+}
 
 .forma-product-carousel__viewport {
   position: relative !important;
   width: 100% !important;
   height: 100% !important;
   overflow: hidden !important;
-  isolation: isolate !important;
 }
-
 
 .forma-product-carousel__slides {
   position: relative !important;
@@ -487,6 +488,9 @@
   height: 100% !important;
 }
 
+/* =========================================================
+   SLIDES
+   ========================================================= */
 
 .forma-product-carousel__slide {
   position: absolute !important;
@@ -505,16 +509,14 @@
   transition: opacity 180ms ease !important;
 }
 
-
 .forma-product-carousel__slide.is-active {
   opacity: 1 !important;
   visibility: visible !important;
 
   pointer-events: auto !important;
 
-  z-index: 1 !important;
+  z-index: 2 !important;
 }
-
 
 .forma-product-carousel__slide img {
   display: block !important;
@@ -523,35 +525,31 @@
   height: 100% !important;
 }
 
-
-/* ========================================================================
-   FORMA ARROWS
-   ======================================================================== */
+/* =========================================================
+   ARROWS
+   ========================================================= */
 
 .forma-product-carousel__arrow {
   position: absolute !important;
 
   top: 50% !important;
 
-  z-index: 999 !important;
-
-  width: 40px !important;
+  width: 42px !important;
   height: 60px !important;
 
   display: flex !important;
-
   align-items: center !important;
   justify-content: center !important;
 
   padding: 0 !important;
   margin: 0 !important;
 
-  border: none !important;
+  border: 0 !important;
   border-radius: 0 !important;
 
   background: transparent !important;
 
-  color: #111111 !important;
+  color: #111 !important;
 
   cursor: pointer !important;
 
@@ -562,114 +560,76 @@
 
   pointer-events: auto !important;
 
-  box-shadow: none !important;
+  z-index: 100 !important;
 
   appearance: none !important;
   -webkit-appearance: none !important;
-
-  transition:
-    opacity 160ms ease,
-    transform 160ms ease !important;
 }
-
-
-/* SVG */
-
-.forma-product-carousel__arrow svg {
-  display: block !important;
-
-  width: 10px !important;
-  height: 20px !important;
-
-  overflow: visible !important;
-}
-
-
-.forma-product-carousel__arrow svg path {
-  fill: none !important;
-
-  stroke: currentColor !important;
-
-  stroke-width: 1.35 !important;
-
-  stroke-linecap: round !important;
-
-  stroke-linejoin: round !important;
-}
-
 
 /* LEFT */
 
 .forma-product-carousel__arrow--prev {
-  left: 8px !important;
+  left: 0 !important;
 }
-
 
 /* RIGHT */
 
 .forma-product-carousel__arrow--next {
-  right: 8px !important;
+  right: 0 !important;
 }
 
+/* =========================================================
+   ARROW SYMBOL
+   ========================================================= */
 
-/* HOVER */
+.forma-product-carousel__arrow span {
+  display: block !important;
+
+  font-family: Arial, Helvetica, sans-serif !important;
+
+  font-size: 34px !important;
+
+  font-weight: 300 !important;
+
+  line-height: 1 !important;
+
+  color: #111 !important;
+
+  pointer-events: none !important;
+}
+
+/* =========================================================
+   HOVER
+   ========================================================= */
 
 .forma-product-carousel__arrow:hover {
   opacity: 0.55 !important;
 }
 
-
-.forma-product-carousel__arrow--prev:hover {
-  transform: translate(-2px, -50%) !important;
-}
-
-
-.forma-product-carousel__arrow--next:hover {
-  transform: translate(2px, -50%) !important;
-}
-
-
-/* FOCUS */
-
-.forma-product-carousel__arrow:focus-visible {
-  opacity: 1 !important;
-
-  outline: 1px solid currentColor !important;
-
-  outline-offset: 3px !important;
-}
-
-
-/* ========================================================================
+/* =========================================================
    MOBILE
-   ======================================================================== */
+   ========================================================= */
 
 @media screen and (max-width: 699px) {
 
   .forma-product-carousel__arrow {
     width: 34px !important;
-    height: 50px !important;
+    height: 48px !important;
   }
 
+  .forma-product-carousel__arrow span {
+    font-size: 28px !important;
+  }
 
   .forma-product-carousel__arrow--prev {
-    left: 4px !important;
+    left: 0 !important;
   }
-
 
   .forma-product-carousel__arrow--next {
-    right: 4px !important;
-  }
-
-
-  .forma-product-carousel__arrow svg {
-    width: 9px !important;
-    height: 18px !important;
+    right: 0 !important;
   }
 
 }
-
-</style>
 
 
 <script>
