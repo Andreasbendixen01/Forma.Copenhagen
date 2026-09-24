@@ -359,11 +359,7 @@
 
         assign matched_product_option = null
 
-        assign color_label_list = 'general.label.color'
-          | t
-          | replace: ', ', ','
-          | downcase
-          | split: ','
+        {%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
 
         for color_label in color_label_list
 
