@@ -54,7 +54,7 @@
         FORMA SAVE BUTTON
       {%- endcomment -%}
 
-      {%- render 'forma-save-button', product: product, context: 'card' -%}
+      {% render 'forma-save-button', product: product, style: 'card' %}
 
       {%- capture sizes -%}
         {%- assign products_per_row_desktop = section.settings.products_per_row_desktop | default: 3 -%}
