@@ -310,70 +310,80 @@
 
     {%- if show_swatches and settings.product_color_display != 'hide' -%}
 
-      {%- liquid
-        assign matched_product_option = null
-        assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ','
+  {%- assign matched_product_option = blank -%}
 
-        for color_label in color_label_list
-          if product.options_by_name[color_label] != blank
-            assign matched_product_option = product.options_by_name[color_label]
-            break
-          endif
-        endfor
+  {%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
 
-        if matched_product_option == blank
-          for product_option in product.options_with_values
-            assign values_with_swatch = product_option.values | where: 'swatch'
+  {%- for color_label in color_label_list -%}
 
-            if values_with_swatch.size > 0
-              assign matched_product_option = product_option
-              break
-            endif
-          endfor
-        endif
-      -%}
+    {%- if product.options_by_name[color_label] != blank -%}
+      {%- assign matched_product_option = product.options_by_name[color_label] -%}
+      {%- break -%}
+    {%- endif -%}
 
-      {%- if matched_product_option != blank -%}
+  {%- endfor -%}
 
-        {%- case settings.product_color_display -%}
 
-          {%- when 'count' -%}
+  {%- if matched_product_option == blank -%}
 
-            <p class="smallcaps text-subdued">
-              {{- 'product.general.available_colors_count' | t: count: matched_product_option.values.size -}}
-            </p>
+    {%- for product_option in product.options_with_values -%}
 
-          {%- when 'swatch' -%}
+      {%- assign values_with_swatch = product_option.values | where: 'swatch' -%}
 
-            <fieldset class="h-stack wrap justify-center gap-1">
-
-              <legend class="sr-only">
-                {{ matched_product_option.name }}
-              </legend>
-
-              {%- capture param_name -%}
-                swatch-{{ quick_buy_context }}-{{ section.id }}-{{ block.id }}-{{ product.id }}-{{ matched_product_option.position }}
-              {%- endcapture -%}
-
-              {%- liquid
-                for option_value in matched_product_option.values
-                  render 'option-value',
-                    type: 'swatch',
-                    option_value: option_value,
-                    param_name: param_name,
-                    option_position: matched_product_option.position,
-                    output_variant_media: true,
-                    size: 'sm'
-                endfor
-              -%}
-
-            </fieldset>
-
-        {%- endcase -%}
-
+      {%- if values_with_swatch.size > 0 -%}
+        {%- assign matched_product_option = product_option -%}
+        {%- break -%}
       {%- endif -%}
 
-    {%- endif -%}
+    {%- endfor -%}
+
+  {%- endif -%}
+
+
+  {%- if matched_product_option != blank -%}
+
+    {%- case settings.product_color_display -%}
+
+      {%- when 'count' -%}
+
+        <p class="smallcaps text-subdued">
+          {{ 'product.general.available_colors_count' | t: count: matched_product_option.values.size }}
+        </p>
+
+
+      {%- when 'swatch' -%}
+
+        <fieldset class="h-stack wrap justify-center gap-1">
+
+          <legend class="sr-only">
+            {{ matched_product_option.name }}
+          </legend>
+
+          {%- capture param_name -%}
+            swatch-{{ quick_buy_context }}-{{ section.id }}-{{ block.id }}-{{ product.id }}-{{ matched_product_option.position }}
+          {%- endcapture -%}
+
+
+          {%- for option_value in matched_product_option.values -%}
+
+            {%- render 'option-value',
+              type: 'swatch',
+              option_value: option_value,
+              param_name: param_name,
+              option_position: matched_product_option.position,
+              output_variant_media: true,
+              size: 'sm'
+            -%}
+
+          {%- endfor -%}
+
+        </fieldset>
+
+    {%- endcase -%}
+
+  {%- endif -%}
+
+{%- endif -%}
 
 
     {%- if show_rating -%}
