@@ -150,10 +150,64 @@
         "vertical_spacing_factor": 1,
         "hide_collection_title": false
       }
+    },
+    "shop_the_story_FNqYmj": {
+      "type": "shop-the-story",
+      "blocks": {
+        "story_kBGQWC": {
+          "type": "story",
+          "settings": {
+            "title": "The Everyday",
+            "collection": "",
+            "collection_link_text": "View the story"
+          }
+        },
+        "story_idcXgU": {
+          "type": "story",
+          "settings": {
+            "title": "The Weekend",
+            "collection": "",
+            "collection_link_text": "View the story"
+          }
+        },
+        "story_tNV6kE": {
+          "type": "story",
+          "settings": {
+            "title": "The City",
+            "collection": "",
+            "collection_link_text": "View the story"
+          }
+        }
+      },
+      "block_order": [
+        "story_kBGQWC",
+        "story_idcXgU",
+        "story_tNV6kE"
+      ],
+      "name": "Shop The Story",
+      "settings": {
+        "heading": "Shop The Story",
+        "subheading": "Choose a story. Discover the pieces.",
+        "link_text": "View all",
+        "link_url": "",
+        "products_count": 8,
+        "products_per_row_desktop": 4,
+        "gap": 24,
+        "show_vendor": true,
+        "show_secondary_image": true,
+        "max_width": 1600,
+        "background_color": "#ffffff",
+        "text_color": "#111111",
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
     }
   },
   "order": [
     "collection_list_Q8bn9L",
-    "featured_collections_KVhnaK"
+    "featured_collections_KVhnaK",
+    "shop_the_story_FNqYmj"
   ]
 }
