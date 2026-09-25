@@ -1,710 +1,833 @@
-{%- liquid
-  assign story_products = article.metafields.custom.shop_the_story.value
-  assign story_product_count = story_products.size
--%}
+{%- comment -%}
+  =============================================================================
+  FORMA — SHOP THE STORY
+  =============================================================================
 
-{%- if story_products != blank and story_product_count > 0 -%}
-  <section
-    id="ShopTheStory-{{ section.id }}"
-    class="
-      forma-shop-story
-      color-scheme
-      color-scheme--{{ section.settings.color_scheme.id }}
-    "
-    data-shop-the-story
-  >
-    <div class="forma-shop-story__container">
-      <header class="forma-shop-story__header">
-        <div class="forma-shop-story__heading-group">
-          {%- if section.settings.eyebrow != blank -%}
-            <p class="forma-shop-story__eyebrow">
-              {{ section.settings.eyebrow }}
-            </p>
-          {%- endif -%}
+  A curated product section where customers can choose between three stories.
 
-          {%- if section.settings.heading != blank -%}
-            <h2 class="forma-shop-story__heading">
-              {{ section.settings.heading }}
-            </h2>
-          {%- endif -%}
-        </div>
+  Stories:
+  1. The Everyday
+  2. The Weekend
+  3. The City
 
-        {%- if story_product_count > 4 -%}
-          <div
-            class="forma-shop-story__controls"
-            aria-label="Shop the Story navigation"
-          >
-            <button
-              type="button"
-              class="forma-shop-story__button"
-              data-story-previous
-              aria-label="Previous products"
-              disabled
-            >
-              <span aria-hidden="true">←</span>
-            </button>
+  Each story is connected to a Shopify collection through the Theme Editor.
 
-            <button
-              type="button"
-              class="forma-shop-story__button"
-              data-story-next
-              aria-label="Next products"
-            >
-              <span aria-hidden="true">→</span>
-            </button>
+  The section renders all three collections once and uses JavaScript to switch
+  between them without reloading the page.
+  =============================================================================
+{%- endcomment -%}
+
+<section
+  id="shop-the-story-{{ section.id }}"
+  class="shop-the-story"
+>
+  <div class="shop-the-story__container">
+
+    {%- comment -%}
+      --------------------------------------------------------------------------
+      HEADER
+      --------------------------------------------------------------------------
+    {%- endcomment -%}
+
+    <div class="shop-the-story__header">
+
+      <div class="shop-the-story__header-content">
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="shop-the-story__heading">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.subheading != blank -%}
+          <div class="shop-the-story__subheading">
+            {{ section.settings.subheading }}
           </div>
         {%- endif -%}
-      </header>
 
-      <div class="forma-shop-story__viewport">
-        <div class="forma-shop-story__track" data-story-track tabindex="0" aria-label="Products featured in this story">
-          {%- for product in story_products -%}
-
-            <article class="forma-shop-story__item"><a
-                href="{{ product.url }}"
-                class="forma-shop-story__link"
-                aria-label="{{ product.title | escape }}">
-                <div class="forma-shop-story__media">
-                
-                {%- assign editorial_image_url = product.metafields.custom.editorial_image_url.value -%}
-
-                {%- if editorial_image_url != blank -%}
-                <img
-                src="{{ editorial_image_url | escape }}"
-                alt="{{ product.title | escape }}"
-                class="forma-shop-story__image"
-                loading="lazy"
-                width="1200"
-                height="1500"
-            >
-
-                {%- elsif product.featured_image != blank -%}
-                {{
-                product.featured_image
-                | image_url: width: 1400
-                | image_tag:
-                    loading: 'lazy',
-                    widths: '360, 540, 720, 900, 1100, 1400',
-                    sizes: '(max-width: 699px) 82vw, (max-width: 999px) 46vw, 31vw',
-                    class: 'forma-shop-story__image',
-                    alt: product.featured_image.alt | default: product.title
-                }}
-
-  {%- else -%}
-    {{
-      'product-1'
-      | placeholder_svg_tag:
-        'forma-shop-story__placeholder'
-    }}
-  {%- endif -%}
-
-  <span
-    class="forma-shop-story__view"
-    aria-hidden="true"
-  >
-    View product
-  </span>
-</div>
-
-                <div class="forma-shop-story__content">
-                  {%- if product.vendor != blank -%}
-                    <p class="forma-shop-story__vendor">
-                      {{ product.vendor }}
-                    </p>
-                  {%- endif -%}
-
-                  <h3 class="forma-shop-story__title">
-                    {{ product.title }}
-                  </h3>
-
-                  <div class="forma-shop-story__price">
-                    {%- if product.compare_at_price > product.price -%}
-                      <span class="forma-shop-story__price-current">
-                        {{ product.price | money }}
-                      </span>
-
-                      <s class="forma-shop-story__price-compare">
-                        {{ product.compare_at_price | money }}
-                      </s>
-                    {%- else -%}
-                      <span>
-                        {{ product.price | money }}
-                      </span>
-                    {%- endif -%}
-                  </div>
-                </div>
-              </a>
-            </article>
-          {%- endfor -%}
-        </div>
       </div>
+
+      {%- if section.settings.link_text != blank and section.settings.link_url != blank -%}
+        <a
+          href="{{ section.settings.link_url }}"
+          class="shop-the-story__view-all"
+        >
+          {{ section.settings.link_text }}
+          <span aria-hidden="true">→</span>
+        </a>
+      {%- endif -%}
+
     </div>
-  </section>
 
-  <style>
-    #shopify-section-{{ section.id }} {
-      --story-gap: clamp(20px, 2vw, 30px);
-    }
 
-    #shopify-section-{{ section.id }}
-      .forma-shop-story {
-      overflow: hidden;
-      padding-block:
-        clamp(72px, 8vw, 120px)
-        clamp(78px, 9vw, 132px);
-      background: #f7f5f1;
-    }
+    {%- comment -%}
+      --------------------------------------------------------------------------
+      STORY SELECTOR
+      --------------------------------------------------------------------------
+    {%- endcomment -%}
 
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__container {
-      width: min(calc(100% - 64px), 1240px);
-      margin-inline: auto;
-    }
+    <div
+      class="shop-the-story__tabs"
+      role="tablist"
+      aria-label="Choose a story"
+    >
 
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 32px;
-      margin-bottom: clamp(28px, 3vw, 42px);
-      padding-top: 20px;
-      border-top: 1px solid rgb(var(--text-color) / 0.22);
-    }
+      {%- for block in section.blocks -%}
 
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__heading-group {
-      min-width: 0;
-    }
+        <button
+          type="button"
+          class="
+            shop-the-story__tab
+            {% if forloop.first %}is-active{% endif %}
+          "
+          id="shop-the-story-tab-{{ section.id }}-{{ block.id }}"
+          data-shop-the-story-tab
+          data-story-index="{{ forloop.index0 }}"
+          role="tab"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          aria-controls="shop-the-story-panel-{{ section.id }}-{{ block.id }}"
+          {{ block.shopify_attributes }}
+        >
+          {{ block.settings.title | default: 'Story' | escape }}
+        </button>
 
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__eyebrow {
-      margin: 0 0 10px;
-      font-size: 9px;
-      font-weight: 500;
-      line-height: 1;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      opacity: 0.45;
-    }
+      {%- endfor -%}
 
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__heading {
-      margin: 0;
-      font-size: clamp(28px, 3vw, 44px);
-      font-weight: 400;
-      line-height: 1;
-      letter-spacing: -0.035em;
-    }
+    </div>
 
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__controls {
-      display: flex;
-      flex: none;
-      gap: 8px;
-    }
 
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__button {
-      display: grid;
-      place-items: center;
-      width: 42px;
-      height: 42px;
-      padding: 0;
-      border: 1px solid rgb(var(--text-color) / 0.2);
-      border-radius: 50%;
-      color: inherit;
-      background: transparent;
-      font-size: 16px;
-      line-height: 1;
-      cursor: pointer;
-      transition:
-        color 0.25s ease,
-        background 0.25s ease,
-        border-color 0.25s ease,
-        opacity 0.25s ease;
-    }
+    {%- comment -%}
+      --------------------------------------------------------------------------
+      STORY PANELS
+      --------------------------------------------------------------------------
+    {%- endcomment -%}
 
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__button:disabled {
-      opacity: 0.25;
-      cursor: default;
-    }
+    <div class="shop-the-story__stories">
 
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__viewport {
-      width: calc(
-        100vw -
-        max(
-          32px,
-          calc((100vw - 1240px) / 2)
-        )
-      );
-      overflow: visible;
-    }
+      {%- for block in section.blocks -%}
 
+        {%- assign story_collection = block.settings.collection -%}
+
+        <div
+          id="shop-the-story-panel-{{ section.id }}-{{ block.id }}"
+          class="
+            shop-the-story__panel
+            {% if forloop.first %}is-active{% endif %}
+          "
+          data-shop-the-story-panel
+          data-story-index="{{ forloop.index0 }}"
+          role="tabpanel"
+          aria-labelledby="shop-the-story-tab-{{ section.id }}-{{ block.id }}"
+          {% unless forloop.first %}
+            hidden
+          {% endunless %}
+        >
+
+          {%- if story_collection != blank and story_collection.products_count > 0 -%}
+
+            <div class="shop-the-story__carousel">
+
+              <div class="shop-the-story__track">
+
+                {%- for product in story_collection.products limit: section.settings.products_count -%}
+
+                  <div class="shop-the-story__product">
+
+                    {%- render 'product-card',
+                      product: product,
+                      stacked: false,
+                      position: forloop.index,
+                      show_vendor: section.settings.show_vendor,
+                      show_rating: false,
+                      show_quick_buy: false,
+                      show_secondary_image: section.settings.show_secondary_image
+                    -%}
+
+                  </div>
+
+                {%- endfor -%}
+
+              </div>
+
+            </div>
+
+            {%- if story_collection.products_count > section.settings.products_count -%}
+
+              <a
+                href="{{ story_collection.url }}"
+                class="shop-the-story__collection-link"
+              >
+                {{ block.settings.collection_link_text | default: 'View the story' }}
+                <span aria-hidden="true">→</span>
+              </a>
+
+            {%- endif -%}
+
+          {%- else -%}
+
+            <div class="shop-the-story__empty">
+
+              <p>
+                Choose a collection for this story in the Theme Editor.
+              </p>
+
+            </div>
+
+          {%- endif -%}
+
+        </div>
+
+      {%- endfor -%}
+
+    </div>
+
+  </div>
+</section>
+
+
+<style>
+
+  /* ==========================================================================
+     FORMA — SHOP THE STORY
+     ========================================================================== */
+
+  #shop-the-story-{{ section.id }} {
+    --story-gap: 24px;
+    --story-columns: {{ section.settings.products_per_row_desktop }};
+  }
+
+
+  /* --------------------------------------------------------------------------
+     SECTION
+     -------------------------------------------------------------------------- */
+
+  #shop-the-story-{{ section.id }} {
+    width: 100%;
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__container {
+    width: 100%;
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+
+  /* --------------------------------------------------------------------------
+     HEADER
+     -------------------------------------------------------------------------- */
+
+  #shop-the-story-{{ section.id }} .shop-the-story__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 28px;
+    padding: 0 24px;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__heading {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: 28px;
+    line-height: 1.1;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__subheading {
+    margin: 0;
+    font-family: var(--font-body-family);
+    font-size: 14px;
+    line-height: 1.4;
+    opacity: 0.65;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+    color: inherit;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__view-all:hover {
+    opacity: 0.55;
+  }
+
+
+  /* --------------------------------------------------------------------------
+     STORY TABS
+     -------------------------------------------------------------------------- */
+
+  #shop-the-story-{{ section.id }} .shop-the-story__tabs {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 0 24px;
+    margin-bottom: 28px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__tab {
+    position: relative;
+    flex: 0 0 auto;
+    appearance: none;
+    border: 0;
+    background: transparent;
+    padding: 0 0 7px;
+    margin: 0;
+    color: inherit;
+    cursor: pointer;
+
+    font-family: var(--font-body-family);
+    font-size: 13px;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+
+    opacity: 0.45;
+    transition:
+      opacity 0.2s ease,
+      color 0.2s ease;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__tab:hover {
+    opacity: 0.75;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__tab.is-active {
+    opacity: 1;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__tab.is-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 1px;
+    background: currentColor;
+  }
+
+
+  /* --------------------------------------------------------------------------
+     PANELS
+     -------------------------------------------------------------------------- */
+
+  #shop-the-story-{{ section.id }} .shop-the-story__panel {
+    width: 100%;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__panel[hidden] {
+    display: none !important;
+  }
+
+
+  /* --------------------------------------------------------------------------
+     PRODUCT CAROUSEL
+     -------------------------------------------------------------------------- */
+
+  #shop-the-story-{{ section.id }} .shop-the-story__carousel {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__track {
+    display: grid;
+    grid-auto-flow: column;
 
     grid-auto-columns:
-    minmax(0, calc((100% - (var(--story-gap) * 3)) / 4.15));
-
-    #shopify-section-{{ section.id }} .forma-shop-story__track {
-  display: flex;
-  gap: var(--story-gap);
-
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-
-  margin: 0;
-  padding: 0 32px 14px 0;
-
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  overscroll-behavior-inline: contain;
-  -webkit-overflow-scrolling: touch;
-}
-
-#shopify-section-{{ section.id }} .forma-shop-story__track::-webkit-scrollbar {
-  display: none;
-}
-
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__track::-webkit-scrollbar {
-      display: none;
-    }
-
-    #shopify-section-{{ section.id }} .forma-shop-story__item {
-  flex: 0 0 calc((100% - (var(--story-gap) * 3)) / 4.15);
-  min-width: 0;
-  scroll-snap-align: start;
-}
-
-#shopify-section-{{ section.id }} .forma-shop-story__media {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  background: transparent !important;
-}
-
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__link {
-      display: block;
-      color: inherit;
-      text-decoration: none;
-    }
-
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__media {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 4 / 5;
-      background: transparent !important;
-    }
-
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__image,
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__placeholder {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition:
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        filter 0.4s ease;
-    }
-
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__view {
-      position: absolute;
-      right: 14px;
-      bottom: 14px;
-      padding: 10px 14px;
-      color: #111;
-      background: #f7f5f1
-      font-size: 9px;
-      font-weight: 500;
-      line-height: 1;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      opacity: 0;
-      transform: translateY(8px);
-      transition:
-        opacity 0.3s ease,
-        transform 0.3s ease;
-    }
-
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__content {
-      padding-top: 19px;
-    }
-
-    #shopify-section-{{ section.id }}
-    .forma-shop-story__vendor {
-  margin: 0 0 10px;
-  font-size: 9px;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  opacity: 0.52;
-}
-
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__title {
-      margin: 0;
-    font-size: clamp(19px, 1.65vw, 24px);
-      font-weight: 400;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-    }
-
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__price {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      margin-top: 9px;
-      font-size: 11px;
-      line-height: 1.2;
-      opacity: 0.68;
-    }
-
-    #shopify-section-{{ section.id }}
-      .forma-shop-story__price-compare {
-      opacity: 0.55;
-    }
-
-    @media (hover: hover) {
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__link:hover
-        .forma-shop-story__image {
-        transform: scale(1.025);
-        filter: brightness(1.025);
-      }
-
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__link:hover
-        .forma-shop-story__view {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__button:not(:disabled):hover {
-        color: rgb(var(--background));
-        background: rgb(var(--text-color));
-        border-color: rgb(var(--text-color));
-      }
-    }
-
-   @media screen and (max-width: 999px) {
-  #shopify-section-{{ section.id }}
-    .forma-shop-story__track {
-    grid-auto-columns: minmax(0, 44%);
-  }
-}
-
-    @media screen and (max-width: 699px) {
-      #shopify-section-{{ section.id }}
-        .forma-shop-story {
-        padding-block: 58px 78px;
-      }
-
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__container {
-        width: min(calc(100% - 32px), 1240px);
-      }
-
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__header {
-        margin-bottom: 24px;
-        padding-top: 17px;
-      }
-
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__heading {
-        font-size: 29px;
-      }
-
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__controls {
-        display: none;
-      }
-
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__viewport {
-        width: calc(100vw - 16px);
-      }
-
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__track {
-        grid-auto-columns: minmax(0, 84%);
-        gap: 14px;
-        padding-right: 16px;
-      }
-
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__view {
-        opacity: 1;
-        transform: none;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__track {
-        scroll-behavior: auto;
-      }
-
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__image,
-      #shopify-section-{{ section.id }}
-        .forma-shop-story__view {
-        transition: none;
-      }
-    }
-
-    /* FORMA – definitive Shop the Story slider fix */
-#shopify-section-{{ section.id }} .forma-shop-story__viewport {
-  width: 100% !important;
-  max-width: 100% !important;
-  overflow: hidden !important;
-}
-
-#shopify-section-{{ section.id }} .forma-shop-story__track {
-  display: flex !important;
-  flex-wrap: nowrap !important;
-  align-items: flex-start !important;
-
-  width: 100% !important;
-  max-width: 100% !important;
-
-  gap: 24px !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-
-  margin: 0 !important;
-  padding: 0 0 16px !important;
-
-  scroll-snap-type: x mandatory !important;
-  scroll-behavior: smooth !important;
-  scrollbar-width: none !important;
-  -webkit-overflow-scrolling: touch !important;
-}
-
-#shopify-section-{{ section.id }}
-  .forma-shop-story__track::-webkit-scrollbar {
-  display: none !important;
-}
-
-#shopify-section-{{ section.id }} .forma-shop-story__item {
-  display: block !important;
-
-  flex: 0 0 calc((100% - 72px) / 4.2) !important;
-  width: calc((100% - 72px) / 4.2) !important;
-  max-width: calc((100% - 72px) / 4.2) !important;
-  min-width: 0 !important;
-
-  scroll-snap-align: start !important;
-}
-
-#shopify-section-{{ section.id }} .forma-shop-story__link {
-  display: block !important;
-  width: 100% !important;
-}
-
-#shopify-section-{{ section.id }} .forma-shop-story__media {
-  position: relative !important;
-  display: block !important;
-
-  width: 100% !important;
-  height: auto !important;
-  aspect-ratio: 4 / 5 !important;
-background: transparent !important;
-  overflow: hidden !important;
-}
-
-#shopify-section-{{ section.id }} .forma-shop-story__image,
-#shopify-section-{{ section.id }} .forma-shop-story__placeholder {
-  display: block !important;
-
-  width: 100% !important;
-  height: 100% !important;
-  max-width: 100% !important;
-
-  object-fit: cover !important;
-}
-
-/* Tablet */
-@media screen and (max-width: 999px) {
-  #shopify-section-{{ section.id }} .forma-shop-story__item {
-    flex-basis: calc((100% - 20px) / 2.2) !important;
-    width: calc((100% - 20px) / 2.2) !important;
-    max-width: calc((100% - 20px) / 2.2) !important;
-  }
-}
-
-/* Mobile */
-@media screen and (max-width: 699px) {
-  #shopify-section-{{ section.id }} .forma-shop-story__track {
-    gap: 14px !important;
-    padding-right: 16px !important;
-  }
-
-  #shopify-section-{{ section.id }} .forma-shop-story__item {
-    flex-basis: 82% !important;
-    width: 82% !important;
-    max-width: 82% !important;
-  }
-}
-  </style>
-
-  <script>
-    (() => {
-      const section = document.getElementById(
-        'ShopTheStory-{{ section.id }}'
+      calc(
+        (
+          100% -
+          ({{ section.settings.products_per_row_desktop | minus: 1 }} * {{ section.settings.gap }}px)
+        )
+        / {{ section.settings.products_per_row_desktop }}
       );
 
-      if (
-        !section ||
-        section.dataset.storyInitialized === 'true'
-      ) {
-        return;
-      }
+    gap: {{ section.settings.gap }}px;
 
-      section.dataset.storyInitialized = 'true';
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
 
-      const track = section.querySelector(
-        '[data-story-track]'
-      );
+    padding: 0 24px 8px;
 
-      const previousButton = section.querySelector(
-        '[data-story-previous]'
-      );
+    scrollbar-width: none;
+  }
 
-      const nextButton = section.querySelector(
-        '[data-story-next]'
-      );
+  #shop-the-story-{{ section.id }} .shop-the-story__track::-webkit-scrollbar {
+    display: none;
+  }
 
-      if (!track) {
-        return;
-      }
+  #shop-the-story-{{ section.id }} .shop-the-story__product {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
 
-      const getDistance = () => {
-        const item = track.querySelector(
-          '.forma-shop-story__item'
+
+  /* --------------------------------------------------------------------------
+     COLLECTION LINK
+     -------------------------------------------------------------------------- */
+
+  #shop-the-story-{{ section.id }} .shop-the-story__collection-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    width: fit-content;
+    margin: 28px auto 0;
+
+    color: inherit;
+    text-decoration: none;
+
+    font-size: 13px;
+    line-height: 1;
+
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 5px;
+
+    transition: opacity 0.2s ease;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__collection-link:hover {
+    opacity: 0.55;
+  }
+
+
+  /* --------------------------------------------------------------------------
+     EMPTY STATE
+     -------------------------------------------------------------------------- */
+
+  #shop-the-story-{{ section.id }} .shop-the-story__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 250px;
+
+    margin: 0 24px;
+
+    background: rgba(0, 0, 0, 0.025);
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__empty p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.5;
+  }
+
+
+  /* --------------------------------------------------------------------------
+     MOBILE
+     -------------------------------------------------------------------------- */
+
+  @media screen and (max-width: 749px) {
+
+    #shop-the-story-{{ section.id }} {
+      --story-gap: 12px;
+    }
+
+    #shop-the-story-{{ section.id }} .shop-the-story__container {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+
+    #shop-the-story-{{ section.id }} .shop-the-story__header {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 22px;
+      padding: 0 16px;
+    }
+
+    #shop-the-story-{{ section.id }} .shop-the-story__heading {
+      font-size: 23px;
+    }
+
+    #shop-the-story-{{ section.id }} .shop-the-story__subheading {
+      font-size: 13px;
+    }
+
+    #shop-the-story-{{ section.id }} .shop-the-story__tabs {
+      gap: 22px;
+      padding: 0 16px;
+      margin-bottom: 22px;
+    }
+
+    #shop-the-story-{{ section.id }} .shop-the-story__tab {
+      font-size: 12px;
+    }
+
+    #shop-the-story-{{ section.id }} .shop-the-story__track {
+      grid-auto-columns: 74vw;
+      gap: 12px;
+      padding: 0 16px 8px;
+    }
+
+    #shop-the-story-{{ section.id }} .shop-the-story__collection-link {
+      margin-top: 22px;
+    }
+
+  }
+
+</style>
+
+
+<script>
+  (function() {
+
+    const section = document.getElementById(
+      'shop-the-story-{{ section.id }}'
+    );
+
+    if (!section) return;
+
+
+    const tabs = section.querySelectorAll(
+      '[data-shop-the-story-tab]'
+    );
+
+    const panels = section.querySelectorAll(
+      '[data-shop-the-story-panel]'
+    );
+
+
+    function activateStory(index) {
+
+      tabs.forEach(function(tab) {
+
+        const tabIndex = Number(
+          tab.dataset.storyIndex
         );
 
-        if (!item) {
-          return track.clientWidth * 0.75;
-        }
+        const isActive = tabIndex === index;
 
-        const styles = window.getComputedStyle(track);
-
-        const gap =
-          parseFloat(
-            styles.columnGap || styles.gap
-          ) || 0;
-
-        return (
-          item.getBoundingClientRect().width +
-          gap
+        tab.classList.toggle(
+          'is-active',
+          isActive
         );
-      };
 
-      const updateButtons = () => {
-        if (!previousButton || !nextButton) {
-          return;
-        }
-
-        const maximumScroll =
-          track.scrollWidth -
-          track.clientWidth -
-          2;
-
-        previousButton.disabled =
-          track.scrollLeft <= 2;
-
-        nextButton.disabled =
-          track.scrollLeft >= maximumScroll;
-      };
-
-      if (previousButton) {
-        previousButton.addEventListener(
-          'click',
-          () => {
-            track.scrollBy({
-              left: -getDistance(),
-              behavior: 'smooth'
-            });
-          }
+        tab.setAttribute(
+          'aria-selected',
+          isActive ? 'true' : 'false'
         );
-      }
 
-      if (nextButton) {
-        nextButton.addEventListener(
-          'click',
-          () => {
-            track.scrollBy({
-              left: getDistance(),
-              behavior: 'smooth'
-            });
-          }
+      });
+
+
+      panels.forEach(function(panel) {
+
+        const panelIndex = Number(
+          panel.dataset.storyIndex
         );
-      }
 
-      track.addEventListener(
-        'scroll',
-        () => {
-          window.requestAnimationFrame(
-            updateButtons
+        const isActive = panelIndex === index;
+
+        panel.classList.toggle(
+          'is-active',
+          isActive
+        );
+
+        panel.hidden = !isActive;
+
+      });
+
+    }
+
+
+    tabs.forEach(function(tab) {
+
+      tab.addEventListener(
+        'click',
+        function() {
+
+          const index = Number(
+            tab.dataset.storyIndex
           );
-        },
-        { passive: true }
+
+          activateStory(index);
+
+        }
       );
 
-      window.addEventListener(
-        'resize',
-        updateButtons
+    });
+
+
+    /* Keyboard navigation */
+
+    tabs.forEach(function(tab, currentIndex) {
+
+      tab.addEventListener(
+        'keydown',
+        function(event) {
+
+          let newIndex = null;
+
+          if (event.key === 'ArrowRight') {
+            newIndex = (currentIndex + 1) % tabs.length;
+          }
+
+          if (event.key === 'ArrowLeft') {
+            newIndex =
+              (currentIndex - 1 + tabs.length) %
+              tabs.length;
+          }
+
+          if (newIndex !== null) {
+
+            event.preventDefault();
+
+            tabs[newIndex].focus();
+
+            activateStory(newIndex);
+
+          }
+
+        }
       );
 
-      updateButtons();
-    })();
-  </script>
-{%- endif -%}
+    });
+
+  })();
+</script>
+
 
 {% schema %}
+
 {
-  "name": "Shop the Story",
-  "class": "shopify-section--shop-the-story",
+  "name": "Shop The Story",
+
   "tag": "section",
+
+  "class": "section-shop-the-story",
+
   "settings": [
+
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-3"
-    },
-    {
-      "type": "inline_richtext",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "Featured in this article"
-    },
-    {
-      "type": "inline_richtext",
+      "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Shop the Story"
-    }
-  ],
-  "presets": [
+      "default": "Shop The Story"
+    },
+
     {
-      "name": "Shop the Story"
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Choose a story. Discover the pieces."
+    },
+
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Header link text",
+      "default": "View all"
+    },
+
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Header link"
+    },
+
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Products per story",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    },
+
+    {
+      "type": "range",
+      "id": "products_per_row_desktop",
+      "label": "Products per row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Product gap",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "default": 24
+    },
+
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show brand",
+      "default": true
+    },
+
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Show secondary product image",
+      "default": true
+    },
+
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum width",
+      "min": 1200,
+      "max": 1800,
+      "step": 50,
+      "default": 1600
+    },
+
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#111111"
+    },
+
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60
+    },
+
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60
+    },
+
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top spacing mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 40
+    },
+
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom spacing mobile",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 40
     }
+
+  ],
+
+  "blocks": [
+
+    {
+      "type": "story",
+
+      "name": "Story",
+
+      "limit": 3,
+
+      "settings": [
+
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Story title",
+          "default": "The Everyday"
+        },
+
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+
+        {
+          "type": "text",
+          "id": "collection_link_text",
+          "label": "Collection link text",
+          "default": "View the story"
+        }
+
+      ]
+
+    }
+
+  ],
+
+  "presets": [
+
+    {
+      "name": "Shop The Story",
+
+      "blocks": [
+        {
+          "type": "story",
+          "settings": {
+            "title": "The Everyday"
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "title": "The Weekend"
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "title": "The City"
+          }
+        }
+      ]
+    }
+
   ]
+
 }
+
 {% endschema %}
