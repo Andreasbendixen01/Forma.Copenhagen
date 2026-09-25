@@ -150,41 +150,10 @@
         "vertical_spacing_factor": 1,
         "hide_collection_title": false
       }
-    },
-    "featured_collections_DAz8cg": {
-      "type": "featured-collections",
-      "blocks": {
-        "collection_nceVjt": {
-          "type": "collection",
-          "settings": {
-            "collection": "",
-            "products_count": 8,
-            "title": "Shop The Story",
-            "link_url": "",
-            "link_text": "View all"
-          }
-        }
-      },
-      "block_order": [
-        "collection_nceVjt"
-      ],
-      "name": "t:sections.featured_collections.presets.featured_collections.name",
-      "settings": {
-        "color_scheme": "",
-        "separate_section_with_border": false,
-        "hide_product_information": false,
-        "stack_products": false,
-        "products_per_row_mobile": "2",
-        "products_per_row_desktop": 4,
-        "horizontal_spacing_factor": 1,
-        "vertical_spacing_factor": 1,
-        "hide_collection_title": false
-      }
     }
   },
   "order": [
     "collection_list_Q8bn9L",
-    "featured_collections_KVhnaK",
-    "featured_collections_DAz8cg"
+    "featured_collections_KVhnaK"
   ]
 }
