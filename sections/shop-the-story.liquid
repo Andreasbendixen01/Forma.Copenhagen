@@ -31,21 +31,52 @@
 
     <div class="shop-the-story__header">
 
-      <div class="shop-the-story__header-content">
+  <div class="shop-the-story__header-content">
 
-        {%- if section.settings.heading != blank -%}
-          <h2 class="forma-edit-section-header__title">
-            {{ section.settings.heading }}
-          </h2>
-        {%- endif -%}
+    {% if section.settings.heading != blank %}
+      <h2 class="forma-edit-section-header__title">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
 
-        {%- if section.settings.subheading != blank -%}
-          <div class="shop-the-story__subheading">
-            {{ section.settings.subheading }}
-          </div>
-        {%- endif -%}
+    <div class="shop-the-story__header-row">
 
+      {% if section.settings.subheading != blank %}
+        <div class="shop-the-story__subheading">
+          {{ section.settings.subheading }}
+        </div>
+      {% endif %}
+
+      <div
+        class="shop-the-story__tabs"
+        role="tablist"
+        aria-label="Choose a story"
+      >
+        {% for block in section.blocks %}
+          <button
+            type="button"
+            class="
+              shop-the-story__tab
+              {% if forloop.first %}is-active{% endif %}
+            "
+            id="shop-the-story-tab-{{ section.id }}-{{ block.id }}"
+            data-shop-the-story-tab="{{ forloop.index0 }}"
+            data-shop-the-story-index="{{ forloop.index0 }}"
+            role="tab"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            aria-controls="shop-the-story-panel-{{ section.id }}-{{ block.id }}"
+            {{ block.shopify_attributes }}
+          >
+            {{ block.settings.title | default: 'Story' | escape }}
+          </button>
+        {% endfor %}
       </div>
+
+    </div>
+
+  </div>
+
+</div>
 
       {%- if section.settings.link_text != blank and section.settings.link_url != blank -%}
         <a
@@ -56,42 +87,6 @@
           <span aria-hidden="true">→</span>
         </a>
       {%- endif -%}
-
-    </div>
-
-
-    {%- comment -%}
-      --------------------------------------------------------------------------
-      STORY SELECTOR
-      --------------------------------------------------------------------------
-    {%- endcomment -%}
-
-    <div
-      class="shop-the-story__tabs"
-      role="tablist"
-      aria-label="Choose a story"
-    >
-
-      {%- for block in section.blocks -%}
-
-        <button
-          type="button"
-          class="
-            shop-the-story__tab
-            {% if forloop.first %}is-active{% endif %}
-          "
-          id="shop-the-story-tab-{{ section.id }}-{{ block.id }}"
-          data-shop-the-story-tab
-          data-story-index="{{ forloop.index0 }}"
-          role="tab"
-          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-          aria-controls="shop-the-story-panel-{{ section.id }}-{{ block.id }}"
-          {{ block.shopify_attributes }}
-        >
-          {{ block.settings.title | default: 'Story' | escape }}
-        </button>
-
-      {%- endfor -%}
 
     </div>
 
@@ -216,95 +211,212 @@
   }
 
 
-  /* --------------------------------------------------------------------------
-     HEADER
-     -------------------------------------------------------------------------- */
-
-  #shop-the-story-{{ section.id }} .shop-the-story__header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 30px;
-    margin-bottom: 28px;
-    padding: 0 24px;
-  }
-
-  #shop-the-story-{{ section.id }} .shop-the-story__header-content {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
- #shop-the-story-{{ section.id }} .forma-edit-section-header__title {
-  display: block !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  font-family: Georgia, "Times New Roman", serif !important;
-  font-size: 18px !important;
-  font-weight: 400 !important;
-  font-style: normal !important;
-  line-height: 1.15 !important;
-  letter-spacing: 0 !important;
-
-  color: #111111 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-  #shop-the-story-{{ section.id }} .shop-the-story__subheading {
-    margin: 0;
-    font-family: var(--font-body-family);
-    font-size: 14px;
-    line-height: 1.4;
-    opacity: 0.65;
-  }
-
-  #shop-the-story-{{ section.id }} .shop-the-story__view-all {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    flex-shrink: 0;
-    color: inherit;
-    text-decoration: none;
-    font-size: 13px;
-    line-height: 1;
-    transition: opacity 0.2s ease;
-  }
-
-  #shop-the-story-{{ section.id }} .shop-the-story__view-all:hover {
-    opacity: 0.55;
-  }
-
-
-  /* =========================================================
-   STORY TABS — MINIMAL / EDITORIAL
-   ========================================================= */
+  /* =========================================
+   SHOP THE STORY — HEADER
+   ========================================= */
 
 #shop-the-story-{{ section.id }} .shop-the-story__header {
-  position: relative;
+  margin: 0 0 28px;
+  padding: 0;
 }
 
-#shop-the-story-{{ section.id }} .shop-the-story__tabs {
-  counter-reset: story-tab;
+#shop-the-story-{{ section.id }} .shop-the-story__header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
 }
+
+#shop-the-story-{{ section.id }} .forma-edit-section-header__title {
+  margin: 0 !important;
+  font-family: var(--font-heading-family) !important;
+  font-size: 18px !important;
+  line-height: 1.2 !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+}
+
+
+/* =========================================
+   SUBHEADING + STORIES
+   ========================================= */
+
+#shop-the-story-{{ section.id }} .shop-the-story__header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  width: 100%;
+}
+
+#shop-the-story-{{ section.id }} .shop-the-story__subheading {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-size: 13px;
+  line-height: 1.4;
+  color: inherit;
+  opacity: 0.55;
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   STORY TABS
+   ========================================= */
 
 #shop-the-story-{{ section.id }} .shop-the-story__tabs {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 28px;
-
-  position: absolute;
-  right: 24px;
-  bottom: 0;
-
   margin: 0;
   padding: 0;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   STORY TAB
+   ========================================= */
+
+#shop-the-story-{{ section.id }} .shop-the-story__tab {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+
+  padding: 0;
+  margin: 0;
+
+  border: 0;
+  background: transparent;
+
+  color: inherit;
+  cursor: pointer;
+
+  font-family: var(--font-body-family);
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 400;
+
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  opacity: 0.42;
+
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease;
+}
+
+
+/* =========================================
+   NUMBER
+   ========================================= */
+
+#shop-the-story-{{ section.id }} .shop-the-story__tab::before {
+  content: counter(story-tab);
+
+  counter-increment: story-tab;
+
+  display: inline-block;
+
+  margin-right: 7px;
+
+  font-family: var(--font-body-family);
+  font-size: 9px;
+  line-height: 1;
+
+  letter-spacing: 0.04em;
+
+  opacity: 0.55;
+
+  transform: translateY(-1px);
+}
+
+
+/* Start counter */
+#shop-the-story-{{ section.id }} .shop-the-story__tabs {
+  counter-reset: story-tab;
+}
+
+
+/* =========================================
+   HOVER
+   ========================================= */
+
+#shop-the-story-{{ section.id }} .shop-the-story__tab:hover {
+  opacity: 0.75;
+}
+
+
+/* =========================================
+   ACTIVE
+   ========================================= */
+
+#shop-the-story-{{ section.id }} .shop-the-story__tab.is-active {
+  opacity: 1;
+}
+
+#shop-the-story-{{ section.id }} .shop-the-story__tab.is-active::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: -8px;
+
+  height: 1px;
+
+  background: currentColor;
+}
+
+@media screen and (max-width: 749px) {
+
+  #shop-the-story-{{ section.id }} .shop-the-story__header-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__subheading {
+    white-space: normal;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__tabs {
+    justify-content: flex-start;
+    gap: 22px;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  #shop-the-story-{{ section.id }} .shop-the-story__tab {
+    flex-shrink: 0;
+  }
+}
+
+
+/* =========================================================
+   STORY TABS — MINIMAL EDITORIAL
+   ========================================================= */
+
+#shop-the-story-{{ section.id }} .shop-the-story__tabs {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 28px;
+
+  margin: 0;
+  padding: 0 24px;
 
   overflow: visible;
   scrollbar-width: none;
+
+  counter-reset: story-tab;
 }
 
 #shop-the-story-{{ section.id }} .shop-the-story__tabs::-webkit-scrollbar {
@@ -313,7 +425,6 @@
 
 
 /* TAB */
-
 
 #shop-the-story-{{ section.id }} .shop-the-story__tab {
   position: relative;
@@ -338,10 +449,10 @@
   line-height: 1;
   font-weight: 400;
 
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 
-  opacity: 0.38;
+  opacity: 0.4;
 
   transition:
     opacity 0.25s ease,
@@ -366,8 +477,6 @@
   font-weight: 400;
   letter-spacing: 0.04em;
 
-  vertical-align: 1px;
-
   opacity: 0.55;
 }
 
@@ -386,7 +495,7 @@
 }
 
 
-/* ACTIVE UNDERLINE */
+/* ACTIVE LINE */
 
 #shop-the-story-{{ section.id }} .shop-the-story__tab.is-active::after {
   content: "";
