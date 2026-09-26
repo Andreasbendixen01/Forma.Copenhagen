@@ -278,65 +278,107 @@
   }
 
 
-  /* --------------------------------------------------------------------------
-     STORY TABS
-     -------------------------------------------------------------------------- */
+  /* =========================================================
+   STORY TABS — FORMA EDITORIAL
+   ========================================================= */
 
-  #shop-the-story-{{ section.id }} .shop-the-story__tabs {
-    display: flex;
-    align-items: center;
-    gap: 28px;
-    padding: 0 24px;
-    margin-bottom: 28px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
+#shop-the-story-{{ section.id }} .shop-the-story__tabs {
+  display: flex;
+  align-items: flex-start;
+  gap: 42px;
+  padding: 0 24px;
+  margin: 0 0 32px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  counter-reset: story-tab;
+}
 
-  #shop-the-story-{{ section.id }} .shop-the-story__tabs::-webkit-scrollbar {
-    display: none;
-  }
+#shop-the-story-{{ section.id }} .shop-the-story__tabs::-webkit-scrollbar {
+  display: none;
+}
 
-  #shop-the-story-{{ section.id }} .shop-the-story__tab {
-    position: relative;
-    flex: 0 0 auto;
-    appearance: none;
-    border: 0;
-    background: transparent;
-    padding: 0 0 7px;
-    margin: 0;
-    color: inherit;
-    cursor: pointer;
 
-    font-family: var(--font-body-family);
-    font-size: 13px;
-    line-height: 1.2;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+/* TAB */
 
-    opacity: 0.45;
-    transition:
-      opacity 0.2s ease,
-      color 0.2s ease;
-  }
+#shop-the-story-{{ section.id }} .shop-the-story__tab {
+  position: relative;
+  flex: 0 0 auto;
 
-  #shop-the-story-{{ section.id }} .shop-the-story__tab:hover {
-    opacity: 0.75;
-  }
+  appearance: none;
+  border: 0;
+  background: transparent;
 
-  #shop-the-story-{{ section.id }} .shop-the-story__tab.is-active {
-    opacity: 1;
-  }
+  padding: 0 0 9px;
+  margin: 0;
 
-  #shop-the-story-{{ section.id }} .shop-the-story__tab.is-active::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  color: inherit;
+  cursor: pointer;
 
-    height: 1px;
-    background: currentColor;
-  }
+  font-family: var(--font-heading-family);
+  font-size: 15px;
+  line-height: 1.15;
+  font-weight: 400;
+  letter-spacing: 0;
+
+  text-transform: uppercase;
+
+  opacity: 0.38;
+
+  transition:
+    opacity 0.25s ease,
+    color 0.25s ease;
+}
+
+
+/* NUMBER */
+
+#shop-the-story-{{ section.id }} .shop-the-story__tab::before {
+  counter-increment: story-tab;
+  content: counter(story-tab, decimal-leading-zero);
+
+  display: inline-block;
+  margin-right: 9px;
+
+  font-family: var(--font-body-family);
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+
+  vertical-align: 2px;
+
+  opacity: 0.65;
+}
+
+
+/* HOVER */
+
+#shop-the-story-{{ section.id }} .shop-the-story__tab:hover {
+  opacity: 0.7;
+}
+
+
+/* ACTIVE */
+
+#shop-the-story-{{ section.id }} .shop-the-story__tab.is-active {
+  opacity: 1;
+}
+
+
+/* ACTIVE UNDERLINE */
+
+#shop-the-story-{{ section.id }} .shop-the-story__tab.is-active::after {
+  content: "";
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 1px;
+
+  background: currentColor;
+}
 
 
   /* --------------------------------------------------------------------------
