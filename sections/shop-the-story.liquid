@@ -248,7 +248,7 @@ when switching between stories.
 
   font-family: Georgia, "Times New Roman", serif !important;
 
-  font-size: 20px !important;
+  font-size: 18px !important;
 
   line-height: 1.15 !important;
 
@@ -535,76 +535,43 @@ when switching between stories.
 }
 
 
-/* =============================================================================
-   PRODUCT IMAGE
-   ============================================================================= */
+/* =========================================================
+   PRODUCT IMAGE — SHOP THE STORY
+   ========================================================= */
 
 #shop-the-story-{{ section.id }} .shop-the-story__product .product-card__figure {
-
   position: relative !important;
-
+  display: block !important;
   width: 100% !important;
-
+  aspect-ratio: 4 / 5 !important;
   overflow: hidden !important;
-
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
-
-/*
-  Keep the existing Forma product carousel intact.
-  The product-card snippet already supplies the actual image.
-*/
-
-#shop-the-story-{{ section.id }} .shop-the-story__product .forma-product-carousel {
-
-  width: 100%;
-
-}
-
-
-#shop-the-story-{{ section.id }} .shop-the-story__product .forma-product-carousel__viewport {
-
-  position: relative !important;
-
+/* Sørger for at produktbilledet faktisk vises */
+#shop-the-story-{{ section.id }} .shop-the-story__product .product-card__figure img {
+  display: block !important;
   width: 100% !important;
-
   height: 100% !important;
-
-  overflow: hidden !important;
-
+  max-width: none !important;
+  object-fit: cover !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
-
-#shop-the-story-{{ section.id }} .shop-the-story__product .forma-product-carousel__slides {
-
-  position: relative !important;
-
+/* Hvis Dawn bruger en separat image-wrapper */
+#shop-the-story-{{ section.id }} .shop-the-story__product .product-card__image {
+  display: block !important;
   width: 100% !important;
-
   height: 100% !important;
-
 }
 
-
-#shop-the-story-{{ section.id }} .shop-the-story__product .forma-product-carousel__slide {
-
-  width: 100%;
-
-  height: 100%;
-
-}
-
-
-#shop-the-story-{{ section.id }} .shop-the-story__product .forma-product-carousel__slide img {
-
-  display: block;
-
-  width: 100%;
-
-  height: 100%;
-
-  object-fit: cover;
-
+/* Sørger for at links omkring billedet ikke kollapser */
+#shop-the-story-{{ section.id }} .shop-the-story__product .product-card__figure > a {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 
