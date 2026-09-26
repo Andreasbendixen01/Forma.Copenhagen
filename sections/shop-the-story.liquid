@@ -118,7 +118,7 @@
           {% endunless %}
         >
 
-          {%- if story_collection != blank and story_collection.products_count > 0 -%}
+          {%- if story_collection != blank and story_collection.products.size > 0 -%}
 
             <div class="shop-the-story__carousel">
 
@@ -566,10 +566,40 @@
     display: none;
   }
 
-  #shop-the-story-{{ section.id }} .shop-the-story__product {
-    min-width: 0;
-    scroll-snap-align: start;
-  }
+#shop-the-story-{{ section.id }} .shop-the-story__product {
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+/* PRODUCT IMAGE AREA */
+#shop-the-story-{{ section.id }} .shop-the-story__product .product-card__figure {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+#shop-the-story-{{ section.id }} .shop-the-story__product .forma-product-carousel__viewport {
+  width: 100%;
+  height: 100%;
+}
+
+#shop-the-story-{{ section.id }} .shop-the-story__product .forma-product-carousel__slides {
+  width: 100%;
+  height: 100%;
+}
+
+#shop-the-story-{{ section.id }} .shop-the-story__product .forma-product-carousel__slide {
+  width: 100%;
+  height: 100%;
+}
+
+#shop-the-story-{{ section.id }} .shop-the-story__product .forma-product-carousel__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 
   /* --------------------------------------------------------------------------
@@ -702,45 +732,36 @@
 
     function activateStory(index) {
 
-      tabs.forEach(function(tab) {
+  tabs.forEach(function(tab) {
 
-        const tabIndex = Number(
-          tab.dataset.storyIndex
-        );
+    const tabIndex = Number(tab.dataset.storyIndex);
+    const isActive = tabIndex === index;
 
-        const isActive = tabIndex === index;
+    tab.classList.toggle('is-active', isActive);
+    tab.setAttribute(
+      'aria-selected',
+      isActive ? 'true' : 'false'
+    );
 
-        tab.classList.toggle(
-          'is-active',
-          isActive
-        );
-
-        tab.setAttribute(
-          'aria-selected',
-          isActive ? 'true' : 'false'
-        );
-
-      });
+  });
 
 
-      panels.forEach(function(panel) {
+  panels.forEach(function(panel) {
 
-        const panelIndex = Number(
-          panel.dataset.storyIndex
-        );
+    const panelIndex = Number(panel.dataset.storyIndex);
+    const isActive = panelIndex === index;
 
-        const isActive = panelIndex === index;
+    panel.classList.toggle('is-active', isActive);
 
-        panel.classList.toggle(
-          'is-active',
-          isActive
-        );
-
-        panel.hidden = !isActive;
-
-      });
-
+    if (isActive) {
+      panel.removeAttribute('hidden');
+    } else {
+      panel.setAttribute('hidden', '');
     }
+
+  });
+
+}
 
 
     tabs.forEach(function(tab) {
