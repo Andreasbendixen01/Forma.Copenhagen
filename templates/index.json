@@ -158,7 +158,7 @@
           "type": "story",
           "settings": {
             "title": "The Everyday",
-            "collection": "",
+            "collection": "01-the-everyday",
             "collection_link_text": "View the story"
           }
         },
@@ -166,7 +166,7 @@
           "type": "story",
           "settings": {
             "title": "The Weekend",
-            "collection": "",
+            "collection": "02-the-weekend",
             "collection_link_text": "View the story"
           }
         },
