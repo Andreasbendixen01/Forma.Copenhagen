@@ -174,7 +174,7 @@
           "type": "story",
           "settings": {
             "title": "The City",
-            "collection": "",
+            "collection": "03-the-city",
             "collection_link_text": "View the story"
           }
         }
