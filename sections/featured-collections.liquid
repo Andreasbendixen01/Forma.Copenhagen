@@ -190,13 +190,51 @@
     }
 
 
-    /* =========================================================
-       PRODUCT LIST
-       ========================================================= */
+ #shopify-section-{{ section.id }} .product-list {
+  margin-top: 0 !important;
+}
 
-    #shopify-section-{{ section.id }} .product-list {
-      margin-top: 0 !important;
-    }
+/* =========================================================
+   FORMA EDIT — MATCH SHOP THE STORY
+   ========================================================= */
+
+@media screen and (min-width: 700px) {
+
+  #shopify-section-{{ section.id }} .forma-product-carousel {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .forma-product-carousel .product-list {
+    display: grid !important;
+    grid-auto-flow: column !important;
+
+    grid-auto-columns: calc(
+      (100% - (2 * 24px)) / 3
+    ) !important;
+
+    gap: 24px !important;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    overflow-x: auto !important;
+
+    padding: 0 24px 8px !important;
+
+    scrollbar-width: none;
+  }
+
+  #shopify-section-{{ section.id }} .forma-product-carousel .product-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .forma-product-carousel .product-list > * {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+}
 
 
     /* =========================================================
