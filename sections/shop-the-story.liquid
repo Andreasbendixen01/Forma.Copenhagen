@@ -279,18 +279,32 @@
 
 
   /* =========================================================
-   STORY TABS — FORMA EDITORIAL
+   STORY TABS — MINIMAL / EDITORIAL
    ========================================================= */
+
+#shop-the-story-{{ section.id }} .shop-the-story__header {
+  position: relative;
+}
+
+#shop-the-story-{{ section.id }} .shop-the-story__tabs {
+  counter-reset: story-tab;
+}
 
 #shop-the-story-{{ section.id }} .shop-the-story__tabs {
   display: flex;
-  align-items: flex-start;
-  gap: 42px;
-  padding: 0 24px;
-  margin: 0 0 32px;
-  overflow-x: auto;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 28px;
+
+  position: absolute;
+  right: 24px;
+  bottom: 0;
+
+  margin: 0;
+  padding: 0;
+
+  overflow: visible;
   scrollbar-width: none;
-  counter-reset: story-tab;
 }
 
 #shop-the-story-{{ section.id }} .shop-the-story__tabs::-webkit-scrollbar {
@@ -300,26 +314,31 @@
 
 /* TAB */
 
+
 #shop-the-story-{{ section.id }} .shop-the-story__tab {
   position: relative;
+
+  display: inline-flex;
+  align-items: baseline;
+
   flex: 0 0 auto;
 
   appearance: none;
   border: 0;
   background: transparent;
 
-  padding: 0 0 9px;
+  padding: 0 0 5px;
   margin: 0;
 
   color: inherit;
   cursor: pointer;
 
-  font-family: var(--font-heading-family);
-  font-size: 15px;
-  line-height: 1.15;
+  font-family: var(--font-body-family);
+  font-size: 11px;
+  line-height: 1;
   font-weight: 400;
-  letter-spacing: 0;
 
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 
   opacity: 0.38;
@@ -337,17 +356,19 @@
   content: counter(story-tab, decimal-leading-zero);
 
   display: inline-block;
-  margin-right: 9px;
+
+  margin-right: 7px;
 
   font-family: var(--font-body-family);
-  font-size: 9px;
+  font-size: 8px;
   line-height: 1;
+
   font-weight: 400;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
 
-  vertical-align: 2px;
+  vertical-align: 1px;
 
-  opacity: 0.65;
+  opacity: 0.55;
 }
 
 
@@ -369,6 +390,7 @@
 
 #shop-the-story-{{ section.id }} .shop-the-story__tab.is-active::after {
   content: "";
+
   position: absolute;
 
   left: 0;
