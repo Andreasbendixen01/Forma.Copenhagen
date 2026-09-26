@@ -182,6 +182,63 @@ when switching between stories.
 
 <style>
 
+
+/* =========================================================
+   SHOP THE STORY — PRODUCT CARD SIZE
+   ========================================================= */
+
+#shop-the-story-{{ section.id }} .shop-the-story__track {
+  grid-auto-columns: 385px !important;
+}
+
+#shop-the-story-{{ section.id }} .shop-the-story__product {
+  width: 385px !important;
+}
+
+/* =========================================================
+   SHOP THE STORY — HEART
+   Match Forma Edit
+   ========================================================= */
+
+#shop-the-story-{{ section.id }} .shop-the-story__product .forma-save-button,
+#shop-the-story-{{ section.id }} .shop-the-story__product .forma-save-button button {
+  width: 32px !important;
+  height: 32px !important;
+
+  min-width: 32px !important;
+  min-height: 32px !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+
+  background: transparent !important;
+  box-shadow: none !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Selve hjerte-ikonet */
+#shop-the-story-{{ section.id }} .shop-the-story__product .forma-save-button svg,
+#shop-the-story-{{ section.id }} .shop-the-story__product .forma-save-button button svg {
+  width: 18px !important;
+  height: 18px !important;
+
+  stroke-width: 1.5 !important;
+  fill: none !important;
+}
+
+/* Fjern eventuel hvid cirkel fra den gamle styling */
+#shop-the-story-{{ section.id }} .shop-the-story__product .forma-save-button::before,
+#shop-the-story-{{ section.id }} .shop-the-story__product .forma-save-button::after {
+  display: none !important;
+}
+
+
 /* =============================================================================
    FORMA — SHOP THE STORY
    ============================================================================= */
