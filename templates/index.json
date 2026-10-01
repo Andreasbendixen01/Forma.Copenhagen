@@ -151,6 +151,100 @@
         "hide_collection_title": false
       }
     },
+    "collection_list_8zw8Rt": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_MHxk6n": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "",
+            "collection": "",
+            "image": "shopify://shop_images/Ganni_Brand_Image.png",
+            "expand_collection": true,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_LAq6qQ": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "",
+            "collection": "",
+            "image": "shopify://shop_images/Foret_Brand_Image.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_HJfKfV": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "",
+            "collection": "",
+            "image": "shopify://shop_images/NN07.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_LmjWpJ": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "collection": "",
+            "image": "shopify://shop_images/Norse_Projects.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "collection_MHxk6n",
+        "collection_LAq6qQ",
+        "collection_HJfKfV",
+        "collection_LmjWpJ"
+      ],
+      "name": "t:sections.collection_list.presets.collection_list.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": false,
+        "image_size": "auto",
+        "show_text_outside": false,
+        "space_items": false,
+        "stack_collections": false,
+        "collections_per_row_desktop": 3,
+        "stack_collections_mobile": true,
+        "collections_per_row_mobile": "1",
+        "subheading": "",
+        "title": "",
+        "content": ""
+      }
+    },
     "shop_the_story_FNqYmj": {
       "type": "shop-the-story",
       "blocks": {
@@ -184,6 +278,7 @@
         "story_idcXgU",
         "story_tNV6kE"
       ],
+      "disabled": true,
       "name": "Shop The Story",
       "settings": {
         "heading": "Shop The Story",
@@ -208,6 +303,7 @@
   "order": [
     "collection_list_Q8bn9L",
     "featured_collections_KVhnaK",
+    "collection_list_8zw8Rt",
     "shop_the_story_FNqYmj"
   ]
 }
