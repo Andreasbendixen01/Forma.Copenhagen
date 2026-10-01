@@ -150,10 +150,27 @@
         "vertical_spacing_factor": 1,
         "hide_collection_title": false
       }
+    },
+    "forma_journal_slider_HJFewJ": {
+      "type": "forma-journal-slider",
+      "name": "Forma Journal",
+      "settings": {
+        "heading": "Forma Journal",
+        "subheading": "Discover stories, ideas and places.",
+        "blog": "",
+        "articles_count": 8,
+        "show_view_all": true,
+        "view_all_text": "View all",
+        "show_category": true,
+        "show_excerpt": false,
+        "show_read_more": false,
+        "read_more_text": "Read story"
+      }
     }
   },
   "order": [
     "collection_list_Q8bn9L",
-    "featured_collections_KVhnaK"
+    "featured_collections_KVhnaK",
+    "forma_journal_slider_HJFewJ"
   ]
 }
