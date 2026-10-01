@@ -151,104 +151,30 @@
         "hide_collection_title": false
       }
     },
-    "collection_list_8zw8Rt": {
-      "type": "collection-list",
-      "blocks": {
-        "collection_MHxk6n": {
-          "type": "collection",
-          "settings": {
-            "color_scheme": "",
-            "collection": "",
-            "image": "shopify://shop_images/Ganni_Brand_Image.png",
-            "expand_collection": true,
-            "content_position": "place-self-end-start text-start",
-            "subheading": "",
-            "title": "",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "solid",
-            "overlay_color": "#000000",
-            "overlay_opacity": 30
-          }
-        },
-        "collection_LAq6qQ": {
-          "type": "collection",
-          "settings": {
-            "color_scheme": "",
-            "collection": "",
-            "image": "shopify://shop_images/Foret_Brand_Image.png",
-            "expand_collection": false,
-            "content_position": "place-self-end-start text-start",
-            "subheading": "",
-            "title": "",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "solid",
-            "overlay_color": "#000000",
-            "overlay_opacity": 30
-          }
-        },
-        "collection_HJfKfV": {
-          "type": "collection",
-          "settings": {
-            "color_scheme": "",
-            "collection": "",
-            "image": "shopify://shop_images/NN07.png",
-            "expand_collection": false,
-            "content_position": "place-self-end-start text-start",
-            "subheading": "",
-            "title": "",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "solid",
-            "overlay_color": "#000000",
-            "overlay_opacity": 30
-          }
-        },
-        "collection_LmjWpJ": {
-          "type": "collection",
-          "settings": {
-            "color_scheme": "scheme-4",
-            "collection": "",
-            "image": "shopify://shop_images/Norse_Projects.png",
-            "expand_collection": false,
-            "content_position": "place-self-end-start text-start",
-            "subheading": "",
-            "title": "",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "solid",
-            "overlay_color": "#000000",
-            "overlay_opacity": 30
-          }
-        }
-      },
-      "block_order": [
-        "collection_MHxk6n",
-        "collection_LAq6qQ",
-        "collection_HJfKfV",
-        "collection_LmjWpJ"
-      ],
-      "name": "t:sections.collection_list.presets.collection_list.name",
+    "blog_posts_b4pYKP": {
+      "type": "blog-posts",
+      "name": "t:sections.blog_posts.presets.blog_posts.name",
       "settings": {
         "color_scheme": "",
         "separate_section_with_border": false,
-        "image_size": "auto",
-        "show_text_outside": false,
-        "space_items": false,
-        "stack_collections": false,
-        "collections_per_row_desktop": 3,
-        "stack_collections_mobile": true,
-        "collections_per_row_mobile": "1",
+        "blog": "news",
+        "posts_count": 3,
+        "stack_on_mobile": false,
+        "show_category": true,
+        "show_date": false,
+        "show_excerpt": true,
+        "show_read_more": true,
         "subheading": "",
-        "title": "",
-        "content": ""
+        "title": "Blog posts",
+        "content": "",
+        "button_link": "",
+        "button_text": ""
       }
     }
   },
   "order": [
     "collection_list_Q8bn9L",
     "featured_collections_KVhnaK",
-    "collection_list_8zw8Rt"
+    "blog_posts_b4pYKP"
   ]
 }
