@@ -156,7 +156,7 @@
       "name": "Forma Journal",
       "settings": {
         "heading": "Forma Journal",
-        "subheading": "Discover stories, ideas and places.",
+        "subheading": "",
         "blog": "forma-journal",
         "articles_count": 8,
         "show_view_all": true,
