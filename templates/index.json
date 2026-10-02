@@ -146,8 +146,8 @@
         "stack_products": false,
         "products_per_row_mobile": "2",
         "products_per_row_desktop": 4,
-        "horizontal_spacing_factor": 1,
-        "vertical_spacing_factor": 1,
+        "horizontal_spacing_factor": 0.2,
+        "vertical_spacing_factor": 0.2,
         "hide_collection_title": false
       }
     },
