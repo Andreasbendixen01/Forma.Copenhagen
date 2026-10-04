@@ -349,42 +349,57 @@
      4.33 PRODUCTS VISIBLE
      ======================================================= */
 
-  /* =========================================================
-   FORMA EDIT — PRODUCT CARD SIZE
+  #shopify-section-{{ section.id }} .forma-product-carousel .product-list > * {
+    flex: 0 0 calc((100vw - 32px) / 4.33) !important;
+
+    width: calc((100vw - 32px) / 4.33) !important;
+
+    min-width: calc((100vw - 32px) / 4.33) !important;
+
+    max-width: calc((100vw - 32px) / 4.33) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    scroll-snap-align: start;
+  }
+
+
+  /* =======================================================
+     PRODUCT CARD
+     ======================================================= */
+
+  #shopify-section-{{ section.id }} .forma-product-carousel product-card {
+    display: block !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+
+  /* =======================================================
+     PRODUCT IMAGE
+     ======================================================= */
+
+ /* =========================================================
+   FORMA EDIT — LOWER PRODUCT CARD
    ========================================================= */
 
-#shopify-section-{{ section.id }} .forma-product-carousel .product-list > * {
-  width: calc((100vw - 32px) / 4.33) !important;
-  min-width: calc((100vw - 32px) / 4.33) !important;
-  max-width: calc((100vw - 32px) / 4.33) !important;
-  margin: 0 !important;
-}
-
-/* Selve product card */
-#shopify-section-{{ section.id }} .forma-product-carousel product-card {
-  display: block !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  align-self: start !important;
-}
-
-/* Produktbilledet */
 #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure {
   width: 100% !important;
   height: auto !important;
-  aspect-ratio: 0.77 / 1 !important;
+  aspect-ratio: 0.86 / 1 !important;
   overflow: hidden !important;
 }
 
-/* Selve produktbilledet */
 #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure img {
   width: 100% !important;
   height: 100% !important;
-  object-fit: contain !important;
+  object-fit: cover !important;
   display: block !important;
 }
 
