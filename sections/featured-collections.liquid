@@ -349,68 +349,44 @@
      4.33 PRODUCTS VISIBLE
      ======================================================= */
 
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-list > * {
-    flex: 0 0 calc((100vw - 32px) / 4.33) !important;
+  /* =========================================================
+   FORMA EDIT — PRODUCT CARD SIZE
+   ========================================================= */
 
-    width: calc((100vw - 32px) / 4.33) !important;
+#shopify-section-{{ section.id }} .forma-product-carousel .product-list > * {
+  width: calc((100vw - 32px) / 4.33) !important;
+  min-width: calc((100vw - 32px) / 4.33) !important;
+  max-width: calc((100vw - 32px) / 4.33) !important;
+  margin: 0 !important;
+}
 
-    min-width: calc((100vw - 32px) / 4.33) !important;
+/* Selve product card */
+#shopify-section-{{ section.id }} .forma-product-carousel product-card {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  align-self: start !important;
+}
 
-    max-width: calc((100vw - 32px) / 4.33) !important;
+/* Produktbilledet */
+#shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 0.77 / 1 !important;
+  overflow: hidden !important;
+}
 
-    margin: 0 !important;
-    padding: 0 !important;
-
-    scroll-snap-align: start;
-  }
-
-
-  /* =======================================================
-     PRODUCT CARD
-     ======================================================= */
-
-  #shopify-section-{{ section.id }} .forma-product-carousel product-card {
-    display: block !important;
-
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: none !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-
-  /* =======================================================
-     PRODUCT IMAGE
-     ======================================================= */
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure {
-    width: 100% !important;
-
-    height: auto !important;
-
-    /*
-      Samme visuelle proportion som Les Deux.
-      Giver en lavere produktblok end den nuværende.
-    */
-    aspect-ratio: 77 / 100 !important;
-
-    overflow: hidden !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure img {
-    width: 100% !important;
-    height: 100% !important;
-
-    object-fit: cover !important;
-
-    display: block !important;
-  }
+/* Selve produktbilledet */
+#shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  display: block !important;
+}
 
 
   /* =======================================================
