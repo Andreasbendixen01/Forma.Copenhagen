@@ -203,6 +203,7 @@
         "place_cpwKdx": {
           "type": "place",
           "settings": {
+            "image": "shopify://shop_images/esmee-space-copenhagen_dezeen_2364_col_15.jpg",
             "city": "Copenhagen",
             "title": "Place name",
             "category": "Café",
@@ -213,6 +214,7 @@
         "place_wNzpJk": {
           "type": "place",
           "settings": {
+            "image": "shopify://shop_images/esmee-space-copenhagen_dezeen_2364_col_15.jpg",
             "city": "Copenhagen",
             "title": "Place name",
             "category": "Café",
