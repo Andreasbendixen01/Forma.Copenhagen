@@ -240,70 +240,82 @@
 
 /* =========================================================
    FORMA EDIT — PRODUCT CAROUSEL
+   4.33 PRODUCTS VISIBLE / DESKTOP
    ========================================================= */
 
-/* DESKTOP */
 @media screen and (min-width: 700px) {
 
   #shopify-section-{{ section.id }} .forma-product-carousel {
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
+    width: 100%;
+    max-width: none;
+    overflow: hidden;
+    position: relative;
   }
 
   #shopify-section-{{ section.id }} .forma-product-carousel .product-list {
     display: flex !important;
-    flex-direction: row !important;
     flex-wrap: nowrap !important;
+    flex-direction: row !important;
 
     width: 100% !important;
     max-width: none !important;
 
-    margin: 0 !important;
+    /* 4.33 products visible */
+    gap: 16px !important;
+
+    /* Start helt ude ved kanten */
     padding: 0 !important;
+    margin: 0 !important;
 
-    gap: 24px !important;
-
+    /* ENABLE HORIZONTAL SCROLL */
     overflow-x: auto !important;
     overflow-y: hidden !important;
 
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+
     scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
 
     scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
   }
 
   #shopify-section-{{ section.id }} .forma-product-carousel .product-list::-webkit-scrollbar {
     display: none !important;
   }
 
-  /* 4.33 produkter synlige */
+
+  /* =====================================================
+     PRODUCT CARDS
+     ===================================================== */
+
   #shopify-section-{{ section.id }} .forma-product-carousel .product-list > * {
     flex: 0 0 calc(
-      (100% - (3.33 * 24px)) / 4.33
+      (100% - (3.33 * 16px)) / 4.33
     ) !important;
 
     width: calc(
-      (100% - (3.33 * 24px)) / 4.33
+      (100% - (3.33 * 16px)) / 4.33
     ) !important;
 
     min-width: calc(
-      (100% - (3.33 * 24px)) / 4.33
+      (100% - (3.33 * 16px)) / 4.33
     ) !important;
 
     max-width: calc(
-      (100% - (3.33 * 24px)) / 4.33
+      (100% - (3.33 * 16px)) / 4.33
     ) !important;
 
     margin: 0 !important;
-    padding: 0 !important;
 
     scroll-snap-align: start;
   }
 
-  /* Product card */
+
+  /* =====================================================
+     PRODUCT CARD
+     ===================================================== */
+
   #shopify-section-{{ section.id }} .forma-product-carousel product-card {
     display: block !important;
 
@@ -312,7 +324,11 @@
     max-width: none !important;
   }
 
-  /* Product image */
+
+  /* =====================================================
+     PRODUCT IMAGE
+     ===================================================== */
+
   #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure {
     width: 100% !important;
     height: auto !important;
@@ -323,13 +339,19 @@
   }
 
   #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure img {
+    display: block !important;
+
     width: 100% !important;
     height: 100% !important;
 
     object-fit: cover !important;
   }
 
-  /* FORMA HEART */
+
+  /* =====================================================
+     FORMA HEART
+     ===================================================== */
+
   #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button,
   #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button button {
     width: 32px !important;
