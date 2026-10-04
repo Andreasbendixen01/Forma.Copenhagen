@@ -385,23 +385,30 @@
      PRODUCT IMAGE
      ======================================================= */
 
- /* =========================================================
-   FORMA EDIT — LOWER PRODUCT CARD
-   ========================================================= */
+  #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure {
+    width: 100% !important;
+    height: auto !important;
 
-#shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure {
-  width: 100% !important;
-  height: auto !important;
-  aspect-ratio: 0.86 / 1 !important;
-  overflow: hidden !important;
-}
+    /*
+      Samme visuelle proportion som Les Deux.
+      Giver en lavere produktblok end den nuværende.
+    */
+    aspect-ratio: 77 / 100 !important;
 
-#shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  display: block !important;
-}
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+
+  #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure img {
+    width: 100% !important;
+    height: 100% !important;
+
+    object-fit: cover !important;
+
+    display: block !important;
+  }
 
 
   /* =======================================================
