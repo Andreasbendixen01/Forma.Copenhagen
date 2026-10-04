@@ -200,22 +200,39 @@
    ========================================================= */
 
 #shopify-section-{{ section.id }} .product-card__info {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 12px 0 0 0 !important;
+
   text-align: left !important;
 }
 
+/* BRAND + PRODUCT INFO */
 #shopify-section-{{ section.id }} .product-card__info > .v-stack {
   display: grid !important;
-  grid-template-columns: 1fr auto;
+
+  grid-template-columns: minmax(0, 1fr) auto;
+
   align-items: start;
-  column-gap: 12px;
-  width: 100%;
+
+  column-gap: 8px;
+
+  width: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* BRAND — RIGHT */
 #shopify-section-{{ section.id }} .product-card__info > .v-stack > :first-child {
   grid-column: 2;
   grid-row: 1;
+
   justify-self: end;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
   text-align: right !important;
 }
 
@@ -223,18 +240,45 @@
 #shopify-section-{{ section.id }} .product-card__info > .v-stack > :last-child {
   grid-column: 1;
   grid-row: 1;
+
+  width: 100% !important;
+  min-width: 0 !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
   justify-items: start !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
   text-align: left !important;
 }
 
-/* Product title */
+/* PRODUCT TITLE */
 #shopify-section-{{ section.id }} .product-card__info .product-title {
+  display: block !important;
+
+  width: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
   text-align: left !important;
 }
 
-/* Price */
+/* PRICE */
 #shopify-section-{{ section.id }} .product-card__info .price-list {
+  display: flex !important;
+
   justify-content: flex-start !important;
+  align-items: flex-start !important;
+
+  width: 100% !important;
+
+  margin: 4px 0 0 0 !important;
+  padding: 0 !important;
+
   text-align: left !important;
 }
 
@@ -242,76 +286,88 @@
    FORMA EDIT — PRODUCT CAROUSEL
    ========================================================= */
 
-/* DESKTOP */
+/* =========================================================
+   FORMA EDIT — DESKTOP PRODUCT CAROUSEL
+   ========================================================= */
+
 @media screen and (min-width: 700px) {
 
+  /* CAROUSEL WRAPPER */
   #shopify-section-{{ section.id }} .forma-product-carousel {
-    width: 100%;
-    position: relative;
+    width: 100vw !important;
+    max-width: 100vw !important;
+
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: 0 !important;
+
+    padding: 0 !important;
+
     overflow: visible !important;
   }
 
+
+  /* =======================================================
+     PRODUCT SCROLLER
+     ======================================================= */
+
   #shopify-section-{{ section.id }} .forma-product-carousel .product-list {
     display: flex !important;
+
+    flex-direction: row !important;
     flex-wrap: nowrap !important;
 
-    width: 100% !important;
-    max-width: none !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
 
-    gap: 24px !important;
+    margin: 0 !important;
+    padding: 0 0 8px 0 !important;
+
+    gap: 8px !important;
 
     overflow-x: auto !important;
     overflow-y: hidden !important;
 
-    padding: 0 !important;
-    margin: 0 !important;
-
     scrollbar-width: none;
 
     scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
 
     -webkit-overflow-scrolling: touch;
-    cursor: grab;
+
+    justify-content: flex-start !important;
   }
 
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-list:active {
-    cursor: grabbing;
-  }
 
+  /* HIDE SCROLLBAR — CHROME / SAFARI */
   #shopify-section-{{ section.id }} .forma-product-carousel .product-list::-webkit-scrollbar {
     display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
 
 
-  /* =====================================================
-     4.33 PRODUKTER PÅ SKÆRMEN
-     ===================================================== */
+  /* =======================================================
+     4.33 PRODUCTS VISIBLE
+     ======================================================= */
 
   #shopify-section-{{ section.id }} .forma-product-carousel .product-list > * {
-    flex: 0 0 calc(
-      (100% - (3.33 * 24px)) / 4.33
-    ) !important;
+    flex: 0 0 calc((100vw - 32px) / 4.33) !important;
 
-    width: calc(
-      (100% - (3.33 * 24px)) / 4.33
-    ) !important;
+    width: calc((100vw - 32px) / 4.33) !important;
 
-    min-width: calc(
-      (100% - (3.33 * 24px)) / 4.33
-    ) !important;
+    min-width: calc((100vw - 32px) / 4.33) !important;
 
-    max-width: calc(
-      (100% - (3.33 * 24px)) / 4.33
-    ) !important;
+    max-width: calc((100vw - 32px) / 4.33) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
 
     scroll-snap-align: start;
   }
 
 
-  /* =====================================================
+  /* =======================================================
      PRODUCT CARD
-     ===================================================== */
+     ======================================================= */
 
   #shopify-section-{{ section.id }} .forma-product-carousel product-card {
     display: block !important;
@@ -319,33 +375,47 @@
     width: 100% !important;
     min-width: 0 !important;
     max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
 
-  /* =====================================================
+  /* =======================================================
      PRODUCT IMAGE
-     ===================================================== */
+     ======================================================= */
 
   #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure {
     width: 100% !important;
+
     height: auto !important;
 
-    aspect-ratio: 4 / 5 !important;
+    /*
+      Samme visuelle proportion som Les Deux.
+      Giver en lavere produktblok end den nuværende.
+    */
+    aspect-ratio: 77 / 100 !important;
 
     overflow: hidden !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
   }
+
 
   #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure img {
     width: 100% !important;
     height: 100% !important;
 
     object-fit: cover !important;
+
+    display: block !important;
   }
 
 
-  /* =====================================================
-     HEART
-     ===================================================== */
+  /* =======================================================
+     HEART / SAVE BUTTON
+     ======================================================= */
 
   #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button,
   #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button button {
@@ -362,12 +432,15 @@
     border-radius: 0 !important;
 
     background: transparent !important;
+
     box-shadow: none !important;
 
     display: flex !important;
+
     align-items: center !important;
     justify-content: center !important;
   }
+
 
   #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button svg,
   #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button button svg {
@@ -375,13 +448,16 @@
     height: 18px !important;
 
     stroke-width: 1.5 !important;
+
     fill: none !important;
   }
+
 
   #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button::before,
   #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button::after {
     display: none !important;
   }
+
 }
 
 
