@@ -239,80 +239,97 @@
 }
 
 /* =========================================================
-   FORMA EDIT — MATCH SHOP THE STORY
+   FORMA EDIT — PRODUCT CAROUSEL
    ========================================================= */
 
 /* DESKTOP */
 @media screen and (min-width: 700px) {
 
   #shopify-section-{{ section.id }} .forma-product-carousel {
-    width: 100%;
-    overflow: hidden;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
   }
 
   #shopify-section-{{ section.id }} .forma-product-carousel .product-list {
-    display: grid !important;
-    grid-auto-flow: column !important;
-
-    grid-auto-columns: calc(
-      (100% - (4 * 24px)) / 4.33
-    ) !important;
-
-    gap: 24px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
 
     width: 100% !important;
     max-width: none !important;
 
-    overflow-x: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
 
-    padding: 0 24px 8px !important;
+    gap: 24px !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
 
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-list::-webkit-scrollbar {
-    display: none;
-  }
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-list > * {
-    min-width: 0 !important;
-    width: 100% !important;
-  }
-
 
   #shopify-section-{{ section.id }} .forma-product-carousel .product-list::-webkit-scrollbar {
     display: none !important;
   }
 
-  /* Selve product card */
+  /* 4.33 produkter synlige */
   #shopify-section-{{ section.id }} .forma-product-carousel .product-list > * {
-    width: 385px !important;
-    min-width: 385px !important;
-    max-width: 385px !important;
+    flex: 0 0 calc(
+      (100% - (3.33 * 24px)) / 4.33
+    ) !important;
+
+    width: calc(
+      (100% - (3.33 * 24px)) / 4.33
+    ) !important;
+
+    min-width: calc(
+      (100% - (3.33 * 24px)) / 4.33
+    ) !important;
+
+    max-width: calc(
+      (100% - (3.33 * 24px)) / 4.33
+    ) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    scroll-snap-align: start;
   }
 
+  /* Product card */
   #shopify-section-{{ section.id }} .forma-product-carousel product-card {
     display: block !important;
-    width: 385px !important;
-    min-width: 385px !important;
-    max-width: 385px !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
   }
 
-  /* SAMME BILLEDFORHOLD SOM SHOP THE STORY */
+  /* Product image */
   #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure {
-    width: 385px !important;
+    width: 100% !important;
     height: auto !important;
+
     aspect-ratio: 4 / 5 !important;
+
     overflow: hidden !important;
   }
 
   #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure img {
     width: 100% !important;
     height: 100% !important;
+
     object-fit: cover !important;
   }
 
-  /* FORMA HEART — SAMME SOM SHOP THE STORY */
+  /* FORMA HEART */
   #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button,
   #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button button {
     width: 32px !important;
@@ -348,6 +365,7 @@
   #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button::after {
     display: none !important;
   }
+
 }
 
 
