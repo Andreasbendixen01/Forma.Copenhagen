@@ -194,6 +194,50 @@
   margin-top: 0 !important;
 }
 
+
+/* =========================================================
+   FORMA EDIT — PRODUCT INFORMATION
+   ========================================================= */
+
+#shopify-section-{{ section.id }} .product-card__info {
+  text-align: left !important;
+}
+
+#shopify-section-{{ section.id }} .product-card__info > .v-stack {
+  display: grid !important;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  column-gap: 12px;
+  width: 100%;
+}
+
+/* BRAND — RIGHT */
+#shopify-section-{{ section.id }} .product-card__info > .v-stack > :first-child {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  text-align: right !important;
+}
+
+/* PRODUCT NAME + PRICE — LEFT */
+#shopify-section-{{ section.id }} .product-card__info > .v-stack > :last-child {
+  grid-column: 1;
+  grid-row: 1;
+  justify-items: start !important;
+  text-align: left !important;
+}
+
+/* Product title */
+#shopify-section-{{ section.id }} .product-card__info .product-title {
+  text-align: left !important;
+}
+
+/* Price */
+#shopify-section-{{ section.id }} .product-card__info .price-list {
+  justify-content: flex-start !important;
+  text-align: left !important;
+}
+
 /* =========================================================
    FORMA EDIT — MATCH SHOP THE STORY
    ========================================================= */
@@ -202,28 +246,39 @@
 @media screen and (min-width: 700px) {
 
   #shopify-section-{{ section.id }} .forma-product-carousel {
-    width: 100% !important;
-    overflow: hidden !important;
+    width: 100%;
+    overflow: hidden;
   }
 
   #shopify-section-{{ section.id }} .forma-product-carousel .product-list {
     display: grid !important;
     grid-auto-flow: column !important;
 
-    /* SAMME BREDDE SOM SHOP THE STORY */
-    grid-auto-columns: 385px !important;
+    grid-auto-columns: calc(
+      (100% - (4 * 24px)) / 4.33
+    ) !important;
 
-    gap: 10px !important;
+    gap: 24px !important;
 
     width: 100% !important;
     max-width: none !important;
 
     overflow-x: auto !important;
 
-    padding: 0 10px 8px !important;
+    padding: 0 24px 8px !important;
 
-    scrollbar-width: none !important;
+    scrollbar-width: none;
   }
+
+  #shopify-section-{{ section.id }} .forma-product-carousel .product-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .forma-product-carousel .product-list > * {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
 
   #shopify-section-{{ section.id }} .forma-product-carousel .product-list::-webkit-scrollbar {
     display: none !important;
@@ -553,29 +608,24 @@
 
           <div class="forma-edit-section-header">
 
-            <div class="forma-edit-section-header__content">
+        <div class="forma-edit-section-header__content">
+          <h2 class="forma-edit-section-header__title">
+            {{ section.blocks.first.settings.title }}
+          </h2>
+        </div>
 
-              <h2 class="forma-edit-section-header__title">
-                {{ section.blocks.first.settings.title }}
-              </h2>
+        {%- if section.blocks.size == 1 and section.blocks.first.settings.link_text != blank -%}
+          {%- assign header_link = section.blocks.first.settings.link_url | default: section.blocks.first.settings.collection.url | default: '#' -%}
 
+          <a
+            href="{{ header_link }}"
+            class="forma-edit-section-header__link"
+          >
+            {{ section.blocks.first.settings.link_text }}
+          </a>
+        {%- endif -%}
 
-              {%- if section.blocks.size == 1 and section.blocks.first.settings.link_text != blank -%}
-
-                {%- assign header_link = section.blocks.first.settings.link_url | default: section.blocks.first.settings.collection.url | default: '#' -%}
-
-                <a
-                  href="{{ header_link }}"
-                  class="forma-edit-section-header__link"
-                >
-                  {{ section.blocks.first.settings.link_text }}
-                </a>
-
-              {%- endif -%}
-
-            </div>
-
-          </div>
+      </div>
 
         {%- endunless -%}
 
