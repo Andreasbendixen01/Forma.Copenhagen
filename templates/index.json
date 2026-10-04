@@ -196,12 +196,82 @@
         "vertical_spacing_factor": 0.2,
         "hide_collection_title": false
       }
+    },
+    "forma_places_nMNPjJ": {
+      "type": "forma-places",
+      "blocks": {
+        "place_cpwKdx": {
+          "type": "place",
+          "settings": {
+            "city": "Copenhagen",
+            "title": "Place name",
+            "category": "Café",
+            "description": "",
+            "link": ""
+          }
+        },
+        "place_wNzpJk": {
+          "type": "place",
+          "settings": {
+            "city": "Copenhagen",
+            "title": "Place name",
+            "category": "Café",
+            "description": "",
+            "link": ""
+          }
+        },
+        "place_3pKEzJ": {
+          "type": "place",
+          "settings": {
+            "city": "Copenhagen",
+            "title": "Place name",
+            "category": "Café",
+            "description": "",
+            "link": ""
+          }
+        },
+        "place_7ThGDi": {
+          "type": "place",
+          "settings": {
+            "city": "Copenhagen",
+            "title": "Place name",
+            "category": "Café",
+            "description": "",
+            "link": ""
+          }
+        },
+        "place_ph7qJx": {
+          "type": "place",
+          "settings": {
+            "city": "Copenhagen",
+            "title": "Place name",
+            "category": "Café",
+            "description": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "place_cpwKdx",
+        "place_wNzpJk",
+        "place_3pKEzJ",
+        "place_7ThGDi",
+        "place_ph7qJx"
+      ],
+      "name": "FORMA Places",
+      "settings": {
+        "heading": "FORMA Places",
+        "subheading": "Places worth knowing.",
+        "view_all_text": "View all →",
+        "view_all_link": ""
+      }
     }
   },
   "order": [
     "collection_list_Q8bn9L",
     "featured_collections_KVhnaK",
     "forma_journal_slider_HJFewJ",
-    "featured_collections_xNqKEV"
+    "featured_collections_xNqKEV",
+    "forma_places_nMNPjJ"
   ]
 }

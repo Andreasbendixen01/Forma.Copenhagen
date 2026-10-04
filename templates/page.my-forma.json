@@ -1,4 +1,12 @@
-
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -193,12 +201,6 @@
       ],
       "name": "t:sections.featured_collections.presets.featured_collections.name",
       "settings": {
-        "show_editorial_card": true,
-        "editorial_eyebrow": "Recommended For You",
-        "editorial_title": "Editors Picks",
-        "editorial_text": "",
-        "editorial_button": "Explore edit →",
-        "editorial_link": "",
         "color_scheme": "",
         "separate_section_with_border": false,
         "hide_product_information": false,
@@ -207,7 +209,6 @@
         "products_per_row_desktop": 4,
         "horizontal_spacing_factor": 1,
         "vertical_spacing_factor": 1,
-        "subheading": "",
         "hide_collection_title": false
       }
     },
