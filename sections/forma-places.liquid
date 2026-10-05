@@ -12,7 +12,6 @@
   <div class="forma-places__header">
 
     <div class="forma-places__heading">
-
       <h2 class="forma-places__title">
         {{ section.settings.heading }}
       </h2>
@@ -22,7 +21,6 @@
           {{ section.settings.subheading }}
         </p>
       {% endif %}
-
     </div>
 
     {% if section.settings.view_all_text != blank %}
@@ -54,58 +52,58 @@
           class="forma-place__link"
         >
 
+          <!-- IMAGE -->
           <div class="forma-place__image-wrapper">
 
-        {% if block.settings.image != blank %}
-            {{
-            block.settings.image
-            | image_url: width: 1600
-            | image_tag:
-                loading: 'lazy',
-                widths: '600, 900, 1200, 1600',
-                sizes: '(max-width: 699px) 82vw, 31vw',
-                class: 'forma-place__image'
-            }}
+            {% if block.settings.image != blank %}
+
+              {{
+                block.settings.image
+                | image_url: width: 1600
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '600, 900, 1200, 1600',
+                  sizes: '(max-width: 699px) 82vw, 31vw',
+                  class: 'forma-place__image'
+              }}
+
             {% else %}
-                {{ 'image' | placeholder_svg_tag: 'forma-place__placeholder' }}
+
+              {{ 'image' | placeholder_svg_tag: 'forma-place__placeholder' }}
+
             {% endif %}
 
+
+            <!-- FORMA RECOMMENDS -->
             <span class="forma-place__recommend">
-                FORMA RECOMMENDS
+              FORMA RECOMMENDS
             </span>
 
-        </div>
 
-        <div class="forma-place__content">
+            <!-- CATEGORY -->
+            {% if block.settings.category != blank %}
+              <span class="forma-place__category">
+                {{ block.settings.category }}
+              </span>
+            {% endif %}
 
-            <div class="forma-place__top">
+          </div>
+
+
+          <!-- CONTENT -->
+          <div class="forma-place__content">
 
             {% if block.settings.city != blank %}
-            <span class="forma-place__city">
+              <div class="forma-place__city">
                 {{ block.settings.city }}
-            </span>
+              </div>
             {% endif %}
-
-            {% if block.settings.category != blank %}
-            <span class="forma-place__category">
-                {{ block.settings.category }}
-            </span>
-            {% endif %}
-
-        </div>
 
 
             {% if block.settings.title != blank %}
               <h3 class="forma-place__title">
                 {{ block.settings.title }}
               </h3>
-            {% endif %}
-
-
-            {% if block.settings.category != blank %}
-              <p class="forma-place__category">
-                {{ block.settings.category }}
-              </p>
             {% endif %}
 
 
@@ -133,15 +131,13 @@
        ============================================================ */
 
     #forma-places-{{ section.id }} {
-
       --places-gap: 5px;
 
       width: 100%;
       overflow: hidden;
 
-      padding-top: 0px;
-      padding-bottom: 0px;
-
+      padding-top: 0;
+      padding-bottom: 0;
     }
 
 
@@ -158,7 +154,6 @@
       width: 100%;
 
       padding: 0 12px 18px;
-
     }
 
 
@@ -168,7 +163,6 @@
       align-items: baseline;
 
       min-width: 0;
-
     }
 
 
@@ -182,9 +176,8 @@
 
       font-weight: 400;
       letter-spacing: 0;
-      
-      font-family: Georgia, "Times New Roman", serif !important;
 
+      font-family: Georgia, "Times New Roman", serif !important;
     }
 
 
@@ -198,7 +191,6 @@
       font-weight: 400;
 
       opacity: 0.55;
-
     }
 
 
@@ -209,7 +201,6 @@
     #forma-places-{{ section.id }} .forma-places__view-all {
 
       flex-shrink: 0;
-
       margin-left: auto;
 
       color: inherit;
@@ -220,15 +211,13 @@
 
       font-weight: 400;
 
-      transition: opacity 0.2s ease;
-
+      transition: opacity 0.25s ease;
     }
 
 
     #forma-places-{{ section.id }} .forma-places__view-all:hover {
 
       opacity: 0.5;
-
     }
 
 
@@ -247,7 +236,12 @@
       overflow-x: auto;
       overflow-y: hidden;
 
-      padding-left: 12px;
+      /*
+        IMPORTANT:
+        No left padding.
+        Cards now start completely flush with the viewport.
+      */
+      padding-left: 0;
       padding-right: 12px;
 
       scroll-behavior: smooth;
@@ -255,14 +249,12 @@
       scrollbar-width: none;
 
       -webkit-overflow-scrolling: touch;
-
     }
 
 
     #forma-places-{{ section.id }} .forma-places__track::-webkit-scrollbar {
 
       display: none;
-
     }
 
 
@@ -279,7 +271,6 @@
       min-width: 0;
 
       scroll-snap-align: start;
-
     }
 
 
@@ -289,7 +280,6 @@
 
       color: inherit;
       text-decoration: none;
-
     }
 
 
@@ -309,6 +299,9 @@
 
       background: #f3f3f3;
 
+      transition:
+        transform 0.5s cubic-bezier(.2,.6,.2,1),
+        box-shadow 0.5s cubic-bezier(.2,.6,.2,1);
     }
 
 
@@ -323,184 +316,136 @@
 
       transition:
         transform 0.7s cubic-bezier(.2,.6,.2,1);
+    }
 
+
+    /* ============================================================
+       FORMA RECOMMENDS
+       ============================================================ */
+
+    #forma-places-{{ section.id }} .forma-place__recommend {
+
+      position: absolute;
+
+      top: 14px;
+      left: 14px;
+
+      display: inline-flex;
+      align-items: center;
+
+      padding: 7px 10px;
+
+      color: rgba(255,255,255,0.96);
+
+      font-size: 9px;
+      font-weight: 500;
+
+      line-height: 1;
+
+      letter-spacing: 0.13em;
+
+      text-transform: uppercase;
+
+      background: rgba(20,20,20,0.30);
+
+      border: 1px solid rgba(255,255,255,0.20);
+
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+
+      box-shadow:
+        0 4px 18px rgba(0,0,0,0.10);
+
+      transition:
+        background 0.35s ease,
+        border-color 0.35s ease,
+        transform 0.35s ease;
+    }
+
+
+    /* ============================================================
+       CATEGORY — INSIDE IMAGE
+       ============================================================ */
+
+    #forma-places-{{ section.id }} .forma-place__category {
+
+      position: absolute;
+
+      right: 14px;
+      bottom: 14px;
+
+      margin: 0;
+
+      display: inline-flex;
+      align-items: center;
+
+      padding: 7px 10px;
+
+      color: rgba(255,255,255,0.96);
+
+      font-size: 9px;
+      font-weight: 500;
+
+      line-height: 1;
+
+      letter-spacing: 0.13em;
+
+      text-transform: uppercase;
+
+      background: rgba(20,20,20,0.30);
+
+      border: 1px solid rgba(255,255,255,0.20);
+
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+
+      box-shadow:
+        0 4px 18px rgba(0,0,0,0.10);
+
+      transition:
+        background 0.35s ease,
+        border-color 0.35s ease,
+        transform 0.35s ease;
+    }
+
+
+    /* ============================================================
+       PREMIUM HOVER
+       ============================================================ */
+
+    #forma-places-{{ section.id }} .forma-place__link:hover
+    .forma-place__image-wrapper {
+
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 14px 35px rgba(0,0,0,0.12);
     }
 
 
     #forma-places-{{ section.id }} .forma-place__link:hover
     .forma-place__image {
 
-      transform: scale(1.025);
-
+      transform: scale(1.035);
     }
 
 
-    /* ============================================================
-   FORMA RECOMMENDS
-   ============================================================ */
+    #forma-places-{{ section.id }} .forma-place__link:hover
+    .forma-place__recommend {
 
-#forma-places-{{ section.id }} .forma-place__recommend {
-  position: absolute;
-  top: 14px;
-  left: 14px;
+      background: rgba(20,20,20,0.46);
 
-  display: inline-flex;
-  align-items: center;
-
-  padding: 7px 10px;
-
-  color: rgba(255,255,255,0.96);
-
-  font-size: 9px;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.13em;
-
-  text-transform: uppercase;
-
-  background: rgba(20,20,20,0.32);
-
-  border: 1px solid rgba(255,255,255,0.18);
-
-  backdrop-filter: blur(12px) saturate(120%);
-  -webkit-backdrop-filter: blur(12px) saturate(120%);
-
-  box-shadow:
-    0 4px 18px rgba(0,0,0,0.08);
-
-  transition:
-    background 0.35s ease,
-    border-color 0.35s ease,
-    transform 0.35s ease;
-}
+      transform: translateY(-1px);
+    }
 
 
-/* ============================================================
-   CONTENT TOP
-   ============================================================ */
+    #forma-places-{{ section.id }} .forma-place__link:hover
+    .forma-place__category {
 
-#forma-places-{{ section.id }} .forma-place__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+      background: rgba(20,20,20,0.46);
 
-  margin-bottom: 7px;
-}
-
-
-/* ============================================================
-   CITY
-   ============================================================ */
-
-#forma-places-{{ section.id }} .forma-place__city {
-  position: static;
-
-  padding: 0;
-
-  color: inherit;
-
-  font-size: 10px;
-  font-weight: 400;
-  line-height: 1.2;
-
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-
-  background: none;
-
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-
-  opacity: 0.45;
-}
-
-
-/* ============================================================
-   CATEGORY
-   ============================================================ */
-
-#forma-places-{{ section.id }} .forma-place__category {
-  font-size: 10px;
-  font-weight: 400;
-  line-height: 1.2;
-
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-
-  opacity: 0.45;
-
-  text-align: right;
-}
-
-
-/* ============================================================
-   REMOVE OLD ARROW
-   ============================================================ */
-
-#forma-places-{{ section.id }} .forma-place__arrow {
-  display: none !important;
-}
-
-
-/* ============================================================
-   PREMIUM HOVER
-   ============================================================ */
-
-#forma-places-{{ section.id }} .forma-place__image-wrapper {
-  position: relative;
-  overflow: hidden;
-
-  transition:
-    box-shadow 0.5s cubic-bezier(.2,.6,.2,1),
-    transform 0.5s cubic-bezier(.2,.6,.2,1);
-}
-
-
-#forma-places-{{ section.id }} .forma-place__link:hover
-.forma-place__image-wrapper {
-
-  transform: translateY(-3px);
-
-  box-shadow:
-    0 14px 35px rgba(0,0,0,0.12);
-}
-
-
-#forma-places-{{ section.id }} .forma-place__link:hover
-.forma-place__image {
-
-  transform: scale(1.035);
-}
-
-
-/* Recommends label becomes slightly more present */
-
-#forma-places-{{ section.id }} .forma-place__link:hover
-.forma-place__recommend {
-
-  background: rgba(20,20,20,0.46);
-
-  border-color: rgba(255,255,255,0.32);
-
-  transform: translateY(-1px);
-}
-
-
-/* Title subtly reacts */
-
-#forma-places-{{ section.id }} .forma-place__title {
-
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
-}
-
-
-#forma-places-{{ section.id }} .forma-place__link:hover
-.forma-place__title {
-
-  transform: translateX(2px);
-}
+      transform: translateY(-1px);
+    }
 
 
     /* ============================================================
@@ -510,25 +455,21 @@
     #forma-places-{{ section.id }} .forma-place__content {
 
       padding-top: 11px;
-
     }
 
 
-    #forma-places-{{ section.id }} .forma-place__top {
-
-      display: flex;
-
-      align-items: center;
-      justify-content: space-between;
-
-      margin-bottom: 5px;
-
-    }
-
+    /* ============================================================
+       CITY
+       ============================================================ */
 
     #forma-places-{{ section.id }} .forma-place__city {
 
+      margin: 0 0 5px;
+
+      padding: 0;
+
       font-size: 10px;
+
       line-height: 1.2;
 
       font-weight: 400;
@@ -537,73 +478,52 @@
 
       text-transform: uppercase;
 
-      opacity: 0.5;
-
+      opacity: 0.45;
     }
 
 
-    #forma-places-{{ section.id }} .forma-place__arrow {
-
-      font-size: 15px;
-
-      opacity: 0;
-
-      transform: translate(-3px, 3px);
-
-      transition:
-        opacity 0.2s ease,
-        transform 0.2s ease;
-
-    }
-
-
-    #forma-places-{{ section.id }} .forma-place__link:hover
-    .forma-place__arrow {
-
-      opacity: 0.8;
-
-      transform: translate(0, 0);
-
-    }
-
+    /* ============================================================
+       TITLE
+       ============================================================ */
 
     #forma-places-{{ section.id }} .forma-place__title {
 
       margin: 0;
 
       font-size: 19px;
+
       line-height: 1.15;
 
       font-weight: 400;
 
       letter-spacing: -0.015em;
 
+      transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
     }
 
 
-    #forma-places-{{ section.id }} .forma-place__category {
+    #forma-places-{{ section.id }} .forma-place__link:hover
+    .forma-place__title {
 
-      margin: 5px 0 0;
-
-      font-size: 11px;
-      line-height: 1.25;
-
-      font-weight: 400;
-
-      opacity: 0.55;
-
+      transform: translateX(2px);
     }
 
+
+    /* ============================================================
+       DESCRIPTION
+       ============================================================ */
 
     #forma-places-{{ section.id }} .forma-place__description {
 
       margin: 4px 0 0;
 
       font-size: 12px;
+
       line-height: 1.3;
 
       opacity: 0.55;
-
     }
 
 
@@ -617,7 +537,6 @@
 
         padding-top: 32px;
         padding-bottom: 40px;
-
       }
 
 
@@ -626,14 +545,12 @@
         align-items: baseline;
 
         padding: 0 12px 14px;
-
       }
 
 
       #forma-places-{{ section.id }} .forma-places__title {
 
         font-size: 16px;
-
       }
 
 
@@ -642,14 +559,12 @@
         margin-left: 10px;
 
         font-size: 11px;
-
       }
 
 
       #forma-places-{{ section.id }} .forma-places__view-all {
 
         font-size: 12px;
-
       }
 
 
@@ -657,39 +572,49 @@
 
         gap: 12px;
 
-        padding-left: 12px;
+        padding-left: 0;
         padding-right: 12px;
-
       }
 
 
       #forma-places-{{ section.id }} .forma-place {
 
         flex: 0 0 82vw;
-
       }
 
 
       #forma-places-{{ section.id }} .forma-place__image-wrapper {
 
         aspect-ratio: 4 / 5;
-
       }
 
 
       #forma-places-{{ section.id }} .forma-place__title {
 
         font-size: 18px;
+      }
 
+
+      #forma-places-{{ section.id }} .forma-place__recommend,
+      #forma-places-{{ section.id }} .forma-place__category {
+
+        font-size: 8px;
+
+        padding: 6px 7px;
       }
 
 
       #forma-places-{{ section.id }} .forma-place__recommend {
 
-        font-size: 8px;
+        top: 10px;
+        left: 10px;
+      }
 
-        padding: 6px 7px;
 
+      #forma-places-{{ section.id }} .forma-place__category {
+
+        right: 10px;
+        bottom: 10px;
       }
 
     }
@@ -705,98 +630,120 @@
     "class": "forma-places-section",
 
     "settings": [
+
       {
         "type": "text",
         "id": "heading",
         "label": "Heading",
         "default": "FORMA Places"
       },
+
       {
         "type": "text",
         "id": "subheading",
         "label": "Subheading",
         "default": "Places we recommend."
       },
+
       {
         "type": "text",
         "id": "view_all_text",
         "label": "View all text",
         "default": "View all →"
       },
+
       {
         "type": "url",
         "id": "view_all_link",
         "label": "View all link"
       }
+
     ],
 
+
     "blocks": [
+
       {
         "type": "place",
         "name": "Place",
 
         "settings": [
+
           {
             "type": "image_picker",
             "id": "image",
             "label": "Image"
           },
+
           {
             "type": "text",
             "id": "city",
             "label": "City",
             "default": "Copenhagen"
           },
+
           {
             "type": "text",
             "id": "title",
             "label": "Place name",
             "default": "Place name"
           },
+
           {
             "type": "text",
             "id": "category",
             "label": "Category",
             "default": "Café"
           },
+
           {
             "type": "text",
             "id": "description",
             "label": "Description"
           },
+
           {
             "type": "url",
             "id": "link",
             "label": "Place link"
           }
-        ]
 
+        ]
       }
+
     ],
 
+
     "presets": [
+
       {
         "name": "FORMA Places",
 
         "blocks": [
+
           {
             "type": "place"
           },
+
           {
             "type": "place"
           },
+
           {
             "type": "place"
           },
+
           {
             "type": "place"
           },
+
           {
             "type": "place"
           }
-        ]
 
+        ]
       }
+
     ]
 
   }
