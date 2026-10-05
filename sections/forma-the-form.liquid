@@ -18,6 +18,18 @@
   class="forma-the-form"
 >
 
+  <div class="forma-the-form__header">
+    <h2 class="forma-the-form__title">
+      {{ section.settings.heading | default: 'The Form' }}
+    </h2>
+
+    {%- if section.settings.intro != blank -%}
+      <p class="forma-the-form__intro">
+        {{ section.settings.intro }}
+      </p>
+    {%- endif -%}
+  </div>
+
   <div class="forma-the-form__grid">
 
     {%- for block in section.blocks -%}
@@ -253,6 +265,35 @@
     padding: 30px;
 
     color: #fff;
+  }
+
+
+  /* Small FORMA label */
+
+  #forma-the-form-{{ section.id }} .forma-the-form__eyebrow {
+    position: absolute;
+
+    top: 20px;
+    left: 20px;
+
+    padding: 7px 11px;
+
+    border: 1px solid rgba(255,255,255,0.42);
+
+    background: rgba(20,20,20,0.20);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    font-size: 9px;
+    font-weight: 500;
+
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+
+    line-height: 1;
+
+    color: rgba(255,255,255,0.92);
   }
 
 
