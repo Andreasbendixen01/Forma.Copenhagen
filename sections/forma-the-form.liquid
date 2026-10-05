@@ -1,902 +1,639 @@
-{% comment %}
-  ================================================================
+{%- comment -%}
+  ==========================================================================
   FORMA — THE FORM
-  Editorial lifestyle discovery section
-  ================================================================
-{% endcomment %}
+  Editorial category grid inspired by premium lifestyle platforms
+  ==========================================================================
+
+  Cards:
+  1. Wardrobe
+  2. The Lifestyle
+  3. The Home
+  4. The Form
+  5. Places
+  6. Journal
+{%- endcomment -%}
 
 <section
   id="forma-the-form-{{ section.id }}"
   class="forma-the-form"
 >
 
-  <!-- ============================================================
-       HEADER
-       ============================================================ -->
-
   <div class="forma-the-form__header">
+    <h2 class="forma-the-form__title">
+      {{ section.settings.heading | default: 'The Form' }}
+    </h2>
 
-    <div class="forma-the-form__heading">
-
-      <h2 class="forma-the-form__title">
-        {{ section.settings.heading }}
-      </h2>
-
-      {% if section.settings.subheading != blank %}
-        <p class="forma-the-form__subtitle">
-          {{ section.settings.subheading }}
-        </p>
-      {% endif %}
-
-    </div>
-
-
-    {% if section.settings.view_all_text != blank %}
-      <a
-        href="{{ section.settings.view_all_link }}"
-        class="forma-the-form__view-all"
-      >
-        {{ section.settings.view_all_text }}
-      </a>
-    {% endif %}
-
+    {%- if section.settings.intro != blank -%}
+      <p class="forma-the-form__intro">
+        {{ section.settings.intro }}
+      </p>
+    {%- endif -%}
   </div>
 
+  <div class="forma-the-form__grid">
 
-  <!-- ============================================================
-       EDITORIAL GRID
-       ============================================================ -->
+    {%- for block in section.blocks -%}
 
-  <div
-    class="forma-the-form__grid"
-    data-forma-the-form-grid
-  >
-
-    {% for block in section.blocks %}
-
-      <article
-        class="
-          forma-the-form__item
-          forma-the-form__item--{{ forloop.index }}
-        "
+      <a
+        href="{{ block.settings.link | default: '#' }}"
+        class="forma-the-form__card"
         {{ block.shopify_attributes }}
       >
 
-        <a
-          href="{{ block.settings.link | default: '#' }}"
-          class="forma-the-form__link"
-        >
+        <div class="forma-the-form__image-wrap">
 
-          <div class="forma-the-form__image-wrapper">
+          {%- if block.settings.image != blank -%}
 
-            {% if block.settings.image != blank %}
+            {{
+              block.settings.image
+              | image_url: width: 2200
+              | image_tag:
+                loading: 'lazy',
+                widths: '500,700,900,1200,1600,2000,2200',
+                class: 'forma-the-form__image',
+                alt: block.settings.title
+            }}
 
-              {{
-                block.settings.image
-                | image_url: width: 1800
-                | image_tag:
-                  loading: 'lazy',
-                  widths: '700, 1000, 1400, 1800',
-                  sizes: '(max-width: 699px) 92vw, 50vw',
-                  class: 'forma-the-form__image'
-              }}
+          {%- else -%}
 
-            {% else %}
+            <div class="forma-the-form__placeholder"></div>
 
-              {{ 'image' | placeholder_svg_tag: 'forma-the-form__placeholder' }}
+          {%- endif -%}
 
-            {% endif %}
+          <div class="forma-the-form__image-overlay"></div>
 
+          <div class="forma-the-form__card-content">
 
-            <!-- GLASS LABEL -->
+            {%- if block.settings.eyebrow != blank -%}
+              <span class="forma-the-form__eyebrow">
+                {{ block.settings.eyebrow }}
+              </span>
+            {%- endif -%}
 
-            <span class="forma-the-form__label">
-              THE FORM
+            <span class="forma-the-form__card-title">
+              {{ block.settings.title }}
             </span>
 
-
-            <!-- CONTENT OVERLAY -->
-
-            <div class="forma-the-form__overlay">
-
-              {% if block.settings.title != blank %}
-                <h3 class="forma-the-form__item-title">
-                  {{ block.settings.title }}
-                </h3>
-              {% endif %}
-
-              {% if block.settings.subtitle != blank %}
-                <p class="forma-the-form__item-subtitle">
-                  {{ block.settings.subtitle }}
-                </p>
-              {% endif %}
-
-              <span class="forma-the-form__explore">
-                Explore →
+            {%- if block.settings.subtitle != blank -%}
+              <span class="forma-the-form__subtitle">
+                {{ block.settings.subtitle }}
               </span>
+            {%- endif -%}
 
-            </div>
+            <span class="forma-the-form__explore">
+              Explore
+              <span aria-hidden="true">→</span>
+            </span>
 
           </div>
 
-        </a>
+        </div>
 
-      </article>
+      </a>
 
-    {% endfor %}
+    {%- endfor -%}
 
   </div>
 
+</section>
 
-  <style>
 
-    /* ============================================================
-       ROOT
-       ============================================================ */
+<style>
 
-    #forma-the-form-{{ section.id }} {
+  /* ==========================================================================
+     FORMA — THE FORM
+     ========================================================================== */
 
-      --form-gap: 5px;
+  #forma-the-form-{{ section.id }} {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #111;
+    overflow: hidden;
+  }
 
-      width: 100%;
 
-      overflow: hidden;
+  /* ==========================================================================
+     HEADER
+     ========================================================================== */
 
-      padding-top: 0;
-      padding-bottom: 0;
+  #forma-the-form-{{ section.id }} .forma-the-form__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+
+    padding: 26px 12px 18px;
+  }
+
+  #forma-the-form-{{ section.id }} .forma-the-form__title {
+    margin: 0;
+
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  #forma-the-form-{{ section.id }} .forma-the-form__intro {
+    margin: 0;
+
+    max-width: 520px;
+
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(17,17,17,0.55);
+  }
+
+
+  /* ==========================================================================
+     GRID
+     ========================================================================== */
+
+  #forma-the-form-{{ section.id }} .forma-the-form__grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 2px;
+
+    width: 100%;
+  }
+
+
+  /* ==========================================================================
+     CARD
+     ========================================================================== */
+
+  #forma-the-form-{{ section.id }} .forma-the-form__card {
+    position: relative;
+
+    display: block;
+
+    min-width: 0;
+
+    color: inherit;
+    text-decoration: none;
+
+    overflow: hidden;
+
+    background: #e8e8e8;
+
+    aspect-ratio: 1 / 0.86;
+
+    transition:
+      opacity 0.45s ease,
+      filter 0.45s ease,
+      transform 0.45s ease;
+  }
+
+
+  /* ==========================================================================
+     IMAGE
+     ========================================================================== */
+
+  #forma-the-form-{{ section.id }} .forma-the-form__image-wrap {
+    position: absolute;
+    inset: 0;
+
+    overflow: hidden;
+  }
+
+  #forma-the-form-{{ section.id }} .forma-the-form__image {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition:
+      transform 0.8s cubic-bezier(.22,.61,.36,1),
+      filter 0.6s ease;
+  }
+
+  #forma-the-form-{{ section.id }} .forma-the-form__placeholder {
+    position: absolute;
+    inset: 0;
+
+    background: #d9d9d9;
+  }
+
+
+  /* ==========================================================================
+     IMAGE OVERLAY
+     ========================================================================== */
+
+  #forma-the-form-{{ section.id }} .forma-the-form__image-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+      linear-gradient(
+        to top,
+        rgba(0,0,0,0.42) 0%,
+        rgba(0,0,0,0.08) 42%,
+        rgba(0,0,0,0.02) 70%,
+        rgba(0,0,0,0.08) 100%
+      );
+
+    transition:
+      background 0.5s ease,
+      backdrop-filter 0.5s ease;
+  }
+
+
+  /* ==========================================================================
+     CARD CONTENT
+     ========================================================================== */
+
+  #forma-the-form-{{ section.id }} .forma-the-form__card-content {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 30px;
+
+    color: #fff;
+  }
+
+
+  /* Small FORMA label */
+
+  #forma-the-form-{{ section.id }} .forma-the-form__eyebrow {
+    position: absolute;
+
+    top: 20px;
+    left: 20px;
+
+    padding: 7px 11px;
+
+    border: 1px solid rgba(255,255,255,0.42);
+
+    background: rgba(20,20,20,0.20);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    font-size: 9px;
+    font-weight: 500;
+
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+
+    line-height: 1;
+
+    color: rgba(255,255,255,0.92);
+  }
+
+
+  /* Main category */
+
+  #forma-the-form-{{ section.id }} .forma-the-form__card-title {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 13px 24px;
+
+    background: rgba(20,20,20,0.62);
+
+    border: 1px solid rgba(255,255,255,0.14);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    font-family: inherit;
+
+    font-size: 15px;
+    font-weight: 400;
+
+    line-height: 1;
+
+    letter-spacing: 0.03em;
+
+    color: #fff;
+
+    transition:
+      background 0.45s ease,
+      border-color 0.45s ease,
+      transform 0.45s ease;
+  }
+
+
+  /* Subtitle */
+
+  #forma-the-form-{{ section.id }} .forma-the-form__subtitle {
+    margin-top: 12px;
+
+    max-width: 280px;
+
+    font-size: 11px;
+    line-height: 1.45;
+
+    color: rgba(255,255,255,0.82);
+
+    opacity: 0;
+
+    transform: translateY(8px);
+
+    transition:
+      opacity 0.45s ease,
+      transform 0.45s ease;
+  }
+
+
+  /* Explore */
+
+  #forma-the-form-{{ section.id }} .forma-the-form__explore {
+    position: absolute;
+
+    bottom: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 9px;
+    font-weight: 500;
+
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+
+    color: rgba(255,255,255,0.88);
+
+    opacity: 0;
+
+    transform: translateY(8px);
+
+    transition:
+      opacity 0.45s ease,
+      transform 0.45s ease;
+  }
+
+  #forma-the-form-{{ section.id }} .forma-the-form__explore span {
+    font-size: 12px;
+    transition: transform 0.35s ease;
+  }
+
+
+  /* ==========================================================================
+     HOVER — ACTIVE CARD
+     ========================================================================== */
+
+  @media screen and (min-width: 750px) {
+
+    #forma-the-form-{{ section.id }} .forma-the-form__grid:has(.forma-the-form__card:hover)
+    .forma-the-form__card:not(:hover) {
+      filter: blur(4px);
+      opacity: 0.58;
     }
 
-
-    /* ============================================================
-       HEADER
-       ============================================================ */
-
-    #forma-the-form-{{ section.id }} .forma-the-form__header {
-
-      display: flex;
-
-      align-items: baseline;
-
-      justify-content: space-between;
-
-      width: 100%;
-
-      padding: 0 12px 18px;
+    #forma-the-form-{{ section.id }} .forma-the-form__card:hover {
+      z-index: 2;
     }
 
-
-    #forma-the-form-{{ section.id }} .forma-the-form__heading {
-
-      display: flex;
-
-      align-items: baseline;
-
-      min-width: 0;
+    #forma-the-form-{{ section.id }} .forma-the-form__card:hover
+    .forma-the-form__image {
+      transform: scale(1.045);
     }
 
-
-    #forma-the-form-{{ section.id }} .forma-the-form__title {
-
-      margin: 0;
-      padding: 0;
-
-      font-size: 17px;
-
-      line-height: 1.2;
-
-      font-weight: 400;
-
-      letter-spacing: 0;
-
-      font-family:
-        Georgia,
-        "Times New Roman",
-        serif !important;
-    }
-
-
-    #forma-the-form-{{ section.id }} .forma-the-form__subtitle {
-
-      margin: 0 0 0 16px;
-
-      font-size: 13px;
-
-      line-height: 1.2;
-
-      font-weight: 400;
-
-      opacity: 0.55;
-    }
-
-
-    /* ============================================================
-       VIEW ALL
-       ============================================================ */
-
-    #forma-the-form-{{ section.id }} .forma-the-form__view-all {
-
-      flex-shrink: 0;
-
-      margin-left: auto;
-
-      color: inherit;
-
-      text-decoration: none;
-
-      font-size: 13px;
-
-      line-height: 1.2;
-
-      font-weight: 400;
-
-      transition:
-        opacity 0.25s ease;
-    }
-
-
-    #forma-the-form-{{ section.id }} .forma-the-form__view-all:hover {
-
-      opacity: 0.5;
-    }
-
-
-    /* ============================================================
-       GRID
-       ============================================================ */
-
-    #forma-the-form-{{ section.id }} .forma-the-form__grid {
-
-      display: grid;
-
-      grid-template-columns:
-        1.45fr
-        0.9fr
-        1.15fr;
-
-      grid-template-rows:
-        310px
-        310px;
-
-      gap: var(--form-gap);
-
-      width: 100%;
-    }
-
-
-    /* ============================================================
-       GRID POSITIONS
-       ============================================================ */
-
-    #forma-the-form-{{ section.id }} .forma-the-form__item--1 {
-
-      grid-column: 1 / 2;
-
-      grid-row: 1 / 3;
-    }
-
-
-    #forma-the-form-{{ section.id }} .forma-the-form__item--2 {
-
-      grid-column: 2 / 3;
-
-      grid-row: 1 / 2;
-    }
-
-
-    #forma-the-form-{{ section.id }} .forma-the-form__item--3 {
-
-      grid-column: 3 / 4;
-
-      grid-row: 1 / 2;
-    }
-
-
-    #forma-the-form-{{ section.id }} .forma-the-form__item--4 {
-
-      grid-column: 2 / 4;
-
-      grid-row: 2 / 3;
-    }
-
-
-    /* ============================================================
-       LINK
-       ============================================================ */
-
-    #forma-the-form-{{ section.id }} .forma-the-form__link {
-
-      display: block;
-
-      width: 100%;
-      height: 100%;
-
-      color: inherit;
-
-      text-decoration: none;
-    }
-
-
-    /* ============================================================
-       IMAGE
-       ============================================================ */
-
-    #forma-the-form-{{ section.id }} .forma-the-form__image-wrapper {
-
-      position: relative;
-
-      width: 100%;
-      height: 100%;
-
-      overflow: hidden;
-
-      background: #f2f2f2;
-
-      isolation: isolate;
-
-      transition:
-        transform 0.55s cubic-bezier(.2,.6,.2,1),
-        box-shadow 0.55s cubic-bezier(.2,.6,.2,1);
-    }
-
-
-    #forma-the-form-{{ section.id }} .forma-the-form__image {
-
-      display: block;
-
-      width: 100%;
-      height: 100%;
-
-      object-fit: cover;
-
-      transition:
-        transform 0.8s cubic-bezier(.2,.6,.2,1),
-        filter 0.6s ease;
-    }
-
-
-    /* ============================================================
-       DARK GRADIENT
-       ============================================================ */
-
-    #forma-the-form-{{ section.id }} .forma-the-form__image-wrapper::after {
-
-      content: "";
-
-      position: absolute;
-
-      inset: 0;
-
-      z-index: 1;
-
+    #forma-the-form-{{ section.id }} .forma-the-form__card:hover
+    .forma-the-form__image-overlay {
       background:
         linear-gradient(
           to top,
-          rgba(0,0,0,0.58) 0%,
-          rgba(0,0,0,0.16) 42%,
-          rgba(0,0,0,0.02) 70%
+          rgba(0,0,0,0.52) 0%,
+          rgba(0,0,0,0.12) 48%,
+          rgba(0,0,0,0.05) 100%
         );
-
-      pointer-events: none;
     }
 
+    #forma-the-form-{{ section.id }} .forma-the-form__card:hover
+    .forma-the-form__card-title {
+      background: rgba(20,20,20,0.78);
 
-    /* ============================================================
-       GLASS LABEL
-       ============================================================ */
+      border-color: rgba(255,255,255,0.30);
 
-    #forma-the-form-{{ section.id }} .forma-the-form__label {
-
-      position: absolute;
-
-      top: 14px;
-      left: 14px;
-
-      z-index: 3;
-
-      display: inline-flex;
-
-      align-items: center;
-
-      padding: 7px 10px;
-
-      color:
-        rgba(255,255,255,0.96);
-
-      font-size: 9px;
-
-      font-weight: 500;
-
-      line-height: 1;
-
-      letter-spacing: 0.13em;
-
-      text-transform: uppercase;
-
-      background:
-        rgba(20,20,20,0.30);
-
-      border:
-        1px solid rgba(255,255,255,0.20);
-
-      backdrop-filter:
-        blur(12px)
-        saturate(120%);
-
-      -webkit-backdrop-filter:
-        blur(12px)
-        saturate(120%);
-
-      box-shadow:
-        0 4px 18px rgba(0,0,0,0.10);
-
-      transition:
-        background 0.35s ease,
-        border-color 0.35s ease,
-        transform 0.35s ease;
+      transform: translateY(-2px);
     }
 
-
-    /* ============================================================
-       CONTENT OVERLAY
-       ============================================================ */
-
-    #forma-the-form-{{ section.id }} .forma-the-form__overlay {
-
-      position: absolute;
-
-      left: 20px;
-      right: 20px;
-      bottom: 20px;
-
-      z-index: 3;
-
-      color: white;
-
-      transform:
-        translateY(8px);
-
-      transition:
-        transform 0.5s cubic-bezier(.2,.6,.2,1);
+    #forma-the-form-{{ section.id }} .forma-the-form__card:hover
+    .forma-the-form__subtitle {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-
-    #forma-the-form-{{ section.id }} .forma-the-form__item-title {
-
-      margin: 0;
-
-      font-size: 28px;
-
-      line-height: 1.05;
-
-      font-weight: 400;
-
-      letter-spacing: -0.02em;
-
-      font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-    }
-
-
-    #forma-the-form-{{ section.id }} .forma-the-form__item-subtitle {
-
-      max-width: 320px;
-
-      margin: 7px 0 0;
-
-      font-size: 12px;
-
-      line-height: 1.35;
-
-      font-weight: 400;
-
-      opacity: 0.82;
-    }
-
-
-    #forma-the-form-{{ section.id }} .forma-the-form__explore {
-
-      display: inline-block;
-
-      margin-top: 13px;
-
-      font-size: 10px;
-
-      line-height: 1;
-
-      letter-spacing: 0.10em;
-
-      text-transform: uppercase;
-
-      opacity: 0;
-
-      transform:
-        translateY(7px);
-
-      transition:
-        opacity 0.35s ease,
-        transform 0.35s ease;
-    }
-
-
-    /* ============================================================
-       HOVER — ACTIVE CARD
-       ============================================================ */
-
-    #forma-the-form-{{ section.id }} .forma-the-form__item:hover
-    .forma-the-form__image-wrapper {
-
-      transform:
-        translateY(-3px);
-
-      box-shadow:
-        0 18px 42px rgba(0,0,0,0.15);
-    }
-
-
-    #forma-the-form-{{ section.id }} .forma-the-form__item:hover
-    .forma-the-form__image {
-
-      transform:
-        scale(1.035);
-    }
-
-
-    #forma-the-form-{{ section.id }} .forma-the-form__item:hover
-    .forma-the-form__overlay {
-
-      transform:
-        translateY(0);
-    }
-
-
-    #forma-the-form-{{ section.id }} .forma-the-form__item:hover
+    #forma-the-form-{{ section.id }} .forma-the-form__card:hover
     .forma-the-form__explore {
-
-      opacity: 0.95;
-
-      transform:
-        translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
 
-
-    #forma-the-form-{{ section.id }} .forma-the-form__item:hover
-    .forma-the-form__label {
-
-      background:
-        rgba(20,20,20,0.48);
-
-      border-color:
-        rgba(255,255,255,0.32);
-
-      transform:
-        translateY(-1px);
+    #forma-the-form-{{ section.id }} .forma-the-form__card:hover
+    .forma-the-form__explore span {
+      transform: translateX(4px);
     }
-
-
-    /* ============================================================
-       HOVER — DIM OTHER CARDS
-       ============================================================ */
-
-    #forma-the-form-{{ section.id }} .forma-the-form__grid:hover
-    .forma-the-form__item:not(:hover)
-    .forma-the-form__image {
-
-      filter:
-        blur(4px)
-        brightness(0.78)
-        saturate(0.75);
-
-      transform:
-        scale(1.015);
-    }
-
-
-    #forma-the-form-{{ section.id }} .forma-the-form__grid:hover
-    .forma-the-form__item:not(:hover)
-    .forma-the-form__image-wrapper::before {
-
-      content: "";
-
-      position: absolute;
-
-      inset: 0;
-
-      z-index: 2;
-
-      background:
-        rgba(255,255,255,0.10);
-
-      backdrop-filter:
-        blur(3px);
-
-      -webkit-backdrop-filter:
-        blur(3px);
-
-      pointer-events: none;
-    }
-
-
-    /* ============================================================
-       MOBILE
-       ============================================================ */
-
-    @media screen and (max-width: 699px) {
-
-      #forma-the-form-{{ section.id }} {
-
-        padding-top: 0;
-        padding-bottom: 0;
-      }
-
-
-      #forma-the-form-{{ section.id }} .forma-the-form__header {
-
-        align-items: baseline;
-
-        padding:
-          0
-          12px
-          14px;
-      }
-
-
-      #forma-the-form-{{ section.id }} .forma-the-form__title {
-
-        font-size: 16px;
-      }
-
-
-      #forma-the-form-{{ section.id }} .forma-the-form__subtitle {
-
-        margin-left: 10px;
-
-        font-size: 11px;
-      }
-
-
-      #forma-the-form-{{ section.id }} .forma-the-form__view-all {
-
-        font-size: 12px;
-      }
-
-
-      /* Mobile becomes a horizontal discovery rail */
-
-      #forma-the-form-{{ section.id }} .forma-the-form__grid {
-
-        display: flex;
-
-        gap: 8px;
-
-        width: 100%;
-
-        overflow-x: auto;
-        overflow-y: hidden;
-
-        padding-left: 0;
-        padding-right: 12px;
-
-        scrollbar-width: none;
-
-        -webkit-overflow-scrolling: touch;
-      }
-
-
-      #forma-the-form-{{ section.id }} .forma-the-form__grid::-webkit-scrollbar {
-
-        display: none;
-      }
-
-
-      #forma-the-form-{{ section.id }} .forma-the-form__item,
-      #forma-the-form-{{ section.id }} .forma-the-form__item--1,
-      #forma-the-form-{{ section.id }} .forma-the-form__item--2,
-      #forma-the-form-{{ section.id }} .forma-the-form__item--3,
-      #forma-the-form-{{ section.id }} .forma-the-form__item--4 {
-
-        flex:
-          0 0
-          82vw;
-
-        height:
-          108vw;
-
-        min-height: 0;
-
-        grid-column: auto;
-        grid-row: auto;
-      }
-
-
-      #forma-the-form-{{ section.id }} .forma-the-form__overlay {
-
-        left: 16px;
-        right: 16px;
-        bottom: 16px;
-      }
-
-
-      #forma-the-form-{{ section.id }} .forma-the-form__item-title {
-
-        font-size: 25px;
-      }
-
-
-      #forma-the-form-{{ section.id }} .forma-the-form__label {
-
-        top: 10px;
-        left: 10px;
-
-        padding: 6px 8px;
-
-        font-size: 8px;
-      }
-
-
-      /* No blur interaction on touch */
-
-      #forma-the-form-{{ section.id }} .forma-the-form__grid:hover
-      .forma-the-form__item:not(:hover)
-      .forma-the-form__image {
-
-        filter: none;
-
-        transform: none;
-      }
-
-
-      #forma-the-form-{{ section.id }} .forma-the-form__grid:hover
-      .forma-the-form__item:not(:hover)
-      .forma-the-form__image-wrapper::before {
-
-        display: none;
-      }
-
-    }
-
-  </style>
-
-
-  {% schema %}
-
-  {
-    "name": "FORMA The Form",
-
-    "tag": "section",
-
-    "class": "forma-the-form-section",
-
-    "settings": [
-
-      {
-        "type": "text",
-        "id": "heading",
-        "label": "Heading",
-        "default": "The Form"
-      },
-
-      {
-        "type": "text",
-        "id": "subheading",
-        "label": "Subheading",
-        "default": "The things that shape how we live."
-      },
-
-      {
-        "type": "text",
-        "id": "view_all_text",
-        "label": "View all text",
-        "default": "View all →"
-      },
-
-      {
-        "type": "url",
-        "id": "view_all_link",
-        "label": "View all link"
-      }
-
-    ],
-
-    "blocks": [
-
-      {
-        "type": "form_item",
-
-        "name": "Form item",
-
-        "settings": [
-
-          {
-            "type": "image_picker",
-            "id": "image",
-            "label": "Image"
-          },
-
-          {
-            "type": "text",
-            "id": "title",
-            "label": "Title",
-            "default": "Taste"
-          },
-
-          {
-            "type": "text",
-            "id": "subtitle",
-            "label": "Subtitle",
-            "default": "Places worth tasting."
-          },
-
-          {
-            "type": "url",
-            "id": "link",
-            "label": "Link"
-          }
-
-        ]
-      }
-
-    ],
-
-    "presets": [
-
-      {
-        "name": "FORMA The Form",
-
-        "blocks": [
-
-          {
-            "type": "form_item",
-
-            "settings": {
-
-              "title": "Taste",
-
-              "subtitle": "Places worth tasting."
-            }
-          },
-
-          {
-            "type": "form_item",
-
-            "settings": {
-
-              "title": "Movement",
-
-              "subtitle": "Move with intention."
-            }
-          },
-
-          {
-            "type": "form_item",
-
-            "settings": {
-
-              "title": "Culture",
-
-              "subtitle": "Things worth experiencing."
-            }
-          },
-
-          {
-            "type": "form_item",
-
-            "settings": {
-
-              "title": "Objects",
-
-              "subtitle": "Objects worth living with."
-            }
-          }
-
-        ]
-      }
-
-    ]
 
   }
 
-  {% endschema %}
 
-</section>
+  /* ==========================================================================
+     MOBILE
+     ========================================================================== */
+
+  @media screen and (max-width: 749px) {
+
+    #forma-the-form-{{ section.id }} .forma-the-form__header {
+      padding: 22px 12px 16px;
+    }
+
+    #forma-the-form-{{ section.id }} .forma-the-form__intro {
+      display: none;
+    }
+
+    #forma-the-form-{{ section.id }} .forma-the-form__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2px;
+    }
+
+    #forma-the-form-{{ section.id }} .forma-the-form__card {
+      aspect-ratio: 1 / 1.12;
+    }
+
+    #forma-the-form-{{ section.id }} .forma-the-form__card-content {
+      padding: 16px;
+    }
+
+    #forma-the-form-{{ section.id }} .forma-the-form__eyebrow {
+      top: 12px;
+      left: 12px;
+
+      padding: 6px 8px;
+
+      font-size: 7px;
+    }
+
+    #forma-the-form-{{ section.id }} .forma-the-form__card-title {
+      padding: 10px 14px;
+
+      font-size: 11px;
+    }
+
+    #forma-the-form-{{ section.id }} .forma-the-form__subtitle {
+      display: none;
+    }
+
+    #forma-the-form-{{ section.id }} .forma-the-form__explore {
+      bottom: 13px;
+
+      font-size: 7px;
+
+      opacity: 0.85;
+      transform: none;
+    }
+
+  }
+
+
+  /* ==========================================================================
+     REDUCED MOTION
+     ========================================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+
+    #forma-the-form-{{ section.id }} *,
+    #forma-the-form-{{ section.id }} *::before,
+    #forma-the-form-{{ section.id }} *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+
+  }
+
+</style>
+
+
+{% schema %}
+{
+  "name": "FORMA — The Form",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Form"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "The world of Forma, curated around the way we live."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "FORMA"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Wardrobe"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "What to wear."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FORMA — The Form",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "eyebrow": "FORMA",
+            "title": "Wardrobe",
+            "subtitle": "What to wear."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "eyebrow": "FORMA",
+            "title": "The Lifestyle",
+            "subtitle": "How to live."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "eyebrow": "FORMA",
+            "title": "The Home",
+            "subtitle": "Spaces worth living in."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "eyebrow": "FORMA",
+            "title": "The Form",
+            "subtitle": "Ideas that shape culture."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "eyebrow": "FORMA",
+            "title": "Places",
+            "subtitle": "Go somewhere."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "eyebrow": "FORMA",
+            "title": "Journal",
+            "subtitle": "Stories by Forma."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
