@@ -203,55 +203,55 @@
         "place_cpwKdx": {
           "type": "place",
           "settings": {
-            "image": "shopify://shop_images/esmee-space-copenhagen_dezeen_2364_col_15.jpg",
+            "image": "shopify://shop_images/1S0A8898-scaled-e1773063539981.jpg",
             "city": "Copenhagen",
-            "title": "Place name",
-            "category": "Café",
-            "description": "",
+            "title": "AMBRA",
+            "category": "Restaurant",
+            "description": "Oplev AMBRA, en italiensk restaurant i Indre By, København. Nyd autentiske retter og cocktails i en stemningsfuld atmosfære på Store Kongensgade",
             "link": ""
           }
         },
         "place_wNzpJk": {
           "type": "place",
           "settings": {
-            "image": "shopify://shop_images/esmee-space-copenhagen_dezeen_2364_col_15.jpg",
+            "image": "shopify://shop_images/Selskaber-esmee.jpg",
             "city": "Copenhagen",
-            "title": "Place name",
-            "category": "Café",
-            "description": "",
+            "title": "ESME",
+            "category": "Restaurant",
+            "description": "Andreas Bagh har med restaurant Esmée lavet en let moderne fortolkning af det franske køkken, med inspiration fra middelhavsområdet.",
             "link": ""
           }
         },
         "place_3pKEzJ": {
           "type": "place",
           "settings": {
-            "image": "shopify://shop_images/esmee-space-copenhagen_dezeen_2364_col_15.jpg",
+            "image": "shopify://shop_images/Skaermbillede_2026-10-05_kl._09.55.29.png",
             "city": "Copenhagen",
-            "title": "Place name",
-            "category": "Café",
-            "description": "",
+            "title": "THE MARKET ITALIAN",
+            "category": "Restaurant",
+            "description": "The Market Italian fylder af stemningsfuld italiensk storbyelegance. Indretning er raffineret med luksuriøse materialer. Køkkenet er italiensk med fokus på gode råvarer, enkelhed og godt håndværk.",
             "link": ""
           }
         },
         "place_7ThGDi": {
           "type": "place",
           "settings": {
-            "image": "shopify://shop_images/esmee-space-copenhagen_dezeen_2364_col_15.jpg",
+            "image": "shopify://shop_images/Skaermbillede_2026-10-05_kl._10.01.50.png",
             "city": "Copenhagen",
-            "title": "Place name",
+            "title": "SONNY COPENHAGEN",
             "category": "Café",
-            "description": "",
+            "description": "Sonny is a day-time place where you can enjoy home-made breakfast, lunch and home-baked cakes along with specialty coffee, tea and cold beverages that you won't find in other places",
             "link": ""
           }
         },
         "place_ph7qJx": {
           "type": "place",
           "settings": {
-            "image": "shopify://shop_images/esmee-space-copenhagen_dezeen_2364_col_15.jpg",
+            "image": "shopify://shop_images/BsikF8ck9sATTwG3z0lCCv4plA_jpg.avif",
             "city": "Copenhagen",
-            "title": "Place name",
-            "category": "Café",
-            "description": "",
+            "title": "JUNO THE BAKERY",
+            "category": "Bakery",
+            "description": "Since 2018, JUNO the bakery has been serving Copenhagen inspired by a love of quality, craft and honesty that remind us to savour the simple things. Nestled into a quiet corner of Østerbro, we welcome hungry customers from all walks of life into our bakery.",
             "link": ""
           }
         }
