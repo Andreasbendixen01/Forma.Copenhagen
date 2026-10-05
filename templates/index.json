@@ -353,6 +353,7 @@
         "brand_BRMhAU": {
           "type": "brand",
           "settings": {
+            "image": "shopify://shop_images/Les_Deux_2b53d354-4d52-4242-a537-bd5454768d99.png",
             "recommend": "FORMA RECOMMENDS",
             "location": "Copenhagen",
             "title": "Les Deux",
@@ -363,6 +364,7 @@
         "brand_pfWcUA": {
           "type": "brand",
           "settings": {
+            "image": "shopify://shop_images/Ikke-navngivet-1.png",
             "recommend": "FORMA RECOMMENDS",
             "location": "Copenhagen",
             "title": "NN07",
