@@ -270,6 +270,56 @@
         "view_all_text": "View all →",
         "view_all_link": ""
       }
+    },
+    "forma_the_form_BjjR4T": {
+      "type": "forma-the-form",
+      "blocks": {
+        "form_item_mTAhRL": {
+          "type": "form_item",
+          "settings": {
+            "title": "Taste",
+            "subtitle": "Places worth tasting.",
+            "link": ""
+          }
+        },
+        "form_item_xLthpr": {
+          "type": "form_item",
+          "settings": {
+            "title": "Movement",
+            "subtitle": "Move with intention.",
+            "link": ""
+          }
+        },
+        "form_item_mPjyET": {
+          "type": "form_item",
+          "settings": {
+            "title": "Culture",
+            "subtitle": "Things worth experiencing.",
+            "link": ""
+          }
+        },
+        "form_item_AAgQrb": {
+          "type": "form_item",
+          "settings": {
+            "title": "Objects",
+            "subtitle": "Objects worth living with.",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "form_item_mTAhRL",
+        "form_item_xLthpr",
+        "form_item_mPjyET",
+        "form_item_AAgQrb"
+      ],
+      "name": "FORMA The Form",
+      "settings": {
+        "heading": "The Form",
+        "subheading": "The things that shape how we live.",
+        "view_all_text": "View all →",
+        "view_all_link": ""
+      }
     }
   },
   "order": [
@@ -277,6 +327,7 @@
     "featured_collections_KVhnaK",
     "forma_journal_slider_HJFewJ",
     "featured_collections_xNqKEV",
-    "forma_places_nMNPjJ"
+    "forma_places_nMNPjJ",
+    "forma_the_form_BjjR4T"
   ]
 }
