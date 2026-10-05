@@ -271,56 +271,79 @@
         "view_all_link": ""
       }
     },
-    "forma_the_form_BjjR4T": {
+    "forma_the_form_thhiEV": {
       "type": "forma-the-form",
       "blocks": {
-        "form_item_mTAhRL": {
-          "type": "form_item",
+        "category_4QCwqe": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Skaermbillede_2026-10-05_kl._14.36.21.png",
+            "eyebrow": "FORMA",
+            "title": "Wardrobe",
+            "subtitle": "What to wear.",
+            "link": ""
+          }
+        },
+        "category_xPpxJc": {
+          "type": "category",
+          "settings": {
+            "eyebrow": "FORMA",
+            "title": "The Lifestyle",
+            "subtitle": "How to live.",
+            "link": ""
+          }
+        },
+        "category_mywwc7": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/1123257_1104269015_10_jpg.webp",
+            "eyebrow": "FORMA",
+            "title": "The Home",
+            "subtitle": "Spaces worth living in.",
+            "link": ""
+          }
+        },
+        "category_AbKNeh": {
+          "type": "category",
+          "settings": {
+            "eyebrow": "FORMA",
+            "title": "The Form",
+            "subtitle": "Ideas that shape culture.",
+            "link": ""
+          }
+        },
+        "category_UqTHTw": {
+          "type": "category",
           "settings": {
             "image": "shopify://shop_images/Private_back.jpg",
-            "title": "Taste",
-            "subtitle": "Places worth tasting.",
+            "eyebrow": "FORMA",
+            "title": "Places",
+            "subtitle": "Go somewhere.",
             "link": ""
           }
         },
-        "form_item_xLthpr": {
-          "type": "form_item",
+        "category_yM8tdN": {
+          "type": "category",
           "settings": {
-            "image": "shopify://shop_images/dc99999789f2b687eeafb14f7d71c5ed4c027d57-1850x2754_png.avif",
-            "title": "Movement",
-            "subtitle": "Move with intention.",
-            "link": ""
-          }
-        },
-        "form_item_mPjyET": {
-          "type": "form_item",
-          "settings": {
-            "title": "Culture",
-            "subtitle": "Things worth experiencing.",
-            "link": ""
-          }
-        },
-        "form_item_AAgQrb": {
-          "type": "form_item",
-          "settings": {
-            "title": "Objects",
-            "subtitle": "Objects worth living with.",
+            "eyebrow": "FORMA",
+            "title": "Journal",
+            "subtitle": "Stories by Forma.",
             "link": ""
           }
         }
       },
       "block_order": [
-        "form_item_mTAhRL",
-        "form_item_xLthpr",
-        "form_item_mPjyET",
-        "form_item_AAgQrb"
+        "category_4QCwqe",
+        "category_xPpxJc",
+        "category_mywwc7",
+        "category_AbKNeh",
+        "category_UqTHTw",
+        "category_yM8tdN"
       ],
-      "name": "FORMA The Form",
+      "name": "FORMA — The Form",
       "settings": {
         "heading": "The Form",
-        "subheading": "The things that shape how we live.",
-        "view_all_text": "View all →",
-        "view_all_link": ""
+        "intro": "The world of Forma, curated around the way we live."
       }
     }
   },
@@ -330,6 +353,6 @@
     "forma_journal_slider_HJFewJ",
     "featured_collections_xNqKEV",
     "forma_places_nMNPjJ",
-    "forma_the_form_BjjR4T"
+    "forma_the_form_thhiEV"
   ]
 }
