@@ -56,54 +56,43 @@
 
           <div class="forma-place__image-wrapper">
 
-            {% if block.settings.image != blank %}
-
-              {{
-                block.settings.image
-                | image_url: width: 1600
-                | image_tag:
-                  loading: 'lazy',
-                  widths: '600, 900, 1200, 1600',
-                  sizes: '(max-width: 699px) 82vw, 32vw',
-                  class: 'forma-place__image'
-              }}
-
+        {% if block.settings.image != blank %}
+            {{
+            block.settings.image
+            | image_url: width: 1600
+            | image_tag:
+                loading: 'lazy',
+                widths: '600, 900, 1200, 1600',
+                sizes: '(max-width: 699px) 82vw, 31vw',
+                class: 'forma-place__image'
+            }}
             {% else %}
-
-              {{ 'image' | placeholder_svg_tag: 'forma-place__placeholder' }}
-
+                {{ 'image' | placeholder_svg_tag: 'forma-place__placeholder' }}
             {% endif %}
 
-            <div class="forma-place__editorial">
-
-              <span class="forma-place__recommend">
+            <span class="forma-place__recommend">
                 FORMA RECOMMENDS
-              </span>
+            </span>
 
-              <span class="forma-place__number">
-                {{ forloop.index | prepend: '0' | slice: -2, 2 }}
-              </span>
+        </div>
 
-            </div>
-
-          </div>
-
-
-          <div class="forma-place__content">
+        <div class="forma-place__content">
 
             <div class="forma-place__top">
 
-              {% if block.settings.city != blank %}
-                <span class="forma-place__city">
-                  {{ block.settings.city }}
-                </span>
-              {% endif %}
+            {% if block.settings.city != blank %}
+            <span class="forma-place__city">
+                {{ block.settings.city }}
+            </span>
+            {% endif %}
 
-              <span class="forma-place__arrow">
-                ↗
-              </span>
+            {% if block.settings.category != blank %}
+            <span class="forma-place__category">
+                {{ block.settings.category }}
+            </span>
+            {% endif %}
 
-            </div>
+        </div>
 
 
             {% if block.settings.title != blank %}
@@ -145,13 +134,13 @@
 
     #forma-places-{{ section.id }} {
 
-      --places-gap: 14px;
+      --places-gap: 5px;
 
       width: 100%;
       overflow: hidden;
 
-      padding-top: 42px;
-      padding-bottom: 54px;
+      padding-top: 0px;
+      padding-bottom: 0px;
 
     }
 
@@ -347,60 +336,171 @@
 
 
     /* ============================================================
-       EDITORIAL LABEL
-       ============================================================ */
+   FORMA RECOMMENDS
+   ============================================================ */
 
-    #forma-places-{{ section.id }} .forma-place__editorial {
+#forma-places-{{ section.id }} .forma-place__recommend {
+  position: absolute;
+  top: 14px;
+  left: 14px;
 
-      position: absolute;
+  display: inline-flex;
+  align-items: center;
 
-      top: 14px;
-      left: 14px;
-      right: 14px;
+  padding: 7px 10px;
 
-      display: flex;
+  color: rgba(255,255,255,0.96);
 
-      align-items: flex-start;
-      justify-content: space-between;
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.13em;
 
-      color: white;
+  text-transform: uppercase;
 
-      pointer-events: none;
+  background: rgba(20,20,20,0.32);
 
-    }
+  border: 1px solid rgba(255,255,255,0.18);
 
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
 
-    #forma-places-{{ section.id }} .forma-place__recommend {
+  box-shadow:
+    0 4px 18px rgba(0,0,0,0.08);
 
-      font-size: 9px;
-      line-height: 1.2;
-
-      font-weight: 400;
-
-      letter-spacing: 0.1em;
-
-      text-transform: uppercase;
-
-      padding: 7px 8px;
-
-      background: rgba(0, 0, 0, 0.24);
-
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-
-    }
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease,
+    transform 0.35s ease;
+}
 
 
-    #forma-places-{{ section.id }} .forma-place__number {
+/* ============================================================
+   CONTENT TOP
+   ============================================================ */
 
-      font-size: 11px;
-      line-height: 1;
+#forma-places-{{ section.id }} .forma-place__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-      font-weight: 400;
+  margin-bottom: 7px;
+}
 
-      letter-spacing: 0.04em;
 
-    }
+/* ============================================================
+   CITY
+   ============================================================ */
+
+#forma-places-{{ section.id }} .forma-place__city {
+  position: static;
+
+  padding: 0;
+
+  color: inherit;
+
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.2;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  background: none;
+
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  opacity: 0.45;
+}
+
+
+/* ============================================================
+   CATEGORY
+   ============================================================ */
+
+#forma-places-{{ section.id }} .forma-place__category {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.2;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  opacity: 0.45;
+
+  text-align: right;
+}
+
+
+/* ============================================================
+   REMOVE OLD ARROW
+   ============================================================ */
+
+#forma-places-{{ section.id }} .forma-place__arrow {
+  display: none !important;
+}
+
+
+/* ============================================================
+   PREMIUM HOVER
+   ============================================================ */
+
+#forma-places-{{ section.id }} .forma-place__image-wrapper {
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    box-shadow 0.5s cubic-bezier(.2,.6,.2,1),
+    transform 0.5s cubic-bezier(.2,.6,.2,1);
+}
+
+
+#forma-places-{{ section.id }} .forma-place__link:hover
+.forma-place__image-wrapper {
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 14px 35px rgba(0,0,0,0.12);
+}
+
+
+#forma-places-{{ section.id }} .forma-place__link:hover
+.forma-place__image {
+
+  transform: scale(1.035);
+}
+
+
+/* Recommends label becomes slightly more present */
+
+#forma-places-{{ section.id }} .forma-place__link:hover
+.forma-place__recommend {
+
+  background: rgba(20,20,20,0.46);
+
+  border-color: rgba(255,255,255,0.32);
+
+  transform: translateY(-1px);
+}
+
+
+/* Title subtly reacts */
+
+#forma-places-{{ section.id }} .forma-place__title {
+
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+
+#forma-places-{{ section.id }} .forma-place__link:hover
+.forma-place__title {
+
+  transform: translateX(2px);
+}
 
 
     /* ============================================================
