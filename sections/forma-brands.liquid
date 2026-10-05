@@ -28,36 +28,16 @@
 
     <div class="forma-brands__actions">
 
-      {% if section.settings.view_all_text != blank %}
-        <a
-          href="{{ section.settings.view_all_link }}"
-          class="forma-brands__view-all"
-        >
-          {{ section.settings.view_all_text }}
-        </a>
-      {% endif %}
+  {% if section.settings.view_all_text != blank %}
+    <a
+      href="{{ section.settings.view_all_link }}"
+      class="forma-brands__view-all"
+    >
+      {{ section.settings.view_all_text }}
+    </a>
+  {% endif %}
 
-      <div class="forma-brands__arrows">
-
-        <button
-          type="button"
-          class="forma-brands__arrow forma-brands__arrow--prev"
-          aria-label="Previous brands"
-        >
-          ←
-        </button>
-
-        <button
-          type="button"
-          class="forma-brands__arrow forma-brands__arrow--next"
-          aria-label="Next brands"
-        >
-          →
-        </button>
-
-      </div>
-
-    </div>
+</div>
 
   </div>
 
@@ -198,23 +178,26 @@
 
       margin: 0;
 
-      font-size: 22px;
+      font-size: 17px;
       font-weight: 400;
 
       line-height: 1.1;
 
       letter-spacing: -0.02em;
 
+      font-family: Georgia, "Times New Roman", serif !important;
+
     }
 
 
     #forma-brands-{{ section.id }} .forma-brands__subtitle {
 
-      margin: 0;
+      margin: 0 0 0 16px;
 
       font-size: 13px;
-
       line-height: 1.2;
+
+      font-weight: 400;
 
       opacity: 0.55;
 
@@ -222,79 +205,37 @@
 
 
     /* ============================================================
-       ACTIONS
-       ============================================================ */
+   ACTIONS
+   ============================================================ */
 
-    #forma-brands-{{ section.id }} .forma-brands__actions {
+#forma-brands-{{ section.id }} .forma-brands__actions {
 
-      display: flex;
-      align-items: center;
+  display: flex;
+  align-items: center;
 
-      gap: 24px;
-
-    }
+}
 
 
-    #forma-brands-{{ section.id }} .forma-brands__view-all {
+#forma-brands-{{ section.id }} .forma-brands__view-all {
 
-      color: inherit;
+  color: inherit;
 
-      text-decoration: none;
+  text-decoration: none;
 
-      font-size: 13px;
+  font-size: 13px;
 
-      line-height: 1;
+  line-height: 1;
 
-    }
+  white-space: nowrap;
 
-
-    #forma-brands-{{ section.id }} .forma-brands__view-all:hover {
-
-      opacity: 0.55;
-
-    }
+}
 
 
-    #forma-brands-{{ section.id }} .forma-brands__arrows {
+#forma-brands-{{ section.id }} .forma-brands__view-all:hover {
 
-      display: flex;
+  opacity: 0.55;
 
-      gap: 4px;
-
-    }
-
-
-    #forma-brands-{{ section.id }} .forma-brands__arrow {
-
-      width: 34px;
-      height: 34px;
-
-      padding: 0;
-
-      border: 0;
-
-      background: transparent;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      font-size: 17px;
-      font-weight: 300;
-
-      cursor: pointer;
-
-      transition: opacity 0.2s ease;
-
-    }
-
-
-    #forma-brands-{{ section.id }} .forma-brands__arrow:hover {
-
-      opacity: 0.45;
-
-    }
+}
 
 
     /* ============================================================
@@ -312,7 +253,7 @@
       overflow-x: auto;
       overflow-y: hidden;
 
-      padding: 0 12px;
+      padding: 0 5px;
 
       scroll-behavior: smooth;
 
@@ -338,13 +279,11 @@
 
     #forma-brands-{{ section.id }} .forma-brand {
 
-      flex: 0 0 calc(
-        (100% - (var(--brands-gap) * 2)) / 3
-      );
+    flex: 0 0 31vw;
 
-      min-width: 0;
+    min-width: 0;
 
-      scroll-snap-align: start;
+    scroll-snap-align: start;
 
     }
 
