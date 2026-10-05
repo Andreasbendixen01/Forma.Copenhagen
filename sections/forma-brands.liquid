@@ -1,0 +1,744 @@
+<section
+  id="forma-brands-{{ section.id }}"
+  class="forma-brands"
+>
+  <div class="forma-brands__header">
+    <h2 class="forma-brands__heading">
+      {{ section.settings.heading }}
+    </h2>
+
+    {% if section.settings.view_all_link != blank %}
+      <a
+        href="{{ section.settings.view_all_link }}"
+        class="forma-brands__view-all"
+      >
+        {{ section.settings.view_all_text }}
+        <span>→</span>
+      </a>
+    {% endif %}
+  </div>
+
+  <div class="forma-brands__grid">
+
+    {%- comment -%}
+      FEATURED BRAND
+    {%- endcomment -%}
+
+    {% assign featured_image = section.settings.featured_image %}
+
+    <a
+      class="forma-brands__card forma-brands__card--featured"
+      href="{{ section.settings.featured_link }}"
+    >
+
+      <div class="forma-brands__image-wrap">
+
+        {% if featured_image != blank %}
+          {{
+            featured_image
+            | image_url: width: 1800
+            | image_tag:
+              loading: 'lazy',
+              widths: '600, 900, 1200, 1500, 1800',
+              sizes: '(min-width: 990px) 58vw, 100vw',
+              class: 'forma-brands__image'
+          }}
+        {% else %}
+          <div class="forma-brands__placeholder"></div>
+        {% endif %}
+
+        <div class="forma-brands__overlay"></div>
+
+        {% if section.settings.featured_label != blank %}
+          <div class="forma-brands__recommend">
+            {{ section.settings.featured_label }}
+          </div>
+        {% endif %}
+
+        <div class="forma-brands__brand-info">
+          {% if section.settings.featured_location != blank %}
+            <div class="forma-brands__location">
+              {{ section.settings.featured_location }}
+            </div>
+          {% endif %}
+
+          <div class="forma-brands__brand-name">
+            {{ section.settings.featured_name }}
+          </div>
+
+          <div class="forma-brands__explore">
+            <span>{{ section.settings.explore_text }}</span>
+            <span class="forma-brands__arrow">→</span>
+          </div>
+        </div>
+
+      </div>
+
+    </a>
+
+
+    {%- comment -%}
+      SECONDARY BRANDS
+    {%- endcomment -%}
+
+    <div class="forma-brands__secondary">
+
+      {% for i in (1..2) %}
+
+        {% liquid
+          assign image_key = 'secondary_' | append: i | append: '_image'
+          assign name_key = 'secondary_' | append: i | append: '_name'
+          assign location_key = 'secondary_' | append: i | append: '_location'
+          assign link_key = 'secondary_' | append: i | append: '_link'
+
+          assign image = section.settings[image_key]
+          assign name = section.settings[name_key]
+          assign location = section.settings[location_key]
+          assign link = section.settings[link_key]
+        %}
+
+        <a
+          class="forma-brands__card forma-brands__card--secondary"
+          href="{{ link }}"
+        >
+
+          <div class="forma-brands__image-wrap">
+
+            {% if image != blank %}
+              {{
+                image
+                | image_url: width: 1200
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '400, 600, 900, 1200',
+                  sizes: '(min-width: 990px) 21vw, 100vw',
+                  class: 'forma-brands__image'
+              }}
+            {% else %}
+              <div class="forma-brands__placeholder"></div>
+            {% endif %}
+
+            <div class="forma-brands__overlay"></div>
+
+            <div class="forma-brands__recommend">
+              FORMA RECOMMENDS
+            </div>
+
+            <div class="forma-brands__brand-info">
+
+              {% if location != blank %}
+                <div class="forma-brands__location">
+                  {{ location }}
+                </div>
+              {% endif %}
+
+              <div class="forma-brands__brand-name">
+                {{ name }}
+              </div>
+
+              <div class="forma-brands__explore">
+                <span>{{ section.settings.explore_text }}</span>
+                <span class="forma-brands__arrow">→</span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </a>
+
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+
+  {%- comment -%}
+    BRAND NAMES
+  {%- endcomment -%}
+
+  {% if section.settings.brand_list != blank %}
+    <div class="forma-brands__brand-list">
+      {% assign brands = section.settings.brand_list | split: ',' %}
+
+      {% for brand in brands %}
+        <span class="forma-brands__brand-list-item">
+          {{ brand | strip }}
+        </span>
+
+        {% unless forloop.last %}
+          <span class="forma-brands__brand-separator">·</span>
+        {% endunless %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+</section>
+
+
+<style>
+
+  /* ==========================================================
+     FORMA BRANDS
+     ========================================================== */
+
+  #forma-brands-{{ section.id }} {
+    width: 100%;
+    margin: 0;
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+  }
+
+
+  /* ==========================================================
+     HEADER
+     ========================================================== */
+
+  #forma-brands-{{ section.id }} .forma-brands__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 12px 18px;
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__heading {
+    margin: 0;
+
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.2;
+
+    letter-spacing: -0.01em;
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    color: inherit;
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 400;
+
+    transition: opacity 0.3s ease;
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__view-all span {
+    transition: transform 0.3s ease;
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__view-all:hover {
+    opacity: 0.55;
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__view-all:hover span {
+    transform: translateX(4px);
+  }
+
+
+  /* ==========================================================
+     GRID
+     ========================================================== */
+
+  #forma-brands-{{ section.id }} .forma-brands__grid {
+    display: grid;
+    grid-template-columns: 58% 42%;
+    gap: 2px;
+
+    width: 100%;
+  }
+
+
+  /* ==========================================================
+     SECONDARY
+     ========================================================== */
+
+  #forma-brands-{{ section.id }} .forma-brands__secondary {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 2px;
+  }
+
+
+  /* ==========================================================
+     CARD
+     ========================================================== */
+
+  #forma-brands-{{ section.id }} .forma-brands__card {
+    position: relative;
+
+    display: block;
+
+    min-width: 0;
+
+    color: inherit;
+    text-decoration: none;
+
+    overflow: hidden;
+
+    background: #e8e8e8;
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__card--featured {
+    aspect-ratio: 1 / 0.78;
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__card--secondary {
+    aspect-ratio: auto;
+  }
+
+
+  /* ==========================================================
+     IMAGE
+     ========================================================== */
+
+  #forma-brands-{{ section.id }} .forma-brands__image-wrap {
+    position: absolute;
+    inset: 0;
+
+    overflow: hidden;
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__image {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+      transform 0.9s cubic-bezier(.2,.65,.2,1),
+      filter 0.6s ease;
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__placeholder {
+    position: absolute;
+    inset: 0;
+
+    background: #dedede;
+  }
+
+
+  /* ==========================================================
+     OVERLAY
+     ========================================================== */
+
+  #forma-brands-{{ section.id }} .forma-brands__overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+      linear-gradient(
+        to top,
+        rgba(0,0,0,0.62) 0%,
+        rgba(0,0,0,0.18) 48%,
+        rgba(0,0,0,0.03) 100%
+      );
+
+    pointer-events: none;
+  }
+
+
+  /* ==========================================================
+     FORMA RECOMMENDS
+     ========================================================== */
+
+  #forma-brands-{{ section.id }} .forma-brands__recommend {
+    position: absolute;
+
+    top: 18px;
+    left: 18px;
+
+    padding: 7px 10px;
+
+    border: 1px solid rgba(255,255,255,0.48);
+
+    background: rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    color: rgba(255,255,255,0.92);
+
+    font-size: 9px;
+    font-weight: 500;
+
+    line-height: 1;
+
+    letter-spacing: 0.15em;
+
+    text-transform: uppercase;
+  }
+
+
+  /* ==========================================================
+     BRAND INFO
+     ========================================================== */
+
+  #forma-brands-{{ section.id }} .forma-brands__brand-info {
+    position: absolute;
+
+    left: 24px;
+    right: 24px;
+    bottom: 22px;
+
+    color: #fff;
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__location {
+    margin-bottom: 5px;
+
+    font-size: 9px;
+    font-weight: 500;
+
+    line-height: 1.2;
+
+    letter-spacing: 0.14em;
+
+    text-transform: uppercase;
+
+    opacity: 0.78;
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__brand-name {
+    font-size: 26px;
+    font-weight: 400;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.02em;
+  }
+
+
+  /* ==========================================================
+     EXPLORE
+     ========================================================== */
+
+  #forma-brands-{{ section.id }} .forma-brands__explore {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-top: 10px;
+
+    font-size: 9px;
+    font-weight: 500;
+
+    letter-spacing: 0.15em;
+
+    text-transform: uppercase;
+
+    opacity: 0;
+
+    transform: translateY(7px);
+
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__arrow {
+    font-size: 13px;
+
+    transition: transform 0.3s ease;
+  }
+
+
+  /* ==========================================================
+     HOVER
+     ========================================================== */
+
+  @media screen and (min-width: 750px) {
+
+    #forma-brands-{{ section.id }} .forma-brands__card:hover
+    .forma-brands__image {
+      transform: scale(1.035);
+    }
+
+    #forma-brands-{{ section.id }} .forma-brands__card:hover
+    .forma-brands__explore {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #forma-brands-{{ section.id }} .forma-brands__card:hover
+    .forma-brands__arrow {
+      transform: translateX(4px);
+    }
+
+  }
+
+
+  /* ==========================================================
+     BRAND LIST
+     ========================================================== */
+
+  #forma-brands-{{ section.id }} .forma-brands__brand-list {
+    display: flex;
+    flex-wrap: wrap;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 22px 16px 0;
+
+    font-size: 10px;
+    font-weight: 500;
+
+    letter-spacing: 0.13em;
+
+    text-transform: uppercase;
+
+    color: rgba(0,0,0,0.58);
+  }
+
+  #forma-brands-{{ section.id }} .forma-brands__brand-separator {
+    opacity: 0.35;
+  }
+
+
+  /* ==========================================================
+     MOBILE
+     ========================================================== */
+
+  @media screen and (max-width: 749px) {
+
+    #forma-brands-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | divided_by: 1.4 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | divided_by: 1.4 }}px;
+    }
+
+    #forma-brands-{{ section.id }} .forma-brands__header {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    #forma-brands-{{ section.id }} .forma-brands__grid {
+      grid-template-columns: 1fr;
+    }
+
+    #forma-brands-{{ section.id }} .forma-brands__card--featured {
+      aspect-ratio: 1 / 0.88;
+    }
+
+    #forma-brands-{{ section.id }} .forma-brands__secondary {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: none;
+    }
+
+    #forma-brands-{{ section.id }} .forma-brands__card--secondary {
+      aspect-ratio: 1 / 1.15;
+    }
+
+    #forma-brands-{{ section.id }} .forma-brands__brand-name {
+      font-size: 21px;
+    }
+
+    #forma-brands-{{ section.id }} .forma-brands__brand-info {
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+    }
+
+    #forma-brands-{{ section.id }} .forma-brands__recommend {
+      top: 12px;
+      left: 12px;
+    }
+
+    #forma-brands-{{ section.id }} .forma-brands__explore {
+      opacity: 1;
+      transform: none;
+    }
+
+  }
+
+</style>
+
+
+{% schema %}
+{
+  "name": "FORMA Brands",
+  "settings": [
+
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Forma Brands"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all text",
+      "default": "View all →"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View all link"
+    },
+
+    {
+      "type": "header",
+      "content": "Featured brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "featured_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "featured_name",
+      "label": "Brand name",
+      "default": "Les Deux"
+    },
+    {
+      "type": "text",
+      "id": "featured_location",
+      "label": "Location",
+      "default": "Copenhagen · Denmark"
+    },
+    {
+      "type": "text",
+      "id": "featured_label",
+      "label": "Label",
+      "default": "FORMA RECOMMENDS"
+    },
+    {
+      "type": "url",
+      "id": "featured_link",
+      "label": "Brand link"
+    },
+
+    {
+      "type": "header",
+      "content": "Secondary brand 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "secondary_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "secondary_1_name",
+      "label": "Brand name",
+      "default": "Norse Projects"
+    },
+    {
+      "type": "text",
+      "id": "secondary_1_location",
+      "label": "Location",
+      "default": "Copenhagen · Denmark"
+    },
+    {
+      "type": "url",
+      "id": "secondary_1_link",
+      "label": "Brand link"
+    },
+
+    {
+      "type": "header",
+      "content": "Secondary brand 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "secondary_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "secondary_2_name",
+      "label": "Brand name",
+      "default": "Forét"
+    },
+    {
+      "type": "text",
+      "id": "secondary_2_location",
+      "label": "Location",
+      "default": "Copenhagen · Denmark"
+    },
+    {
+      "type": "url",
+      "id": "secondary_2_link",
+      "label": "Brand link"
+    },
+
+    {
+      "type": "header",
+      "content": "Brand list"
+    },
+    {
+      "type": "textarea",
+      "id": "brand_list",
+      "label": "Brands",
+      "info": "Separate brands with commas.",
+      "default": "Les Deux, Norse Projects, Forét, Opera Sport, Han Kjøbenhavn, Samsøe Samsøe, GANNI"
+    },
+
+    {
+      "type": "header",
+      "content": "Design"
+    },
+    {
+      "type": "text",
+      "id": "explore_text",
+      "label": "Explore text",
+      "default": "Explore brand"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 35,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 35,
+      "unit": "px"
+    }
+
+  ],
+
+  "presets": [
+    {
+      "name": "FORMA Brands"
+    }
+  ]
+}
+{% endschema %}
