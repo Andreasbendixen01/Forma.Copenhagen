@@ -277,6 +277,7 @@
         "form_item_mTAhRL": {
           "type": "form_item",
           "settings": {
+            "image": "shopify://shop_images/Private_back.jpg",
             "title": "Taste",
             "subtitle": "Places worth tasting.",
             "link": ""
@@ -285,6 +286,7 @@
         "form_item_xLthpr": {
           "type": "form_item",
           "settings": {
+            "image": "shopify://shop_images/dc99999789f2b687eeafb14f7d71c5ed4c027d57-1850x2754_png.avif",
             "title": "Movement",
             "subtitle": "Move with intention.",
             "link": ""
