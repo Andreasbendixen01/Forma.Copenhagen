@@ -3,13 +3,15 @@
   <style>
 
     /* =========================================================
-       FORMA EDIT — LES DEUX INSPIRED
+       FORMA FEATURED COLLECTIONS
+       Clean editorial product carousel
        ========================================================= */
 
     #shopify-section-{{ section.id }} {
-      --product-list-items-per-row: {{ section.settings.products_per_row_mobile | times: 1 }};
-      --product-list-horizontal-spacing-factor: {{ section.settings.horizontal_spacing_factor }};
-      --product-list-vertical-spacing-factor: {{ section.settings.vertical_spacing_factor }};
+      --forma-gap: 14px;
+      --forma-card-width: 355px;
+      --forma-text: #111111;
+      --forma-muted: #777777;
     }
 
 
@@ -18,8 +20,8 @@
        ========================================================= */
 
     #shopify-section-{{ section.id }} .section-spacing {
-      padding-top: 1rem !important;
-      padding-bottom: 2.5rem !important;
+      padding-top: 1.25rem !important;
+      padding-bottom: 3.5rem !important;
     }
 
 
@@ -27,525 +29,501 @@
        HEADER
        ========================================================= */
 
-    #shopify-section-{{ section.id }} .forma-edit-section-header {
-  width: 100%;
-
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-
-  margin: 2px 0 0.75rem 0 !important;
-  padding: 0 10px !important;
-
-  text-align: left;
-}
-
-
-    /* =========================================================
-       HEADER CONTENT
-       ========================================================= */
-
-    #shopify-section-{{ section.id }} .forma-edit-section-header__content {
+    #shopify-section-{{ section.id }} .forma-featured-header {
+      width: 100%;
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
+      justify-content: space-between;
 
-      min-width: 0;
+      margin: 0 0 1rem 0 !important;
+      padding: 0 10px !important;
     }
 
 
-    /* =========================================================
-       HEADING
-       ========================================================= */
+    /* TITLE */
 
-    #shopify-section-{{ section.id }} .forma-edit-section-header__title {
-      display: block !important;
+    #shopify-section-{{ section.id }} .forma-featured-title {
+      margin: 0 !important;
+      padding: 0 !important;
+
+      font-family: Georgia, "Times New Roman", serif !important;
+      font-size: 18px !important;
+      font-weight: 400 !important;
+      line-height: 1.15 !important;
+      letter-spacing: 0 !important;
+
+      color: var(--forma-text) !important;
+    }
+
+
+    /* VIEW ALL */
+
+    #shopify-section-{{ section.id }} .forma-featured-view-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
 
       margin: 0 !important;
       padding: 0 !important;
 
       font-family: Georgia, "Times New Roman", serif !important;
-
-      font-size: 18px !important;
-
+      font-size: 12px !important;
       font-weight: 400 !important;
+      line-height: 1 !important;
 
-      font-style: normal !important;
+      color: var(--forma-text) !important;
+      text-decoration: none !important;
 
-      line-height: 1.15 !important;
+      transition: opacity 0.2s ease;
+    }
 
-      letter-spacing: 0 !important;
+    #shopify-section-{{ section.id }} .forma-featured-view-all::after {
+      content: "→";
 
-      color: #111111 !important;
+      font-family: Georgia, "Times New Roman", serif !important;
+      font-size: 13px;
 
+      transition: transform 0.2s ease;
+    }
+
+    #shopify-section-{{ section.id }} .forma-featured-view-all:hover {
+      opacity: 0.55;
+    }
+
+    #shopify-section-{{ section.id }} .forma-featured-view-all:hover::after {
+      transform: translateX(3px);
+    }
+
+
+    /* =========================================================
+       PRODUCT CAROUSEL
+       ========================================================= */
+
+    #shopify-section-{{ section.id }} .forma-featured-carousel {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .forma-featured-product-list {
+      display: grid !important;
+      grid-auto-flow: column !important;
+
+      grid-auto-columns: var(--forma-card-width) !important;
+
+      gap: var(--forma-gap) !important;
+
+      width: 100% !important;
+      max-width: none !important;
+
+      overflow-x: auto !important;
+
+      padding: 0 10px 8px !important;
+      margin: 0 !important;
+
+      scrollbar-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .forma-featured-product-list::-webkit-scrollbar {
+      display: none;
+    }
+
+
+    /* =========================================================
+       PRODUCT CARD
+       ========================================================= */
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list > * {
+
+      width: var(--forma-card-width) !important;
+      min-width: var(--forma-card-width) !important;
+      max-width: var(--forma-card-width) !important;
+
+      margin: 0 !important;
+    }
+
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list product-card {
+
+      display: block !important;
+
+      width: var(--forma-card-width) !important;
+      min-width: var(--forma-card-width) !important;
+      max-width: var(--forma-card-width) !important;
+    }
+
+
+    /* =========================================================
+       PRODUCT IMAGE
+       ========================================================= */
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list .product-card__figure {
+
+      width: 100% !important;
+
+      aspect-ratio: 4 / 5 !important;
+
+      overflow: hidden !important;
+
+      background: #f5f5f5 !important;
+    }
+
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list .product-card__figure img {
+
+      width: 100% !important;
+      height: 100% !important;
+
+      object-fit: cover !important;
+
+      transition: transform 0.45s cubic-bezier(.22,.61,.36,1);
+    }
+
+
+    /* Very subtle image movement */
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list product-card:hover
+    .product-card__figure img {
+
+      transform: scale(1.025);
+    }
+
+
+    /* =========================================================
+       PRODUCT INFORMATION
+       ========================================================= */
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list .product-card__info {
+
+      display: block !important;
+
+      width: 100% !important;
+
+      height: auto !important;
+      min-height: 0 !important;
+
+      margin: 0 !important;
+      padding: 11px 0 0 0 !important;
+
+      opacity: 1 !important;
+      visibility: visible !important;
+
+      text-align: left !important;
+    }
+
+
+    /* Make sure hidden theme states cannot hide info */
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list
+    .product-card__info[hidden],
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list
+    .product-card__info.is-hidden {
+
+      display: block !important;
       opacity: 1 !important;
       visibility: visible !important;
     }
 
 
     /* =========================================================
-       VIEW ALL
+       INFORMATION GRID
        ========================================================= */
 
-    #shopify-section-{{ section.id }} .forma-edit-section-header__link {
-      display: inline-flex;
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list
+    .product-card__info > .v-stack {
 
-      align-items: center;
+      display: grid !important;
 
-      gap: 4px;
+      grid-template-columns: minmax(0, 1fr) auto;
 
-      margin: 5px 0 0 0 !important;
+      align-items: start;
+
+      column-gap: 12px;
+
+      width: 100% !important;
+
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+
+    /* =========================================================
+       BRAND
+       ========================================================= */
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list
+    .product-card__info > .v-stack > :first-child {
+
+      grid-column: 2;
+      grid-row: 1;
+
+      justify-self: end;
+
+      margin: 1px 0 0 0 !important;
+      padding: 0 !important;
+
+      text-align: right !important;
+
+      font-family: Arial, Helvetica, sans-serif !important;
+      font-size: 9px !important;
+      font-weight: 400 !important;
+
+      line-height: 1.2 !important;
+
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+
+      color: var(--forma-muted) !important;
+    }
+
+
+    /* =========================================================
+       PRODUCT NAME + PRICE
+       ========================================================= */
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list
+    .product-card__info > .v-stack > :last-child {
+
+      grid-column: 1;
+      grid-row: 1;
+
+      display: flex !important;
+      flex-direction: column !important;
+
+      align-items: flex-start !important;
+
+      width: 100% !important;
+
+      margin: 0 !important;
+      padding: 0 !important;
+
+      text-align: left !important;
+    }
+
+
+    /* PRODUCT TITLE */
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list
+    .product-card__info .product-title {
+
+      display: block !important;
+
+      width: 100% !important;
+
+      margin: 0 !important;
       padding: 0 !important;
 
       font-family: Georgia, "Times New Roman", serif !important;
 
-      font-size: 12px !important;
-
+      font-size: 14px !important;
       font-weight: 400 !important;
 
-      font-style: normal !important;
-
-      line-height: 1.15 !important;
+      line-height: 1.25 !important;
 
       letter-spacing: 0 !important;
 
-      text-transform: none !important;
+      color: var(--forma-text) !important;
 
-      color: #111111 !important;
-
-      text-decoration: none !important;
-
-      opacity: 1;
-
-      transition: opacity 0.2s ease;
+      text-align: left !important;
     }
 
 
-    /* Arrow */
+    /* PRICE */
 
-    #shopify-section-{{ section.id }} .forma-edit-section-header__link::after {
-      content: "→";
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list
+    .product-card__info .price-list {
 
-      display: inline-block;
+      display: flex !important;
 
-      font-family: Georgia, "Times New Roman", serif !important;
+      justify-content: flex-start !important;
+      align-items: flex-start !important;
 
-      font-size: 13px;
+      width: 100% !important;
 
-      font-weight: 400;
+      margin: 4px 0 0 0 !important;
+      padding: 0 !important;
 
-      line-height: 1;
+      font-family: Arial, Helvetica, sans-serif !important;
 
-      transition: transform 0.2s ease;
-    }
+      font-size: 11px !important;
+      font-weight: 400 !important;
 
+      line-height: 1.2 !important;
 
-    #shopify-section-{{ section.id }} .forma-edit-section-header__link:hover {
-      opacity: 0.65;
-    }
+      color: #555555 !important;
 
-
-    #shopify-section-{{ section.id }} .forma-edit-section-header__link:hover::after {
-      transform: translateX(2px);
+      text-align: left !important;
     }
 
 
     /* =========================================================
-       PRODUCT AREA
+       HEART / SAVE
        ========================================================= */
 
-    #shopify-section-{{ section.id }} .forma-edit-row {
-      width: 100%;
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list
+    .forma-save-button,
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list
+    .forma-save-button button {
 
-      display: block;
+      width: 32px !important;
+      height: 32px !important;
 
-      margin: 0 !important;
+      min-width: 32px !important;
+      min-height: 32px !important;
+
       padding: 0 !important;
+      margin: 0 !important;
+
+      border: 0 !important;
+      border-radius: 0 !important;
+
+      background: transparent !important;
+      box-shadow: none !important;
+
+      display: flex !important;
+
+      align-items: center !important;
+      justify-content: center !important;
     }
 
 
-    #shopify-section-{{ section.id }} .forma-edit-products {
-      width: 100%;
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list
+    .forma-save-button svg,
+    #shopify-section-{{ section.id }}
+    .forma-featured-product-list
+    .forma-save-button button svg {
 
-      min-width: 0;
+      width: 18px !important;
+      height: 18px !important;
 
-      margin: 0 !important;
-      padding: 0 !important;
+      stroke-width: 1.4 !important;
+
+      fill: none !important;
     }
-
-
-    /* =========================================================
-       CAROUSEL
-       ========================================================= */
-
-    #shopify-section-{{ section.id }} .featured-collections-carousel {
-      margin: 0 !important;
-      padding: 0 !important;
-    }
-
-
-    #shopify-section-{{ section.id }} .featured-collections-carousel__item {
-      margin: 0 !important;
-      padding: 0 !important;
-    }
-
-
- #shopify-section-{{ section.id }} .product-list {
-  margin-top: 0 !important;
-}
-
-
-/* =========================================================
-   FORMA EDIT — PRODUCT INFORMATION
-   ========================================================= */
-
-#shopify-section-{{ section.id }} .product-card__info {
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 12px 0 0 0 !important;
-
-  text-align: left !important;
-}
-
-/* BRAND + PRODUCT INFO */
-#shopify-section-{{ section.id }} .product-card__info > .v-stack {
-  display: grid !important;
-
-  grid-template-columns: minmax(0, 1fr) auto;
-
-  align-items: start;
-
-  column-gap: 8px;
-
-  width: 100% !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* BRAND — RIGHT */
-#shopify-section-{{ section.id }} .product-card__info > .v-stack > :first-child {
-  grid-column: 2;
-  grid-row: 1;
-
-  justify-self: end;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  text-align: right !important;
-}
-
-/* PRODUCT NAME + PRICE — LEFT */
-#shopify-section-{{ section.id }} .product-card__info > .v-stack > :last-child {
-  grid-column: 1;
-  grid-row: 1;
-
-  width: 100% !important;
-  min-width: 0 !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  justify-items: start !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  text-align: left !important;
-}
-
-/* PRODUCT TITLE */
-#shopify-section-{{ section.id }} .product-card__info .product-title {
-  display: block !important;
-
-  width: 100% !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  text-align: left !important;
-}
-
-/* PRICE */
-#shopify-section-{{ section.id }} .product-card__info .price-list {
-  display: flex !important;
-
-  justify-content: flex-start !important;
-  align-items: flex-start !important;
-
-  width: 100% !important;
-
-  margin: 4px 0 0 0 !important;
-  padding: 0 !important;
-
-  text-align: left !important;
-}
-
-/* =========================================================
-   FORMA EDIT — PRODUCT CAROUSEL
-   ========================================================= */
-
-/* =========================================================
-   FORMA EDIT — DESKTOP PRODUCT CAROUSEL
-   ========================================================= */
-
-@media screen and (min-width: 700px) {
-
-  /* CAROUSEL WRAPPER */
-  #shopify-section-{{ section.id }} .forma-product-carousel {
-    width: 100vw !important;
-    max-width: 100vw !important;
-
-    margin-left: calc(50% - 50vw) !important;
-    margin-right: 0 !important;
-
-    padding: 0 !important;
-
-    overflow: visible !important;
-  }
-
-
-  /* =======================================================
-     PRODUCT SCROLLER
-     ======================================================= */
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-list {
-    display: flex !important;
-
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-
-    width: 100vw !important;
-    max-width: 100vw !important;
-
-    margin: 0 !important;
-    padding: 0 0 8px 0 !important;
-
-    gap: 8px !important;
-
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-
-    scrollbar-width: none;
-
-    scroll-behavior: smooth;
-
-    -webkit-overflow-scrolling: touch;
-
-    justify-content: flex-start !important;
-  }
-
-
-  /* HIDE SCROLLBAR — CHROME / SAFARI */
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-list::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-  }
-
-
-  /* =======================================================
-     4.33 PRODUCTS VISIBLE
-     ======================================================= */
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-list > * {
-    flex: 0 0 calc((100vw - 32px) / 5) !important;
-
-    width: calc((100vw - 32px) / 4.33) !important;
-
-    min-width: calc((100vw - 32px) / 4.33) !important;
-
-    max-width: calc((100vw - 32px) / 4.33) !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    scroll-snap-align: start;
-  }
-
-
-  /* =======================================================
-     PRODUCT CARD
-     ======================================================= */
-
- #shopify-section-{{ section.id }} .forma-product-carousel product-card {
-  display: block !important;
-
-  width: 385px !important;
-  min-width: 385px !important;
-  max-width: 385px !important;
-
-  height: 500px !important;
-  min-height: 500px !important;
-  max-height: 500px !important;
-
-  overflow: hidden !important;
-}
-
-  
-
-
-  /* =======================================================
-     PRODUCT IMAGE
-     ======================================================= */
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure {
-    width: 100% !important;
-    height: auto !important;
-
-    aspect-ratio: 1 / 1 !important;
-
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure img {
-    width: 100% !important;
-    height: 100% !important;
-
-    object-fit: cover !important;
-    display: block !important;
-  }
-
-
-  /* =======================================================
-     HEART / SAVE BUTTON
-     ======================================================= */
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button,
-  #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button button {
-    width: 32px !important;
-    height: 32px !important;
-
-    min-width: 32px !important;
-    min-height: 32px !important;
-
-    padding: 0 !important;
-    margin: 0 !important;
-
-    border: 0 !important;
-    border-radius: 0 !important;
-
-    background: transparent !important;
-
-    box-shadow: none !important;
-
-    display: flex !important;
-
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button svg,
-  #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button button svg {
-    width: 18px !important;
-    height: 18px !important;
-
-    stroke-width: 1.5 !important;
-
-    fill: none !important;
-  }
-
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button::before,
-  #shopify-section-{{ section.id }} .forma-product-carousel .forma-save-button::after {
-    display: none !important;
-  }
-
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media screen and (max-width: 699px) {
-
-  #shopify-section-{{ section.id }} .forma-product-carousel {
-    width: 100%;
-    overflow: visible !important;
-  }
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-list {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-
-    width: 100% !important;
-
-    gap: 12px !important;
-
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-
-    padding: 0 !important;
-    margin: 0 !important;
-
-    scrollbar-width: none;
-
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-
-    -webkit-overflow-scrolling: touch;
-  }
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-list::-webkit-scrollbar {
-    display: none !important;
-  }
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-list > * {
-    flex: 0 0 78vw !important;
-
-    width: 78vw !important;
-    min-width: 78vw !important;
-    max-width: 78vw !important;
-
-    scroll-snap-align: start;
-  }
-
-  #shopify-section-{{ section.id }} .forma-product-carousel product-card {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: none !important;
-  }
-
-  #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure {
-    width: 100% !important;
-    aspect-ratio: 4 / 5 !important;
-  }
-}
 
 
     /* =========================================================
        CAROUSEL ARROWS
        ========================================================= */
 
-    #shopify-section-{{ section.id }} .floating-controls-container {
-      position: relative;
+    #shopify-section-{{ section.id }}
+    .forma-featured-carousel
+    .floating-controls-container__control {
+
+      position: absolute;
+
+      top: 40%;
+
+      transform: translateY(-50%);
+
+      z-index: 10;
+
+      opacity: 0;
+
+      transition: opacity 0.2s ease;
     }
 
 
-    #shopify-section-{{ section.id }} .floating-controls-container__control {
-      z-index: 5;
+    /* Show arrows when section is hovered */
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-carousel:hover
+    .floating-controls-container__control {
+
+      opacity: 1;
     }
 
 
-    /* Keep controls subtle */
+    /* Left */
 
-    #shopify-section-{{ section.id }} .prev-next-button {
-      width: 32px !important;
-      height: 32px !important;
+    #shopify-section-{{ section.id }}
+    .forma-featured-carousel
+    .floating-controls-container__control:first-child {
 
-      background: transparent !important;
+      left: 15px;
+    }
 
-      border: none !important;
 
-      box-shadow: none !important;
+    /* Right */
 
-      opacity: 0.75;
+    #shopify-section-{{ section.id }}
+    .forma-featured-carousel
+    .floating-controls-container__control:last-child {
+
+      right: 15px;
+    }
+
+
+    /* Arrow button */
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-carousel
+    .prev-next-button {
+
+      width: 34px !important;
+      height: 34px !important;
+
+      min-width: 34px !important;
+      min-height: 34px !important;
+
+      padding: 0 !important;
+
+      border: 0 !important;
+      border-radius: 50% !important;
+
+      background: rgba(255,255,255,0.88) !important;
+
+      box-shadow: 0 3px 15px rgba(0,0,0,0.10) !important;
+
+      display: flex !important;
+
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-carousel
+    .prev-next-button svg {
+
+      width: 13px !important;
+      height: 13px !important;
+
+      stroke-width: 1.4 !important;
+    }
+
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-carousel
+    .prev-next-button:hover {
+
+      background: white !important;
+    }
+
+
+    #shopify-section-{{ section.id }}
+    .forma-featured-carousel
+    .prev-next-button:disabled {
+
+      opacity: 0.2;
+      pointer-events: none;
     }
 
 
@@ -556,32 +534,38 @@
     @media screen and (min-width: 700px) {
 
       #shopify-section-{{ section.id }} {
-        --product-list-items-per-row: 3;
+        --forma-card-width: 355px;
+        --forma-gap: 12px;
       }
 
+      #shopify-section-{{ section.id }}
+      .section-spacing {
 
-      #shopify-section-{{ section.id }} .section-spacing {
-        padding-top: 1rem !important;
-        padding-bottom: 3rem !important;
+        padding-top: 1.25rem !important;
+        padding-bottom: 3.5rem !important;
       }
 
+      #shopify-section-{{ section.id }}
+      .forma-featured-header {
 
-      #shopify-section-{{ section.id }} .forma-edit-section-header {
-        margin-bottom: -0.5rem !important;
+        margin-bottom: 1rem !important;
+
         padding-left: 10px !important;
         padding-right: 10px !important;
       }
 
+      #shopify-section-{{ section.id }}
+      .forma-featured-title {
 
-      #shopify-section-{{ section.id }} .forma-edit-section-header__title {
-        font-size: 17px !important;
+        font-size: 18px !important;
       }
 
+      #shopify-section-{{ section.id }}
+      .forma-featured-product-list {
 
-      #shopify-section-{{ section.id }} .forma-edit-section-header__link {
-        font-size: 12px !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
       }
-
     }
 
 
@@ -591,157 +575,145 @@
 
     @media screen and (max-width: 699px) {
 
-      #shopify-section-{{ section.id }} .section-spacing {
-        padding-top: 0.9rem !important;
-        padding-bottom: 2rem !important;
+      #shopify-section-{{ section.id }} {
+        --forma-card-width: 78vw;
+        --forma-gap: 12px;
       }
 
 
-      #shopify-section-{{ section.id }} .forma-edit-section-header {
-        margin-bottom: 0.85rem !important;
+      #shopify-section-{{ section.id }}
+      .section-spacing {
+
+        padding-top: 0.9rem !important;
+        padding-bottom: 2.5rem !important;
+      }
+
+
+      #shopify-section-{{ section.id }}
+      .forma-featured-header {
+
+        margin-bottom: 0.8rem !important;
+
         padding-left: 6px !important;
         padding-right: 6px !important;
       }
 
 
-      #shopify-section-{{ section.id }} .forma-edit-section-header__title {
+      #shopify-section-{{ section.id }}
+      .forma-featured-title {
+
         font-size: 16px !important;
       }
 
 
-      #shopify-section-{{ section.id }} .forma-edit-section-header__link {
+      #shopify-section-{{ section.id }}
+      .forma-featured-view-all {
+
         font-size: 11px !important;
       }
 
+
+      #shopify-section-{{ section.id }}
+      .forma-featured-product-list {
+
+        grid-auto-columns: var(--forma-card-width) !important;
+
+        gap: var(--forma-gap) !important;
+
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+      }
+
+
+      #shopify-section-{{ section.id }}
+      .forma-featured-product-list > * {
+
+        width: var(--forma-card-width) !important;
+        min-width: var(--forma-card-width) !important;
+        max-width: var(--forma-card-width) !important;
+      }
+
+
+      #shopify-section-{{ section.id }}
+      .forma-featured-product-list product-card {
+
+        width: var(--forma-card-width) !important;
+        min-width: var(--forma-card-width) !important;
+        max-width: var(--forma-card-width) !important;
+      }
+
+
+      /* Always show arrows on mobile */
+
+      #shopify-section-{{ section.id }}
+      .forma-featured-carousel
+      .floating-controls-container__control {
+
+        opacity: 1;
+      }
+
+
+      #shopify-section-{{ section.id }}
+      .forma-featured-carousel
+      .floating-controls-container__control:first-child {
+
+        left: 7px;
+      }
+
+
+      #shopify-section-{{ section.id }}
+      .forma-featured-carousel
+      .floating-controls-container__control:last-child {
+
+        right: 7px;
+      }
+
+
+      #shopify-section-{{ section.id }}
+      .forma-featured-carousel
+      .prev-next-button {
+
+        width: 30px !important;
+        height: 30px !important;
+
+        min-width: 30px !important;
+        min-height: 30px !important;
+      }
+
+
+      #shopify-section-{{ section.id }}
+      .forma-featured-carousel
+      .prev-next-button svg {
+
+        width: 11px !important;
+        height: 11px !important;
+      }
+
+
+      #shopify-section-{{ section.id }}
+      .forma-featured-product-list
+      .product-card__info .product-title {
+
+        font-size: 13px !important;
+      }
+
+
+      #shopify-section-{{ section.id }}
+      .forma-featured-product-list
+      .product-card__info > .v-stack > :first-child {
+
+        font-size: 8px !important;
+      }
     }
 
-    /* =========================================================
-   FORMA – PRODUCT CAROUSEL ARROWS
-   ========================================================= */
-
-#shopify-section-{{ section.id }} .forma-product-carousel {
-  position: relative;
-}
-
-/* Arrow containers */
-#shopify-section-{{ section.id }} .forma-product-carousel
-.floating-controls-container__control {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 5;
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto;
-}
-
-/* Left arrow */
-#shopify-section-{{ section.id }} .forma-product-carousel
-.floating-controls-container__control:first-child {
-  left: 18px;
-}
-
-/* Right arrow */
-#shopify-section-{{ section.id }} .forma-product-carousel
-.floating-controls-container__control:last-child {
-  right: 18px;
-}
-
-/* Remove the round button styling */
-#shopify-section-{{ section.id }} .forma-product-carousel
-.prev-next-button {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
-
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-
-  background: transparent !important;
-  box-shadow: none !important;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #111 !important;
-}
-
-/* Arrow size */
-#shopify-section-{{ section.id }} .forma-product-carousel
-.prev-next-button svg {
-  width: 14px;
-  height: 14px;
-  stroke-width: 1.4;
-}
-
-/* Subtle hover */
-#shopify-section-{{ section.id }} .forma-product-carousel
-.prev-next-button:hover {
-  opacity: 0.55;
-}
-
-/* Disabled previous arrow */
-#shopify-section-{{ section.id }} .forma-product-carousel
-.prev-next-button:disabled {
-  opacity: 0.25;
-  pointer-events: none;
-}
-
-/* Mobile */
-@media screen and (max-width: 699px) {
-
-  #shopify-section-{{ section.id }} .forma-product-carousel
-  .floating-controls-container__control:first-child {
-    left: 8px;
-  }
-
-  #shopify-section-{{ section.id }} .forma-product-carousel
-  .floating-controls-container__control:last-child {
-    right: 8px;
-  }
-
-  #shopify-section-{{ section.id }} .forma-product-carousel
-  .prev-next-button {
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    min-height: 28px;
-  }
-
-  #shopify-section-{{ section.id }} .forma-product-carousel
-  .prev-next-button svg {
-    width: 12px;
-    height: 12px;
-  }
-}
-
-/* =========================================
-   FORMA EDIT – PRODUCT CARD HEIGHT
-   ========================================= */
-
-@media screen and (min-width: 700px) {
-
-  .forma-product-carousel .product-card__figure {
-    aspect-ratio: 4 / 5 !important;
-    height: auto !important;
-    width: 100% !important;
-    overflow: hidden !important;
-  }
-
-  .forma-product-carousel .product-card__figure img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important;
-    display: block !important;
-  }
-}
   </style>
 
 
-  {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
+  {%- assign color_scheme_hash =
+    section.settings.color_scheme.settings.background_gradient
+    | default: section.settings.color_scheme.settings.background
+    | md5
+  -%}
 
 
   <div
@@ -750,250 +722,257 @@
       color-scheme
       color-scheme--{{ section.settings.color_scheme.id }}
       color-scheme--bg-{{ color_scheme_hash }}
-      {% if section.settings.separate_section_with_border %}bordered-section{% endif %}
+      {% if section.settings.separate_section_with_border %}
+        bordered-section
+      {% endif %}
     "
   >
 
     <div class="container">
 
-      {%- assign wrapper_carousel_id = 'featured-collections-carousel-' | append: section.id -%}
+      {%- assign wrapper_carousel_id =
+        'forma-featured-carousel-' | append: section.id
+      -%}
 
-      <div class="section-stack">
 
+      <!-- =====================================================
+           HEADER
+           ===================================================== -->
 
-        <!-- =====================================================
-             FORMA EDIT HEADER
-             ===================================================== -->
+      {%- unless section.settings.hide_collection_title -%}
 
-        {%- unless section.settings.hide_collection_title -%}
+        <div class="forma-featured-header">
 
-          <div class="forma-edit-section-header">
-
-        <div class="forma-edit-section-header__content">
-          <h2 class="forma-edit-section-header__title">
+          <h2 class="forma-featured-title">
             {{ section.blocks.first.settings.title }}
           </h2>
+
+
+          {%- if section.blocks.size == 1
+            and section.blocks.first.settings.link_text != blank
+          -%}
+
+            {%- assign header_link =
+              section.blocks.first.settings.link_url
+              | default: section.blocks.first.settings.collection.url
+              | default: '#'
+            -%}
+
+            <a
+              href="{{ header_link }}"
+              class="forma-featured-view-all"
+            >
+              {{ section.blocks.first.settings.link_text }}
+            </a>
+
+          {%- endif -%}
+
         </div>
 
-        {%- if section.blocks.size == 1 and section.blocks.first.settings.link_text != blank -%}
-          {%- assign header_link = section.blocks.first.settings.link_url | default: section.blocks.first.settings.collection.url | default: '#' -%}
+      {%- endunless -%}
 
-          <a
-            href="{{ header_link }}"
-            class="forma-edit-section-header__link"
+
+      <!-- =====================================================
+           COLLECTION CAROUSEL
+           ===================================================== -->
+
+      <featured-collections-carousel
+        id="{{ wrapper_carousel_id }}"
+        class="forma-featured-carousel"
+      >
+
+        {%- for block in section.blocks -%}
+
+          <div
+            class="
+              featured-collections-carousel__item
+              {% if forloop.first %}is-selected{% endif %}
+            "
+            {{ block.shopify_attributes }}
           >
-            {{ section.blocks.first.settings.link_text }}
-          </a>
-        {%- endif -%}
 
-      </div>
+            {%- capture product_list -%}
 
-        {%- endunless -%}
+              {%- assign should_reveal = false -%}
 
+              {%- if settings.stagger_products_apparition
+                and forloop.first
+              -%}
 
+                {%- assign should_reveal = true -%}
 
-        <!-- =====================================================
-             PRODUCT CAROUSEL
-             ===================================================== -->
-
-        <featured-collections-carousel
-          id="{{ wrapper_carousel_id }}"
-          class="featured-collections-carousel"
-        >
-
-          {%- for block in section.blocks -%}
-
-            <div
-              class="
-                featured-collections-carousel__item
-                {% if forloop.first %}is-selected{% endif %}
-              "
-              {{ block.shopify_attributes }}
-            >
-
-              {%- capture product_list -%}
-
-                {%- assign should_reveal = false -%}
-
-                {%- if settings.stagger_products_apparition and forloop.first -%}
-                  {%- assign should_reveal = true -%}
-                {%- endif -%}
+              {%- endif -%}
 
 
-                {%- for product in block.settings.collection.products limit: block.settings.products_count -%}
+              {%- for product in block.settings.collection.products
+                limit: block.settings.products_count
+              -%}
 
-                  {%- render 'product-card',
-                    product: product,
+                {%- render 'product-card',
+                  product: product,
+                  reveal: should_reveal,
+                  position: forloop.index,
+                  hide_product_information: false,
+                  block: block
+                -%}
+
+              {%- else -%}
+
+                {%- for i in (1..block.settings.products_count) -%}
+
+                  {%- render 'product-card-placeholder',
                     reveal: should_reveal,
-                    position: forloop.index,
-                    hide_product_information: section.settings.hide_product_information,
-                    block: block
+                    loop_index: forloop.index0,
+                    hide_product_information: false
                   -%}
-
-                {%- else -%}
-
-                  {%- for i in (1..block.settings.products_count) -%}
-
-                    {%- render 'product-card-placeholder',
-                      reveal: should_reveal,
-                      loop_index: forloop.index0,
-                      hide_product_information: section.settings.hide_product_information
-                    -%}
-
-                  {%- endfor -%}
 
                 {%- endfor -%}
 
-              {%- endcapture -%}
+              {%- endfor -%}
+
+            {%- endcapture -%}
 
 
-              <div class="forma-edit-row">
+            <div class="forma-featured-products">
 
-                <div class="forma-edit-products">
+              {%- if section.settings.stack_products -%}
+
+                <product-list
+                  class="
+                    product-list
+                    justify-center
+                    forma-featured-product-list
+                  "
+                >
+
+                  {{- product_list -}}
+
+                </product-list>
 
 
-                  {%- if section.settings.stack_products -%}
+              {%- else -%}
 
-                    <product-list
+
+                {%- assign product_carousel_id =
+                  'forma-featured-products-' | append: block.id
+                -%}
+
+
+                <product-list
+                  class="
+                    floating-controls-container
+                    floating-controls-container--inside
+                    forma-featured-product-list-wrapper
+                  "
+                >
+
+
+                  <!-- PREVIOUS -->
+
+                  <carousel-prev-button
+                    class="floating-controls-container__control"
+                    aria-controls="{{ product_carousel_id }}"
+                  >
+
+                    <button
+                      type="button"
                       class="
-                        product-list
-                        {% if section.settings.hide_product_information %}
-                          product-list--compact
-                        {% endif %}
-                        justify-center
+                        prev-next-button
+                        prev-next-button--prev
+                        circle-button
+                      "
+                      disabled
+                    >
+
+                      <span class="sr-only">
+                        {{ 'general.accessibility.previous' | t }}
+                      </span>
+
+                      {%- render 'icon',
+                        with: 'arrow-left',
+                        direction_aware: true
+                      -%}
+
+                    </button>
+
+                  </carousel-prev-button>
+
+
+                  <!-- PRODUCTS -->
+
+                  <scroll-carousel
+                    id="{{ product_carousel_id }}"
+                    group-cells
+                    allow-drag
+                    class="
+                      product-list
+                      product-list--carousel
+                      scroll-area
+                      bleed
+                      md:unbleed
+                      forma-featured-product-list
+                    "
+                  >
+
+                    {{- product_list -}}
+
+                  </scroll-carousel>
+
+
+                  <!-- NEXT -->
+
+                  <carousel-next-button
+                    class="floating-controls-container__control"
+                    aria-controls="{{ product_carousel_id }}"
+                  >
+
+                    <button
+                      type="button"
+                      class="
+                        prev-next-button
+                        prev-next-button--next
+                        circle-button
                       "
                     >
 
-                      {{- product_list -}}
+                      <span class="sr-only">
+                        {{ 'general.accessibility.next' | t }}
+                      </span>
 
-                    </product-list>
+                      {%- render 'icon',
+                        with: 'arrow-right',
+                        direction_aware: true
+                      -%}
 
+                    </button>
 
-                  {%- else -%}
-
-
-                    {%- assign product_carousel_id = 'featured-collections-product-list-carousel-' | append: block.id -%}
-
-
-                    <product-list 
-                    class="floating-controls-container 
-                    floating-controls-container--inside 
-                    forma-product-carousel">
+                  </carousel-next-button>
 
 
-                      <!-- PREVIOUS -->
+                </product-list>
 
-                      <carousel-prev-button
-                        class="floating-controls-container__control"
-                        aria-controls="{{ product_carousel_id }}"
-                      >
-
-                        <button
-                          type="button"
-                          class="
-                            prev-next-button
-                            prev-next-button--prev
-                            circle-button
-                            hover:animate-icon-inline
-                          "
-                          disabled
-                        >
-
-                          <span class="sr-only">
-                            {{ 'general.accessibility.previous' | t }}
-                          </span>
-
-                          {%- render 'icon' with 'arrow-left', direction_aware: true -%}
-
-                        </button>
-
-                      </carousel-prev-button>
-
-
-
-                      <!-- PRODUCTS -->
-
-                      <scroll-carousel
-                        id="{{ product_carousel_id }}"
-                        group-cells
-                        allow-drag
-                        class="
-                          product-list
-                          {% if section.settings.hide_product_information %}
-                            product-list--compact
-                          {% endif %}
-                          product-list--carousel
-                          scroll-area
-                          bleed
-                          md:unbleed
-                        "
-                      >
-
-                        {{- product_list -}}
-
-                      </scroll-carousel>
-
-
-
-                      <!-- NEXT -->
-
-                      <carousel-next-button
-                        class="floating-controls-container__control"
-                        aria-controls="{{ product_carousel_id }}"
-                      >
-
-                        <button
-                          type="button"
-                          class="
-                            prev-next-button
-                            prev-next-button--next
-                            circle-button
-                            hover:animate-icon-inline
-                          "
-                        >
-
-                          <span class="sr-only">
-                            {{ 'general.accessibility.next' | t }}
-                          </span>
-
-                          {%- render 'icon' with 'arrow-right', direction_aware: true -%}
-
-                        </button>
-
-                      </carousel-next-button>
-
-
-                    </product-list>
-
-
-                  {%- endif -%}
-
-                </div>
-
-              </div>
-
+              {%- endif -%}
 
             </div>
 
-          {%- endfor -%}
+          </div>
 
-        </featured-collections-carousel>
+        {%- endfor -%}
 
-
-      </div>
+      </featured-collections-carousel>
 
     </div>
 
   </div>
 
-{%- endif -%}
 
+{% endif %}
 
 
 {% schema %}
 
 {
-  "name": "t:sections.featured_collections.name",
+  "name": "FORMA Featured Collections",
 
   "class": "shopify-section--featured-collections",
 
@@ -1024,19 +1003,7 @@
       "type": "checkbox",
       "id": "separate_section_with_border",
       "label": "t:global.section.separate_section_with_border",
-      "default": true
-    },
-
-    {
-      "type": "checkbox",
-      "id": "hide_product_information",
-      "label": "t:global.product_list.hide_product_information",
-      "info": "t:global.product_list.hide_product_information_info"
-    },
-
-    {
-      "type": "header",
-      "content": "t:global.product_list.product_list_category"
+      "default": false
     },
 
     {
@@ -1070,28 +1037,27 @@
     {
       "type": "range",
       "id": "products_per_row_desktop",
+
       "min": 2,
       "max": 6,
+
       "label": "t:global.product_list.products_per_row_desktop",
-      "info": "t:global.product_list.products_per_row_desktop_info",
+
       "default": 4,
 
       "visible_if": "{{ section.settings.stack_products }}"
     },
 
     {
-      "type": "header",
-      "content": "t:global.product_list.spacing_category",
-      "info": "t:global.product_list.spacing_category_info"
-    },
-
-    {
       "type": "range",
       "min": 0.2,
       "max": 2,
       "step": 0.1,
+
       "id": "horizontal_spacing_factor",
+
       "label": "Horizontal spacing factor",
+
       "default": 1
     },
 
@@ -1100,21 +1066,20 @@
       "min": 0.2,
       "max": 2,
       "step": 0.1,
-      "id": "vertical_spacing_factor",
-      "label": "Vertical spacing factor",
-      "default": 1
-    },
 
-    {
-      "type": "header",
-      "content": "t:global.section.header_category"
+      "id": "vertical_spacing_factor",
+
+      "label": "Vertical spacing factor",
+
+      "default": 1
     },
 
     {
       "type": "checkbox",
       "id": "hide_collection_title",
+
       "label": "t:sections.featured_collections.hide_collection_title",
-      "info": "t:sections.featured_collections.hide_collection_title_info",
+
       "default": false
     }
 
@@ -1125,48 +1090,60 @@
     {
       "type": "collection",
 
-      "name": "t:sections.featured_collections.blocks.collection.name",
+      "name": "Collection",
 
       "settings": [
 
         {
           "type": "collection",
+
           "id": "collection",
-          "label": "t:sections.featured_collections.blocks.collection.collection"
+
+          "label": "Collection"
         },
 
         {
           "type": "range",
+
           "id": "products_count",
+
           "min": 2,
           "max": 50,
-          "label": "t:global.product_list.products_to_show",
+
+          "label": "Products to show",
+
           "default": 8
         },
 
         {
           "type": "inline_richtext",
+
           "id": "title",
-          "label": "t:global.text.heading",
-          "info": "t:sections.featured_collections.blocks.collection.title_info"
+
+          "label": "Heading",
+
+          "default": "The Forma Edit"
         },
 
         {
           "type": "url",
+
           "id": "link_url",
-          "label": "t:global.text.link_url",
-          "info": "t:sections.featured_collections.blocks.collection.default_link_url"
+
+          "label": "View all link"
         },
 
         {
           "type": "text",
+
           "id": "link_text",
-          "label": "t:global.text.link_text",
+
+          "label": "Link text",
+
           "default": "View all"
         }
 
       ]
-
     }
 
   ],
@@ -1174,20 +1151,18 @@
   "presets": [
 
     {
-      "name": "t:sections.featured_collections.presets.featured_collections.name",
+      "name": "FORMA Featured Collections",
 
-      "category": "t:global.categories.collections",
+      "category": "Collections",
 
       "blocks": [
         {
           "type": "collection"
         }
       ]
-
     }
 
   ]
-
 }
 
 {% endschema %}
