@@ -287,6 +287,7 @@
         "category_xPpxJc": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/FRAMA_SCULPTURE_GARDEN_CONTEXT_ESCALIER_HAND_WASH_3_800x_37fd3d2f-7cc6-4e29-b320-232bd6c6d58a.webp",
             "eyebrow": "FORMA",
             "title": "The Lifestyle",
             "subtitle": "How to live.",
@@ -342,7 +343,7 @@
       ],
       "name": "FORMA — The Form",
       "settings": {
-        "heading": "The Form",
+        "heading": "THE FORM",
         "intro": "The world of Forma, curated around the way we live."
       }
     }
