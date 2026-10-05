@@ -346,6 +346,75 @@
         "heading": "The Form",
         "intro": "The world of Forma, curated around the way we live."
       }
+    },
+    "forma_brands_jUVW6W": {
+      "type": "forma-brands",
+      "blocks": {
+        "brand_BRMhAU": {
+          "type": "brand",
+          "settings": {
+            "recommend": "FORMA RECOMMENDS",
+            "location": "Copenhagen",
+            "title": "Les Deux",
+            "description": "",
+            "link": ""
+          }
+        },
+        "brand_pfWcUA": {
+          "type": "brand",
+          "settings": {
+            "recommend": "FORMA RECOMMENDS",
+            "location": "Copenhagen",
+            "title": "NN07",
+            "description": "",
+            "link": ""
+          }
+        },
+        "brand_TT3zYV": {
+          "type": "brand",
+          "settings": {
+            "recommend": "FORMA RECOMMENDS",
+            "location": "Copenhagen",
+            "title": "Another Aspect",
+            "description": "",
+            "link": ""
+          }
+        },
+        "brand_xW7wYT": {
+          "type": "brand",
+          "settings": {
+            "recommend": "FORMA RECOMMENDS",
+            "location": "Copenhagen",
+            "title": "Forét",
+            "description": "",
+            "link": ""
+          }
+        },
+        "brand_rdYdLJ": {
+          "type": "brand",
+          "settings": {
+            "recommend": "FORMA RECOMMENDS",
+            "location": "Copenhagen",
+            "title": "Jacquemus",
+            "description": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_BRMhAU",
+        "brand_pfWcUA",
+        "brand_TT3zYV",
+        "brand_xW7wYT",
+        "brand_rdYdLJ"
+      ],
+      "name": "FORMA Brands",
+      "settings": {
+        "heading": "FORMA Brands",
+        "subheading": "",
+        "view_all_text": "View all →",
+        "view_all_link": ""
+      }
     }
   },
   "order": [
@@ -354,6 +423,7 @@
     "forma_journal_slider_HJFewJ",
     "featured_collections_xNqKEV",
     "forma_places_nMNPjJ",
-    "forma_the_form_thhiEV"
+    "forma_the_form_thhiEV",
+    "forma_brands_jUVW6W"
   ]
 }
