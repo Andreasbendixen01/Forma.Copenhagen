@@ -14,6 +14,22 @@
     "footer": {
       "type": "footer",
       "blocks": {
+        "links_dmkJ8W": {
+          "type": "links",
+          "settings": {
+            "menu": "footer",
+            "show_menu_title": true,
+            "menu_title": ""
+          }
+        },
+        "links_iJ7wqD": {
+          "type": "links",
+          "settings": {
+            "menu": "footer",
+            "show_menu_title": true,
+            "menu_title": ""
+          }
+        },
         "links_CThiL9": {
           "type": "links",
           "settings": {
@@ -25,7 +41,7 @@
         "links_wEaPMj": {
           "type": "links",
           "settings": {
-            "menu": "information",
+            "menu": "",
             "show_menu_title": true,
             "menu_title": ""
           }
@@ -33,7 +49,7 @@
         "links_LJJb3f": {
           "type": "links",
           "settings": {
-            "menu": "about-us",
+            "menu": "",
             "show_menu_title": true,
             "menu_title": ""
           }
@@ -49,6 +65,8 @@
         }
       },
       "block_order": [
+        "links_dmkJ8W",
+        "links_iJ7wqD",
         "links_CThiL9",
         "links_wEaPMj",
         "links_LJJb3f",
