@@ -25,7 +25,7 @@
         "links_iJ7wqD": {
           "type": "links",
           "settings": {
-            "menu": "footer",
+            "menu": "kundeservice",
             "show_menu_title": true,
             "menu_title": ""
           }
@@ -33,7 +33,7 @@
         "links_CThiL9": {
           "type": "links",
           "settings": {
-            "menu": "footer",
+            "menu": "socials",
             "show_menu_title": true,
             "menu_title": ""
           }
