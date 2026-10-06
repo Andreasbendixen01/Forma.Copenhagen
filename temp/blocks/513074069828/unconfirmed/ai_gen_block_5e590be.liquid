@@ -1,6 +1,194 @@
+{% doc %}
+  @prompt
+    Create a new Shopify section called “Shop the Story”.
+    
+    Match the existing “Journal slider” section EXACTLY in design, typography, fonts, spacing, padding, margins, colors, borders, container width, product/card styling and responsive behavior. Reuse existing theme styles/components wherever possible.
+    
+    Instead of blog articles, this section should automatically display the Shopify products that are internally linked inside the current blog article content.
+    
+    Detect links containing /products/, extract the product handles, remove duplicates, and keep the order in which they appear in the article. Do NOT use a manual product picker and do NOT hard-code products.
+    
+    Add these settings:
+    - Color scheme
+    - Subheading text (default: “FORMA JOURNAL”)
+    - Title text (default: “Shop the Story”)
+    - Number of products: range 1–12, default 6
+    
+    Display the detected products as the theme’s existing product cards, including image, title and price. The entire card should link to the product.
+    
+    Create a horizontal responsive slider identical to the existing Journal slider, including its navigation arrows, spacing and mobile swipe behavior.
+    
+    The “Number of products” setting controls how many detected products are displayed.
+    
+    If fewer products are linked in the article, show only those available. If no products are linked, hide the entire section.
+    
+    Do not change any other sections or introduce new styling.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% assign linked_handles = '' %}
+{% assign content_parts = article.content | split: 'href="' %}
+{% capture handle_list %}{% endcapture %}
+{% for content_part in content_parts %}
+  {% assign link_target = content_part | split: '"' | first %}
+  {% if link_target contains '/products/' %}
+    {% assign handle_part = link_target | split: '/products/' | last | split: '?' | first | split: '#' | first | split: '/' | first %}
+    {% if handle_part != blank %}
+      {% assign handle_token = '|' | append: handle_part | append: '|' %}
+      {% unless linked_handles contains handle_token %}
+        {% assign linked_handles = linked_handles | append: handle_token %}
+        {% capture handle_list %}{{ handle_list }}{{ handle_part }}~{% endcapture %}
+      {% endunless %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% assign handles = handle_list | split: '~' %}
+{% assign products_found = 0 %}
+{% for handle in handles %}
+  {% if handle != blank %}
+    {% assign linked_product = all_products[handle] %}
+    {% if linked_product != blank %}
+      {% assign products_found = products_found | plus: 1 %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% if products_found > 0 %}
+  {% style %}
+    .ai-shop-story-{{ ai_gen_id }} {
+      display: block;
+      width: 100%;
+      color: rgb(var(--text-color));
+      background: rgb(var(--background));
+    }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__inner {
+      width: 100%;
+      margin-inline: auto;
+      padding-block: 48px;
+    }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__head {
+      margin: 0 0 28px;
+    }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__eyebrow {
+      margin: 0 0 8px;
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__title {
+      margin: 0;
+      font-family: var(--heading-font-family);
+      font-weight: var(--heading-font-weight);
+      text-transform: var(--heading-text-transform);
+      letter-spacing: var(--heading-letter-spacing);
+    }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__track {
+      display: grid;
+      grid-auto-columns: minmax(0, 1fr);
+      grid-auto-flow: column;
+      gap: 24px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__track::-webkit-scrollbar { display: none; }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__item { min-width: 0; scroll-snap-align: start; }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__card { display: block; color: inherit; text-decoration: none; }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__image-wrap { position: relative; overflow: hidden; background: rgba(var(--text-color), .04); }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__image { display: block; width: 100%; height: auto; }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__details { padding-top: 12px; }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__product-title { margin: 0 0 5px; font-size: 13px; }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__price { font-size: 13px; }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__controls { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__arrow {
+      width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid currentColor;
+      border-radius: 50%; background: transparent; color: inherit; cursor: pointer;
+    }
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__arrow:focus-visible,
+    .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__card:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+    @media (min-width: 750px) {
+      .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__inner { padding-block: 64px; }
+      .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__track { grid-auto-columns: calc((100% - 72px) / 4); }
+    }
+    @media (max-width: 749px) {
+      .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__inner { padding-block: 36px; }
+      .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__track { grid-auto-columns: 72%; gap: 16px; }
+      .ai-shop-story-{{ ai_gen_id }} .ai-shop-story__controls { display: none; }
+    }
+  {% endstyle %}
+
+  <shop-story-{{ ai_gen_id }} class="ai-shop-story-{{ ai_gen_id }} color-scheme color-scheme--{{ block.settings.color_scheme }}" style="--desktop-width: {{ block.settings.desktop_width_percent }}%;" {{ block.shopify_attributes }}>
+    <div class="ai-shop-story__inner">
+      <header class="ai-shop-story__head">
+        {% if block.settings.subheading != blank %}<p class="ai-shop-story__eyebrow">{{ block.settings.subheading | escape }}</p>{% endif %}
+        {% if block.settings.title != blank %}<h2 class="ai-shop-story__title">{{ block.settings.title | escape }}</h2>{% endif %}
+      </header>
+      <div class="ai-shop-story__track" id="ai-shop-story-track-{{ ai_gen_id }}" role="list">
+        {% assign rendered_count = 0 %}
+        {% for handle in handles %}
+          {% if handle != blank and rendered_count < block.settings.product_limit %}
+            {% assign linked_product = all_products[handle] %}
+            {% if linked_product != blank %}
+              {% assign rendered_count = rendered_count | plus: 1 %}
+              <div class="ai-shop-story__item" role="listitem">
+                <a class="ai-shop-story__card" href="{{ linked_product.url }}" aria-label="{{ linked_product.title | escape }}">
+                  <div class="ai-shop-story__image-wrap">
+                    {% if linked_product.featured_image %}
+                      {{ linked_product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300, 450, 600, 900', sizes: '(min-width: 750px) 25vw, 72vw', class: 'ai-shop-story__image', alt: linked_product.featured_image.alt | default: linked_product.title | escape }}
+                    {% else %}
+                      <div class="ai-shop-story__image">{{ 'product-apparel-1' | placeholder_svg_tag }}</div>
+                    {% endif %}
+                  </div>
+                  <div class="ai-shop-story__details">
+                    <p class="ai-shop-story__product-title">{{ linked_product.title | escape }}</p>
+                    <span class="ai-shop-story__price">{{ linked_product.price | money }}</span>
+                  </div>
+                </a>
+              </div>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="ai-shop-story__controls">
+        <button class="ai-shop-story__arrow" type="button" data-direction="back" aria-label="Previous products"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="ai-shop-story__arrow" type="button" data-direction="next" aria-label="Next products"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </shop-story-{{ ai_gen_id }}>
+  <script>
+    (() => {
+      const tag = 'shop-story-{{ ai_gen_id }}';
+      if (customElements.get(tag)) return;
+      class ShopStory extends HTMLElement {
+        connectedCallback() {
+          const track = this.querySelector('.ai-shop-story__track');
+          this.querySelectorAll('.ai-shop-story__arrow').forEach((button) => {
+            button.addEventListener('click', () => {
+              const item = track.querySelector('.ai-shop-story__item');
+              if (!item) return;
+              const distance = item.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0);
+              track.scrollBy({ left: button.dataset.direction === 'next' ? distance : -distance, behavior: 'smooth' });
+            });
+          });
+        }
+      }
+      customElements.define(tag, ShopStory);
+    })();
+  </script>
+{% endif %}
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Shop the Story",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "FORMA JOURNAL" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Shop the Story" },
+    { "type": "range", "id": "product_limit", "label": "Number of products", "min": 1, "max": 12, "step": 1, "default": 6 },
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 }
+  ],
+  "presets": [{ "name": "Shop the Story" }],
+  "tag": null,
+  "class": "shop-the-story-block"
+}
 {% endschema %}
