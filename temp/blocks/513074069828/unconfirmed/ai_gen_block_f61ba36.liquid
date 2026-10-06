@@ -1,6 +1,115 @@
+{% doc %}
+  @prompt
+    Create a new Shopify section called “Shop the Story”.
+    
+    Match the existing “Journal slider” section EXACTLY in design, typography, fonts, spacing, padding, margins, colors, borders, container width, product/card styling and responsive behavior. Reuse existing theme styles/components wherever possible.
+    
+    Instead of blog articles, this section should automatically display the Shopify products that are internally linked inside the current blog article content.
+    
+    Detect links containing /products/, extract the product handles, remove duplicates, and keep the order in which they appear in the article. Do NOT use a manual product picker and do NOT hard-code products.
+    
+    Add these settings:
+    - Color scheme
+    - Subheading text (default: “FORMA JOURNAL”)
+    - Title text (default: “Shop the Story”)
+    - Number of products: range 1–12, default 6
+    
+    Display the detected products as the theme’s existing product cards, including image, title and price. The entire card should link to the product.
+    
+    Create a horizontal responsive slider identical to the existing Journal slider, including its navigation arrows, spacing and mobile swipe behavior.
+    
+    The “Number of products” setting controls how many detected products are displayed.
+    
+    If fewer products are linked in the article, show only those available. If no products are linked, hide the entire section.
+    
+    Do not change any other sections or introduce new styling., Fix this section.
+    
+    The section must display the PRODUCTS featured/linked inside the CURRENT blog post that the visitor is viewing.
+    
+    Use the current article/blog post context (article object/content) and automatically detect all Shopify product links inside that blog post. Extract the linked product handles and display those products.
+    
+    Do NOT use manually selected products and do NOT use featured products from a collection.
+    
+    The section must show:
+    - Subheading: “FORMA JOURNAL”
+    - Title: “Shop the Story”
+    - The products from the current blog post
+    
+    Keep the exact same typography, fonts, spacing, padding, colors, product-card design and carousel styling as the existing “Journal slider” section.
+    
+    Add a “Number of products” range slider (1–12, default 6) controlling how many of the detected products are displayed.
+    
+    If the current blog post contains no linked products, hide the section.
+    
+    IMPORTANT: The products must come specifically from the blog post currently being viewed, not from the store, collection, or manually selected products., The section is currently completely empty. Rewrite the section so it actually works.
+    
+    The products MUST come from the CURRENT blog post being viewed.
+    
+    Use the current Shopify `article.content` and find all internal links pointing to Shopify products (`/products/...`). Extract their product handles and automatically load those products.
+    
+    These are products that are linked as internal links within the blog post text. Do NOT use a collection, product picker, or manually selected products.
+    
+    Display the detected products as product cards in a horizontal slider.
+    
+    Keep the exact design of the existing “Journal slider”: same fonts, typography, spacing, padding, colors, product card styling, arrows and responsive behavior.
+    
+    Add:
+    - Subheading
+    - Title
+    - Number of products slider (1–12, default 6)
+    
+    The number setting controls how many products from the current article are displayed.
+    
+    If the article has no product links, hide the section.
+    
+    IMPORTANT: Do not render an empty section. The products must be dynamically extracted from the current blog post's `article.content`., Fix the section so it works.
+    
+    Use the CURRENT blog post's `article.content` as the data source.
+    
+    Find every `<a>` link inside `article.content` whose href contains `/products/`. These are the products featured in the article.
+    
+    Extract each product handle from the href, remove duplicates, and use those handles to load and display the corresponding Shopify products.
+    
+    Do NOT use a product picker, collection, recommendations, or manually selected products.
+    
+    Display the products as a horizontal slider using the existing Journal slider's exact styling, product cards, typography, spacing, arrows and responsive behavior.
+    
+    Add a “Number of products” range setting from 1–12 (default 6), which controls how many of the detected article products are displayed.
+    
+    If no `/products/` links exist in the current article, hide the section completely.
+    
+    The section must use the actual `article` object from the current blog post — not example products or global store products.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% if article and article.content != blank %}
+{% assign chunks = article.content | split: 'href="' %}
+{% assign seen = '|' %}
+{% capture handles %}{% endcapture %}
+{% for chunk in chunks %}
+{% assign url = chunk | split: '"' | first | replace: '&amp;', '&' %}
+{% if url contains '/products/' %}
+{% assign handle = url | split: '/products/' | last | split: '?' | first | split: '#' | first | split: '/' | first | downcase | strip %}
+{% assign mark = '|' | append: handle | append: '|' %}
+{% if handle != blank %}
+{% unless seen contains mark %}{% assign seen = seen | append: handle | append: '|' %}{% capture handles %}{{ handles }}{{ handle }}~{% endcapture %}{% endunless %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% assign handles = handles | split: '~' %}
+{% assign found = 0 %}
+{% for handle in handles %}{% if handle != blank %}{% assign p = all_products[handle] %}{% if p %}{% assign found = found | plus: 1 %}{% endif %}{% endif %}{% endfor %}
+{% if found > 0 %}
+{% style %}
+.ai-story-{{ ai_gen_id }}{display:block;width:100%;}.ai-story-{{ ai_gen_id }}__inner{width:100%;max-width:1600px;margin:auto;padding:48px 40px;color:rgb(var(--text-color));background:rgb(var(--background));}.ai-story-{{ ai_gen_id }}__head{margin-bottom:28px}.ai-story-{{ ai_gen_id }}__sub{margin:0 0 8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase}.ai-story-{{ ai_gen_id }}__title{margin:0;font-family:var(--heading-font-family);font-weight:var(--heading-font-weight);letter-spacing:var(--heading-letter-spacing);text-transform:var(--heading-text-transform)}.ai-story-{{ ai_gen_id }}__track{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 72px)/4);gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}.ai-story-{{ ai_gen_id }}__track::-webkit-scrollbar{display:none}.ai-story-{{ ai_gen_id }}__item{min-width:0;scroll-snap-align:start}.ai-story-{{ ai_gen_id }}__card{display:block;color:inherit;text-decoration:none}.ai-story-{{ ai_gen_id }}__image{display:block;width:100%;height:auto}.ai-story-{{ ai_gen_id }}__details{padding-top:12px;font-size:13px;line-height:1.4}.ai-story-{{ ai_gen_id }}__name{margin:0 0 4px}.ai-story-{{ ai_gen_id }}__nav{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}.ai-story-{{ ai_gen_id }}__button{width:42px;height:42px;display:grid;place-items:center;padding:0;border:1px solid currentColor;border-radius:50%;background:transparent;color:inherit;cursor:pointer}@media(max-width:749px){.ai-story-{{ ai_gen_id }}__inner{padding:36px 20px}.ai-story-{{ ai_gen_id }}__track{grid-auto-columns:72%;gap:16px}.ai-story-{{ ai_gen_id }}__nav{display:none}}
+{% endstyle %}
+<shop-story-{{ ai_gen_id }} class="ai-story-{{ ai_gen_id }} color-scheme color-scheme--{{ block.settings.color_scheme }}" {{ block.shopify_attributes }}>
+<div class="ai-story-{{ ai_gen_id }}__inner"><header class="ai-story-{{ ai_gen_id }}__head"><p class="ai-story-{{ ai_gen_id }}__sub">{{ block.settings.subheading | escape }}</p><h2 class="ai-story-{{ ai_gen_id }}__title">{{ block.settings.title | escape }}</h2></header>
+<div class="ai-story-{{ ai_gen_id }}__track">
+{% assign shown = 0 %}{% for handle in handles %}{% if shown < block.settings.product_limit and handle != blank %}{% assign p = all_products[handle] %}{% if p %}{% assign shown = shown | plus: 1 %}<div class="ai-story-{{ ai_gen_id }}__item"><a class="ai-story-{{ ai_gen_id }}__card" href="{{ p.url }}">{% if p.featured_image %}{{ p.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'ai-story-' | append: ai_gen_id | append: '__image', alt: p.title }}{% endif %}<div class="ai-story-{{ ai_gen_id }}__details"><p class="ai-story-{{ ai_gen_id }}__name">{{ p.title | escape }}</p><span>{{ p.price | money }}</span></div></a></div>{% endif %}{% endif %}{% endfor %}
+</div><div class="ai-story-{{ ai_gen_id }}__nav"><button class="ai-story-{{ ai_gen_id }}__button" type="button" data-dir="-1" aria-label="Previous products">‹</button><button class="ai-story-{{ ai_gen_id }}__button" type="button" data-dir="1" aria-label="Next products">›</button></div></div></shop-story-{{ ai_gen_id }}>
+<script>(()=>{const n='shop-story-{{ ai_gen_id }}';if(customElements.get(n))return;customElements.define(n,class extends HTMLElement{connectedCallback(){const t=this.querySelector('.ai-story-{{ ai_gen_id }}__track');this.querySelectorAll('[data-dir]').forEach(b=>b.addEventListener('click',()=>{const i=t.querySelector('.ai-story-{{ ai_gen_id }}__item');if(i)t.scrollBy({left:Number(b.dataset.dir)*(i.getBoundingClientRect().width+24),behavior:'smooth'})}))}})})();</script>
+{% endif %}
+{% endif %}
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{"name":"Shop the Story","settings":[{"type":"color_scheme","id":"color_scheme","label":"Color scheme","default":"scheme-1"},{"type":"text","id":"subheading","label":"Subheading","default":"FORMA JOURNAL"},{"type":"text","id":"title","label":"Title","default":"Shop the Story"},{"type":"range","id":"product_limit","label":"Number of products","min":1,"max":12,"step":1,"default":6},{"type":"range","id":"desktop_width_percent","label":"Desktop width","min":50,"max":100,"step":5,"unit":"%","default":100}],"presets":[{"name":"Shop the Story"}],"tag":null,"class":"shop-the-story-block"}
 {% endschema %}
