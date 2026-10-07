@@ -353,27 +353,22 @@
      ----------------------------------------- */
 
   #shopify-section-{{ section.id }} .forma-footer__accordion-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    display: flex;
+  width: 20px;
+  height: 20px;
 
-    align-items: center;
-    justify-content: center;
+  font-size: 18px;
+  line-height: 18px;
 
-    width: 20px;
+  font-weight: 200;
 
-    height: 20px;
+  color: var(--forma-footer-text);
 
-    font-size: 20px;
-
-    line-height: 20px;
-
-    font-weight: 300;
-
-    color: var(--forma-footer-text);
-
-    transition:
-      transform 0.25s ease;
-  }
+  transition: transform 0.25s ease;
+}
 
 
   /* -----------------------------------------
@@ -391,15 +386,12 @@
 
 
   #shopify-section-{{ section.id }}
-  .forma-footer__accordion[open]
-  .forma-footer__accordion-icon::after {
-
-    content: "−";
-
-    font-size: 20px;
-
-    line-height: 20px;
-  }
+.forma-footer__accordion[open]
+.forma-footer__accordion-icon::after {
+  content: "−";
+  font-size: 20px;
+  line-height: 20px;
+}
 
 
   /* -----------------------------------------
