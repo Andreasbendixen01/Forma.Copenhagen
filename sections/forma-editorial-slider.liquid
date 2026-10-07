@@ -905,38 +905,7 @@
     }
 
 
-    /* ==========================================================
-       NEXT
-       ========================================================== */
-
-    function nextSlide() {
-
-      if (animationLocked) return;
-
-      animationLocked = true;
-
-      currentIndex++;
-
-      setPosition(true);
-
-    }
-
-
-    /* ==========================================================
-       PREVIOUS
-       ========================================================== */
-
-    function previousSlide() {
-
-      if (animationLocked) return;
-
-      animationLocked = true;
-
-      currentIndex--;
-
-      setPosition(true);
-
-    }
+    
 
 
     /* ==========================================================
@@ -1057,7 +1026,59 @@
     );
 
 
-    
+    /* ==========================================================
+       POINTER MOVE
+       ========================================================== */
+
+    viewport.addEventListener(
+      'pointermove',
+      (event) => {
+
+        if (!isDragging) {
+          return;
+        }
+
+
+        dragDistance =
+          event.clientX - startX;
+
+
+        /*
+          Only allow one slide worth of
+          physical dragging.
+
+          The user can see almost the whole
+          next slide, but NEVER two slides.
+        */
+
+        const maxDrag =
+          getSlideWidth() * 0.92;
+
+
+        const visualDistance =
+          Math.max(
+            -maxDrag,
+            Math.min(
+              maxDrag,
+              dragDistance
+            )
+          );
+
+
+        const baseDistance =
+          currentIndex *
+          getSlideDistance();
+
+
+        track.style.transition =
+          'none';
+
+
+        track.style.transform =
+          `translate3d(${(-baseDistance) + visualDistance}px,0,0)`;
+
+      }
+    );
 
 
     /* ==========================================================
