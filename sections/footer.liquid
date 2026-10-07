@@ -1,919 +1,634 @@
-<style>
-  /* ============================================================
-     FORMA FOOTER
-     ============================================================ */
+<footer class="forma-footer">
 
-  #shopify-section-{{ section.id }} {
-    --forma-footer-bg: #f5f5f3;
-    --forma-footer-text: #171717;
-    --forma-footer-muted: #777;
-    --forma-footer-border: rgba(23, 23, 23, 0.14);
-    --forma-footer-dark: #171717;
-  }
+  <!-- =========================
+       FOOTER NAVIGATION
+  ========================== -->
 
-  /* Main footer
-  ------------------------------------------------------------ */
+  <div class="forma-footer__top">
 
-  #shopify-section-{{ section.id }} .forma-footer {
-    background: var(--forma-footer-bg);
-    color: var(--forma-footer-text);
-    overflow: hidden;
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__inner {
-    width: 100%;
-  }
-
-  /* ============================================================
-     NEWSLETTER
-     ============================================================ */
-
-  #shopify-section-{{ section.id }} .forma-newsletter {
-    background: var(--forma-footer-dark);
-    color: #fff;
-    padding: 80px 48px 76px;
-    text-align: center;
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__inner {
-    width: min(900px, 100%);
-    margin: 0 auto;
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__eyebrow {
-    margin: 0 0 18px;
-    font-size: 10px;
-    line-height: 1;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    opacity: 0.62;
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__title {
-    margin: 0;
-    font-size: clamp(34px, 4vw, 58px);
-    line-height: 0.98;
-    font-weight: 400;
-    letter-spacing: -0.035em;
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__text {
-    max-width: 560px;
-    margin: 22px auto 36px;
-    font-size: 14px;
-    line-height: 1.6;
-    color: rgba(255,255,255,0.68);
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__form {
-    width: min(680px, 100%);
-    margin: 0 auto;
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__field {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-height: 62px;
-    border: 1px solid rgba(255,255,255,0.45);
-    border-radius: 2px;
-    transition:
-      border-color 0.25s ease,
-      background 0.25s ease;
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__field:focus-within {
-    border-color: #fff;
-    background: rgba(255,255,255,0.04);
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__input {
-    flex: 1;
-    min-width: 0;
-    height: 60px;
-    padding: 0 20px;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    color: #fff;
-    font-size: 13px;
-    font-family: inherit;
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__input::placeholder {
-    color: rgba(255,255,255,0.55);
-    opacity: 1;
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__submit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 62px;
-    height: 60px;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: #fff;
-    cursor: pointer;
-    font-size: 21px;
-    transition:
-      transform 0.25s ease,
-      opacity 0.25s ease;
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__submit:hover {
-    transform: translateX(4px);
-    opacity: 0.7;
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__note {
-    margin: 18px 0 0;
-    font-size: 9px;
-    line-height: 1.5;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
-  }
-
-  #shopify-section-{{ section.id }} .forma-newsletter__message {
-    margin: 20px auto 0;
-    font-size: 12px;
-  }
-
-  /* ============================================================
-     MAIN FOOTER CONTENT
-     ============================================================ */
-
-  #shopify-section-{{ section.id }} .forma-footer__content {
-    padding: 64px 48px 46px;
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 40px;
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__block {
-    min-width: 0;
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__heading {
-    margin: 0 0 22px;
-    font-size: 10px;
-    line-height: 1.2;
-    font-weight: 500;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__text {
-    max-width: 320px;
-    font-size: 12px;
-    line-height: 1.7;
-    color: var(--forma-footer-muted);
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__links {
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__links a {
-    display: inline-block;
-    width: fit-content;
-    color: var(--forma-footer-text);
-    font-size: 12px;
-    line-height: 1.45;
-    text-decoration: none;
-    transition:
-      opacity 0.2s ease,
-      transform 0.2s ease;
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__links a:hover {
-    opacity: 0.55;
-    transform: translateX(2px);
-  }
-
-  /* ============================================================
-     SOCIAL MEDIA
-     ============================================================ */
-
-  #shopify-section-{{ section.id }} .forma-footer__social {
-    margin-top: 52px;
-    padding-top: 28px;
-    border-top: 1px solid var(--forma-footer-border);
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__social .social-media {
-    justify-content: flex-start;
-  }
-
-  /* ============================================================
-     BOTTOM BAR
-     ============================================================ */
-
-  #shopify-section-{{ section.id }} .forma-footer__bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 30px;
-    padding: 25px 48px 28px;
-    border-top: 1px solid var(--forma-footer-border);
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__copyright {
-    margin: 0;
-    font-size: 9px;
-    line-height: 1.4;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--forma-footer-muted);
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__localization {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__payments {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  #shopify-section-{{ section.id }} .forma-footer__payments svg {
-    width: 28px;
-    height: auto;
-  }
-
-  /* ============================================================
-     DESKTOP NEWSLETTER BLOCK
-     ============================================================ */
-
-  #shopify-section-{{ section.id }} .forma-newsletter-block {
-    display: none;
-  }
-
-  /* ============================================================
-     MOBILE
-     ============================================================ */
-
-  @media screen and (max-width: 749px) {
-
-    #shopify-section-{{ section.id }} .forma-newsletter {
-      padding: 58px 20px 54px;
-    }
-
-    #shopify-section-{{ section.id }} .forma-newsletter__title {
-      font-size: 38px;
-    }
-
-    #shopify-section-{{ section.id }} .forma-newsletter__text {
-      margin-top: 18px;
-      margin-bottom: 28px;
-      font-size: 13px;
-    }
-
-    #shopify-section-{{ section.id }} .forma-newsletter__field {
-      min-height: 56px;
-    }
-
-    #shopify-section-{{ section.id }} .forma-newsletter__input {
-      height: 54px;
-      padding: 0 15px;
-      font-size: 12px;
-    }
-
-    #shopify-section-{{ section.id }} .forma-newsletter__submit {
-      width: 54px;
-      height: 54px;
-    }
-
-    #shopify-section-{{ section.id }} .forma-footer__content {
-      padding: 46px 20px 30px;
-    }
-
-    #shopify-section-{{ section.id }} .forma-footer__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 42px 25px;
-    }
-
-    #shopify-section-{{ section.id }} .forma-footer__social {
-      margin-top: 38px;
-    }
-
-    #shopify-section-{{ section.id }} .forma-footer__bottom {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 22px 20px 25px;
-      gap: 18px;
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-
-    #shopify-section-{{ section.id }} .forma-footer__grid {
-      grid-template-columns: 1fr;
-      gap: 34px;
-    }
-  }
-</style>
-
-
-{%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
-
-
-<footer
-  class="forma-footer color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }}"
-  {% if section.settings.separate_section_with_border %}
-    style="border-top: 1px solid rgba(23,23,23,0.12);"
-  {% endif %}
->
-
-  <div class="forma-footer__inner">
-
-    {%- comment -%}
-      ============================================================
-      FORMA NEWSLETTER
-      ============================================================
-    {%- endcomment -%}
-
-    {%- for block in section.blocks -%}
-
-      {%- if block.type == 'newsletter' -%}
-
-        <section
-          class="forma-newsletter"
-          {{ block.shopify_attributes }}
-        >
-
-          <div class="forma-newsletter__inner">
-
-            <p class="forma-newsletter__eyebrow">
-              FORMA
-            </p>
-
-            <h2 class="forma-newsletter__title">
-              {{ block.settings.title | default: 'Stay close to Forma' }}
-            </h2>
-
-            {%- if block.settings.content != blank -%}
-              <div class="forma-newsletter__text">
-                {{ block.settings.content }}
-              </div>
-            {%- else -%}
-              <p class="forma-newsletter__text">
-                Stories, places, brands and things worth knowing.
-              </p>
-            {%- endif -%}
-
-            {%- assign newsletter_form_id = 'forma-newsletter-' | append: section.id -%}
-
-            {%- form 'customer', id: newsletter_form_id, class: 'forma-newsletter__form' -%}
-
-              {%- if form.posted_successfully? -%}
-
-                <div class="forma-newsletter__message">
-                  {{ 'general.newsletter.subscribed_successfully' | t }}
-                </div>
-
-              {%- else -%}
-
-                {%- if form.errors -%}
-
-                  <div class="forma-newsletter__message">
-                    {{ form.errors.translated_fields['email'] }}
-                    {{ form.errors.messages['email'] }}
-                  </div>
-
-                {%- endif -%}
-
-                <input
-                  type="hidden"
-                  name="contact[tags]"
-                  value="newsletter"
-                >
-
-                <div class="forma-newsletter__field">
-
-                  <input
-                    class="forma-newsletter__input"
-                    type="email"
-                    name="contact[email]"
-                    value="{{ form.email }}"
-                    placeholder="Your email"
-                    autocomplete="email"
-                    autocorrect="off"
-                    autocapitalize="off"
-                    spellcheck="false"
-                    required
-                  >
-
-                  <button
-                    type="submit"
-                    class="forma-newsletter__submit"
-                    aria-label="Subscribe"
-                  >
-                    →
-                  </button>
-
-                </div>
-
-                <p class="forma-newsletter__note">
-                  Stories. Places. Brands. Ideas.
-                </p>
-
-              {%- endif -%}
-
-            {%- endform -%}
-
-          </div>
-
-        </section>
-
-      {%- endif -%}
-
-    {%- endfor -%}
-
-
-    {%- comment -%}
-      ============================================================
-      FOOTER LINKS
-      ============================================================
-    {%- endcomment -%}
-
-    <div class="forma-footer__content">
-
-      <div class="forma-footer__grid">
-
-        {%- for block in section.blocks -%}
-
-          {%- case block.type -%}
-
-            {%- when '@app' -%}
-
-              <div
-                class="forma-footer__block"
-                {{ block.shopify_attributes }}
-              >
-                {% render block %}
-              </div>
-
-
-            {%- when 'image' -%}
-
-              {%- if block.settings.image != blank -%}
-
-                <div
-                  class="forma-footer__block"
-                  {{ block.shopify_attributes }}
-                >
-
-                  {%- if block.settings.link != blank -%}
-                    <a href="{{ block.settings.link }}">
-                  {%- endif -%}
-
-                    {{
-                      block.settings.image
-                      | image_url: width: block.settings.image.width
-                      | image_tag:
-                        loading: 'lazy',
-                        class: 'constrained-image'
-                    }}
-
-                  {%- if block.settings.link != blank -%}
-                    </a>
-                  {%- endif -%}
-
-                </div>
-
-              {%- endif -%}
-
-
-            {%- when 'text' -%}
-
-              {%- if block.settings.title != blank or block.settings.content != blank -%}
-
-                <div
-                  class="forma-footer__block"
-                  {{ block.shopify_attributes }}
-                >
-
-                  {%- if block.settings.title != blank -%}
-                    <h3 class="forma-footer__heading">
-                      {{ block.settings.title }}
-                    </h3>
-                  {%- endif -%}
-
-                  {%- if block.settings.content != blank -%}
-                    <div class="forma-footer__text">
-                      {{ block.settings.content }}
-                    </div>
-                  {%- endif -%}
-
-                  {%- if shop.features.follow_on_shop? and block.settings.enable_follow_on_shop -%}
-                    <div class="follow-on-shop">
-                      {{ shop | login_button: action: 'follow' }}
-                    </div>
-                  {%- endif -%}
-
-                </div>
-
-              {%- endif -%}
-
-
-            {%- when 'links' -%}
-
-              {%- assign menu = block.settings.menu -%}
-
-              {%- if menu != blank and menu.links.size > 0 -%}
-
-                <div
-                  class="forma-footer__block"
-                  {{ block.shopify_attributes }}
-                >
-
-                  {%- if block.settings.show_menu_title -%}
-
-                    <h3 class="forma-footer__heading">
-                      {{ block.settings.menu_title | default: menu.title }}
-                    </h3>
-
-                  {%- endif -%}
-
-                  <ul class="forma-footer__links">
-
-                    {%- for link in menu.links -%}
-
-                      <li>
-                        <a href="{{ link.url }}">
-                          {{ link.title }}
-                        </a>
-                      </li>
-
-                    {%- endfor -%}
-
-                  </ul>
-
-                </div>
-
-              {%- endif -%}
-
-          {%- endcase -%}
-
-        {%- endfor -%}
-
+    <div class="forma-footer__column">
+      <div class="forma-footer__heading">
+        {{ section.settings.info_heading }}
       </div>
 
-
-      {%- comment -%}
-        ============================================================
-        SOCIAL MEDIA
-        ============================================================
-      {%- endcomment -%}
-
-      {%- if section.settings.show_social_media -%}
-
-        <div class="forma-footer__social">
-          {%- render 'social-media', layout: 'list' -%}
-        </div>
-
-      {%- endif -%}
-
+      {% if section.settings.info_menu != blank %}
+        <ul class="forma-footer__menu">
+          {% for link in section.settings.info_menu.links %}
+            <li>
+              <a href="{{ link.url }}">
+                {{ link.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
     </div>
 
 
-    {%- comment -%}
-      ============================================================
-      BOTTOM BAR
-      ============================================================
-    {%- endcomment -%}
+    <div class="forma-footer__column">
+      <div class="forma-footer__heading">
+        {{ section.settings.forma_heading }}
+      </div>
 
-    <div class="forma-footer__bottom">
+      {% if section.settings.forma_menu != blank %}
+        <ul class="forma-footer__menu">
+          {% for link in section.settings.forma_menu.links %}
+            <li>
+              <a href="{{ link.url }}">
+                {{ link.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
 
-      <p class="forma-footer__copyright">
-        © {{ 'now' | date: '%Y' }} — {{ shop.name }}
-        {%- if section.settings.show_powered_by_shopify -%}
-          {{ powered_by_link }}
-        {%- endif -%}
+
+    <div class="forma-footer__column">
+      <div class="forma-footer__heading">
+        {{ section.settings.social_heading }}
+      </div>
+
+      {% if section.settings.social_menu != blank %}
+        <ul class="forma-footer__menu">
+          {% for link in section.settings.social_menu.links %}
+            <li>
+              <a href="{{ link.url }}" target="_blank" rel="noopener">
+                {{ link.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       THE FORMA LETTER
+  ========================== -->
+
+  <div class="forma-letter">
+
+    <div class="forma-letter__inner">
+
+      <div class="forma-letter__eyebrow">
+        FROM FORMA
+      </div>
+
+      <h2 class="forma-letter__title">
+        The Forma Letter
+      </h2>
+
+      <p class="forma-letter__intro">
+        Stories, places, brands and ideas worth knowing.
       </p>
 
 
-      <div class="forma-footer__localization">
+      {% form 'customer', class: 'forma-letter__form' %}
 
-        {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
 
-          {%- render 'localization-selector',
-            type: 'country',
-            placement: 'top-start',
-            show_country_name: section.settings.show_country_name,
-            show_country_flag: section.settings.show_country_flag
-          -%}
+        <div class="forma-letter__input-wrap">
 
-        {%- endif -%}
+          <input
+            type="email"
+            name="contact[email]"
+            class="forma-letter__input"
+            value="{{ form.email }}"
+            placeholder="Your email"
+            autocomplete="email"
+            required
+          >
+
+          <button
+            type="submit"
+            class="forma-letter__submit"
+            aria-label="Subscribe"
+          >
+            <span>→</span>
+          </button>
+
+        </div>
+
+        {% if form.posted_successfully? %}
+          <p class="forma-letter__message forma-letter__message--success">
+            Thank you for joining The Forma Letter.
+          </p>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="forma-letter__message forma-letter__message--error">
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+      {% endform %}
 
 
-        {%- if section.settings.show_locale_selector and localization.available_languages.size > 1 -%}
-
-          {%- render 'localization-selector',
-            type: 'locale',
-            placement: 'top-start'
-          -%}
-
-        {%- endif -%}
-
+      <div class="forma-letter__note">
+        No noise. Just the good stuff.
       </div>
 
-
-      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
-
-        <ul class="forma-footer__payments">
-
-          {%- for type in shop.enabled_payment_types -%}
-
-            <li>
-              {{ type | payment_type_svg_tag }}
-            </li>
-
-          {%- endfor -%}
-
-        </ul>
-
-      {%- endif -%}
-
     </div>
+
+  </div>
+
+
+  <!-- =========================
+       FOOTER BOTTOM
+  ========================== -->
+
+  <div class="forma-footer__bottom">
+
+    <div class="forma-footer__copyright">
+      © {{ 'now' | date: '%Y' }} — FORMA.COPENHAGEN
+    </div>
+
+    {% if section.settings.show_payment %}
+      <div class="forma-footer__payment">
+        {{ shop.enabled_payment_types | payment_type_svg_tag }}
+      </div>
+    {% endif %}
 
   </div>
 
 </footer>
 
 
-{% schema %}
+<style>
 
+  /* ==========================================
+     FORMA FOOTER
+  ========================================== */
+
+  .forma-footer {
+    width: 100%;
+    background: #f5f5f3;
+    color: #222;
+    margin-top: 0;
+  }
+
+
+  /* ==========================================
+     TOP NAVIGATION
+  ========================================== */
+
+  .forma-footer__top {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 60px;
+
+    padding: 64px 48px 72px;
+
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+
+  .forma-footer__column {
+    min-width: 0;
+  }
+
+
+  .forma-footer__heading {
+    font-family: inherit;
+    font-size: 11px;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    margin-bottom: 26px;
+
+    color: #222;
+  }
+
+
+  .forma-footer__menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+
+  .forma-footer__menu li {
+    margin: 0 0 12px;
+  }
+
+
+  .forma-footer__menu a {
+    position: relative;
+
+    color: #666;
+    text-decoration: none;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    transition:
+      color 0.25s ease,
+      opacity 0.25s ease;
+  }
+
+
+  .forma-footer__menu a:hover {
+    color: #111;
+  }
+
+
+  /* ==========================================
+     THE FORMA LETTER
+  ========================================== */
+
+  .forma-letter {
+    border-top: 1px solid rgba(0,0,0,0.10);
+    border-bottom: 1px solid rgba(0,0,0,0.10);
+
+    padding: 105px 30px 115px;
+
+    text-align: center;
+  }
+
+
+  .forma-letter__inner {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+
+  .forma-letter__eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+
+    color: #777;
+
+    margin-bottom: 24px;
+  }
+
+
+  .forma-letter__title {
+    margin: 0;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(48px, 6vw, 86px);
+    line-height: 0.95;
+    font-weight: 400;
+    letter-spacing: -0.035em;
+
+    color: #222;
+  }
+
+
+  .forma-letter__intro {
+    margin: 28px auto 48px;
+
+    max-width: 520px;
+
+    font-size: 14px;
+    line-height: 1.6;
+
+    color: #666;
+  }
+
+
+  /* ==========================================
+     EMAIL FIELD
+  ========================================== */
+
+  .forma-letter__form {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+
+  .forma-letter__input-wrap {
+    position: relative;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    border-bottom: 1px solid #222;
+
+    transition:
+      border-color 0.3s ease,
+      transform 0.3s ease;
+  }
+
+
+  .forma-letter__input-wrap:focus-within {
+    border-color: #777;
+  }
+
+
+  .forma-letter__input {
+    width: 100%;
+
+    border: 0;
+    outline: none;
+
+    background: transparent;
+
+    padding: 20px 60px 20px 4px;
+
+    font-family: inherit;
+    font-size: 15px;
+
+    color: #222;
+  }
+
+
+  .forma-letter__input::placeholder {
+    color: #999;
+    opacity: 1;
+  }
+
+
+  .forma-letter__submit {
+    position: absolute;
+
+    right: 0;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 46px;
+    height: 46px;
+
+    border: 0;
+    padding: 0;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #222;
+
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+
+  .forma-letter__submit span {
+    display: block;
+
+    font-size: 24px;
+    line-height: 1;
+
+    transition: transform 0.3s ease;
+  }
+
+
+  .forma-letter__submit:hover span {
+    transform: translateX(5px);
+  }
+
+
+  .forma-letter__note {
+    margin-top: 24px;
+
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+
+    color: #999;
+  }
+
+
+  /* ==========================================
+     FORM MESSAGES
+  ========================================== */
+
+  .forma-letter__message {
+    margin-top: 18px;
+
+    font-size: 12px;
+  }
+
+
+  .forma-letter__message--success {
+    color: #555;
+  }
+
+
+  .forma-letter__message--error {
+    color: #a33;
+  }
+
+
+  /* ==========================================
+     FOOTER BOTTOM
+  ========================================== */
+
+  .forma-footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 30px 48px 34px;
+
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+
+  .forma-footer__copyright {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    color: #999;
+  }
+
+
+  .forma-footer__payment {
+    display: flex;
+    align-items: center;
+
+    opacity: 0.65;
+  }
+
+
+  .forma-footer__payment svg {
+    max-height: 24px;
+    width: auto;
+  }
+
+
+  /* ==========================================
+     TABLET
+  ========================================== */
+
+  @media screen and (max-width: 749px) {
+
+    .forma-footer__top {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      gap: 45px 30px;
+
+      padding: 48px 22px 55px;
+    }
+
+
+    .forma-letter {
+      padding: 75px 22px 80px;
+    }
+
+
+    .forma-letter__title {
+      font-size: clamp(42px, 12vw, 64px);
+    }
+
+
+    .forma-letter__intro {
+      margin-bottom: 38px;
+    }
+
+
+    .forma-footer__bottom {
+      padding: 25px 22px 30px;
+    }
+
+  }
+
+
+  /* ==========================================
+     MOBILE
+  ========================================== */
+
+  @media screen and (max-width: 480px) {
+
+    .forma-footer__top {
+      grid-template-columns: 1fr 1fr;
+
+      gap: 40px 24px;
+
+      padding: 42px 18px 48px;
+    }
+
+
+    .forma-footer__heading {
+      font-size: 10px;
+      margin-bottom: 20px;
+    }
+
+
+    .forma-footer__menu li {
+      margin-bottom: 10px;
+    }
+
+
+    .forma-footer__menu a {
+      font-size: 12px;
+    }
+
+
+    .forma-letter {
+      padding: 65px 18px 70px;
+    }
+
+
+    .forma-letter__eyebrow {
+      font-size: 9px;
+      margin-bottom: 20px;
+    }
+
+
+    .forma-letter__title {
+      font-size: 44px;
+    }
+
+
+    .forma-letter__intro {
+      font-size: 13px;
+      margin: 24px auto 38px;
+    }
+
+
+    .forma-letter__input {
+      padding: 17px 50px 17px 2px;
+      font-size: 14px;
+    }
+
+
+    .forma-letter__submit {
+      width: 40px;
+      height: 40px;
+    }
+
+
+    .forma-letter__submit span {
+      font-size: 21px;
+    }
+
+
+    .forma-footer__bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+
+      padding: 24px 18px 30px;
+    }
+
+  }
+
+</style>
+
+
+{% schema %}
 {
   "name": "FORMA Footer",
-  "class": "shopify-section--footer",
-  "tag": "footer",
-  "max_blocks": 6,
-
   "settings": [
-
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:global.colors.scheme",
-      "default": "scheme-2"
-    },
-
-    {
-      "type": "checkbox",
-      "id": "separate_section_with_border",
-      "label": "t:global.section.separate_section_with_border",
-      "default": false
-    },
-
-    {
-      "type": "checkbox",
-      "id": "show_social_media",
-      "label": "t:sections.footer.show_social_media",
-      "info": "t:sections.footer.show_social_media_info",
-      "default": true
-    },
-
-    {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "t:sections.footer.show_payment_icons",
-      "default": true
-    },
-
-    {
-      "type": "checkbox",
-      "id": "show_powered_by_shopify",
-      "label": "t:sections.footer.show_powered_by_shopify",
-      "default": true
-    },
-
-    {
-      "type": "header",
-      "content": "t:global.localization.country_region_selector_category",
-      "info": "t:global.localization.country_region_selector_category_info"
-    },
-
-    {
-      "type": "checkbox",
-      "id": "show_country_selector",
-      "label": "t:global.localization.show_country_region_selector",
-      "default": true
-    },
-
-    {
-      "type": "checkbox",
-      "id": "show_country_name",
-      "label": "t:global.localization.show_country_name",
-      "default": true,
-      "visible_if": "{{ section.settings.show_country_selector }}"
-    },
-
-    {
-      "type": "checkbox",
-      "id": "show_country_flag",
-      "label": "t:global.localization.show_country_flag",
-      "default": true,
-      "visible_if": "{{ section.settings.show_country_selector }}"
-    },
-
-    {
-      "type": "header",
-      "content": "t:global.localization.language_selector_category",
-      "info": "t:global.localization.language_selector_category_info"
-    },
-
-    {
-      "type": "checkbox",
-      "id": "show_locale_selector",
-      "label": "t:global.localization.show_locale_selector",
-      "default": true
-    }
-
-  ],
-
-  "blocks": [
-
-    {
-      "type": "@app"
-    },
-
-    {
-      "type": "image",
-      "name": "Image",
-
-      "settings": [
-
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "t:global.image.image"
-        },
-
-        {
-          "type": "range",
-          "id": "image_width",
-          "min": 50,
-          "max": 300,
-          "step": 10,
-          "unit": "px",
-          "label": "t:global.image.width",
-          "default": 150
-        },
-
-        {
-          "type": "url",
-          "id": "link",
-          "label": "t:global.text.link"
-        }
-
-      ]
-    },
-
     {
       "type": "text",
-      "name": "Text",
-
-      "settings": [
-
-        {
-          "type": "inline_richtext",
-          "id": "title",
-          "label": "t:global.text.heading",
-          "default": "About Forma"
-        },
-
-        {
-          "type": "richtext",
-          "id": "content",
-          "label": "t:global.text.content",
-          "default": "<p>Discover brands, places and stories curated by Forma.</p>"
-        },
-
-        {
-          "type": "checkbox",
-          "id": "enable_follow_on_shop",
-          "label": "t:sections.footer.blocks.text.show_follow_on_shop",
-          "info": "t:sections.footer.blocks.text.show_follow_on_shop_info",
-          "default": false
-        }
-
-      ]
+      "id": "info_heading",
+      "label": "Info heading",
+      "default": "Information"
     },
-
     {
-      "type": "links",
-      "name": "Links",
-
-      "settings": [
-
-        {
-          "type": "link_list",
-          "id": "menu",
-          "label": "t:sections.footer.blocks.links.menu",
-          "info": "t:sections.footer.blocks.links.menu_info",
-          "default": "footer"
-        },
-
-        {
-          "type": "checkbox",
-          "id": "show_menu_title",
-          "label": "t:sections.footer.blocks.links.show_menu_title",
-          "default": true
-        },
-
-        {
-          "type": "inline_richtext",
-          "id": "menu_title",
-          "label": "t:sections.footer.blocks.links.menu_title",
-          "info": "t:sections.footer.blocks.links.menu_title_info",
-          "visible_if": "{{ block.settings.show_menu_title }}"
-        }
-
-      ]
+      "type": "link_list",
+      "id": "info_menu",
+      "label": "Information menu"
     },
-
     {
-      "type": "newsletter",
-      "name": "Newsletter",
-      "limit": 1,
-
-      "settings": [
-
-        {
-          "type": "paragraph",
-          "content": "t:sections.footer.blocks.newsletter.newsletter_info"
-        },
-
-        {
-          "type": "inline_richtext",
-          "id": "title",
-          "label": "t:global.text.heading",
-          "default": "Stay close to Forma"
-        },
-
-        {
-          "type": "richtext",
-          "id": "content",
-          "label": "t:global.text.content",
-          "default": "<p>Stories, places, brands and things worth knowing.</p>"
-        },
-
-        {
-          "type": "color",
-          "id": "button_background",
-          "label": "t:global.colors.button_background"
-        },
-
-        {
-          "type": "color",
-          "id": "button_text_color",
-          "label": "t:global.colors.button_text"
-        }
-
-      ]
-    }
-
-  ],
-
-  "presets": [
-
+      "type": "text",
+      "id": "forma_heading",
+      "label": "Forma heading",
+      "default": "Forma"
+    },
     {
-      "name": "FORMA Footer",
-      "blocks": [
-        {
-          "type": "links"
-        },
-        {
-          "type": "links"
-        },
-        {
-          "type": "links"
-        },
-        {
-          "type": "newsletter"
-        }
-      ]
+      "type": "link_list",
+      "id": "forma_menu",
+      "label": "Forma menu"
+    },
+    {
+      "type": "text",
+      "id": "social_heading",
+      "label": "Social heading",
+      "default": "Social"
+    },
+    {
+      "type": "link_list",
+      "id": "social_menu",
+      "label": "Social menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment",
+      "label": "Show payment icons",
+      "default": true
     }
-
   ]
 }
-
 {% endschema %}
