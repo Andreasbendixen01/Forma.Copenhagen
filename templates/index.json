@@ -15,6 +15,7 @@
         "slide_aFwN9i": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/LES_DEUX_AW.png",
             "eyebrow": "FORMA EDIT",
             "title": "The Forma Edit",
             "description": "Stories, places, brands and ideas worth knowing.",
@@ -75,7 +76,6 @@
         "max_width": 1380,
         "desktop_height": 74,
         "mobile_height": 74,
-        "side_space": 32,
         "slide_gap": 8,
         "border_radius": 0,
         "mobile_border_radius": 0,
