@@ -13,51 +13,13 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "blocks": {
-        "links_dmkJ8W": {
-          "type": "links",
-          "settings": {
-            "menu": "footer",
-            "show_menu_title": true,
-            "menu_title": ""
-          }
-        },
-        "links_iJ7wqD": {
-          "type": "links",
-          "settings": {
-            "menu": "kundeservice",
-            "show_menu_title": true,
-            "menu_title": ""
-          }
-        },
-        "links_CThiL9": {
-          "type": "links",
-          "settings": {
-            "menu": "socials",
-            "show_menu_title": true,
-            "menu_title": ""
-          }
-        },
-        "newsletter_nFxe9m": {
-          "type": "newsletter",
-          "settings": {
-            "title": "The Forma letter",
-            "content": "<p>Stay close to what inspires you</p>",
-            "button_background": "",
-            "button_text_color": ""
-          }
-        }
-      },
-      "block_order": [
-        "links_dmkJ8W",
-        "links_iJ7wqD",
-        "links_CThiL9",
-        "newsletter_nFxe9m"
-      ],
       "settings": {
-        "color_scheme": "scheme-1fae9d98-9467-45a2-b856-3bf74d86dc0a",
-        "separate_section_with_border": false,
-        "show_social_media": true,
+        "information_menu": "footer",
+        "information_heading": "Information",
+        "forma_menu": "footer",
+        "forma_heading": "Forma",
+        "social_menu": "socials",
+        "social_heading": "Social",
         "show_payment_icons": true,
         "show_powered_by_shopify": false,
         "show_country_selector": true,
