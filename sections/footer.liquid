@@ -1,18 +1,21 @@
 <footer class="forma-footer">
 
-  <!-- =========================
+  <!-- =========================================
        FOOTER NAVIGATION
-  ========================== -->
+  ========================================== -->
 
-  <div class="forma-footer__top">
+  <div class="forma-footer__navigation">
 
+    <!-- INFORMATION -->
     <div class="forma-footer__column">
+
       <div class="forma-footer__heading">
         {{ section.settings.info_heading }}
       </div>
 
-      {% if section.settings.info_menu != blank %}
-        <ul class="forma-footer__menu">
+      {% if section.settings.info_menu != blank and section.settings.info_menu.links.size > 0 %}
+
+        <ul class="forma-footer__links">
           {% for link in section.settings.info_menu.links %}
             <li>
               <a href="{{ link.url }}">
@@ -21,17 +24,47 @@
             </li>
           {% endfor %}
         </ul>
+
+      {% else %}
+
+        <ul class="forma-footer__links">
+          <li>
+            <a href="/pages/contact">
+              Contact us
+            </a>
+          </li>
+          <li>
+            <a href="/policies/terms-of-service">
+              Terms of use
+            </a>
+          </li>
+          <li>
+            <a href="/policies/privacy-policy">
+              Privacy policy
+            </a>
+          </li>
+          <li>
+            <a href="/policies/cookie-policy">
+              Cookie policy
+            </a>
+          </li>
+        </ul>
+
       {% endif %}
+
     </div>
 
 
+    <!-- FORMA -->
     <div class="forma-footer__column">
+
       <div class="forma-footer__heading">
         {{ section.settings.forma_heading }}
       </div>
 
-      {% if section.settings.forma_menu != blank %}
-        <ul class="forma-footer__menu">
+      {% if section.settings.forma_menu != blank and section.settings.forma_menu.links.size > 0 %}
+
+        <ul class="forma-footer__links">
           {% for link in section.settings.forma_menu.links %}
             <li>
               <a href="{{ link.url }}">
@@ -40,38 +73,101 @@
             </li>
           {% endfor %}
         </ul>
+
+      {% else %}
+
+        <ul class="forma-footer__links">
+          <li>
+            <a href="/pages/about-forma">
+              About Forma
+            </a>
+          </li>
+          <li>
+            <a href="/pages/careers">
+              Careers at Forma
+            </a>
+          </li>
+          <li>
+            <a href="/pages/advertising-on-forma">
+              Advertising on Forma
+            </a>
+          </li>
+          <li>
+            <a href="/pages/customer-reviews">
+              Customer reviews
+            </a>
+          </li>
+          <li>
+            <a href="/pages/your-forma">
+              Your Forma
+            </a>
+          </li>
+        </ul>
+
       {% endif %}
+
     </div>
 
 
+    <!-- SOCIAL -->
     <div class="forma-footer__column">
+
       <div class="forma-footer__heading">
         {{ section.settings.social_heading }}
       </div>
 
-      {% if section.settings.social_menu != blank %}
-        <ul class="forma-footer__menu">
-          {% for link in section.settings.social_menu.links %}
-            <li>
-              <a href="{{ link.url }}" target="_blank" rel="noopener">
-                {{ link.title }}
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% endif %}
+      <ul class="forma-footer__links">
+
+        {% if section.settings.instagram_url != blank %}
+          <li>
+            <a
+              href="{{ section.settings.instagram_url }}"
+              target="_blank"
+              rel="noopener"
+            >
+              Instagram
+            </a>
+          </li>
+        {% endif %}
+
+        {% if section.settings.facebook_url != blank %}
+          <li>
+            <a
+              href="{{ section.settings.facebook_url }}"
+              target="_blank"
+              rel="noopener"
+            >
+              Facebook
+            </a>
+          </li>
+        {% endif %}
+
+        {% if section.settings.linkedin_url != blank %}
+          <li>
+            <a
+              href="{{ section.settings.linkedin_url }}"
+              target="_blank"
+              rel="noopener"
+            >
+              LinkedIn
+            </a>
+          </li>
+        {% endif %}
+
+      </ul>
+
     </div>
 
   </div>
 
 
-  <!-- =========================
+  <!-- =========================================
        THE FORMA LETTER
-  ========================== -->
+  ========================================== -->
 
-  <div class="forma-letter">
+  <section class="forma-letter">
 
-    <div class="forma-letter__inner">
+    <div class="forma-letter__content">
 
       <div class="forma-letter__eyebrow">
         FROM FORMA
@@ -88,9 +184,13 @@
 
       {% form 'customer', class: 'forma-letter__form' %}
 
-        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input
+          type="hidden"
+          name="contact[tags]"
+          value="newsletter"
+        >
 
-        <div class="forma-letter__input-wrap">
+        <div class="forma-letter__field">
 
           <input
             type="email"
@@ -104,7 +204,7 @@
 
           <button
             type="submit"
-            class="forma-letter__submit"
+            class="forma-letter__button"
             aria-label="Subscribe"
           >
             <span>→</span>
@@ -113,13 +213,13 @@
         </div>
 
         {% if form.posted_successfully? %}
-          <p class="forma-letter__message forma-letter__message--success">
+          <p class="forma-letter__success">
             Thank you for joining The Forma Letter.
           </p>
         {% endif %}
 
         {% if form.errors %}
-          <div class="forma-letter__message forma-letter__message--error">
+          <div class="forma-letter__error">
             {{ form.errors | default_errors }}
           </div>
         {% endif %}
@@ -127,18 +227,18 @@
       {% endform %}
 
 
-      <div class="forma-letter__note">
-        No noise. Just the good stuff.
+      <div class="forma-letter__signature">
+        Stories. Places. Brands. Ideas.
       </div>
 
     </div>
 
-  </div>
+  </section>
 
 
-  <!-- =========================
+  <!-- =========================================
        FOOTER BOTTOM
-  ========================== -->
+  ========================================== -->
 
   <div class="forma-footer__bottom">
 
@@ -146,10 +246,19 @@
       © {{ 'now' | date: '%Y' }} — FORMA.COPENHAGEN
     </div>
 
-    {% if section.settings.show_payment %}
-      <div class="forma-footer__payment">
-        {{ shop.enabled_payment_types | payment_type_svg_tag }}
+
+    {% if shop.enabled_payment_types.size > 0 %}
+
+      <div class="forma-footer__payments">
+
+        {% for type in shop.enabled_payment_types %}
+          <span class="forma-footer__payment">
+            {{ type | payment_type_svg_tag }}
+          </span>
+        {% endfor %}
+
       </div>
+
     {% endif %}
 
   </div>
@@ -159,429 +268,496 @@
 
 <style>
 
-  /* ==========================================
-     FORMA FOOTER
-  ========================================== */
+/* =========================================================
+   FORMA FOOTER
+========================================================= */
 
-  .forma-footer {
-    width: 100%;
-    background: #f5f5f3;
-    color: #222;
-    margin-top: 0;
+.forma-footer {
+  width: 100%;
+  background: #f5f5f3;
+  color: #222;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.forma-footer__navigation {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 70px;
+
+  max-width: 1600px;
+  margin: 0 auto;
+
+  padding: 62px 48px 68px;
+}
+
+
+.forma-footer__column {
+  min-width: 0;
+}
+
+
+.forma-footer__heading {
+  margin-bottom: 25px;
+
+  font-size: 10px;
+  line-height: 1;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  color: #222;
+}
+
+
+.forma-footer__links {
+  list-style: none;
+
+  margin: 0;
+  padding: 0;
+}
+
+
+.forma-footer__links li {
+  margin: 0 0 11px;
+}
+
+
+.forma-footer__links a {
+  display: inline-block;
+
+  color: #777;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+
+.forma-footer__links a:hover {
+  color: #111;
+
+  transform: translateX(2px);
+}
+
+
+/* =========================================================
+   THE FORMA LETTER
+========================================================= */
+
+.forma-letter {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+  padding: 92px 30px 98px;
+
+  text-align: center;
+}
+
+
+.forma-letter__content {
+  width: 100%;
+  max-width: 820px;
+
+  margin: 0 auto;
+}
+
+
+.forma-letter__eyebrow {
+  margin-bottom: 20px;
+
+  font-size: 9px;
+  line-height: 1;
+
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+
+  color: #888;
+}
+
+
+/*
+  Minimalist sans-serif title.
+  Intentionally much smaller than previous version.
+*/
+
+.forma-letter__title {
+  margin: 0;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  font-size: clamp(36px, 4vw, 56px);
+
+  font-weight: 400;
+
+  line-height: 1.05;
+
+  letter-spacing: -0.035em;
+
+  color: #222;
+}
+
+
+.forma-letter__intro {
+  max-width: 500px;
+
+  margin: 20px auto 42px;
+
+  font-size: 13px;
+  line-height: 1.6;
+
+  color: #777;
+}
+
+
+/* =========================================================
+   EMAIL
+========================================================= */
+
+.forma-letter__form {
+  width: 100%;
+  max-width: 720px;
+
+  margin: 0 auto;
+}
+
+
+.forma-letter__field {
+  position: relative;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  border-bottom: 1px solid #333;
+
+  transition:
+    border-color 0.3s ease;
+}
+
+
+.forma-letter__field:focus-within {
+  border-color: #999;
+}
+
+
+.forma-letter__input {
+  width: 100%;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  padding: 18px 60px 18px 3px;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  color: #222;
+}
+
+
+.forma-letter__input::placeholder {
+  color: #999;
+
+  opacity: 1;
+}
+
+
+.forma-letter__button {
+  position: absolute;
+
+  right: 0;
+  top: 50%;
+
+  width: 44px;
+  height: 44px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #222;
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.forma-letter__button span {
+  display: block;
+
+  font-size: 22px;
+  line-height: 1;
+
+  transition:
+    transform 0.3s ease;
+}
+
+
+.forma-letter__button:hover span {
+  transform: translateX(5px);
+}
+
+
+/* =========================================================
+   SIGNATURE
+========================================================= */
+
+.forma-letter__signature {
+  margin-top: 23px;
+
+  font-size: 9px;
+  line-height: 1;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+
+  color: #999;
+}
+
+
+/* =========================================================
+   FORM MESSAGES
+========================================================= */
+
+.forma-letter__success,
+.forma-letter__error {
+  margin: 18px 0 0;
+
+  font-size: 12px;
+}
+
+
+.forma-letter__success {
+  color: #555;
+}
+
+
+.forma-letter__error {
+  color: #9b4444;
+}
+
+
+/* =========================================================
+   BOTTOM
+========================================================= */
+
+.forma-footer__bottom {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  max-width: 1600px;
+
+  margin: 0 auto;
+
+  padding: 28px 48px 32px;
+}
+
+
+.forma-footer__copyright {
+  font-size: 9px;
+
+  line-height: 1;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+
+  color: #999;
+}
+
+
+/* =========================================================
+   PAYMENT ICONS
+========================================================= */
+
+.forma-footer__payments {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 7px;
+
+  opacity: 0.6;
+}
+
+
+.forma-footer__payment {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+.forma-footer__payment svg {
+  display: block;
+
+  width: auto;
+  max-width: 38px;
+
+  height: 22px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media screen and (max-width: 749px) {
+
+  .forma-footer__navigation {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 45px 30px;
+
+    padding: 48px 22px 55px;
   }
 
-
-  /* ==========================================
-     TOP NAVIGATION
-  ========================================== */
-
-  .forma-footer__top {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 60px;
-
-    padding: 64px 48px 72px;
-
-    max-width: 1600px;
-    margin: 0 auto;
-  }
-
-
-  .forma-footer__column {
-    min-width: 0;
-  }
-
-
-  .forma-footer__heading {
-    font-family: inherit;
-    font-size: 11px;
-    line-height: 1.2;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-
-    margin-bottom: 26px;
-
-    color: #222;
-  }
-
-
-  .forma-footer__menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-
-  .forma-footer__menu li {
-    margin: 0 0 12px;
-  }
-
-
-  .forma-footer__menu a {
-    position: relative;
-
-    color: #666;
-    text-decoration: none;
-
-    font-size: 13px;
-    line-height: 1.5;
-
-    transition:
-      color 0.25s ease,
-      opacity 0.25s ease;
-  }
-
-
-  .forma-footer__menu a:hover {
-    color: #111;
-  }
-
-
-  /* ==========================================
-     THE FORMA LETTER
-  ========================================== */
 
   .forma-letter {
-    border-top: 1px solid rgba(0,0,0,0.10);
-    border-bottom: 1px solid rgba(0,0,0,0.10);
-
-    padding: 105px 30px 115px;
-
-    text-align: center;
-  }
-
-
-  .forma-letter__inner {
-    width: 100%;
-    max-width: 920px;
-    margin: 0 auto;
-  }
-
-
-  .forma-letter__eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-
-    color: #777;
-
-    margin-bottom: 24px;
+    padding: 70px 22px 75px;
   }
 
 
   .forma-letter__title {
-    margin: 0;
-
-    font-family: Georgia, "Times New Roman", serif;
-
-    font-size: clamp(48px, 6vw, 86px);
-    line-height: 0.95;
-    font-weight: 400;
-    letter-spacing: -0.035em;
-
-    color: #222;
+    font-size: 42px;
   }
 
 
-  .forma-letter__intro {
-    margin: 28px auto 48px;
+  .forma-footer__bottom {
+    padding: 25px 22px 30px;
+  }
 
-    max-width: 520px;
+}
 
-    font-size: 14px;
-    line-height: 1.6;
 
-    color: #666;
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media screen and (max-width: 480px) {
+
+  .forma-footer__navigation {
+    grid-template-columns: 1fr 1fr;
+
+    gap: 40px 22px;
+
+    padding: 42px 18px 48px;
   }
 
 
-  /* ==========================================
-     EMAIL FIELD
-  ========================================== */
+  .forma-footer__heading {
+    font-size: 9px;
 
-  .forma-letter__form {
-    width: 100%;
-    max-width: 760px;
-    margin: 0 auto;
+    margin-bottom: 20px;
   }
 
 
-  .forma-letter__input-wrap {
-    position: relative;
-
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-
-    border-bottom: 1px solid #222;
-
-    transition:
-      border-color 0.3s ease,
-      transform 0.3s ease;
+  .forma-footer__links li {
+    margin-bottom: 9px;
   }
 
 
-  .forma-letter__input-wrap:focus-within {
-    border-color: #777;
-  }
-
-
-  .forma-letter__input {
-    width: 100%;
-
-    border: 0;
-    outline: none;
-
-    background: transparent;
-
-    padding: 20px 60px 20px 4px;
-
-    font-family: inherit;
-    font-size: 15px;
-
-    color: #222;
-  }
-
-
-  .forma-letter__input::placeholder {
-    color: #999;
-    opacity: 1;
-  }
-
-
-  .forma-letter__submit {
-    position: absolute;
-
-    right: 0;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    width: 46px;
-    height: 46px;
-
-    border: 0;
-    padding: 0;
-
-    background: transparent;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: #222;
-
-    transition:
-      transform 0.3s ease,
-      opacity 0.3s ease;
-  }
-
-
-  .forma-letter__submit span {
-    display: block;
-
-    font-size: 24px;
-    line-height: 1;
-
-    transition: transform 0.3s ease;
-  }
-
-
-  .forma-letter__submit:hover span {
-    transform: translateX(5px);
-  }
-
-
-  .forma-letter__note {
-    margin-top: 24px;
-
-    font-size: 10px;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-
-    color: #999;
-  }
-
-
-  /* ==========================================
-     FORM MESSAGES
-  ========================================== */
-
-  .forma-letter__message {
-    margin-top: 18px;
-
+  .forma-footer__links a {
     font-size: 12px;
   }
 
 
-  .forma-letter__message--success {
-    color: #555;
+  .forma-letter {
+    padding: 62px 18px 68px;
   }
 
 
-  .forma-letter__message--error {
-    color: #a33;
+  .forma-letter__eyebrow {
+    font-size: 8px;
+
+    margin-bottom: 18px;
   }
 
 
-  /* ==========================================
-     FOOTER BOTTOM
-  ========================================== */
+  .forma-letter__title {
+    font-size: 38px;
+  }
+
+
+  .forma-letter__intro {
+    font-size: 12px;
+
+    margin: 20px auto 34px;
+  }
+
+
+  .forma-letter__input {
+    padding: 16px 50px 16px 2px;
+
+    font-size: 13px;
+  }
+
+
+  .forma-letter__button {
+    width: 40px;
+    height: 40px;
+  }
+
+
+  .forma-letter__button span {
+    font-size: 20px;
+  }
+
+
+  .forma-letter__signature {
+    font-size: 8px;
+  }
+
 
   .forma-footer__bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
 
-    padding: 30px 48px 34px;
+    align-items: flex-start;
 
-    max-width: 1600px;
-    margin: 0 auto;
+    gap: 20px;
+
+    padding: 24px 18px 30px;
   }
 
 
-  .forma-footer__copyright {
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-
-    color: #999;
+  .forma-footer__payments {
+    justify-content: flex-start;
   }
 
-
-  .forma-footer__payment {
-    display: flex;
-    align-items: center;
-
-    opacity: 0.65;
-  }
-
-
-  .forma-footer__payment svg {
-    max-height: 24px;
-    width: auto;
-  }
-
-
-  /* ==========================================
-     TABLET
-  ========================================== */
-
-  @media screen and (max-width: 749px) {
-
-    .forma-footer__top {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-
-      gap: 45px 30px;
-
-      padding: 48px 22px 55px;
-    }
-
-
-    .forma-letter {
-      padding: 75px 22px 80px;
-    }
-
-
-    .forma-letter__title {
-      font-size: clamp(42px, 12vw, 64px);
-    }
-
-
-    .forma-letter__intro {
-      margin-bottom: 38px;
-    }
-
-
-    .forma-footer__bottom {
-      padding: 25px 22px 30px;
-    }
-
-  }
-
-
-  /* ==========================================
-     MOBILE
-  ========================================== */
-
-  @media screen and (max-width: 480px) {
-
-    .forma-footer__top {
-      grid-template-columns: 1fr 1fr;
-
-      gap: 40px 24px;
-
-      padding: 42px 18px 48px;
-    }
-
-
-    .forma-footer__heading {
-      font-size: 10px;
-      margin-bottom: 20px;
-    }
-
-
-    .forma-footer__menu li {
-      margin-bottom: 10px;
-    }
-
-
-    .forma-footer__menu a {
-      font-size: 12px;
-    }
-
-
-    .forma-letter {
-      padding: 65px 18px 70px;
-    }
-
-
-    .forma-letter__eyebrow {
-      font-size: 9px;
-      margin-bottom: 20px;
-    }
-
-
-    .forma-letter__title {
-      font-size: 44px;
-    }
-
-
-    .forma-letter__intro {
-      font-size: 13px;
-      margin: 24px auto 38px;
-    }
-
-
-    .forma-letter__input {
-      padding: 17px 50px 17px 2px;
-      font-size: 14px;
-    }
-
-
-    .forma-letter__submit {
-      width: 40px;
-      height: 40px;
-    }
-
-
-    .forma-letter__submit span {
-      font-size: 21px;
-    }
-
-
-    .forma-footer__bottom {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 20px;
-
-      padding: 24px 18px 30px;
-    }
-
-  }
+}
 
 </style>
 
@@ -619,15 +795,19 @@
       "default": "Social"
     },
     {
-      "type": "link_list",
-      "id": "social_menu",
-      "label": "Social menu"
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
     },
     {
-      "type": "checkbox",
-      "id": "show_payment",
-      "label": "Show payment icons",
-      "default": true
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "linkedin_url",
+      "label": "LinkedIn URL"
     }
   ]
 }
