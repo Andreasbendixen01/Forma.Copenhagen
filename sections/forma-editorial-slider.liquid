@@ -754,6 +754,10 @@
 
   (() => {
 
+    /* ==========================================================
+       FORMA EDITORIAL SLIDER
+       ========================================================== */
+
     const root = document.querySelector(
       '#forma-editorial-{{ section.id }}'
     );
@@ -806,7 +810,7 @@
 
     let wheelResetTimer = null;
 
-    let wheelAnimating = false;
+    let wheelGestureActive = false;
 
 
     /* ==========================================================
@@ -816,7 +820,19 @@
     const TRANSITION =
       'transform 850ms cubic-bezier(.16,1,.3,1)';
 
-    const DRAG_THRESHOLD = 0.22;
+    /*
+      User must drag roughly 25% of the slide
+      before the slide changes.
+    */
+
+    const DRAG_THRESHOLD = 0.25;
+
+    /*
+      Trackpad sensitivity.
+
+      A higher number means the user needs
+      to swipe further before changing slide.
+    */
 
     const WHEEL_THRESHOLD = 120;
 
@@ -846,7 +862,7 @@
     }
 
 
-    function getDistance() {
+    function getSlideDistance() {
 
       return (
         getSlideWidth() +
@@ -857,7 +873,7 @@
 
 
     /* ==========================================================
-       SET POSITION
+       POSITION
        ========================================================== */
 
     function setPosition(
@@ -867,12 +883,14 @@
 
       const distance =
         currentIndex *
-        getDistance();
+        getSlideDistance();
+
 
       track.style.transition =
         animate
           ? TRANSITION
           : 'none';
+
 
       track.style.transform =
         `translate3d(${(-distance) + extraOffset}px, 0, 0)`;
@@ -881,7 +899,7 @@
 
 
     /* ==========================================================
-       NEXT
+       NEXT SLIDE
        ========================================================== */
 
     function nextSlide() {
@@ -898,7 +916,7 @@
 
 
     /* ==========================================================
-       PREVIOUS
+       PREVIOUS SLIDE
        ========================================================== */
 
     function previousSlide() {
@@ -929,7 +947,13 @@
         }
 
 
-        if (currentIndex === 0) {
+        /*
+          We reached the cloned last slide.
+        */
+
+        if (
+          currentIndex === 0
+        ) {
 
           currentIndex =
             totalSlides;
@@ -938,6 +962,10 @@
 
         }
 
+
+        /*
+          We reached the cloned first slide.
+        */
 
         if (
           currentIndex ===
@@ -958,12 +986,19 @@
 
 
     /* ==========================================================
-       POINTER DOWN
+       MOUSE / TOUCH DRAG
        ========================================================== */
 
     viewport.addEventListener(
       'pointerdown',
       (event) => {
+
+        /*
+          Only respond to left mouse button.
+
+          Touch and trackpad pointers are
+          handled naturally by the browser.
+        */
 
         if (
           event.pointerType === 'mouse' &&
@@ -973,7 +1008,14 @@
         }
 
 
-        if (animationLocked) return;
+        /*
+          Don't start another gesture while
+          the slider is animating.
+        */
+
+        if (animationLocked) {
+          return;
+        }
 
 
         isDragging = true;
@@ -989,6 +1031,11 @@
           'is-dragging'
         );
 
+
+        /*
+          Stop the current transition so
+          the slide follows the pointer.
+        */
 
         track.style.transition =
           'none';
@@ -1010,7 +1057,9 @@
       'pointermove',
       (event) => {
 
-        if (!isDragging) return;
+        if (!isDragging) {
+          return;
+        }
 
 
         currentX =
@@ -1022,21 +1071,35 @@
 
 
         /*
-          IMPORTANT:
-
-          The slide follows the mouse/trackpad
+          The slide follows the pointer
           continuously.
 
-          Nothing changes yet.
+          There is NO artificial 65% limit.
 
-          The actual slide only changes
-          when the user releases.
+          You can drag almost an entire slide.
         */
+
+        const slideWidth =
+          getSlideWidth();
+
+
+        const maximumDrag =
+          slideWidth * 0.95;
+
+
+        const visualDistance =
+          Math.max(
+            -maximumDrag,
+            Math.min(
+              maximumDrag,
+              dragDistance
+            )
+          );
 
 
         const baseDistance =
           currentIndex *
-          getDistance();
+          getSlideDistance();
 
 
         track.style.transition =
@@ -1044,19 +1107,21 @@
 
 
         track.style.transform =
-          `translate3d(${(-baseDistance) + dragDistance}px, 0, 0)`;
+          `translate3d(${(-baseDistance) + visualDistance}px, 0, 0)`;
 
       }
     );
 
 
     /* ==========================================================
-       POINTER UP
+       FINISH POINTER DRAG
        ========================================================== */
 
-    function finishDrag(event) {
+    function finishPointerDrag(event) {
 
-      if (!isDragging) return;
+      if (!isDragging) {
+        return;
+      }
 
 
       isDragging = false;
@@ -1088,15 +1153,17 @@
 
 
       /*
-        Only change slide when the user
-        has actually dragged far enough.
+        Dragged far enough:
+        move one slide.
       */
 
       if (
         Math.abs(dragDistance) >= threshold
       ) {
 
-        if (dragDistance < 0) {
+        if (
+          dragDistance < 0
+        ) {
 
           nextSlide();
 
@@ -1106,29 +1173,32 @@
 
         }
 
-      } else {
-
-        /*
-          Not enough movement:
-          smoothly return to current slide.
-        */
-
-        setPosition(true);
+        return;
 
       }
+
+
+      /*
+        Didn't drag far enough.
+
+        Smoothly return to the
+        current slide.
+      */
+
+      setPosition(true);
 
     }
 
 
     viewport.addEventListener(
       'pointerup',
-      finishDrag
+      finishPointerDrag
     );
 
 
     viewport.addEventListener(
       'pointercancel',
-      finishDrag
+      finishPointerDrag
     );
 
 
@@ -1138,29 +1208,35 @@
 
        IMPORTANT:
 
-       We DON'T immediately change slide when
-       deltaX is detected.
+       We do NOT immediately change slides.
 
-       Instead we collect the complete gesture.
+       Instead:
 
-       When the gesture has finished, we decide
-       whether it was large enough to move to
-       the next slide.
-    */
+       1. Collect the complete horizontal gesture.
+       2. Let the slide visually follow it.
+       3. Wait until the gesture stops.
+       4. Decide whether to change slide.
+       5. Smoothly animate to the final position.
+       ========================================================== */
 
     viewport.addEventListener(
       'wheel',
       (event) => {
 
         /*
-          Ignore normal vertical scrolling.
+          Only react to horizontal scrolling.
+
+          Normal vertical page scrolling remains
+          completely untouched.
         */
 
         if (
           Math.abs(event.deltaX) <=
           Math.abs(event.deltaY)
         ) {
+
           return;
+
         }
 
 
@@ -1172,40 +1248,57 @@
         event.preventDefault();
 
 
-        if (
-          animationLocked ||
-          wheelAnimating
-        ) {
+        /*
+          Don't interfere while the slider
+          is completing another transition.
+        */
+
+        if (animationLocked) {
           return;
         }
 
 
+        wheelGestureActive = true;
+
+
         /*
-          Accumulate the entire swipe.
+          Accumulate the complete gesture.
         */
 
         wheelDistance +=
           event.deltaX;
 
 
-        /*
-          Keep the current slide following
-          the trackpad slightly.
+        /* ======================================================
+           VISUAL TRACKPAD MOVEMENT
+           ====================================================== */
 
-          This gives the gesture a physical,
-          smooth feeling instead of an instant
-          jump.
+        const slideWidth =
+          getSlideWidth();
+
+
+        /*
+          Allow almost the complete width
+          of the current slide.
+
+          This is intentionally much higher
+          than the previous 65% limit.
         */
 
-        const maxDrag =
-          getSlideWidth() * 0.65;
+        const maximumDrag =
+          slideWidth * 0.95;
 
+
+        /*
+          Wheel direction is opposite to
+          the visual slide movement.
+        */
 
         const visualDistance =
           Math.max(
-            -maxDrag,
+            -maximumDrag,
             Math.min(
-              maxDrag,
+              maximumDrag,
               -wheelDistance
             )
           );
@@ -1213,7 +1306,7 @@
 
         const baseDistance =
           currentIndex *
-          getDistance();
+          getSlideDistance();
 
 
         track.style.transition =
@@ -1224,12 +1317,9 @@
           `translate3d(${(-baseDistance) + visualDistance}px, 0, 0)`;
 
 
-        /*
-          Wait until the trackpad gesture has
-          stopped generating events.
-
-          Only THEN do we decide what to do.
-        */
+        /* ======================================================
+           DETECT END OF TRACKPAD GESTURE
+           ====================================================== */
 
         clearTimeout(
           wheelResetTimer
@@ -1240,59 +1330,10 @@
           setTimeout(
             () => {
 
-              const distance =
-                wheelDistance;
-
-
-              wheelDistance = 0;
-
-              wheelAnimating = true;
-
-
-              /*
-                Strong enough swipe:
-                move one slide.
-              */
-
-              if (
-                Math.abs(distance) >=
-                WHEEL_THRESHOLD
-              ) {
-
-                if (distance > 0) {
-
-                  previousSlide();
-
-                } else {
-
-                  nextSlide();
-
-                }
-
-              } else {
-
-                /*
-                  Small swipe:
-                  smoothly return.
-                */
-
-                setPosition(true);
-
-              }
-
-
-              setTimeout(
-                () => {
-
-                  wheelAnimating = false;
-
-                },
-                900
-              );
-
+              finishWheelGesture();
 
             },
-            110
+            120
           );
 
       },
@@ -1303,23 +1344,108 @@
 
 
     /* ==========================================================
-       PREVENT IMAGE DRAG
+       FINISH TRACKPAD GESTURE
        ========================================================== */
 
-    root.querySelectorAll('img').forEach(
-      (image) => {
+    function finishWheelGesture() {
 
-        image.addEventListener(
-          'dragstart',
-          (event) => {
+      if (
+        !wheelGestureActive
+      ) {
 
-            event.preventDefault();
-
-          }
-        );
+        return;
 
       }
-    );
+
+
+      wheelGestureActive = false;
+
+
+      const distance =
+        wheelDistance;
+
+
+      wheelDistance = 0;
+
+
+      const slideWidth =
+        getSlideWidth();
+
+
+      /*
+        User needs to move approximately
+        25% of the slide before changing.
+      */
+
+      const threshold =
+        Math.max(
+          80,
+          slideWidth * 0.25
+        );
+
+
+      /* ========================================================
+         MOVE TO PREVIOUS
+         ======================================================== */
+
+      if (
+        distance >= threshold
+      ) {
+
+        previousSlide();
+
+        return;
+
+      }
+
+
+      /* ========================================================
+         MOVE TO NEXT
+         ======================================================== */
+
+      if (
+        distance <= -threshold
+      ) {
+
+        nextSlide();
+
+        return;
+
+      }
+
+
+      /* ========================================================
+         NOT ENOUGH MOVEMENT
+         ========================================================
+
+         Return to the current slide smoothly.
+         ======================================================== */
+
+      setPosition(true);
+
+    }
+
+
+    /* ==========================================================
+       PREVENT NATIVE IMAGE DRAG
+       ========================================================== */
+
+    root
+      .querySelectorAll('img')
+      .forEach(
+        (image) => {
+
+          image.addEventListener(
+            'dragstart',
+            (event) => {
+
+              event.preventDefault();
+
+            }
+          );
+
+        }
+      );
 
 
     viewport.addEventListener(
@@ -1333,7 +1459,7 @@
 
 
     /* ==========================================================
-       KEYBOARD
+       KEYBOARD NAVIGATION
        ========================================================== */
 
     root.addEventListener(
@@ -1396,7 +1522,7 @@
 
 
     /* ==========================================================
-       INITIALIZE
+       INITIAL POSITION
        ========================================================== */
 
     setPosition(false);
