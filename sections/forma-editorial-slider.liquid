@@ -1,256 +1,195 @@
 {% comment %}
   ============================================================
-  FORMA EDITORIAL SLIDER
-  ------------------------------------------------------------
+  FORMA — EDITORIAL SLIDER
+  ============================================================
+
+  Minimal editorial image slider for FORMA Copenhagen.
+
+  Features:
   - No autoplay
+  - No arrows
+  - No visible controls
+  - Mouse drag
+  - Touch swipe
   - Infinite loop
-  - Desktop drag
-  - Mobile swipe
-  - Keyboard navigation
-  - Slide counter
-  - Fully editable through Shopify Theme Editor
+  - Editorial typography
+  - Responsive
+  - Fully editable in Shopify
   ============================================================
 {% endcomment %}
 
 <section
-  id="forma-editorial-slider-{{ section.id }}"
-  class="forma-editorial-slider"
-  data-forma-editorial-slider
-  aria-label="Forma editorial slider"
+  id="forma-editorial-{{ section.id }}"
+  class="forma-editorial"
+  data-forma-editorial
 >
 
-  <div class="forma-editorial-slider__outer">
+  <div class="forma-editorial__viewport" data-forma-viewport>
 
-    <div class="forma-editorial-slider__viewport" data-forma-viewport>
+    <div class="forma-editorial__track" data-forma-track>
 
-      <div class="forma-editorial-slider__track" data-forma-track>
+      {% assign slide_count = section.blocks.size %}
 
-        {% assign slide_count = section.blocks.size %}
+      {% if slide_count > 0 %}
 
-        {% if slide_count > 0 %}
+        {% assign last_block = section.blocks | last %}
 
-          {%- comment -%}
-            Clone of last slide
-          {%- endcomment -%}
+        <!-- CLONED LAST SLIDE -->
 
-          {% assign last_block = section.blocks | last %}
+        <article
+          class="forma-editorial__slide"
+          data-forma-slide
+          data-clone="last"
+        >
 
-          <article
-            class="forma-editorial-slider__slide"
-            data-slide
-            data-clone="last"
-            {{ last_block.shopify_attributes }}
-          >
-            <div class="forma-editorial-slider__media">
+          <div class="forma-editorial__image-wrap">
 
-              {% if last_block.settings.image != blank %}
-                {{
-                  last_block.settings.image
-                  | image_url: width: 2400
-                  | image_tag:
-                    loading: 'lazy',
-                    widths: '800, 1200, 1600, 2000, 2400',
-                    sizes: '(min-width: 1400px) 1380px, calc(100vw - 40px)',
-                    class: 'forma-editorial-slider__image',
-                    alt: last_block.settings.image.alt
-                  }}
-              {% else %}
-                <div class="forma-editorial-slider__placeholder">
-                  {{ 'lifestyle-1' | placeholder_svg_tag }}
-                </div>
-              {% endif %}
+            {% if last_block.settings.image != blank %}
 
-              <div class="forma-editorial-slider__overlay"></div>
+              {{
+                last_block.settings.image
+                | image_url: width: 3000
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '1000, 1400, 1800, 2200, 2600, 3000',
+                  sizes: '(min-width: 1500px) 1400px, calc(100vw - 32px)',
+                  class: 'forma-editorial__image',
+                  alt: last_block.settings.image.alt
+              }}
 
-            </div>
+            {% else %}
 
-            <div class="forma-editorial-slider__content">
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'forma-editorial__placeholder' }}
 
-              {% if last_block.settings.eyebrow != blank %}
-                <div class="forma-editorial-slider__eyebrow">
-                  {{ last_block.settings.eyebrow }}
-                </div>
-              {% endif %}
+            {% endif %}
 
-              {% if last_block.settings.title != blank %}
-                <h2 class="forma-editorial-slider__title">
-                  {{ last_block.settings.title }}
-                </h2>
-              {% endif %}
+            <div class="forma-editorial__gradient"></div>
 
-              {% if last_block.settings.description != blank %}
-                <div class="forma-editorial-slider__description">
-                  {{ last_block.settings.description }}
-                </div>
-              {% endif %}
-
-              {% if last_block.settings.button_text != blank and last_block.settings.link != blank %}
-                <a
-                  href="{{ last_block.settings.link }}"
-                  class="forma-editorial-slider__button"
-                >
-                  <span>{{ last_block.settings.button_text }}</span>
-                  <span class="forma-editorial-slider__button-arrow">↗</span>
-                </a>
-              {% endif %}
-
-            </div>
-          </article>
+          </div>
 
 
-          {%- comment -%}
-            Real slides
-          {%- endcomment -%}
+          <div class="forma-editorial__content">
 
-          {% for block in section.blocks %}
+            {% if last_block.settings.eyebrow != blank %}
 
-            <article
-              class="forma-editorial-slider__slide"
-              data-slide
-              {{ block.shopify_attributes }}
-            >
-
-              <div class="forma-editorial-slider__media">
-
-                {% if block.settings.image != blank %}
-
-                  {{
-                    block.settings.image
-                    | image_url: width: 2400
-                    | image_tag:
-                      loading: 'lazy',
-                      widths: '800, 1200, 1600, 2000, 2400',
-                      sizes: '(min-width: 1400px) 1380px, calc(100vw - 40px)',
-                      class: 'forma-editorial-slider__image',
-                      alt: block.settings.image.alt
-                  }}
-
-                {% else %}
-
-                  <div class="forma-editorial-slider__placeholder">
-                    {{ 'lifestyle-1' | placeholder_svg_tag }}
-                  </div>
-
-                {% endif %}
-
-                <div class="forma-editorial-slider__overlay"></div>
-
+              <div class="forma-editorial__eyebrow">
+                {{ last_block.settings.eyebrow }}
               </div>
 
-
-              <div class="forma-editorial-slider__content">
-
-                {% if block.settings.eyebrow != blank %}
-                  <div class="forma-editorial-slider__eyebrow">
-                    {{ block.settings.eyebrow }}
-                  </div>
-                {% endif %}
+            {% endif %}
 
 
-                {% if block.settings.title != blank %}
-                  <h2 class="forma-editorial-slider__title">
-                    {{ block.settings.title }}
-                  </h2>
-                {% endif %}
+            {% if last_block.settings.title != blank %}
+
+              <h2 class="forma-editorial__title">
+                {{ last_block.settings.title }}
+              </h2>
+
+            {% endif %}
 
 
-                {% if block.settings.description != blank %}
-                  <div class="forma-editorial-slider__description">
-                    {{ block.settings.description }}
-                  </div>
-                {% endif %}
+            {% if last_block.settings.description != blank %}
 
-
-                {% if block.settings.button_text != blank and block.settings.link != blank %}
-
-                  <a
-                    href="{{ block.settings.link }}"
-                    class="forma-editorial-slider__button"
-                  >
-                    <span>{{ block.settings.button_text }}</span>
-                    <span class="forma-editorial-slider__button-arrow">↗</span>
-                  </a>
-
-                {% endif %}
-
+              <div class="forma-editorial__description">
+                {{ last_block.settings.description }}
               </div>
 
-            </article>
-
-          {% endfor %}
+            {% endif %}
 
 
-          {%- comment -%}
-            Clone of first slide
-          {%- endcomment -%}
+            {% if last_block.settings.button_text != blank and last_block.settings.link != blank %}
 
-          {% assign first_block = section.blocks | first %}
+              <a
+                href="{{ last_block.settings.link }}"
+                class="forma-editorial__link"
+                draggable="false"
+              >
+                <span>{{ last_block.settings.button_text }}</span>
+                <span class="forma-editorial__link-arrow">↗</span>
+              </a>
+
+            {% endif %}
+
+          </div>
+
+        </article>
+
+
+        <!-- REAL SLIDES -->
+
+        {% for block in section.blocks %}
 
           <article
-            class="forma-editorial-slider__slide"
-            data-slide
-            data-clone="first"
+            class="forma-editorial__slide"
+            data-forma-slide
+            {{ block.shopify_attributes }}
           >
 
-            <div class="forma-editorial-slider__media">
+            <div class="forma-editorial__image-wrap">
 
-              {% if first_block.settings.image != blank %}
+              {% if block.settings.image != blank %}
 
                 {{
-                  first_block.settings.image
-                  | image_url: width: 2400
+                  block.settings.image
+                  | image_url: width: 3000
                   | image_tag:
                     loading: 'lazy',
-                    widths: '800, 1200, 1600, 2000, 2400',
-                    sizes: '(min-width: 1400px) 1380px, calc(100vw - 40px)',
-                    class: 'forma-editorial-slider__image',
-                    alt: first_block.settings.image.alt
+                    widths: '1000, 1400, 1800, 2200, 2600, 3000',
+                    sizes: '(min-width: 1500px) 1400px, calc(100vw - 32px)',
+                    class: 'forma-editorial__image',
+                    alt: block.settings.image.alt,
+                    draggable: 'false'
                 }}
 
               {% else %}
 
-                <div class="forma-editorial-slider__placeholder">
-                  {{ 'lifestyle-1' | placeholder_svg_tag }}
-                </div>
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'forma-editorial__placeholder' }}
 
               {% endif %}
 
-              <div class="forma-editorial-slider__overlay"></div>
+              <div class="forma-editorial__gradient"></div>
 
             </div>
 
 
-            <div class="forma-editorial-slider__content">
+            <div class="forma-editorial__content">
 
-              {% if first_block.settings.eyebrow != blank %}
-                <div class="forma-editorial-slider__eyebrow">
-                  {{ first_block.settings.eyebrow }}
+              {% if block.settings.eyebrow != blank %}
+
+                <div class="forma-editorial__eyebrow">
+                  {{ block.settings.eyebrow }}
                 </div>
+
               {% endif %}
 
 
-              {% if first_block.settings.title != blank %}
-                <h2 class="forma-editorial-slider__title">
-                  {{ first_block.settings.title }}
+              {% if block.settings.title != blank %}
+
+                <h2 class="forma-editorial__title">
+                  {{ block.settings.title }}
                 </h2>
+
               {% endif %}
 
 
-              {% if first_block.settings.description != blank %}
-                <div class="forma-editorial-slider__description">
-                  {{ first_block.settings.description }}
+              {% if block.settings.description != blank %}
+
+                <div class="forma-editorial__description">
+                  {{ block.settings.description }}
                 </div>
+
               {% endif %}
 
 
-              {% if first_block.settings.button_text != blank and first_block.settings.link != blank %}
+              {% if block.settings.button_text != blank and block.settings.link != blank %}
 
                 <a
-                  href="{{ first_block.settings.link }}"
-                  class="forma-editorial-slider__button"
+                  href="{{ block.settings.link }}"
+                  class="forma-editorial__link"
+                  draggable="false"
                 >
-                  <span>{{ first_block.settings.button_text }}</span>
-                  <span class="forma-editorial-slider__button-arrow">↗</span>
+                  <span>{{ block.settings.button_text }}</span>
+                  <span class="forma-editorial__link-arrow">↗</span>
                 </a>
 
               {% endif %}
@@ -259,46 +198,94 @@
 
           </article>
 
-        {% endif %}
+        {% endfor %}
 
-      </div>
+
+        <!-- CLONED FIRST SLIDE -->
+
+        {% assign first_block = section.blocks | first %}
+
+        <article
+          class="forma-editorial__slide"
+          data-forma-slide
+          data-clone="first"
+        >
+
+          <div class="forma-editorial__image-wrap">
+
+            {% if first_block.settings.image != blank %}
+
+              {{
+                first_block.settings.image
+                | image_url: width: 3000
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '1000, 1400, 1800, 2200, 2600, 3000',
+                  sizes: '(min-width: 1500px) 1400px, calc(100vw - 32px)',
+                  class: 'forma-editorial__image',
+                  alt: first_block.settings.image.alt
+              }}
+
+            {% else %}
+
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'forma-editorial__placeholder' }}
+
+            {% endif %}
+
+            <div class="forma-editorial__gradient"></div>
+
+          </div>
+
+
+          <div class="forma-editorial__content">
+
+            {% if first_block.settings.eyebrow != blank %}
+
+              <div class="forma-editorial__eyebrow">
+                {{ first_block.settings.eyebrow }}
+              </div>
+
+            {% endif %}
+
+
+            {% if first_block.settings.title != blank %}
+
+              <h2 class="forma-editorial__title">
+                {{ first_block.settings.title }}
+              </h2>
+
+            {% endif %}
+
+
+            {% if first_block.settings.description != blank %}
+
+              <div class="forma-editorial__description">
+                {{ first_block.settings.description }}
+              </div>
+
+            {% endif %}
+
+
+            {% if first_block.settings.button_text != blank and first_block.settings.link != blank %}
+
+              <a
+                href="{{ first_block.settings.link }}"
+                class="forma-editorial__link"
+                draggable="false"
+              >
+                <span>{{ first_block.settings.button_text }}</span>
+                <span class="forma-editorial__link-arrow">↗</span>
+              </a>
+
+            {% endif %}
+
+          </div>
+
+        </article>
+
+      {% endif %}
 
     </div>
-
-
-    {% if slide_count > 1 %}
-
-      <div class="forma-editorial-slider__controls">
-
-        <button
-          type="button"
-          class="forma-editorial-slider__arrow forma-editorial-slider__arrow--previous"
-          data-forma-prev
-          aria-label="Previous slide"
-        >
-          <span>←</span>
-        </button>
-
-
-        <div class="forma-editorial-slider__counter">
-          <span data-forma-current>01</span>
-          <span class="forma-editorial-slider__counter-divider">/</span>
-          <span>{{ slide_count | prepend: '0' | slice: -2, 2 }}</span>
-        </div>
-
-
-        <button
-          type="button"
-          class="forma-editorial-slider__arrow forma-editorial-slider__arrow--next"
-          data-forma-next
-          aria-label="Next slide"
-        >
-          <span>→</span>
-        </button>
-
-      </div>
-
-    {% endif %}
 
   </div>
 
@@ -307,487 +294,455 @@
 
 <style>
 
-  /* ==========================================================
+  /* ============================================================
      ROOT
-     ========================================================== */
+     ============================================================ */
 
-  #forma-editorial-slider-{{ section.id }} {
-    --forma-slider-max-width: {{ section.settings.max_width }}px;
-    --forma-slider-height: {{ section.settings.desktop_height }}vh;
-    --forma-slider-radius: {{ section.settings.border_radius }}px;
-    --forma-slider-side-gap: {{ section.settings.side_gap }}px;
+  #forma-editorial-{{ section.id }} {
+
+    --forma-max-width: {{ section.settings.max_width }}px;
+    --forma-height: {{ section.settings.desktop_height }}vh;
+    --forma-gap: {{ section.settings.slide_gap }}px;
+    --forma-side-space: {{ section.settings.side_space }}px;
 
     width: 100%;
-    margin: 0 auto;
+
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
+
     overflow: hidden;
+
+    background: transparent;
+
   }
 
 
-  /* ==========================================================
-     OUTER
-     ========================================================== */
-
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__outer {
-    width: 100%;
-    max-width: calc(var(--forma-slider-max-width) + 160px);
-    margin: 0 auto;
-    position: relative;
-  }
-
-
-  /* ==========================================================
+  /* ============================================================
      VIEWPORT
-     ========================================================== */
+     ============================================================ */
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__viewport {
+  #forma-editorial-{{ section.id }} .forma-editorial__viewport {
+
     width: 100%;
+
     overflow: hidden;
+
     cursor: grab;
+
     user-select: none;
     -webkit-user-select: none;
+
     touch-action: pan-y;
+
   }
 
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__viewport.is-dragging {
+  #forma-editorial-{{ section.id }} .forma-editorial__viewport.is-dragging {
+
     cursor: grabbing;
+
   }
 
 
-  /* ==========================================================
+  /* ============================================================
      TRACK
-     ========================================================== */
+     ============================================================ */
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__track {
+  #forma-editorial-{{ section.id }} .forma-editorial__track {
+
     display: flex;
-    gap: {{ section.settings.slide_gap }}px;
-    align-items: stretch;
+
+    gap: var(--forma-gap);
+
+    width: max-content;
+
     will-change: transform;
+
   }
 
 
-  /* ==========================================================
+  /* ============================================================
      SLIDE
-     ========================================================== */
+     ============================================================ */
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__slide {
+  #forma-editorial-{{ section.id }} .forma-editorial__slide {
+
     position: relative;
+
     flex: 0 0 min(
-      calc(100vw - (var(--forma-slider-side-gap) * 2)),
-      var(--forma-slider-max-width)
+      calc(100vw - (var(--forma-side-space) * 2)),
+      var(--forma-max-width)
     );
 
-    height: var(--forma-slider-height);
+    height: var(--forma-height);
 
-    min-height: 560px;
+    min-height: 580px;
 
     overflow: hidden;
 
-    border-radius: var(--forma-slider-radius);
+    border-radius: {{ section.settings.border_radius }}px;
+
+    background: #111;
 
     isolation: isolate;
 
-    background: #111;
   }
 
 
-  /* ==========================================================
-     MEDIA
-     ========================================================== */
+  /* ============================================================
+     IMAGE
+     ============================================================ */
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__media {
+  #forma-editorial-{{ section.id }} .forma-editorial__image-wrap {
+
     position: absolute;
+
     inset: 0;
-    z-index: 0;
+
     overflow: hidden;
+
   }
 
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__image {
+  #forma-editorial-{{ section.id }} .forma-editorial__image {
+
+    display: block;
+
     width: 100%;
     height: 100%;
-    display: block;
+
     object-fit: cover;
 
     transform: scale(1.001);
 
+    pointer-events: none;
+
     transition:
-      transform 1.2s cubic-bezier(.22,.61,.36,1);
+      transform 1.4s cubic-bezier(.22,.61,.36,1);
+
   }
 
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__slide:hover
-  .forma-editorial-slider__image {
+  /* Very subtle movement when hovering */
+
+  #forma-editorial-{{ section.id }} .forma-editorial__slide:hover
+  .forma-editorial__image {
+
     transform: scale(1.025);
+
   }
 
 
-  /* ==========================================================
-     PLACEHOLDER
-     ========================================================== */
+  /* ============================================================
+     IMAGE GRADIENT
+     ============================================================ */
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__placeholder {
-    width: 100%;
-    height: 100%;
+  #forma-editorial-{{ section.id }} .forma-editorial__gradient {
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #e8e8e6;
-  }
-
-
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__placeholder svg {
-    width: 100%;
-    height: 100%;
-    opacity: .3;
-  }
-
-
-  /* ==========================================================
-     OVERLAY
-     ========================================================== */
-
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__overlay {
     position: absolute;
+
     inset: 0;
 
+    pointer-events: none;
+
     background:
+
       linear-gradient(
         180deg,
-        rgba(0,0,0,0.02) 0%,
-        rgba(0,0,0,0.03) 30%,
-        rgba(0,0,0,0.18) 58%,
-        rgba(0,0,0,0.72) 100%
+        rgba(0,0,0,0) 48%,
+        rgba(0,0,0,.08) 62%,
+        rgba(0,0,0,.58) 100%
       );
 
-    pointer-events: none;
   }
 
 
-  /* ==========================================================
+  /* ============================================================
      CONTENT
-     ========================================================== */
+     ============================================================ */
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__content {
+  #forma-editorial-{{ section.id }} .forma-editorial__content {
+
     position: absolute;
 
-    left: 42px;
-    right: 42px;
-    bottom: 42px;
+    z-index: 3;
 
-    z-index: 2;
+    left: 48px;
+    right: 48px;
+    bottom: 46px;
+
+    max-width: 850px;
 
     color: #fff;
-
-    max-width: 780px;
 
     pointer-events: none;
+
   }
 
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__eyebrow {
-    margin-bottom: 14px;
+  /* ============================================================
+     EYEBROW
+     ============================================================ */
 
-    font-size: 11px;
-    line-height: 1.2;
+  #forma-editorial-{{ section.id }} .forma-editorial__eyebrow {
+
+    margin-bottom: 15px;
+
+    font-size: 10px;
+
+    line-height: 1;
+
     font-weight: 600;
 
-    letter-spacing: .16em;
+    letter-spacing: .19em;
+
     text-transform: uppercase;
 
-    opacity: .9;
+    color: rgba(255,255,255,.86);
+
   }
 
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__title {
+  /* ============================================================
+     TITLE
+     ============================================================ */
+
+  #forma-editorial-{{ section.id }} .forma-editorial__title {
+
     margin: 0;
 
-    font-size: clamp(48px, 7vw, 108px);
-    line-height: .88;
+    max-width: 900px;
 
-    font-weight: 500;
-    letter-spacing: -.055em;
+    font-size: clamp(
+      56px,
+      7.4vw,
+      116px
+    );
+
+    line-height: .84;
+
+    font-weight: 400;
+
+    letter-spacing: -.065em;
 
     color: #fff;
+
   }
 
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__description {
-    margin-top: 22px;
+  /* ============================================================
+     DESCRIPTION
+     ============================================================ */
 
-    max-width: 530px;
+  #forma-editorial-{{ section.id }} .forma-editorial__description {
 
-    font-size: 16px;
+    max-width: 440px;
+
+    margin-top: 21px;
+
+    font-size: 14px;
+
     line-height: 1.45;
 
-    color: rgba(255,255,255,.9);
+    font-weight: 400;
+
+    color: rgba(255,255,255,.88);
+
   }
 
 
-  /* ==========================================================
-     BUTTON
-     ========================================================== */
+  /* ============================================================
+     LINK
+     ============================================================ */
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__button {
-    pointer-events: auto;
+  #forma-editorial-{{ section.id }} .forma-editorial__link {
 
     display: inline-flex;
+
     align-items: center;
-    gap: 12px;
 
-    margin-top: 28px;
+    gap: 10px;
 
-    padding: 13px 18px;
+    margin-top: 24px;
 
-    border: 1px solid rgba(255,255,255,.45);
-    border-radius: 999px;
+    padding-bottom: 5px;
+
+    border-bottom: 1px solid rgba(255,255,255,.65);
 
     color: #fff;
-    background: rgba(0,0,0,.16);
-
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
 
     text-decoration: none;
 
-    font-size: 12px;
+    font-size: 10px;
+
     line-height: 1;
 
-    letter-spacing: .08em;
+    font-weight: 600;
+
+    letter-spacing: .15em;
+
     text-transform: uppercase;
 
-    transition:
-      background .25s ease,
-      border-color .25s ease,
-      transform .25s ease;
-  }
-
-
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__button:hover {
-    background: rgba(255,255,255,.16);
-    border-color: rgba(255,255,255,.8);
-    transform: translateY(-2px);
-  }
-
-
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__button-arrow {
-    font-size: 15px;
-    line-height: 1;
-  }
-
-
-  /* ==========================================================
-     CONTROLS
-     ========================================================== */
-
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 14px;
-
-    margin-top: 18px;
-  }
-
-
-  /* ==========================================================
-     ARROWS
-     ========================================================== */
-
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__arrow {
-    width: 48px;
-    height: 48px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-
-    border: 1px solid rgba(0,0,0,.12);
-    border-radius: 50%;
-
-    background: rgba(0,0,0,.04);
-
-    color: #111;
-
-    cursor: pointer;
-
-    font-family: inherit;
+    pointer-events: auto;
 
     transition:
-      background .25s ease,
-      transform .25s ease,
-      border-color .25s ease;
+      gap .3s ease,
+      border-color .3s ease;
+
   }
 
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__arrow:hover {
-    background: #111;
-    border-color: #111;
-    color: #fff;
-    transform: translateY(-2px);
+  #forma-editorial-{{ section.id }} .forma-editorial__link:hover {
+
+    gap: 16px;
+
+    border-color: #fff;
+
   }
 
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__arrow span {
-    font-size: 19px;
-    line-height: 1;
+  #forma-editorial-{{ section.id }} .forma-editorial__link-arrow {
+
+    font-size: 14px;
+
+    line-height: .7;
+
   }
 
 
-  /* ==========================================================
-     COUNTER
-     ========================================================== */
+  /* ============================================================
+     PLACEHOLDER
+     ============================================================ */
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__counter {
-    min-width: 54px;
+  #forma-editorial-{{ section.id }} .forma-editorial__placeholder {
 
-    text-align: center;
+    width: 100%;
+    height: 100%;
 
-    font-size: 11px;
-    line-height: 1;
+    background: #e8e8e6;
 
-    letter-spacing: .12em;
+    opacity: .5;
 
-    color: rgba(0,0,0,.65);
   }
 
 
-  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__counter-divider {
-    margin: 0 4px;
-    opacity: .35;
-  }
-
-
-  /* ==========================================================
+  /* ============================================================
      MOBILE
-     ========================================================== */
+     ============================================================ */
 
   @media screen and (max-width: 749px) {
 
-    #forma-editorial-slider-{{ section.id }} {
+    #forma-editorial-{{ section.id }} {
 
-      --forma-slider-side-gap: 14px;
+      --forma-height: {{ section.settings.mobile_height }}vh;
 
-      --forma-slider-height: {{ section.settings.mobile_height }}vh;
+      --forma-gap: 10px;
+
+      --forma-side-space: 14px;
 
       padding-top: {{ section.settings.mobile_padding_top }}px;
       padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+
     }
 
 
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__outer {
-      width: 100%;
-    }
-
-
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__track {
-      gap: 10px;
-    }
-
-
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__slide {
+    #forma-editorial-{{ section.id }} .forma-editorial__slide {
 
       flex-basis: calc(100vw - 28px);
 
-      min-height: 520px;
+      min-height: 540px;
 
       border-radius: {{ section.settings.mobile_border_radius }}px;
+
     }
 
 
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__content {
+    #forma-editorial-{{ section.id }} .forma-editorial__content {
 
       left: 24px;
       right: 24px;
-      bottom: 28px;
+
+      bottom: 30px;
+
     }
 
 
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__eyebrow {
+    #forma-editorial-{{ section.id }} .forma-editorial__eyebrow {
 
-      margin-bottom: 11px;
+      margin-bottom: 12px;
 
       font-size: 9px;
 
-      letter-spacing: .15em;
+      letter-spacing: .17em;
+
     }
 
 
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__title {
+    #forma-editorial-{{ section.id }} .forma-editorial__title {
 
-      font-size: clamp(42px, 13vw, 68px);
+      max-width: 100%;
 
-      line-height: .88;
-      letter-spacing: -.055em;
+      font-size: clamp(
+        46px,
+        13vw,
+        72px
+      );
+
+      line-height: .86;
+
+      letter-spacing: -.06em;
+
     }
 
 
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__description {
+    #forma-editorial-{{ section.id }} .forma-editorial__description {
+
+      max-width: 300px;
 
       margin-top: 17px;
 
-      max-width: 310px;
+      font-size: 13px;
 
-      font-size: 14px;
       line-height: 1.45;
+
     }
 
 
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__button {
+    #forma-editorial-{{ section.id }} .forma-editorial__link {
 
-      margin-top: 21px;
+      margin-top: 20px;
 
-      padding: 12px 16px;
+      font-size: 9px;
 
-      font-size: 10px;
     }
 
 
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__controls {
+    #forma-editorial-{{ section.id }} .forma-editorial__gradient {
 
-      margin-top: 14px;
+      background:
 
-      gap: 10px;
-    }
+        linear-gradient(
+          180deg,
+          rgba(0,0,0,0) 42%,
+          rgba(0,0,0,.10) 60%,
+          rgba(0,0,0,.64) 100%
+        );
 
-
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__arrow {
-
-      width: 40px;
-      height: 40px;
-    }
-
-
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__arrow span {
-
-      font-size: 16px;
-    }
-
-
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__counter {
-
-      font-size: 10px;
     }
 
   }
 
 
-  /* ==========================================================
+  /* ============================================================
      REDUCED MOTION
-     ========================================================== */
+     ============================================================ */
 
   @media (prefers-reduced-motion: reduce) {
 
-    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__image {
+    #forma-editorial-{{ section.id }} .forma-editorial__image {
 
       transition: none;
+
     }
 
   }
@@ -800,7 +755,7 @@
   (() => {
 
     const root = document.querySelector(
-      '#forma-editorial-slider-{{ section.id }}'
+      '#forma-editorial-{{ section.id }}'
     );
 
     if (!root) return;
@@ -815,50 +770,23 @@
     );
 
     const slides = Array.from(
-      root.querySelectorAll('[data-slide]')
+      root.querySelectorAll('[data-forma-slide]')
     );
 
-    const previousButton = root.querySelector(
-      '[data-forma-prev]'
-    );
 
-    const nextButton = root.querySelector(
-      '[data-forma-next]'
-    );
-
-    const currentCounter = root.querySelector(
-      '[data-forma-current]'
-    );
+    const totalSlides = {{ slide_count }};
 
 
     if (
       !viewport ||
       !track ||
-      slides.length < 3
+      totalSlides < 2
     ) {
       return;
     }
 
 
-    /*
-      ----------------------------------------------------------
-      REAL SLIDES
-      ----------------------------------------------------------
-
-      slides:
-      0 = cloned last
-      1 = real first
-      2 = real second
-      ...
-      n = real last
-      n+1 = cloned first
-    */
-
-    const totalSlides = {{ slide_count }};
-
     let currentIndex = 1;
-
-    let isAnimating = false;
 
     let isDragging = false;
 
@@ -868,12 +796,12 @@
 
     let dragDistance = 0;
 
+    let animationLocked = false;
 
-    /*
-      ----------------------------------------------------------
-      GET SLIDE WIDTH
-      ----------------------------------------------------------
-    */
+
+    /* ==========================================================
+       DIMENSIONS
+       ========================================================== */
 
     function getSlideWidth() {
 
@@ -886,120 +814,81 @@
     }
 
 
-    /*
-      ----------------------------------------------------------
-      GET GAP
-      ----------------------------------------------------------
-    */
-
     function getGap() {
 
-      const styles = window.getComputedStyle(track);
+      const styles =
+        window.getComputedStyle(track);
 
       return parseFloat(styles.gap) || 0;
 
     }
 
 
-    /*
-      ----------------------------------------------------------
-      MOVE TRACK
-      ----------------------------------------------------------
-    */
+    /* ==========================================================
+       POSITION
+       ========================================================== */
 
     function setPosition(animate = true) {
 
-      const slideWidth = getSlideWidth();
+      const slideWidth =
+        getSlideWidth();
 
-      const gap = getGap();
+      const gap =
+        getGap();
 
-      const offset =
-        currentIndex * (slideWidth + gap);
+      const distance =
+        currentIndex *
+        (slideWidth + gap);
+
 
       track.style.transition = animate
-        ? 'transform 700ms cubic-bezier(.22,.61,.36,1)'
+        ? 'transform 650ms cubic-bezier(.22,.61,.36,1)'
         : 'none';
 
+
       track.style.transform =
-        `translate3d(-${offset}px, 0, 0)`;
+        `translate3d(-${distance}px,0,0)`;
 
     }
 
 
-    /*
-      ----------------------------------------------------------
-      UPDATE COUNTER
-      ----------------------------------------------------------
-    */
-
-    function updateCounter() {
-
-      if (!currentCounter) return;
-
-      let realIndex =
-        currentIndex - 1;
-
-      if (realIndex < 0) {
-        realIndex = totalSlides - 1;
-      }
-
-      if (realIndex >= totalSlides) {
-        realIndex = 0;
-      }
-
-      currentCounter.textContent =
-        String(realIndex + 1).padStart(2, '0');
-
-    }
-
-
-    /*
-      ----------------------------------------------------------
-      NEXT
-      ----------------------------------------------------------
-    */
+    /* ==========================================================
+       NEXT
+       ========================================================== */
 
     function nextSlide() {
 
-      if (isAnimating) return;
+      if (animationLocked) return;
 
-      isAnimating = true;
+      animationLocked = true;
 
       currentIndex++;
 
       setPosition(true);
 
-      updateCounter();
-
     }
 
 
-    /*
-      ----------------------------------------------------------
-      PREVIOUS
-      ----------------------------------------------------------
-    */
+    /* ==========================================================
+       PREVIOUS
+       ========================================================== */
 
     function previousSlide() {
 
-      if (isAnimating) return;
+      if (animationLocked) return;
 
-      isAnimating = true;
+      animationLocked = true;
 
       currentIndex--;
 
       setPosition(true);
 
-      updateCounter();
-
     }
 
 
-    /*
-      ----------------------------------------------------------
-      LOOP CORRECTION
-      ----------------------------------------------------------
-    */
+    /* ==========================================================
+       INFINITE LOOP
+       ========================================================== */
 
     track.addEventListener(
       'transitionend',
@@ -1013,7 +902,10 @@
 
         }
 
-        if (currentIndex === totalSlides + 1) {
+
+        if (
+          currentIndex === totalSlides + 1
+        ) {
 
           currentIndex = 1;
 
@@ -1021,45 +913,16 @@
 
         }
 
-        updateCounter();
 
-        isAnimating = false;
+        animationLocked = false;
 
       }
     );
 
 
-    /*
-      ----------------------------------------------------------
-      BUTTONS
-      ----------------------------------------------------------
-    */
-
-    if (nextButton) {
-
-      nextButton.addEventListener(
-        'click',
-        nextSlide
-      );
-
-    }
-
-
-    if (previousButton) {
-
-      previousButton.addEventListener(
-        'click',
-        previousSlide
-      );
-
-    }
-
-
-    /*
-      ----------------------------------------------------------
-      POINTER DOWN
-      ----------------------------------------------------------
-    */
+    /* ==========================================================
+       POINTER DOWN
+       ========================================================== */
 
     viewport.addEventListener(
       'pointerdown',
@@ -1072,6 +935,7 @@
           return;
         }
 
+
         isDragging = true;
 
         startX = event.clientX;
@@ -1080,11 +944,14 @@
 
         dragDistance = 0;
 
+
         viewport.classList.add(
           'is-dragging'
         );
 
+
         track.style.transition = 'none';
+
 
         viewport.setPointerCapture(
           event.pointerId
@@ -1094,11 +961,9 @@
     );
 
 
-    /*
-      ----------------------------------------------------------
-      POINTER MOVE
-      ----------------------------------------------------------
-    */
+    /* ==========================================================
+       POINTER MOVE
+       ========================================================== */
 
     viewport.addEventListener(
       'pointermove',
@@ -1106,43 +971,51 @@
 
         if (!isDragging) return;
 
-        currentX = event.clientX;
+
+        currentX =
+          event.clientX;
+
 
         dragDistance =
           currentX - startX;
 
+
         const slideWidth =
           getSlideWidth();
+
 
         const gap =
           getGap();
 
-        const baseOffset =
+
+        const baseDistance =
           currentIndex *
           (slideWidth + gap);
 
+
         track.style.transform =
-          `translate3d(${-(baseOffset) + dragDistance}px, 0, 0)`;
+          `translate3d(${(-baseDistance) + dragDistance}px,0,0)`;
 
       }
     );
 
 
-    /*
-      ----------------------------------------------------------
-      POINTER UP
-      ----------------------------------------------------------
-    */
+    /* ==========================================================
+       POINTER UP
+       ========================================================== */
 
     function finishDrag(event) {
 
       if (!isDragging) return;
 
+
       isDragging = false;
+
 
       viewport.classList.remove(
         'is-dragging'
       );
+
 
       try {
 
@@ -1156,14 +1029,17 @@
       const slideWidth =
         getSlideWidth();
 
+
       const threshold =
         Math.max(
-          45,
-          slideWidth * 0.16
+          50,
+          slideWidth * 0.15
         );
 
 
-      if (Math.abs(dragDistance) >= threshold) {
+      if (
+        Math.abs(dragDistance) >= threshold
+      ) {
 
         if (dragDistance < 0) {
 
@@ -1189,17 +1065,34 @@
       finishDrag
     );
 
+
     viewport.addEventListener(
       'pointercancel',
       finishDrag
     );
 
 
-    /*
-      ----------------------------------------------------------
-      KEYBOARD
-      ----------------------------------------------------------
-    */
+    /* ==========================================================
+       PREVENT IMAGE DRAG
+       ========================================================== */
+
+    root.querySelectorAll('img').forEach(
+      (image) => {
+
+        image.addEventListener(
+          'dragstart',
+          (event) => {
+            event.preventDefault();
+          }
+        );
+
+      }
+    );
+
+
+    /* ==========================================================
+       KEYBOARD
+       ========================================================== */
 
     root.addEventListener(
       'keydown',
@@ -1213,6 +1106,7 @@
 
         }
 
+
         if (event.key === 'ArrowLeft') {
 
           event.preventDefault();
@@ -1225,43 +1119,41 @@
     );
 
 
-    /*
-      ----------------------------------------------------------
-      RESIZE
-      ----------------------------------------------------------
-    */
+    /* ==========================================================
+       RESIZE
+       ========================================================== */
 
-    let resizeTimer;
+    let resizeTimeout;
+
 
     window.addEventListener(
       'resize',
       () => {
 
-        clearTimeout(resizeTimer);
-
-        resizeTimer = setTimeout(
-          () => {
-
-            setPosition(false);
-
-          },
-          100
+        clearTimeout(
+          resizeTimeout
         );
+
+
+        resizeTimeout =
+          setTimeout(
+            () => {
+
+              setPosition(false);
+
+            },
+            100
+          );
 
       }
     );
 
 
-    /*
-      ----------------------------------------------------------
-      INITIAL POSITION
-      ----------------------------------------------------------
-    */
+    /* ==========================================================
+       INITIALIZE
+       ========================================================== */
 
     setPosition(false);
-
-    updateCounter();
-
 
   })();
 
@@ -1287,42 +1179,42 @@
     {
       "type": "range",
       "id": "max_width",
-      "min": 900,
+      "min": 1000,
       "max": 1600,
       "step": 20,
       "unit": "px",
-      "label": "Maximum slide width",
+      "label": "Maximum width",
       "default": 1380
     },
 
     {
       "type": "range",
       "id": "desktop_height",
-      "min": 50,
+      "min": 55,
       "max": 85,
       "step": 1,
       "unit": "%",
       "label": "Desktop height",
-      "default": 72
+      "default": 74
     },
 
     {
       "type": "range",
       "id": "mobile_height",
-      "min": 55,
-      "max": 85,
+      "min": 60,
+      "max": 88,
       "step": 1,
       "unit": "%",
       "label": "Mobile height",
-      "default": 72
+      "default": 74
     },
 
     {
       "type": "range",
-      "id": "side_gap",
-      "min": 20,
+      "id": "side_space",
+      "min": 16,
       "max": 100,
-      "step": 5,
+      "step": 4,
       "unit": "px",
       "label": "Side spacing",
       "default": 40
@@ -1335,7 +1227,7 @@
       "max": 40,
       "step": 2,
       "unit": "px",
-      "label": "Slide gap",
+      "label": "Space between slides",
       "default": 16
     },
 
@@ -1385,7 +1277,7 @@
       "step": 5,
       "unit": "px",
       "label": "Desktop bottom spacing",
-      "default": 30
+      "default": 32
     },
 
     {
@@ -1407,7 +1299,7 @@
       "step": 5,
       "unit": "px",
       "label": "Mobile bottom spacing",
-      "default": 20
+      "default": 24
     }
 
   ],
@@ -1451,14 +1343,14 @@
         {
           "type": "text",
           "id": "button_text",
-          "label": "Button text",
+          "label": "Link text",
           "default": "Explore"
         },
 
         {
           "type": "url",
           "id": "link",
-          "label": "Button link"
+          "label": "Link"
         }
 
       ]
@@ -1494,6 +1386,7 @@
         }
 
       ]
+
     }
 
   ]
