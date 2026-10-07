@@ -9,6 +9,82 @@
  */
 {
   "sections": {
+    "forma_editorial_slider_fPrKVY": {
+      "type": "forma-editorial-slider",
+      "blocks": {
+        "slide_aFwN9i": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "FORMA EDIT",
+            "title": "The Forma Edit",
+            "description": "Stories, places, brands and ideas worth knowing.",
+            "button_text": "Explore",
+            "link": ""
+          }
+        },
+        "slide_YFN8j8": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "FORMA EDIT",
+            "title": "The Forma Edit",
+            "description": "Stories, places, brands and ideas worth knowing.",
+            "button_text": "Explore",
+            "link": ""
+          }
+        },
+        "slide_XjUKaN": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "FORMA EDIT",
+            "title": "The Forma Edit",
+            "description": "Stories, places, brands and ideas worth knowing.",
+            "button_text": "Explore",
+            "link": ""
+          }
+        },
+        "slide_LARAAX": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "FORMA EDIT",
+            "title": "The Forma Edit",
+            "description": "Stories, places, brands and ideas worth knowing.",
+            "button_text": "Explore",
+            "link": ""
+          }
+        },
+        "slide_4hcTMY": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "FORMA EDIT",
+            "title": "The Forma Edit",
+            "description": "Stories, places, brands and ideas worth knowing.",
+            "button_text": "Explore",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_aFwN9i",
+        "slide_YFN8j8",
+        "slide_XjUKaN",
+        "slide_LARAAX",
+        "slide_4hcTMY"
+      ],
+      "name": "FORMA Editorial Slider",
+      "settings": {
+        "max_width": 1380,
+        "desktop_height": 74,
+        "mobile_height": 74,
+        "side_space": 40,
+        "slide_gap": 16,
+        "border_radius": 0,
+        "mobile_border_radius": 0,
+        "padding_top": 0,
+        "padding_bottom": 30,
+        "mobile_padding_top": 0,
+        "mobile_padding_bottom": 25
+      }
+    },
     "collection_list_Q8bn9L": {
       "type": "collection-list",
       "blocks": {
@@ -142,7 +218,6 @@
       "settings": {
         "color_scheme": "",
         "separate_section_with_border": true,
-        "hide_product_information": false,
         "stack_products": false,
         "products_per_row_mobile": "2",
         "products_per_row_desktop": 4,
@@ -188,7 +263,6 @@
       "settings": {
         "color_scheme": "",
         "separate_section_with_border": false,
-        "hide_product_information": false,
         "stack_products": false,
         "products_per_row_mobile": "2",
         "products_per_row_desktop": 4,
@@ -420,6 +494,7 @@
     }
   },
   "order": [
+    "forma_editorial_slider_fPrKVY",
     "collection_list_Q8bn9L",
     "featured_collections_KVhnaK",
     "forma_journal_slider_HJFewJ",
