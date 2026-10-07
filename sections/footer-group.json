@@ -14,11 +14,14 @@
     "footer": {
       "type": "footer",
       "settings": {
-        "information_menu": "footer",
+        "information_desktop_menu": "footer",
+        "forma_desktop_menu": "kundeservice",
+        "social_desktop_menu": "socials",
+        "information_mobile_menu": "footer",
+        "forma_mobile_menu": "kundeservice",
+        "social_mobile_menu": "socials",
         "information_heading": "Information",
-        "forma_menu": "kundeservice",
         "forma_heading": "Forma",
-        "social_menu": "socials",
         "social_heading": "Social",
         "show_payment_icons": true,
         "show_powered_by_shopify": false,
