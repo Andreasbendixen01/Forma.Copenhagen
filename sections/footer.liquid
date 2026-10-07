@@ -114,127 +114,361 @@
 
 
   /* ============================================================
-     NAVIGATION
-     ============================================================ */
+   NAVIGATION
+   ============================================================ */
+
+#shopify-section-{{ section.id }} .forma-footer__navigation {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  column-gap: 80px;
+
+  padding: 58px 0 62px;
+}
+
+
+#shopify-section-{{ section.id }} .forma-footer__column {
+
+  min-width: 0;
+}
+
+
+/* ============================================================
+   DESKTOP HEADING
+   ============================================================ */
+
+#shopify-section-{{ section.id }} .forma-footer__heading-row {
+
+  display: block;
+
+  cursor: default;
+
+  list-style: none;
+}
+
+
+#shopify-section-{{ section.id }} .forma-footer__heading-row::-webkit-details-marker {
+
+  display: none;
+}
+
+
+#shopify-section-{{ section.id }} .forma-footer__heading {
+
+  display: block;
+
+  margin: 0 0 22px;
+
+  font-size: 9px;
+
+  line-height: 1;
+
+  font-weight: 500;
+
+  letter-spacing: 0.15em;
+
+  text-transform: uppercase;
+
+  color: var(--forma-footer-muted);
+}
+
+
+/* Hide accordion icon on desktop */
+
+#shopify-section-{{ section.id }} .forma-footer__accordion-icon {
+
+  display: none;
+}
+
+
+/* ============================================================
+   LINKS
+   ============================================================ */
+
+#shopify-section-{{ section.id }} .forma-footer__links {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 10px;
+
+  padding: 0;
+
+  margin: 0;
+
+  list-style: none;
+}
+
+
+#shopify-section-{{ section.id }} .forma-footer__links li {
+
+  margin: 0;
+
+  padding: 0;
+}
+
+
+#shopify-section-{{ section.id }} .forma-footer__links a {
+
+  position: relative;
+
+  display: inline-block;
+
+  font-size: 13px;
+
+  line-height: 1.45;
+
+  font-weight: 400;
+
+  letter-spacing: -0.005em;
+
+  color: rgba(23,23,23,0.72);
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+
+#shopify-section-{{ section.id }} .forma-footer__links a::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: -3px;
+
+  width: 100%;
+
+  height: 1px;
+
+  background: currentColor;
+
+  transform: scaleX(0);
+
+  transform-origin: right center;
+
+  transition:
+    transform 0.3s cubic-bezier(.22,.61,.36,1);
+}
+
+
+#shopify-section-{{ section.id }} .forma-footer__links a:hover {
+
+  color: var(--forma-footer-text);
+
+  transform: translateX(3px);
+}
+
+
+#shopify-section-{{ section.id }} .forma-footer__links a:hover::after {
+
+  transform: scaleX(1);
+
+  transform-origin: left center;
+}
+
+
+/* ============================================================
+   MOBILE ACCORDION
+   ============================================================ */
+
+@media screen and (max-width: 749px) {
 
   #shopify-section-{{ section.id }} .forma-footer__navigation {
 
-    display: grid;
+    display: block;
 
-    grid-template-columns:
-      repeat(3, minmax(0, 1fr));
+    padding: 0;
 
-    column-gap: 80px;
-
-    padding: 58px 0 62px;
   }
 
 
   #shopify-section-{{ section.id }} .forma-footer__column {
-    min-width: 0;
+
+    border-bottom: 1px solid var(--forma-footer-border);
+  }
+
+
+  /* -----------------------------------------
+     ACCORDION HEADER
+     ----------------------------------------- */
+
+  #shopify-section-{{ section.id }} .forma-footer__heading-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    width: 100%;
+
+    min-height: 58px;
+
+    padding: 0;
+
+    margin: 0;
+
+    cursor: pointer;
+
+    list-style: none;
+
+    user-select: none;
+  }
+
+
+  #shopify-section-{{ section.id }} .forma-footer__heading-row::-webkit-details-marker {
+
+    display: none;
   }
 
 
   #shopify-section-{{ section.id }} .forma-footer__heading {
 
-    margin: 0 0 22px;
+    margin: 0;
 
-    font-size: 9px;
+    font-size: 10px;
 
     line-height: 1;
 
     font-weight: 500;
 
-    letter-spacing: 0.15em;
+    letter-spacing: 0.14em;
 
-    text-transform: uppercase;
-
-    color: var(--forma-footer-muted);
+    color: var(--forma-footer-text);
   }
 
 
-  #shopify-section-{{ section.id }} .forma-footer__links {
+  /* -----------------------------------------
+     PLUS / MINUS
+     ----------------------------------------- */
+
+  #shopify-section-{{ section.id }} .forma-footer__accordion-icon {
 
     display: flex;
 
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-    align-items: flex-start;
+    width: 20px;
 
-    gap: 10px;
+    height: 20px;
 
-    padding: 0;
-    margin: 0;
+    font-size: 20px;
 
-    list-style: none;
+    line-height: 20px;
+
+    font-weight: 300;
+
+    color: var(--forma-footer-text);
+
+    transition:
+      transform 0.25s ease;
   }
 
 
-  #shopify-section-{{ section.id }} .forma-footer__links li {
-    margin: 0;
-    padding: 0;
+  /* -----------------------------------------
+     CHANGE + TO −
+     ----------------------------------------- */
+
+  #shopify-section-{{ section.id }}
+  .forma-footer__accordion[open]
+  .forma-footer__accordion-icon {
+
+    transform: rotate(180deg);
+
+    font-size: 0;
+  }
+
+
+  #shopify-section-{{ section.id }}
+  .forma-footer__accordion[open]
+  .forma-footer__accordion-icon::after {
+
+    content: "−";
+
+    font-size: 20px;
+
+    line-height: 20px;
+  }
+
+
+  /* -----------------------------------------
+     CONTENT
+     ----------------------------------------- */
+
+  #shopify-section-{{ section.id }} .forma-footer__accordion-content {
+
+    display: grid;
+
+    grid-template-rows: 0fr;
+
+    transition:
+      grid-template-rows 0.35s cubic-bezier(.22,.61,.36,1);
+  }
+
+
+  #shopify-section-{{ section.id }}
+  .forma-footer__accordion-content > * {
+
+    overflow: hidden;
+  }
+
+
+  #shopify-section-{{ section.id }}
+  .forma-footer__accordion[open]
+  .forma-footer__accordion-content {
+
+    grid-template-rows: 1fr;
+
+    padding-bottom: 20px;
+  }
+
+
+  /* -----------------------------------------
+     MOBILE LINKS
+     ----------------------------------------- */
+
+  #shopify-section-{{ section.id }} .forma-footer__links {
+
+    gap: 10px;
+
+    padding: 0 0 2px;
   }
 
 
   #shopify-section-{{ section.id }} .forma-footer__links a {
 
-    position: relative;
-
-    display: inline-block;
-
     font-size: 13px;
 
-    line-height: 1.45;
+    color: rgba(23,23,23,0.62);
 
-    font-weight: 400;
-
-    letter-spacing: -0.005em;
-
-    color: rgba(23,23,23,0.72);
-
-    transition:
-      color 0.25s ease,
-      transform 0.25s ease;
+    transform: none !important;
   }
 
 
   #shopify-section-{{ section.id }} .forma-footer__links a::after {
 
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    bottom: -3px;
-
-    width: 100%;
-    height: 1px;
-
-    background: currentColor;
-
-    transform: scaleX(0);
-
-    transform-origin: right center;
-
-    transition:
-      transform 0.3s cubic-bezier(.22,.61,.36,1);
+    display: none;
   }
 
 
-  #shopify-section-{{ section.id }} .forma-footer__links a:hover {
+  #shopify-section-{{ section.id }}
+  .forma-footer__links a:hover {
 
     color: var(--forma-footer-text);
-
-    transform: translateX(3px);
   }
 
-
-  #shopify-section-{{ section.id }} .forma-footer__links a:hover::after {
-
-    transform: scaleX(1);
-
-    transform-origin: left center;
-  }
+}
 
 
   /* ============================================================
@@ -840,19 +1074,34 @@
 
 
     <!-- ========================================================
-         NAVIGATION
-         ======================================================== -->
+     FOOTER NAVIGATION
+     ======================================================== -->
 
-    <div class="forma-footer__navigation">
+<div class="forma-footer__navigation">
 
 
-      <!-- INFORMATION -->
+  <!-- ======================================================
+       INFORMATION
+       ====================================================== -->
 
-      <div class="forma-footer__column">
+  <div class="forma-footer__column">
 
-        <p class="forma-footer__heading">
+    <details class="forma-footer__accordion">
+
+      <summary class="forma-footer__heading-row">
+
+        <span class="forma-footer__heading">
           {{ section.settings.information_heading }}
-        </p>
+        </span>
+
+        <span class="forma-footer__accordion-icon" aria-hidden="true">
+          +
+        </span>
+
+      </summary>
+
+
+      <div class="forma-footer__accordion-content">
 
         {% assign information_menu = section.settings.information_menu %}
 
@@ -882,14 +1131,33 @@
 
       </div>
 
+    </details>
 
-      <!-- FORMA -->
+  </div>
 
-      <div class="forma-footer__column">
 
-        <p class="forma-footer__heading">
+  <!-- ======================================================
+       FORMA
+       ====================================================== -->
+
+  <div class="forma-footer__column">
+
+    <details class="forma-footer__accordion">
+
+      <summary class="forma-footer__heading-row">
+
+        <span class="forma-footer__heading">
           {{ section.settings.forma_heading }}
-        </p>
+        </span>
+
+        <span class="forma-footer__accordion-icon" aria-hidden="true">
+          +
+        </span>
+
+      </summary>
+
+
+      <div class="forma-footer__accordion-content">
 
         {% assign forma_menu = section.settings.forma_menu %}
 
@@ -919,14 +1187,33 @@
 
       </div>
 
+    </details>
 
-      <!-- SOCIAL -->
+  </div>
 
-      <div class="forma-footer__column">
 
-        <p class="forma-footer__heading">
+  <!-- ======================================================
+       SOCIAL
+       ====================================================== -->
+
+  <div class="forma-footer__column">
+
+    <details class="forma-footer__accordion">
+
+      <summary class="forma-footer__heading-row">
+
+        <span class="forma-footer__heading">
           {{ section.settings.social_heading }}
-        </p>
+        </span>
+
+        <span class="forma-footer__accordion-icon" aria-hidden="true">
+          +
+        </span>
+
+      </summary>
+
+
+      <div class="forma-footer__accordion-content">
 
         {% assign social_menu = section.settings.social_menu %}
 
@@ -941,6 +1228,7 @@
               {% for link in menu.links %}
 
                 <li>
+
                   <a
                     href="{{ link.url }}"
                     {% if link.url contains 'instagram.com'
@@ -954,56 +1242,60 @@
                   >
                     {{ link.title }}
                   </a>
+
                 </li>
 
               {% endfor %}
 
             </ul>
 
-          {% else %}
-
-            <ul class="forma-footer__links">
-
-              <li>
-                <a
-                  href="https://www.instagram.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Instagram
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="https://www.facebook.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Facebook
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="https://www.linkedin.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LinkedIn
-                </a>
-              </li>
-
-            </ul>
-
           {% endif %}
+
+        {% else %}
+
+          <ul class="forma-footer__links">
+
+            <li>
+              <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Instagram
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Facebook
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="https://www.linkedin.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </a>
+            </li>
+
+          </ul>
 
         {% endif %}
 
       </div>
 
+    </details>
 
-    </div>
+  </div>
+
+</div>
 
 
     <!-- ========================================================
