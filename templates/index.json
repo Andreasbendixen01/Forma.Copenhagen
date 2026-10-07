@@ -37,9 +37,10 @@
         "slide_XjUKaN": {
           "type": "slide",
           "settings": {
-            "eyebrow": "FORMA EDIT",
-            "title": "The Forma Edit",
-            "description": "Stories, places, brands and ideas worth knowing.",
+            "image": "shopify://shop_images/Skaermbillede_2026-10-07_kl._18.28.26.png",
+            "eyebrow": "The Home",
+            "title": "Spaces with a point of views",
+            "description": "Objects, interiors and ideas for the spaces around us.",
             "button_text": "Explore",
             "link": ""
           }
