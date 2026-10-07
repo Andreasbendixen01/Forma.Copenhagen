@@ -786,6 +786,10 @@
     }
 
 
+    /* ==========================================================
+       STATE
+       ========================================================== */
+
     let currentIndex = 1;
 
     let isDragging = false;
@@ -797,6 +801,24 @@
     let dragDistance = 0;
 
     let animationLocked = false;
+
+    let wheelDistance = 0;
+
+    let wheelResetTimer = null;
+
+    let wheelAnimating = false;
+
+
+    /* ==========================================================
+       SETTINGS
+       ========================================================== */
+
+    const TRANSITION =
+      'transform 850ms cubic-bezier(.16,1,.3,1)';
+
+    const DRAG_THRESHOLD = 0.22;
+
+    const WHEEL_THRESHOLD = 120;
 
 
     /* ==========================================================
@@ -824,30 +846,36 @@
     }
 
 
+    function getDistance() {
+
+      return (
+        getSlideWidth() +
+        getGap()
+      );
+
+    }
+
+
     /* ==========================================================
-       POSITION
+       SET POSITION
        ========================================================== */
 
-    function setPosition(animate = true) {
-
-      const slideWidth =
-        getSlideWidth();
-
-      const gap =
-        getGap();
+    function setPosition(
+      animate = true,
+      extraOffset = 0
+    ) {
 
       const distance =
         currentIndex *
-        (slideWidth + gap);
+        getDistance();
 
-
-      track.style.transition = animate
-        ? 'transform 650ms cubic-bezier(.22,.61,.36,1)'
-        : 'none';
-
+      track.style.transition =
+        animate
+          ? TRANSITION
+          : 'none';
 
       track.style.transform =
-        `translate3d(-${distance}px,0,0)`;
+        `translate3d(${(-distance) + extraOffset}px, 0, 0)`;
 
     }
 
@@ -892,11 +920,19 @@
 
     track.addEventListener(
       'transitionend',
-      () => {
+      (event) => {
+
+        if (
+          event.propertyName !== 'transform'
+        ) {
+          return;
+        }
+
 
         if (currentIndex === 0) {
 
-          currentIndex = totalSlides;
+          currentIndex =
+            totalSlides;
 
           setPosition(false);
 
@@ -904,7 +940,8 @@
 
 
         if (
-          currentIndex === totalSlides + 1
+          currentIndex ===
+          totalSlides + 1
         ) {
 
           currentIndex = 1;
@@ -936,6 +973,9 @@
         }
 
 
+        if (animationLocked) return;
+
+
         isDragging = true;
 
         startX = event.clientX;
@@ -950,7 +990,8 @@
         );
 
 
-        track.style.transition = 'none';
+        track.style.transition =
+          'none';
 
 
         viewport.setPointerCapture(
@@ -980,21 +1021,30 @@
           currentX - startX;
 
 
-        const slideWidth =
-          getSlideWidth();
+        /*
+          IMPORTANT:
 
+          The slide follows the mouse/trackpad
+          continuously.
 
-        const gap =
-          getGap();
+          Nothing changes yet.
+
+          The actual slide only changes
+          when the user releases.
+        */
 
 
         const baseDistance =
           currentIndex *
-          (slideWidth + gap);
+          getDistance();
+
+
+        track.style.transition =
+          'none';
 
 
         track.style.transform =
-          `translate3d(${(-baseDistance) + dragDistance}px,0,0)`;
+          `translate3d(${(-baseDistance) + dragDistance}px, 0, 0)`;
 
       }
     );
@@ -1032,10 +1082,15 @@
 
       const threshold =
         Math.max(
-          50,
-          slideWidth * 0.15
+          60,
+          slideWidth * DRAG_THRESHOLD
         );
 
+
+      /*
+        Only change slide when the user
+        has actually dragged far enough.
+      */
 
       if (
         Math.abs(dragDistance) >= threshold
@@ -1052,6 +1107,11 @@
         }
 
       } else {
+
+        /*
+          Not enough movement:
+          smoothly return to current slide.
+        */
 
         setPosition(true);
 
@@ -1073,6 +1133,176 @@
 
 
     /* ==========================================================
+       TRACKPAD / MAGIC MOUSE
+       ==========================================================
+
+       IMPORTANT:
+
+       We DON'T immediately change slide when
+       deltaX is detected.
+
+       Instead we collect the complete gesture.
+
+       When the gesture has finished, we decide
+       whether it was large enough to move to
+       the next slide.
+    */
+
+    viewport.addEventListener(
+      'wheel',
+      (event) => {
+
+        /*
+          Ignore normal vertical scrolling.
+        */
+
+        if (
+          Math.abs(event.deltaX) <=
+          Math.abs(event.deltaY)
+        ) {
+          return;
+        }
+
+
+        /*
+          Prevent horizontal browser scrolling
+          inside the slider.
+        */
+
+        event.preventDefault();
+
+
+        if (
+          animationLocked ||
+          wheelAnimating
+        ) {
+          return;
+        }
+
+
+        /*
+          Accumulate the entire swipe.
+        */
+
+        wheelDistance +=
+          event.deltaX;
+
+
+        /*
+          Keep the current slide following
+          the trackpad slightly.
+
+          This gives the gesture a physical,
+          smooth feeling instead of an instant
+          jump.
+        */
+
+        const maxDrag =
+          getSlideWidth() * 0.65;
+
+
+        const visualDistance =
+          Math.max(
+            -maxDrag,
+            Math.min(
+              maxDrag,
+              -wheelDistance
+            )
+          );
+
+
+        const baseDistance =
+          currentIndex *
+          getDistance();
+
+
+        track.style.transition =
+          'none';
+
+
+        track.style.transform =
+          `translate3d(${(-baseDistance) + visualDistance}px, 0, 0)`;
+
+
+        /*
+          Wait until the trackpad gesture has
+          stopped generating events.
+
+          Only THEN do we decide what to do.
+        */
+
+        clearTimeout(
+          wheelResetTimer
+        );
+
+
+        wheelResetTimer =
+          setTimeout(
+            () => {
+
+              const distance =
+                wheelDistance;
+
+
+              wheelDistance = 0;
+
+              wheelAnimating = true;
+
+
+              /*
+                Strong enough swipe:
+                move one slide.
+              */
+
+              if (
+                Math.abs(distance) >=
+                WHEEL_THRESHOLD
+              ) {
+
+                if (distance > 0) {
+
+                  previousSlide();
+
+                } else {
+
+                  nextSlide();
+
+                }
+
+              } else {
+
+                /*
+                  Small swipe:
+                  smoothly return.
+                */
+
+                setPosition(true);
+
+              }
+
+
+              setTimeout(
+                () => {
+
+                  wheelAnimating = false;
+
+                },
+                900
+              );
+
+
+            },
+            110
+          );
+
+      },
+      {
+        passive: false
+      }
+    );
+
+
+    /* ==========================================================
        PREVENT IMAGE DRAG
        ========================================================== */
 
@@ -1082,81 +1312,22 @@
         image.addEventListener(
           'dragstart',
           (event) => {
+
             event.preventDefault();
+
           }
         );
 
       }
     );
 
-        /* ==========================================================
-       PREVENT NATIVE DRAGGING
-       ========================================================== */
 
     viewport.addEventListener(
       'dragstart',
       (event) => {
-        event.preventDefault();
-      }
-    );
-
-    /* ==========================================================
-       TRACKPAD / MOUSE WHEEL SWIPE
-       ========================================================== */
-
-    let wheelLocked = false;
-    let wheelDelta = 0;
-
-    viewport.addEventListener(
-      'wheel',
-      (event) => {
-
-        /*
-          Trackpad horizontal swipe:
-          deltaX is used when the user swipes
-          left/right on a trackpad or Magic Mouse.
-        */
-
-        const horizontal =
-          Math.abs(event.deltaX) > Math.abs(event.deltaY);
-
-        if (!horizontal) return;
 
         event.preventDefault();
 
-        if (wheelLocked || animationLocked) return;
-
-        wheelDelta += event.deltaX;
-
-        const threshold = 35;
-
-        if (Math.abs(wheelDelta) < threshold) {
-          return;
-        }
-
-        wheelLocked = true;
-
-        if (wheelDelta > 0) {
-
-          nextSlide();
-
-        } else {
-
-          previousSlide();
-
-        }
-
-        wheelDelta = 0;
-
-        setTimeout(() => {
-
-          wheelLocked = false;
-
-        }, 700);
-
-      },
-      {
-        passive: false
       }
     );
 
@@ -1169,7 +1340,9 @@
       'keydown',
       (event) => {
 
-        if (event.key === 'ArrowRight') {
+        if (
+          event.key === 'ArrowRight'
+        ) {
 
           event.preventDefault();
 
@@ -1178,7 +1351,9 @@
         }
 
 
-        if (event.key === 'ArrowLeft') {
+        if (
+          event.key === 'ArrowLeft'
+        ) {
 
           event.preventDefault();
 
