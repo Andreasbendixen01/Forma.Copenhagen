@@ -1,0 +1,1503 @@
+{% comment %}
+  ============================================================
+  FORMA EDITORIAL SLIDER
+  ------------------------------------------------------------
+  - No autoplay
+  - Infinite loop
+  - Desktop drag
+  - Mobile swipe
+  - Keyboard navigation
+  - Slide counter
+  - Fully editable through Shopify Theme Editor
+  ============================================================
+{% endcomment %}
+
+<section
+  id="forma-editorial-slider-{{ section.id }}"
+  class="forma-editorial-slider"
+  data-forma-editorial-slider
+  aria-label="Forma editorial slider"
+>
+
+  <div class="forma-editorial-slider__outer">
+
+    <div class="forma-editorial-slider__viewport" data-forma-viewport>
+
+      <div class="forma-editorial-slider__track" data-forma-track>
+
+        {% assign slide_count = section.blocks.size %}
+
+        {% if slide_count > 0 %}
+
+          {%- comment -%}
+            Clone of last slide
+          {%- endcomment -%}
+
+          {% assign last_block = section.blocks | last %}
+
+          <article
+            class="forma-editorial-slider__slide"
+            data-slide
+            data-clone="last"
+            {{ last_block.shopify_attributes }}
+          >
+            <div class="forma-editorial-slider__media">
+
+              {% if last_block.settings.image != blank %}
+                {{
+                  last_block.settings.image
+                  | image_url: width: 2400
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '800, 1200, 1600, 2000, 2400',
+                    sizes: '(min-width: 1400px) 1380px, calc(100vw - 40px)',
+                    class: 'forma-editorial-slider__image',
+                    alt: last_block.settings.image.alt
+                  }}
+              {% else %}
+                <div class="forma-editorial-slider__placeholder">
+                  {{ 'lifestyle-1' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+
+              <div class="forma-editorial-slider__overlay"></div>
+
+            </div>
+
+            <div class="forma-editorial-slider__content">
+
+              {% if last_block.settings.eyebrow != blank %}
+                <div class="forma-editorial-slider__eyebrow">
+                  {{ last_block.settings.eyebrow }}
+                </div>
+              {% endif %}
+
+              {% if last_block.settings.title != blank %}
+                <h2 class="forma-editorial-slider__title">
+                  {{ last_block.settings.title }}
+                </h2>
+              {% endif %}
+
+              {% if last_block.settings.description != blank %}
+                <div class="forma-editorial-slider__description">
+                  {{ last_block.settings.description }}
+                </div>
+              {% endif %}
+
+              {% if last_block.settings.button_text != blank and last_block.settings.link != blank %}
+                <a
+                  href="{{ last_block.settings.link }}"
+                  class="forma-editorial-slider__button"
+                >
+                  <span>{{ last_block.settings.button_text }}</span>
+                  <span class="forma-editorial-slider__button-arrow">↗</span>
+                </a>
+              {% endif %}
+
+            </div>
+          </article>
+
+
+          {%- comment -%}
+            Real slides
+          {%- endcomment -%}
+
+          {% for block in section.blocks %}
+
+            <article
+              class="forma-editorial-slider__slide"
+              data-slide
+              {{ block.shopify_attributes }}
+            >
+
+              <div class="forma-editorial-slider__media">
+
+                {% if block.settings.image != blank %}
+
+                  {{
+                    block.settings.image
+                    | image_url: width: 2400
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '800, 1200, 1600, 2000, 2400',
+                      sizes: '(min-width: 1400px) 1380px, calc(100vw - 40px)',
+                      class: 'forma-editorial-slider__image',
+                      alt: block.settings.image.alt
+                  }}
+
+                {% else %}
+
+                  <div class="forma-editorial-slider__placeholder">
+                    {{ 'lifestyle-1' | placeholder_svg_tag }}
+                  </div>
+
+                {% endif %}
+
+                <div class="forma-editorial-slider__overlay"></div>
+
+              </div>
+
+
+              <div class="forma-editorial-slider__content">
+
+                {% if block.settings.eyebrow != blank %}
+                  <div class="forma-editorial-slider__eyebrow">
+                    {{ block.settings.eyebrow }}
+                  </div>
+                {% endif %}
+
+
+                {% if block.settings.title != blank %}
+                  <h2 class="forma-editorial-slider__title">
+                    {{ block.settings.title }}
+                  </h2>
+                {% endif %}
+
+
+                {% if block.settings.description != blank %}
+                  <div class="forma-editorial-slider__description">
+                    {{ block.settings.description }}
+                  </div>
+                {% endif %}
+
+
+                {% if block.settings.button_text != blank and block.settings.link != blank %}
+
+                  <a
+                    href="{{ block.settings.link }}"
+                    class="forma-editorial-slider__button"
+                  >
+                    <span>{{ block.settings.button_text }}</span>
+                    <span class="forma-editorial-slider__button-arrow">↗</span>
+                  </a>
+
+                {% endif %}
+
+              </div>
+
+            </article>
+
+          {% endfor %}
+
+
+          {%- comment -%}
+            Clone of first slide
+          {%- endcomment -%}
+
+          {% assign first_block = section.blocks | first %}
+
+          <article
+            class="forma-editorial-slider__slide"
+            data-slide
+            data-clone="first"
+          >
+
+            <div class="forma-editorial-slider__media">
+
+              {% if first_block.settings.image != blank %}
+
+                {{
+                  first_block.settings.image
+                  | image_url: width: 2400
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '800, 1200, 1600, 2000, 2400',
+                    sizes: '(min-width: 1400px) 1380px, calc(100vw - 40px)',
+                    class: 'forma-editorial-slider__image',
+                    alt: first_block.settings.image.alt
+                }}
+
+              {% else %}
+
+                <div class="forma-editorial-slider__placeholder">
+                  {{ 'lifestyle-1' | placeholder_svg_tag }}
+                </div>
+
+              {% endif %}
+
+              <div class="forma-editorial-slider__overlay"></div>
+
+            </div>
+
+
+            <div class="forma-editorial-slider__content">
+
+              {% if first_block.settings.eyebrow != blank %}
+                <div class="forma-editorial-slider__eyebrow">
+                  {{ first_block.settings.eyebrow }}
+                </div>
+              {% endif %}
+
+
+              {% if first_block.settings.title != blank %}
+                <h2 class="forma-editorial-slider__title">
+                  {{ first_block.settings.title }}
+                </h2>
+              {% endif %}
+
+
+              {% if first_block.settings.description != blank %}
+                <div class="forma-editorial-slider__description">
+                  {{ first_block.settings.description }}
+                </div>
+              {% endif %}
+
+
+              {% if first_block.settings.button_text != blank and first_block.settings.link != blank %}
+
+                <a
+                  href="{{ first_block.settings.link }}"
+                  class="forma-editorial-slider__button"
+                >
+                  <span>{{ first_block.settings.button_text }}</span>
+                  <span class="forma-editorial-slider__button-arrow">↗</span>
+                </a>
+
+              {% endif %}
+
+            </div>
+
+          </article>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+
+    {% if slide_count > 1 %}
+
+      <div class="forma-editorial-slider__controls">
+
+        <button
+          type="button"
+          class="forma-editorial-slider__arrow forma-editorial-slider__arrow--previous"
+          data-forma-prev
+          aria-label="Previous slide"
+        >
+          <span>←</span>
+        </button>
+
+
+        <div class="forma-editorial-slider__counter">
+          <span data-forma-current>01</span>
+          <span class="forma-editorial-slider__counter-divider">/</span>
+          <span>{{ slide_count | prepend: '0' | slice: -2, 2 }}</span>
+        </div>
+
+
+        <button
+          type="button"
+          class="forma-editorial-slider__arrow forma-editorial-slider__arrow--next"
+          data-forma-next
+          aria-label="Next slide"
+        >
+          <span>→</span>
+        </button>
+
+      </div>
+
+    {% endif %}
+
+  </div>
+
+</section>
+
+
+<style>
+
+  /* ==========================================================
+     ROOT
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} {
+    --forma-slider-max-width: {{ section.settings.max_width }}px;
+    --forma-slider-height: {{ section.settings.desktop_height }}vh;
+    --forma-slider-radius: {{ section.settings.border_radius }}px;
+    --forma-slider-side-gap: {{ section.settings.side_gap }}px;
+
+    width: 100%;
+    margin: 0 auto;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    overflow: hidden;
+  }
+
+
+  /* ==========================================================
+     OUTER
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__outer {
+    width: 100%;
+    max-width: calc(var(--forma-slider-max-width) + 160px);
+    margin: 0 auto;
+    position: relative;
+  }
+
+
+  /* ==========================================================
+     VIEWPORT
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__viewport {
+    width: 100%;
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+  }
+
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__viewport.is-dragging {
+    cursor: grabbing;
+  }
+
+
+  /* ==========================================================
+     TRACK
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__track {
+    display: flex;
+    gap: {{ section.settings.slide_gap }}px;
+    align-items: stretch;
+    will-change: transform;
+  }
+
+
+  /* ==========================================================
+     SLIDE
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__slide {
+    position: relative;
+    flex: 0 0 min(
+      calc(100vw - (var(--forma-slider-side-gap) * 2)),
+      var(--forma-slider-max-width)
+    );
+
+    height: var(--forma-slider-height);
+
+    min-height: 560px;
+
+    overflow: hidden;
+
+    border-radius: var(--forma-slider-radius);
+
+    isolation: isolate;
+
+    background: #111;
+  }
+
+
+  /* ==========================================================
+     MEDIA
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+
+    transform: scale(1.001);
+
+    transition:
+      transform 1.2s cubic-bezier(.22,.61,.36,1);
+  }
+
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__slide:hover
+  .forma-editorial-slider__image {
+    transform: scale(1.025);
+  }
+
+
+  /* ==========================================================
+     PLACEHOLDER
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__placeholder {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e8e8e6;
+  }
+
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__placeholder svg {
+    width: 100%;
+    height: 100%;
+    opacity: .3;
+  }
+
+
+  /* ==========================================================
+     OVERLAY
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(0,0,0,0.02) 0%,
+        rgba(0,0,0,0.03) 30%,
+        rgba(0,0,0,0.18) 58%,
+        rgba(0,0,0,0.72) 100%
+      );
+
+    pointer-events: none;
+  }
+
+
+  /* ==========================================================
+     CONTENT
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__content {
+    position: absolute;
+
+    left: 42px;
+    right: 42px;
+    bottom: 42px;
+
+    z-index: 2;
+
+    color: #fff;
+
+    max-width: 780px;
+
+    pointer-events: none;
+  }
+
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__eyebrow {
+    margin-bottom: 14px;
+
+    font-size: 11px;
+    line-height: 1.2;
+    font-weight: 600;
+
+    letter-spacing: .16em;
+    text-transform: uppercase;
+
+    opacity: .9;
+  }
+
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__title {
+    margin: 0;
+
+    font-size: clamp(48px, 7vw, 108px);
+    line-height: .88;
+
+    font-weight: 500;
+    letter-spacing: -.055em;
+
+    color: #fff;
+  }
+
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__description {
+    margin-top: 22px;
+
+    max-width: 530px;
+
+    font-size: 16px;
+    line-height: 1.45;
+
+    color: rgba(255,255,255,.9);
+  }
+
+
+  /* ==========================================================
+     BUTTON
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__button {
+    pointer-events: auto;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-top: 28px;
+
+    padding: 13px 18px;
+
+    border: 1px solid rgba(255,255,255,.45);
+    border-radius: 999px;
+
+    color: #fff;
+    background: rgba(0,0,0,.16);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    text-decoration: none;
+
+    font-size: 12px;
+    line-height: 1;
+
+    letter-spacing: .08em;
+    text-transform: uppercase;
+
+    transition:
+      background .25s ease,
+      border-color .25s ease,
+      transform .25s ease;
+  }
+
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__button:hover {
+    background: rgba(255,255,255,.16);
+    border-color: rgba(255,255,255,.8);
+    transform: translateY(-2px);
+  }
+
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__button-arrow {
+    font-size: 15px;
+    line-height: 1;
+  }
+
+
+  /* ==========================================================
+     CONTROLS
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    margin-top: 18px;
+  }
+
+
+  /* ==========================================================
+     ARROWS
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__arrow {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid rgba(0,0,0,.12);
+    border-radius: 50%;
+
+    background: rgba(0,0,0,.04);
+
+    color: #111;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    transition:
+      background .25s ease,
+      transform .25s ease,
+      border-color .25s ease;
+  }
+
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__arrow:hover {
+    background: #111;
+    border-color: #111;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__arrow span {
+    font-size: 19px;
+    line-height: 1;
+  }
+
+
+  /* ==========================================================
+     COUNTER
+     ========================================================== */
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__counter {
+    min-width: 54px;
+
+    text-align: center;
+
+    font-size: 11px;
+    line-height: 1;
+
+    letter-spacing: .12em;
+
+    color: rgba(0,0,0,.65);
+  }
+
+
+  #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__counter-divider {
+    margin: 0 4px;
+    opacity: .35;
+  }
+
+
+  /* ==========================================================
+     MOBILE
+     ========================================================== */
+
+  @media screen and (max-width: 749px) {
+
+    #forma-editorial-slider-{{ section.id }} {
+
+      --forma-slider-side-gap: 14px;
+
+      --forma-slider-height: {{ section.settings.mobile_height }}vh;
+
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__outer {
+      width: 100%;
+    }
+
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__track {
+      gap: 10px;
+    }
+
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__slide {
+
+      flex-basis: calc(100vw - 28px);
+
+      min-height: 520px;
+
+      border-radius: {{ section.settings.mobile_border_radius }}px;
+    }
+
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__content {
+
+      left: 24px;
+      right: 24px;
+      bottom: 28px;
+    }
+
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__eyebrow {
+
+      margin-bottom: 11px;
+
+      font-size: 9px;
+
+      letter-spacing: .15em;
+    }
+
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__title {
+
+      font-size: clamp(42px, 13vw, 68px);
+
+      line-height: .88;
+      letter-spacing: -.055em;
+    }
+
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__description {
+
+      margin-top: 17px;
+
+      max-width: 310px;
+
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__button {
+
+      margin-top: 21px;
+
+      padding: 12px 16px;
+
+      font-size: 10px;
+    }
+
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__controls {
+
+      margin-top: 14px;
+
+      gap: 10px;
+    }
+
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__arrow {
+
+      width: 40px;
+      height: 40px;
+    }
+
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__arrow span {
+
+      font-size: 16px;
+    }
+
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__counter {
+
+      font-size: 10px;
+    }
+
+  }
+
+
+  /* ==========================================================
+     REDUCED MOTION
+     ========================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+
+    #forma-editorial-slider-{{ section.id }} .forma-editorial-slider__image {
+
+      transition: none;
+    }
+
+  }
+
+</style>
+
+
+<script>
+
+  (() => {
+
+    const root = document.querySelector(
+      '#forma-editorial-slider-{{ section.id }}'
+    );
+
+    if (!root) return;
+
+
+    const viewport = root.querySelector(
+      '[data-forma-viewport]'
+    );
+
+    const track = root.querySelector(
+      '[data-forma-track]'
+    );
+
+    const slides = Array.from(
+      root.querySelectorAll('[data-slide]')
+    );
+
+    const previousButton = root.querySelector(
+      '[data-forma-prev]'
+    );
+
+    const nextButton = root.querySelector(
+      '[data-forma-next]'
+    );
+
+    const currentCounter = root.querySelector(
+      '[data-forma-current]'
+    );
+
+
+    if (
+      !viewport ||
+      !track ||
+      slides.length < 3
+    ) {
+      return;
+    }
+
+
+    /*
+      ----------------------------------------------------------
+      REAL SLIDES
+      ----------------------------------------------------------
+
+      slides:
+      0 = cloned last
+      1 = real first
+      2 = real second
+      ...
+      n = real last
+      n+1 = cloned first
+    */
+
+    const totalSlides = {{ slide_count }};
+
+    let currentIndex = 1;
+
+    let isAnimating = false;
+
+    let isDragging = false;
+
+    let startX = 0;
+
+    let currentX = 0;
+
+    let dragDistance = 0;
+
+
+    /*
+      ----------------------------------------------------------
+      GET SLIDE WIDTH
+      ----------------------------------------------------------
+    */
+
+    function getSlideWidth() {
+
+      const slide = slides[0];
+
+      if (!slide) return 0;
+
+      return slide.getBoundingClientRect().width;
+
+    }
+
+
+    /*
+      ----------------------------------------------------------
+      GET GAP
+      ----------------------------------------------------------
+    */
+
+    function getGap() {
+
+      const styles = window.getComputedStyle(track);
+
+      return parseFloat(styles.gap) || 0;
+
+    }
+
+
+    /*
+      ----------------------------------------------------------
+      MOVE TRACK
+      ----------------------------------------------------------
+    */
+
+    function setPosition(animate = true) {
+
+      const slideWidth = getSlideWidth();
+
+      const gap = getGap();
+
+      const offset =
+        currentIndex * (slideWidth + gap);
+
+      track.style.transition = animate
+        ? 'transform 700ms cubic-bezier(.22,.61,.36,1)'
+        : 'none';
+
+      track.style.transform =
+        `translate3d(-${offset}px, 0, 0)`;
+
+    }
+
+
+    /*
+      ----------------------------------------------------------
+      UPDATE COUNTER
+      ----------------------------------------------------------
+    */
+
+    function updateCounter() {
+
+      if (!currentCounter) return;
+
+      let realIndex =
+        currentIndex - 1;
+
+      if (realIndex < 0) {
+        realIndex = totalSlides - 1;
+      }
+
+      if (realIndex >= totalSlides) {
+        realIndex = 0;
+      }
+
+      currentCounter.textContent =
+        String(realIndex + 1).padStart(2, '0');
+
+    }
+
+
+    /*
+      ----------------------------------------------------------
+      NEXT
+      ----------------------------------------------------------
+    */
+
+    function nextSlide() {
+
+      if (isAnimating) return;
+
+      isAnimating = true;
+
+      currentIndex++;
+
+      setPosition(true);
+
+      updateCounter();
+
+    }
+
+
+    /*
+      ----------------------------------------------------------
+      PREVIOUS
+      ----------------------------------------------------------
+    */
+
+    function previousSlide() {
+
+      if (isAnimating) return;
+
+      isAnimating = true;
+
+      currentIndex--;
+
+      setPosition(true);
+
+      updateCounter();
+
+    }
+
+
+    /*
+      ----------------------------------------------------------
+      LOOP CORRECTION
+      ----------------------------------------------------------
+    */
+
+    track.addEventListener(
+      'transitionend',
+      () => {
+
+        if (currentIndex === 0) {
+
+          currentIndex = totalSlides;
+
+          setPosition(false);
+
+        }
+
+        if (currentIndex === totalSlides + 1) {
+
+          currentIndex = 1;
+
+          setPosition(false);
+
+        }
+
+        updateCounter();
+
+        isAnimating = false;
+
+      }
+    );
+
+
+    /*
+      ----------------------------------------------------------
+      BUTTONS
+      ----------------------------------------------------------
+    */
+
+    if (nextButton) {
+
+      nextButton.addEventListener(
+        'click',
+        nextSlide
+      );
+
+    }
+
+
+    if (previousButton) {
+
+      previousButton.addEventListener(
+        'click',
+        previousSlide
+      );
+
+    }
+
+
+    /*
+      ----------------------------------------------------------
+      POINTER DOWN
+      ----------------------------------------------------------
+    */
+
+    viewport.addEventListener(
+      'pointerdown',
+      (event) => {
+
+        if (
+          event.pointerType === 'mouse' &&
+          event.button !== 0
+        ) {
+          return;
+        }
+
+        isDragging = true;
+
+        startX = event.clientX;
+
+        currentX = event.clientX;
+
+        dragDistance = 0;
+
+        viewport.classList.add(
+          'is-dragging'
+        );
+
+        track.style.transition = 'none';
+
+        viewport.setPointerCapture(
+          event.pointerId
+        );
+
+      }
+    );
+
+
+    /*
+      ----------------------------------------------------------
+      POINTER MOVE
+      ----------------------------------------------------------
+    */
+
+    viewport.addEventListener(
+      'pointermove',
+      (event) => {
+
+        if (!isDragging) return;
+
+        currentX = event.clientX;
+
+        dragDistance =
+          currentX - startX;
+
+        const slideWidth =
+          getSlideWidth();
+
+        const gap =
+          getGap();
+
+        const baseOffset =
+          currentIndex *
+          (slideWidth + gap);
+
+        track.style.transform =
+          `translate3d(${-(baseOffset) + dragDistance}px, 0, 0)`;
+
+      }
+    );
+
+
+    /*
+      ----------------------------------------------------------
+      POINTER UP
+      ----------------------------------------------------------
+    */
+
+    function finishDrag(event) {
+
+      if (!isDragging) return;
+
+      isDragging = false;
+
+      viewport.classList.remove(
+        'is-dragging'
+      );
+
+      try {
+
+        viewport.releasePointerCapture(
+          event.pointerId
+        );
+
+      } catch (error) {}
+
+
+      const slideWidth =
+        getSlideWidth();
+
+      const threshold =
+        Math.max(
+          45,
+          slideWidth * 0.16
+        );
+
+
+      if (Math.abs(dragDistance) >= threshold) {
+
+        if (dragDistance < 0) {
+
+          nextSlide();
+
+        } else {
+
+          previousSlide();
+
+        }
+
+      } else {
+
+        setPosition(true);
+
+      }
+
+    }
+
+
+    viewport.addEventListener(
+      'pointerup',
+      finishDrag
+    );
+
+    viewport.addEventListener(
+      'pointercancel',
+      finishDrag
+    );
+
+
+    /*
+      ----------------------------------------------------------
+      KEYBOARD
+      ----------------------------------------------------------
+    */
+
+    root.addEventListener(
+      'keydown',
+      (event) => {
+
+        if (event.key === 'ArrowRight') {
+
+          event.preventDefault();
+
+          nextSlide();
+
+        }
+
+        if (event.key === 'ArrowLeft') {
+
+          event.preventDefault();
+
+          previousSlide();
+
+        }
+
+      }
+    );
+
+
+    /*
+      ----------------------------------------------------------
+      RESIZE
+      ----------------------------------------------------------
+    */
+
+    let resizeTimer;
+
+    window.addEventListener(
+      'resize',
+      () => {
+
+        clearTimeout(resizeTimer);
+
+        resizeTimer = setTimeout(
+          () => {
+
+            setPosition(false);
+
+          },
+          100
+        );
+
+      }
+    );
+
+
+    /*
+      ----------------------------------------------------------
+      INITIAL POSITION
+      ----------------------------------------------------------
+    */
+
+    setPosition(false);
+
+    updateCounter();
+
+
+  })();
+
+</script>
+
+
+{% schema %}
+
+{
+  "name": "FORMA Editorial Slider",
+
+  "tag": "section",
+
+  "class": "forma-editorial-slider-section",
+
+  "settings": [
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 900,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Maximum slide width",
+      "default": 1380
+    },
+
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "min": 50,
+      "max": 85,
+      "step": 1,
+      "unit": "%",
+      "label": "Desktop height",
+      "default": 72
+    },
+
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 55,
+      "max": 85,
+      "step": 1,
+      "unit": "%",
+      "label": "Mobile height",
+      "default": 72
+    },
+
+    {
+      "type": "range",
+      "id": "side_gap",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Side spacing",
+      "default": 40
+    },
+
+    {
+      "type": "range",
+      "id": "slide_gap",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Slide gap",
+      "default": 16
+    },
+
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+
+    {
+      "type": "range",
+      "id": "mobile_border_radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile border radius",
+      "default": 0
+    },
+
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Desktop top spacing",
+      "default": 0
+    },
+
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Desktop bottom spacing",
+      "default": 30
+    },
+
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile top spacing",
+      "default": 0
+    },
+
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile bottom spacing",
+      "default": 20
+    }
+
+  ],
+
+  "blocks": [
+
+    {
+      "type": "slide",
+
+      "name": "Slide",
+
+      "settings": [
+
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "FORMA EDIT"
+        },
+
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "The Forma Edit"
+        },
+
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Stories, places, brands and ideas worth knowing."
+        },
+
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Explore"
+        },
+
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        }
+
+      ]
+    }
+
+  ],
+
+  "presets": [
+
+    {
+      "name": "FORMA Editorial Slider",
+
+      "blocks": [
+
+        {
+          "type": "slide"
+        },
+
+        {
+          "type": "slide"
+        },
+
+        {
+          "type": "slide"
+        },
+
+        {
+          "type": "slide"
+        },
+
+        {
+          "type": "slide"
+        }
+
+      ]
+    }
+
+  ]
+
+}
+
+{% endschema %}
