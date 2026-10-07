@@ -26,9 +26,10 @@
         "slide_YFN8j8": {
           "type": "slide",
           "settings": {
-            "eyebrow": "FORMA EDIT",
-            "title": "The Forma Edit",
-            "description": "Stories, places, brands and ideas worth knowing.",
+            "image": "shopify://shop_images/esmee-space-copenhagen_dezeen_2364_col_15.jpg",
+            "eyebrow": "THE LIFESTYLE",
+            "title": "Curated Life",
+            "description": "The places, people and experiences shaping the way we live.",
             "button_text": "Explore",
             "link": ""
           }
@@ -73,10 +74,10 @@
       ],
       "name": "FORMA Editorial Slider",
       "settings": {
-        "max_width": 1380,
+        "max_width": 1300,
         "desktop_height": 74,
         "mobile_height": 74,
-        "slide_gap": 8,
+        "slide_gap": 6,
         "border_radius": 0,
         "mobile_border_radius": 0,
         "padding_top": 0,
