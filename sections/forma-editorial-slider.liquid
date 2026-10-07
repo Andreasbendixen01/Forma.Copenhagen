@@ -1089,6 +1089,77 @@
       }
     );
 
+        /* ==========================================================
+       PREVENT NATIVE DRAGGING
+       ========================================================== */
+
+    viewport.addEventListener(
+      'dragstart',
+      (event) => {
+        event.preventDefault();
+      }
+    );
+
+    /* ==========================================================
+       TRACKPAD / MOUSE WHEEL SWIPE
+       ========================================================== */
+
+    let wheelLocked = false;
+    let wheelDelta = 0;
+
+    viewport.addEventListener(
+      'wheel',
+      (event) => {
+
+        /*
+          Trackpad horizontal swipe:
+          deltaX is used when the user swipes
+          left/right on a trackpad or Magic Mouse.
+        */
+
+        const horizontal =
+          Math.abs(event.deltaX) > Math.abs(event.deltaY);
+
+        if (!horizontal) return;
+
+        event.preventDefault();
+
+        if (wheelLocked || animationLocked) return;
+
+        wheelDelta += event.deltaX;
+
+        const threshold = 35;
+
+        if (Math.abs(wheelDelta) < threshold) {
+          return;
+        }
+
+        wheelLocked = true;
+
+        if (wheelDelta > 0) {
+
+          nextSlide();
+
+        } else {
+
+          previousSlide();
+
+        }
+
+        wheelDelta = 0;
+
+        setTimeout(() => {
+
+          wheelLocked = false;
+
+        }, 700);
+
+      },
+      {
+        passive: false
+      }
+    );
+
 
     /* ==========================================================
        KEYBOARD
