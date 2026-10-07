@@ -3,141 +3,83 @@
   FORMA — EDITORIAL SLIDER
   ============================================================
 
-  Minimal editorial image slider for FORMA Copenhagen.
+  Native horizontal scroll architecture inspired by
+  the FORMA Journal slider.
 
-  Features:
-  - No autoplay
-  - No arrows
-  - No visible controls
+  Core:
+  - Native horizontal scrolling
+  - CSS scroll snap
+  - scroll-snap-stop: always
   - Mouse drag
   - Touch swipe
-  - Infinite loop
+  - Trackpad
+  - Magic Mouse
+  - Keyboard
+  - No autoplay
+  - No arrows
+  - No cloned slides
+  - No transform-based carousel engine
+
+  Visual:
+  - Large editorial imagery
+  - Cinematic gradient
+  - Subtle image zoom
+  - Mouse parallax
   - Editorial typography
-  - Responsive
-  - Fully editable in Shopify
+  - Progress indicator
   ============================================================
 {% endcomment %}
+
 
 <section
   id="forma-editorial-{{ section.id }}"
   class="forma-editorial"
-  data-forma-editorial
 >
 
-  <div class="forma-editorial__viewport" data-forma-viewport>
+  <div class="forma-editorial__viewport">
 
-    <div class="forma-editorial__track" data-forma-track>
+    <div
+      class="forma-editorial__track"
+      data-forma-editorial-track
+    >
 
-      {% assign slide_count = section.blocks.size %}
-
-      {% if slide_count > 0 %}
-
-        {% assign last_block = section.blocks | last %}
-
-        <!-- CLONED LAST SLIDE -->
+      {% for block in section.blocks %}
 
         <article
           class="forma-editorial__slide"
-          data-forma-slide
-          data-clone="last"
+          data-forma-editorial-slide
+          data-index="{{ forloop.index0 }}"
+          {{ block.shopify_attributes }}
         >
 
-          <div class="forma-editorial__image-wrap">
-
-            {% if last_block.settings.image != blank %}
-
-              {{
-                last_block.settings.image
-                | image_url: width: 3000
-                | image_tag:
-                  loading: 'lazy',
-                  widths: '1000, 1400, 1800, 2200, 2600, 3000',
-                  sizes: '(min-width: 1500px) 1400px, calc(100vw - 32px)',
-                  class: 'forma-editorial__image',
-                  alt: last_block.settings.image.alt
-              }}
-
-            {% else %}
-
-              {{ 'lifestyle-1' | placeholder_svg_tag: 'forma-editorial__placeholder' }}
-
-            {% endif %}
-
-            <div class="forma-editorial__gradient"></div>
-
-          </div>
+          {% if block.settings.link != blank %}
+            <a
+              href="{{ block.settings.link }}"
+              class="forma-editorial__slide-link"
+              data-forma-slide-link
+            >
+          {% else %}
+            <div class="forma-editorial__slide-link">
+          {% endif %}
 
 
-          <div class="forma-editorial__content">
+            <!-- ============================================
+                 IMAGE
+                 ============================================ -->
 
-            {% if last_block.settings.eyebrow != blank %}
-
-              <div class="forma-editorial__eyebrow">
-                {{ last_block.settings.eyebrow }}
-              </div>
-
-            {% endif %}
-
-
-            {% if last_block.settings.title != blank %}
-
-              <h2 class="forma-editorial__title">
-                {{ last_block.settings.title }}
-              </h2>
-
-            {% endif %}
-
-
-            {% if last_block.settings.description != blank %}
-
-              <div class="forma-editorial__description">
-                {{ last_block.settings.description }}
-              </div>
-
-            {% endif %}
-
-
-            {% if last_block.settings.button_text != blank and last_block.settings.link != blank %}
-
-              <a
-                href="{{ last_block.settings.link }}"
-                class="forma-editorial__link"
-                draggable="false"
-              >
-                <span>{{ last_block.settings.button_text }}</span>
-                <span class="forma-editorial__link-arrow">↗</span>
-              </a>
-
-            {% endif %}
-
-          </div>
-
-        </article>
-
-
-        <!-- REAL SLIDES -->
-
-        {% for block in section.blocks %}
-
-          <article
-            class="forma-editorial__slide"
-            data-forma-slide
-            {{ block.shopify_attributes }}
-          >
-
-            <div class="forma-editorial__image-wrap">
+            <div class="forma-editorial__media">
 
               {% if block.settings.image != blank %}
 
                 {{
                   block.settings.image
-                  | image_url: width: 3000
+                  | image_url: width: 3200
                   | image_tag:
                     loading: 'lazy',
-                    widths: '1000, 1400, 1800, 2200, 2600, 3000',
-                    sizes: '(min-width: 1500px) 1400px, calc(100vw - 32px)',
+                    widths: '1000, 1400, 1800, 2200, 2600, 3000, 3200',
+                    sizes: '(min-width: 1500px) 1440px, calc(100vw - 28px)',
                     class: 'forma-editorial__image',
-                    alt: block.settings.image.alt,
+                    alt: block.settings.image.alt | default: block.settings.title,
                     draggable: 'false'
                 }}
 
@@ -147,10 +89,17 @@
 
               {% endif %}
 
+
+              <div class="forma-editorial__overlay"></div>
+
               <div class="forma-editorial__gradient"></div>
 
             </div>
 
+
+            <!-- ============================================
+                 CONTENT
+                 ============================================ -->
 
             <div class="forma-editorial__content">
 
@@ -181,113 +130,102 @@
               {% endif %}
 
 
-              {% if block.settings.button_text != blank and block.settings.link != blank %}
+              {% if block.settings.button_text != blank %}
 
-                <a
-                  href="{{ block.settings.link }}"
-                  class="forma-editorial__link"
-                  draggable="false"
-                >
-                  <span>{{ block.settings.button_text }}</span>
-                  <span class="forma-editorial__link-arrow">↗</span>
-                </a>
+                <div class="forma-editorial__cta">
+
+                  <span>
+                    {{ block.settings.button_text }}
+                  </span>
+
+                  <span class="forma-editorial__cta-arrow">
+                    ↗
+                  </span>
+
+                </div>
 
               {% endif %}
 
             </div>
 
-          </article>
 
-        {% endfor %}
+            <!-- ============================================
+                 SLIDE NUMBER
+                 ============================================ -->
 
+            <div class="forma-editorial__slide-number">
 
-        <!-- CLONED FIRST SLIDE -->
+              <span>
+                {{ forloop.index | prepend: '0' | slice: -2, 2 }}
+              </span>
 
-        {% assign first_block = section.blocks | first %}
+              <span class="forma-editorial__slide-number-line"></span>
 
-        <article
-          class="forma-editorial__slide"
-          data-forma-slide
-          data-clone="first"
-        >
+              <span>
+                {{ section.blocks.size | prepend: '0' | slice: -2, 2 }}
+              </span>
 
-          <div class="forma-editorial__image-wrap">
-
-            {% if first_block.settings.image != blank %}
-
-              {{
-                first_block.settings.image
-                | image_url: width: 3000
-                | image_tag:
-                  loading: 'lazy',
-                  widths: '1000, 1400, 1800, 2200, 2600, 3000',
-                  sizes: '(min-width: 1500px) 1400px, calc(100vw - 32px)',
-                  class: 'forma-editorial__image',
-                  alt: first_block.settings.image.alt
-              }}
-
-            {% else %}
-
-              {{ 'lifestyle-1' | placeholder_svg_tag: 'forma-editorial__placeholder' }}
-
-            {% endif %}
-
-            <div class="forma-editorial__gradient"></div>
-
-          </div>
+            </div>
 
 
-          <div class="forma-editorial__content">
-
-            {% if first_block.settings.eyebrow != blank %}
-
-              <div class="forma-editorial__eyebrow">
-                {{ first_block.settings.eyebrow }}
-              </div>
-
-            {% endif %}
-
-
-            {% if first_block.settings.title != blank %}
-
-              <h2 class="forma-editorial__title">
-                {{ first_block.settings.title }}
-              </h2>
-
-            {% endif %}
-
-
-            {% if first_block.settings.description != blank %}
-
-              <div class="forma-editorial__description">
-                {{ first_block.settings.description }}
-              </div>
-
-            {% endif %}
-
-
-            {% if first_block.settings.button_text != blank and first_block.settings.link != blank %}
-
-              <a
-                href="{{ first_block.settings.link }}"
-                class="forma-editorial__link"
-                draggable="false"
-              >
-                <span>{{ first_block.settings.button_text }}</span>
-                <span class="forma-editorial__link-arrow">↗</span>
-              </a>
-
-            {% endif %}
-
-          </div>
+          {% if block.settings.link != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
 
         </article>
 
-      {% endif %}
+      {% endfor %}
 
     </div>
 
   </div>
+
+
+  <!-- ========================================================
+       BOTTOM META
+       ======================================================== -->
+
+  {% if section.blocks.size > 1 %}
+
+    <div class="forma-editorial__bottom">
+
+      <div class="forma-editorial__counter">
+
+        <span data-forma-current>
+          01
+        </span>
+
+        <span class="forma-editorial__counter-separator">
+          /
+        </span>
+
+        <span>
+          {{ section.blocks.size | prepend: '0' | slice: -2, 2 }}
+        </span>
+
+      </div>
+
+
+      <div class="forma-editorial__progress">
+
+        <div
+          class="forma-editorial__progress-fill"
+          data-forma-progress
+        ></div>
+
+      </div>
+
+
+      <div class="forma-editorial__hint">
+        <span class="forma-editorial__hint-line"></span>
+        <span>Drag to explore</span>
+      </div>
+
+    </div>
+
+  {% endif %}
 
 </section>
 
@@ -295,24 +233,46 @@
 <style>
 
   /* ============================================================
-     ROOT
+     SECTION
      ============================================================ */
 
   #forma-editorial-{{ section.id }} {
 
-    --forma-max-width: {{ section.settings.max_width }}px;
-    --forma-height: {{ section.settings.desktop_height }}vh;
-    --forma-gap: {{ section.settings.slide_gap }}px;
-    --forma-side-space: {{ section.settings.side_space }}px;
+    --forma-max-width:
+      {{ section.settings.max_width }}px;
+
+    --forma-desktop-height:
+      {{ section.settings.desktop_height }}vh;
+
+    --forma-mobile-height:
+      {{ section.settings.mobile_height }}vh;
+
+    --forma-side-space:
+      {{ section.settings.side_spacing }}px;
+
+    --forma-gap:
+      {{ section.settings.slide_gap }}px;
+
+    --forma-radius:
+      {{ section.settings.border_radius }}px;
+
+    position: relative;
 
     width: 100%;
 
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
+    margin: 0;
+
+    padding-top:
+      {{ section.settings.padding_top }}px;
+
+    padding-bottom:
+      {{ section.settings.padding_bottom }}px;
 
     overflow: hidden;
 
-    background: transparent;
+    background: #fff;
+
+    color: #111;
 
   }
 
@@ -321,42 +281,84 @@
      VIEWPORT
      ============================================================ */
 
-  #forma-editorial-{{ section.id }} .forma-editorial__viewport {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__viewport {
+
+    position: relative;
 
     width: 100%;
 
     overflow: hidden;
-
-    cursor: grab;
-
-    user-select: none;
-    -webkit-user-select: none;
-
-    touch-action: pan-y;
-
-  }
-
-
-  #forma-editorial-{{ section.id }} .forma-editorial__viewport.is-dragging {
-
-    cursor: grabbing;
 
   }
 
 
   /* ============================================================
      TRACK
+
+     THIS IS THE IMPORTANT PART.
+
+     The slider itself is a native horizontal
+     scroll container — exactly like the
+     working Forma Journal slider.
      ============================================================ */
 
-  #forma-editorial-{{ section.id }} .forma-editorial__track {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__track {
 
     display: flex;
 
-    gap: var(--forma-gap);
+    gap:
+      var(--forma-gap);
 
-    width: max-content;
+    width: 100%;
 
-    will-change: transform;
+    overflow-x: auto;
+
+    overflow-y: hidden;
+
+    padding:
+      0
+      var(--forma-side-space);
+
+    margin: 0;
+
+    scroll-behavior: smooth;
+
+    scroll-snap-type: x mandatory;
+
+    scroll-padding-left:
+      var(--forma-side-space);
+
+    scrollbar-width: none;
+
+    -ms-overflow-style: none;
+
+    overscroll-behavior-x: contain;
+
+    cursor: grab;
+
+  }
+
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__track::-webkit-scrollbar {
+
+    display: none;
+
+  }
+
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__track.is-dragging {
+
+    cursor: grabbing;
+
+    scroll-behavior: auto;
+
+    user-select: none;
+
+    -webkit-user-select: none;
 
   }
 
@@ -365,22 +367,49 @@
      SLIDE
      ============================================================ */
 
-  #forma-editorial-{{ section.id }} .forma-editorial__slide {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__slide {
 
     position: relative;
 
-    flex: 0 0 min(
-      calc(100vw - (var(--forma-side-space) * 2)),
-      var(--forma-max-width)
-    );
+    flex:
+      0 0 min(
+        calc(
+          100vw -
+          (var(--forma-side-space) * 2)
+        ),
+        var(--forma-max-width)
+      );
 
-    height: var(--forma-height);
+    width:
+      min(
+        calc(
+          100vw -
+          (var(--forma-side-space) * 2)
+        ),
+        var(--forma-max-width)
+      );
 
-    min-height: 580px;
+    height:
+      var(--forma-desktop-height);
+
+    min-height: 560px;
 
     overflow: hidden;
 
-    border-radius: {{ section.settings.border_radius }}px;
+    scroll-snap-align: start;
+
+    /*
+      THIS prevents a fast gesture from
+      skipping through multiple snap points.
+    */
+
+    scroll-snap-stop: always;
+
+    flex-shrink: 0;
+
+    border-radius:
+      var(--forma-radius);
 
     background: #111;
 
@@ -390,10 +419,31 @@
 
 
   /* ============================================================
-     IMAGE
+     LINK
      ============================================================ */
 
-  #forma-editorial-{{ section.id }} .forma-editorial__image-wrap {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__slide-link {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: block;
+
+    color: inherit;
+
+    text-decoration: none;
+
+  }
+
+
+  /* ============================================================
+     MEDIA
+     ============================================================ */
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__media {
 
     position: absolute;
 
@@ -401,57 +451,118 @@
 
     overflow: hidden;
 
-  }
-
-
-  #forma-editorial-{{ section.id }} .forma-editorial__image {
-
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    transform: scale(1.001);
-
-    pointer-events: none;
-
-    transition:
-      transform 1.4s cubic-bezier(.22,.61,.36,1);
-
-  }
-
-
-  /* Very subtle movement when hovering */
-
-  #forma-editorial-{{ section.id }} .forma-editorial__slide:hover
-  .forma-editorial__image {
-
-    transform: scale(1.025);
+    z-index: 0;
 
   }
 
 
   /* ============================================================
-     IMAGE GRADIENT
+     IMAGE
      ============================================================ */
 
-  #forma-editorial-{{ section.id }} .forma-editorial__gradient {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__image {
+
+    position: absolute;
+
+    top: -3%;
+
+    left: -3%;
+
+    width: 106%;
+
+    height: 106%;
+
+    display: block;
+
+    object-fit: cover;
+
+    pointer-events: none;
+
+    user-select: none;
+
+    -webkit-user-select: none;
+
+    transform:
+      scale(1.001)
+      translate3d(
+        var(--forma-parallax-x, 0px),
+        0,
+        0
+      );
+
+    transition:
+      transform
+      1.2s
+      cubic-bezier(.22,.61,.36,1);
+
+    will-change: transform;
+
+  }
+
+
+  /* ============================================================
+     HOVER IMAGE
+     ============================================================ */
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__slide:hover
+  .forma-editorial__image {
+
+    transform:
+      scale(1.025)
+      translate3d(
+        var(--forma-parallax-x, 0px),
+        0,
+        0
+      );
+
+  }
+
+
+  /* ============================================================
+     OVERLAY
+     ============================================================ */
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__overlay {
 
     position: absolute;
 
     inset: 0;
 
+    z-index: 1;
+
+    background:
+      rgba(0,0,0,.025);
+
+    pointer-events: none;
+
+  }
+
+
+  /* ============================================================
+     CINEMATIC GRADIENT
+     ============================================================ */
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__gradient {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 2;
+
     pointer-events: none;
 
     background:
-
       linear-gradient(
         180deg,
-        rgba(0,0,0,0) 48%,
-        rgba(0,0,0,.08) 62%,
-        rgba(0,0,0,.58) 100%
+        rgba(0,0,0,0) 25%,
+        rgba(0,0,0,.025) 45%,
+        rgba(0,0,0,.15) 63%,
+        rgba(0,0,0,.76) 100%
       );
 
   }
@@ -461,17 +572,20 @@
      CONTENT
      ============================================================ */
 
-  #forma-editorial-{{ section.id }} .forma-editorial__content {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__content {
 
     position: absolute;
 
-    z-index: 3;
-
     left: 48px;
-    right: 48px;
-    bottom: 46px;
 
-    max-width: 850px;
+    right: 48px;
+
+    bottom: 50px;
+
+    z-index: 4;
+
+    max-width: 1000px;
 
     color: #fff;
 
@@ -484,7 +598,8 @@
      EYEBROW
      ============================================================ */
 
-  #forma-editorial-{{ section.id }} .forma-editorial__eyebrow {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__eyebrow {
 
     margin-bottom: 15px;
 
@@ -494,11 +609,12 @@
 
     font-weight: 600;
 
-    letter-spacing: .19em;
+    letter-spacing: .20em;
 
     text-transform: uppercase;
 
-    color: rgba(255,255,255,.86);
+    color:
+      rgba(255,255,255,.88);
 
   }
 
@@ -507,25 +623,29 @@
      TITLE
      ============================================================ */
 
-  #forma-editorial-{{ section.id }} .forma-editorial__title {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__title {
 
     margin: 0;
 
-    max-width: 900px;
+    max-width: 1000px;
 
-    font-size: clamp(
-      56px,
-      7.4vw,
-      116px
-    );
+    font-size:
+      clamp(
+        56px,
+        7vw,
+        112px
+      );
 
-    line-height: .84;
+    line-height: .86;
 
     font-weight: 400;
 
     letter-spacing: -.065em;
 
     color: #fff;
+
+    text-wrap: balance;
 
   }
 
@@ -534,28 +654,29 @@
      DESCRIPTION
      ============================================================ */
 
-  #forma-editorial-{{ section.id }} .forma-editorial__description {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__description {
 
     max-width: 440px;
 
-    margin-top: 21px;
+    margin-top: 20px;
 
     font-size: 14px;
 
-    line-height: 1.45;
+    line-height: 1.5;
 
-    font-weight: 400;
-
-    color: rgba(255,255,255,.88);
+    color:
+      rgba(255,255,255,.86);
 
   }
 
 
   /* ============================================================
-     LINK
+     CTA
      ============================================================ */
 
-  #forma-editorial-{{ section.id }} .forma-editorial__link {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__cta {
 
     display: inline-flex;
 
@@ -563,15 +684,13 @@
 
     gap: 10px;
 
-    margin-top: 24px;
+    margin-top: 25px;
 
-    padding-bottom: 5px;
+    padding-bottom: 7px;
 
-    border-bottom: 1px solid rgba(255,255,255,.65);
-
-    color: #fff;
-
-    text-decoration: none;
+    border-bottom:
+      1px solid
+      rgba(255,255,255,.65);
 
     font-size: 10px;
 
@@ -579,29 +698,30 @@
 
     font-weight: 600;
 
-    letter-spacing: .15em;
+    letter-spacing: .16em;
 
     text-transform: uppercase;
 
-    pointer-events: auto;
-
     transition:
-      gap .3s ease,
-      border-color .3s ease;
+      gap .35s ease,
+      border-color .35s ease;
 
   }
 
 
-  #forma-editorial-{{ section.id }} .forma-editorial__link:hover {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__slide:hover
+  .forma-editorial__cta {
 
-    gap: 16px;
+    gap: 17px;
 
     border-color: #fff;
 
   }
 
 
-  #forma-editorial-{{ section.id }} .forma-editorial__link-arrow {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__cta-arrow {
 
     font-size: 14px;
 
@@ -611,17 +731,206 @@
 
 
   /* ============================================================
+     SLIDE NUMBER
+     ============================================================ */
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__slide-number {
+
+    position: absolute;
+
+    right: 30px;
+
+    top: 30px;
+
+    z-index: 5;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 9px;
+
+    line-height: 1;
+
+    font-weight: 600;
+
+    letter-spacing: .14em;
+
+    color:
+      rgba(255,255,255,.86);
+
+  }
+
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__slide-number-line {
+
+    width: 24px;
+
+    height: 1px;
+
+    background:
+      rgba(255,255,255,.55);
+
+  }
+
+
+  /* ============================================================
+     BOTTOM META
+     ============================================================ */
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__bottom {
+
+    display: flex;
+
+    align-items: center;
+
+    width:
+      min(
+        var(--forma-max-width),
+        calc(
+          100vw -
+          (var(--forma-side-space) * 2)
+        )
+      );
+
+    margin:
+      17px auto 0;
+
+    font-size: 9px;
+
+    line-height: 1;
+
+    font-weight: 600;
+
+    letter-spacing: .14em;
+
+    color:
+      rgba(17,17,17,.65);
+
+  }
+
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__counter {
+
+    min-width: 44px;
+
+  }
+
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__counter-separator {
+
+    margin:
+      0 4px;
+
+    opacity: .4;
+
+  }
+
+
+  /* ============================================================
+     PROGRESS
+     ============================================================ */
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__progress {
+
+    position: relative;
+
+    flex: 1;
+
+    height: 1px;
+
+    margin:
+      0 18px;
+
+    overflow: hidden;
+
+    background:
+      rgba(17,17,17,.10);
+
+  }
+
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__progress-fill {
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    width: 0;
+
+    height: 100%;
+
+    background: #111;
+
+    transition:
+      width
+      .45s
+      cubic-bezier(.22,.61,.36,1);
+
+  }
+
+
+  /* ============================================================
+     DRAG HINT
+     ============================================================ */
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__hint {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    white-space: nowrap;
+
+    opacity: .55;
+
+  }
+
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__hint-line {
+
+    display: block;
+
+    width: 24px;
+
+    height: 1px;
+
+    background: #111;
+
+  }
+
+
+  /* ============================================================
      PLACEHOLDER
      ============================================================ */
 
-  #forma-editorial-{{ section.id }} .forma-editorial__placeholder {
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__placeholder {
+
+    position: absolute;
+
+    inset: 0;
 
     width: 100%;
+
     height: 100%;
 
-    background: #e8e8e6;
-
-    opacity: .5;
+    background: #e9e9e7;
 
   }
 
@@ -634,32 +943,53 @@
 
     #forma-editorial-{{ section.id }} {
 
-      --forma-height: {{ section.settings.mobile_height }}vh;
+      --forma-side-space: 14px;
 
       --forma-gap: 10px;
 
-      --forma-side-space: 14px;
+      padding-top:
+        {{ section.settings.mobile_padding_top }}px;
 
-      padding-top: {{ section.settings.mobile_padding_top }}px;
-      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
-
-    }
-
-
-    #forma-editorial-{{ section.id }} .forma-editorial__slide {
-
-      flex-basis: calc(100vw - 28px);
-
-      min-height: 540px;
-
-      border-radius: {{ section.settings.mobile_border_radius }}px;
+      padding-bottom:
+        {{ section.settings.mobile_padding_bottom }}px;
 
     }
 
 
-    #forma-editorial-{{ section.id }} .forma-editorial__content {
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__track {
+
+      scroll-padding-left:
+        14px;
+
+    }
+
+
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__slide {
+
+      flex-basis:
+        calc(100vw - 28px);
+
+      width:
+        calc(100vw - 28px);
+
+      height:
+        var(--forma-mobile-height);
+
+      min-height: 520px;
+
+      border-radius:
+        {{ section.settings.mobile_border_radius }}px;
+
+    }
+
+
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__content {
 
       left: 24px;
+
       right: 24px;
 
       bottom: 30px;
@@ -667,48 +997,45 @@
     }
 
 
-    #forma-editorial-{{ section.id }} .forma-editorial__eyebrow {
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__eyebrow {
 
       margin-bottom: 12px;
 
       font-size: 9px;
 
-      letter-spacing: .17em;
+    }
+
+
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__title {
+
+      font-size:
+        clamp(
+          44px,
+          13vw,
+          70px
+        );
+
+      line-height: .87;
 
     }
 
 
-    #forma-editorial-{{ section.id }} .forma-editorial__title {
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__description {
 
-      max-width: 100%;
+      max-width: 310px;
 
-      font-size: clamp(
-        46px,
-        13vw,
-        72px
-      );
-
-      line-height: .86;
-
-      letter-spacing: -.06em;
-
-    }
-
-
-    #forma-editorial-{{ section.id }} .forma-editorial__description {
-
-      max-width: 300px;
-
-      margin-top: 17px;
+      margin-top: 16px;
 
       font-size: 13px;
 
-      line-height: 1.45;
-
     }
 
 
-    #forma-editorial-{{ section.id }} .forma-editorial__link {
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__cta {
 
       margin-top: 20px;
 
@@ -717,16 +1044,39 @@
     }
 
 
-    #forma-editorial-{{ section.id }} .forma-editorial__gradient {
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__slide-number {
 
-      background:
+      right: 20px;
 
-        linear-gradient(
-          180deg,
-          rgba(0,0,0,0) 42%,
-          rgba(0,0,0,.10) 60%,
-          rgba(0,0,0,.64) 100%
-        );
+      top: 20px;
+
+    }
+
+
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__bottom {
+
+      width:
+        calc(100vw - 28px);
+
+      margin-top: 13px;
+
+    }
+
+
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__hint {
+
+      display: none;
+
+    }
+
+
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__progress {
+
+      margin-right: 0;
 
     }
 
@@ -737,9 +1087,28 @@
      REDUCED MOTION
      ============================================================ */
 
-  @media (prefers-reduced-motion: reduce) {
+  @media (
+    prefers-reduced-motion: reduce
+  ) {
 
-    #forma-editorial-{{ section.id }} .forma-editorial__image {
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__track {
+
+      scroll-behavior: auto;
+
+    }
+
+
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__image {
+
+      transition: none;
+
+    }
+
+
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__progress-fill {
 
       transition: none;
 
@@ -755,36 +1124,46 @@
   (() => {
 
     /* ==========================================================
-       FORMA EDITORIAL SLIDER
+       ROOT
        ========================================================== */
 
-    const root = document.querySelector(
-      '#forma-editorial-{{ section.id }}'
-    );
+    const section =
+      document.getElementById(
+        'forma-editorial-{{ section.id }}'
+      );
 
-    if (!root) return;
-
-
-    const viewport = root.querySelector(
-      '[data-forma-viewport]'
-    );
-
-    const track = root.querySelector(
-      '[data-forma-track]'
-    );
-
-    const slides = Array.from(
-      root.querySelectorAll('[data-forma-slide]')
-    );
+    if (!section) return;
 
 
-    const totalSlides = {{ slide_count }};
+    const track =
+      section.querySelector(
+        '[data-forma-editorial-track]'
+      );
+
+
+    const slides =
+      Array.from(
+        section.querySelectorAll(
+          '[data-forma-editorial-slide]'
+        )
+      );
+
+
+    const current =
+      section.querySelector(
+        '[data-forma-current]'
+      );
+
+
+    const progress =
+      section.querySelector(
+        '[data-forma-progress]'
+      );
 
 
     if (
-      !viewport ||
       !track ||
-      totalSlides < 2
+      slides.length === 0
     ) {
       return;
     }
@@ -794,243 +1173,215 @@
        STATE
        ========================================================== */
 
-    let currentIndex = 1;
-
     let isDragging = false;
 
     let startX = 0;
 
-    let dragDistance = 0;
+    let startScrollLeft = 0;
 
-    let animationLocked = false;
+    let hasDragged = false;
 
-
-    /*
-      Trackpad state
-    */
-
-    let wheelDistance = 0;
-
-    let wheelTimer = null;
-
-    let wheelGestureActive = false;
-
-    let wheelSlideTriggered = false;
+    let suppressClick = false;
 
 
     /* ==========================================================
-       SETTINGS
+       GET CARD DISTANCE
        ========================================================== */
 
-    const TRANSITION =
-      'transform 900ms cubic-bezier(.22,.61,.36,1)';
+    function getSlideDistance() {
 
-
-    /*
-      How far the user must swipe before
-      changing slide.
-    */
-
-    const DRAG_THRESHOLD = 0.25;
-
-
-    /*
-      Trackpad threshold.
-
-      One gesture can NEVER trigger more
-      than one slide.
-    */
-
-    const WHEEL_THRESHOLD = 100;
-
-
-    /* ==========================================================
-       DIMENSIONS
-       ========================================================== */
-
-    function getSlideWidth() {
-
-      const slide = slides[0];
+      const slide =
+        slides[0];
 
       if (!slide) return 0;
 
-      return slide.getBoundingClientRect().width;
-
-    }
-
-
-    function getGap() {
 
       const styles =
         window.getComputedStyle(track);
 
-      return parseFloat(styles.gap) || 0;
 
-    }
+      const gap =
+        parseFloat(
+          styles.columnGap ||
+          styles.gap
+        ) || 0;
 
-
-    function getSlideDistance() {
 
       return (
-        getSlideWidth() +
-        getGap()
+        slide.getBoundingClientRect().width +
+        gap
       );
 
     }
 
 
     /* ==========================================================
-       POSITION
+       GET CURRENT SLIDE
        ========================================================== */
 
-    function setPosition(
-      animate = true,
-      offset = 0
-    ) {
+    function getCurrentSlide() {
 
       const distance =
-        currentIndex *
         getSlideDistance();
 
 
-      track.style.transition =
-        animate
-          ? TRANSITION
-          : 'none';
+      if (!distance) return 0;
 
 
-      track.style.transform =
-        `translate3d(${(-distance) + offset}px,0,0)`;
+      return Math.round(
+        track.scrollLeft /
+        distance
+      );
 
     }
 
 
-    
+    /* ==========================================================
+       UPDATE UI
+       ========================================================== */
+
+    function updateUI() {
+
+      const index =
+        Math.max(
+          0,
+          Math.min(
+            slides.length - 1,
+            getCurrentSlide()
+          )
+        );
+
+
+      if (current) {
+
+        current.textContent =
+          String(
+            index + 1
+          ).padStart(
+            2,
+            '0'
+          );
+
+      }
+
+
+      if (progress) {
+
+        const percentage =
+          (
+            (index + 1) /
+            slides.length
+          ) * 100;
+
+
+        progress.style.width =
+          `${percentage}%`;
+
+      }
+
+
+      slides.forEach(
+        (slide, slideIndex) => {
+
+          slide.classList.toggle(
+            'is-current',
+            slideIndex === index
+          );
+
+        }
+      );
+
+    }
 
 
     /* ==========================================================
-       INFINITE LOOP
+       SCROLL
+       ========================================================== */
+
+    let scrollRAF = null;
+
+
+    track.addEventListener(
+      'scroll',
+      () => {
+
+        if (scrollRAF) return;
+
+
+        scrollRAF =
+          requestAnimationFrame(
+            () => {
+
+              scrollRAF = null;
+
+              updateUI();
+
+            }
+          );
+
+      },
+      {
+        passive: true
+      }
+    );
+
+
+    /* ==========================================================
+       MOUSE DRAG
+       ==========================================================
+
+       Trackpad and touch remain native.
+
+       Only a physical mouse is handled here.
+       This is important because it means
+       trackpad scrolling doesn't fight with
+       our drag engine.
        ========================================================== */
 
     track.addEventListener(
-      'transitionend',
+      'pointerdown',
       (event) => {
 
         if (
-          event.propertyName !== 'transform'
+          event.pointerType !==
+          'mouse'
         ) {
           return;
         }
 
 
         if (
-          currentIndex === 0
-        ) {
-
-          currentIndex =
-            totalSlides;
-
-          setPosition(false);
-
-        }
-
-
-        if (
-          currentIndex ===
-          totalSlides + 1
-        ) {
-
-          currentIndex = 1;
-
-          setPosition(false);
-
-        }
-
-
-        animationLocked = false;
-
-      }
-    );
-
-
-    /* ==========================================================
-       MOUSE / TOUCH DRAG
-       ========================================================== */
-
-    viewport.addEventListener(
-      'pointerdown',
-      (event) => {
-
-        /*
-          Ignore right-click.
-        */
-
-        if (
-          event.pointerType === 'mouse' &&
           event.button !== 0
         ) {
           return;
         }
 
 
-        /*
-          Never start a new drag while
-          another slide is moving.
-        */
+        isDragging = true;
 
-        if (animationLocked) {
-          return;
-        }
-
-
-        /*
-          Trackpad wheel gestures are handled
-          separately.
-        */
-
-        if (event.pointerType === 'touch') {
-
-          isDragging = true;
-
-        } else {
-
-          isDragging = true;
-
-        }
-
+        hasDragged = false;
 
         startX =
           event.clientX;
 
-        dragDistance = 0;
+        startScrollLeft =
+          track.scrollLeft;
 
 
-        viewport.classList.add(
+        track.classList.add(
           'is-dragging'
         );
 
 
-        track.style.transition =
-          'none';
-
-
-        try {
-
-          viewport.setPointerCapture(
-            event.pointerId
-          );
-
-        } catch (error) {}
+        track.setPointerCapture(
+          event.pointerId
+        );
 
       }
     );
 
 
-    /* ==========================================================
-       POINTER MOVE
-       ========================================================== */
-
-    viewport.addEventListener(
+    track.addEventListener(
       'pointermove',
       (event) => {
 
@@ -1039,53 +1390,41 @@
         }
 
 
-        dragDistance =
-          event.clientX - startX;
+        const delta =
+          event.clientX -
+          startX;
+
+
+        if (
+          Math.abs(delta) > 5
+        ) {
+
+          hasDragged = true;
+
+          suppressClick = true;
+
+        }
 
 
         /*
-          Only allow one slide worth of
-          physical dragging.
+          Directly manipulate native
+          scrollLeft.
 
-          The user can see almost the whole
-          next slide, but NEVER two slides.
+          No transform.
+          No custom carousel position.
         */
 
-        const maxDrag =
-          getSlideWidth() * 0.92;
-
-
-        const visualDistance =
-          Math.max(
-            -maxDrag,
-            Math.min(
-              maxDrag,
-              dragDistance
-            )
-          );
-
-
-        const baseDistance =
-          currentIndex *
-          getSlideDistance();
-
-
-        track.style.transition =
-          'none';
-
-
-        track.style.transform =
-          `translate3d(${(-baseDistance) + visualDistance}px,0,0)`;
+        track.scrollLeft =
+          startScrollLeft -
+          delta;
 
       }
     );
 
 
-    /* ==========================================================
-       POINTER UP
-       ========================================================== */
-
-    function finishPointerDrag(event) {
+    function finishMouseDrag(
+      event
+    ) {
 
       if (!isDragging) {
         return;
@@ -1095,330 +1434,112 @@
       isDragging = false;
 
 
-      viewport.classList.remove(
+      track.classList.remove(
         'is-dragging'
       );
 
 
       try {
 
-        viewport.releasePointerCapture(
+        track.releasePointerCapture(
           event.pointerId
         );
 
       } catch (error) {}
 
 
-      const threshold =
-        Math.max(
-          60,
-          getSlideWidth() * DRAG_THRESHOLD
-        );
-
-
-      /*
-        One drag = one slide.
-      */
-
-      if (
-        dragDistance <= -threshold
-      ) {
-
-        nextSlide();
-
+      if (!hasDragged) {
         return;
-
-      }
-
-
-      if (
-        dragDistance >= threshold
-      ) {
-
-        previousSlide();
-
-        return;
-
       }
 
 
       /*
-        Not far enough:
-        return smoothly.
+        Snap to the nearest slide.
+
+        This is only for mouse dragging.
+        Trackpad uses native CSS snap.
       */
-
-      setPosition(true);
-
-    }
-
-
-    viewport.addEventListener(
-      'pointerup',
-      finishPointerDrag
-    );
-
-
-    viewport.addEventListener(
-      'pointercancel',
-      finishPointerDrag
-    );
-
-
-    /* ==========================================================
-       TRACKPAD / MAGIC MOUSE
-       ==========================================================
-
-       IMPORTANT:
-
-       A complete trackpad gesture is treated
-       as ONE action.
-
-       Once a slide has been triggered, ALL
-       additional wheel events belonging to
-       that gesture are ignored.
-       ========================================================== */
-
-    viewport.addEventListener(
-      'wheel',
-      (event) => {
-
-        /*
-          Only horizontal gestures.
-        */
-
-        if (
-          Math.abs(event.deltaX) <=
-          Math.abs(event.deltaY)
-        ) {
-          return;
-        }
-
-
-        event.preventDefault();
-
-
-        /*
-          If the slider is already animating,
-          completely ignore the gesture.
-        */
-
-        if (animationLocked) {
-          return;
-        }
-
-
-        /*
-          If this gesture has already triggered
-          a slide, ignore ALL remaining wheel
-          events until the gesture has ended.
-        */
-
-        if (wheelSlideTriggered) {
-
-          clearTimeout(
-            wheelTimer
-          );
-
-
-          wheelTimer =
-            setTimeout(
-              () => {
-
-                wheelSlideTriggered = false;
-
-                wheelGestureActive = false;
-
-                wheelDistance = 0;
-
-              },
-              180
-            );
-
-
-          return;
-
-        }
-
-
-        wheelGestureActive = true;
-
-
-        /*
-          Accumulate the gesture.
-        */
-
-        wheelDistance +=
-          event.deltaX;
-
-
-        /*
-          Make the slide visually follow
-          the trackpad movement.
-        */
-
-        const baseDistance =
-          currentIndex *
-          getSlideDistance();
-
-
-        const maxVisualDrag =
-          getSlideWidth() * 0.92;
-
-
-        const visualDistance =
-          Math.max(
-            -maxVisualDrag,
-            Math.min(
-              maxVisualDrag,
-              -wheelDistance
-            )
-          );
-
-
-        track.style.transition =
-          'none';
-
-
-        track.style.transform =
-          `translate3d(${(-baseDistance) + visualDistance}px,0,0)`;
-
-
-        /*
-          Detect when the physical swipe
-          has stopped producing events.
-        */
-
-        clearTimeout(
-          wheelTimer
-        );
-
-
-        wheelTimer =
-          setTimeout(
-            () => {
-
-              finishWheelGesture();
-
-            },
-            140
-          );
-
-      },
-      {
-        passive: false
-      }
-    );
-
-
-    /* ==========================================================
-       FINISH TRACKPAD GESTURE
-       ========================================================== */
-
-    function finishWheelGesture() {
-
-      if (!wheelGestureActive) {
-        return;
-      }
-
-
-      wheelGestureActive = false;
-
 
       const distance =
-        wheelDistance;
+        getSlideDistance();
 
 
-      /*
-        Reset accumulated distance.
-      */
-
-      wheelDistance = 0;
+      if (!distance) return;
 
 
-      const threshold =
-        Math.max(
-          WHEEL_THRESHOLD,
-          getSlideWidth() * 0.20
+      const target =
+        Math.round(
+          track.scrollLeft /
+          distance
         );
 
 
-      /*
-        IMPORTANT:
+      track.scrollTo({
 
-        We lock the gesture BEFORE triggering
-        the slide.
+        left:
+          target *
+          distance,
 
-        This prevents the same trackpad swipe
-        from ever triggering a second slide.
-      */
+        behavior:
+          'smooth'
 
-      if (
-        Math.abs(distance) >= threshold
-      ) {
+      });
 
-        wheelSlideTriggered = true;
-
-
-        if (distance > 0) {
-
-          previousSlide();
-
-        } else {
-
-          nextSlide();
-
-        }
-
-
-        /*
-          Keep the gesture locked for the entire
-          slide animation plus a small buffer.
-        */
-
-        setTimeout(
-          () => {
-
-            wheelSlideTriggered = false;
-
-          },
-          1050
-        );
-
-
-        return;
-
-      }
-
-
-      /*
-        Small swipe:
-        smoothly return to the current slide.
-      */
-
-      setPosition(true);
-
-
-      /*
-        Reset gesture lock.
-      */
 
       setTimeout(
         () => {
 
-          wheelSlideTriggered = false;
+          suppressClick = false;
 
         },
-        300
+        80
       );
 
     }
 
 
+    track.addEventListener(
+      'pointerup',
+      finishMouseDrag
+    );
+
+
+    track.addEventListener(
+      'pointercancel',
+      finishMouseDrag
+    );
+
+
     /* ==========================================================
-       PREVENT NATIVE IMAGE DRAGGING
+       CLICK PROTECTION
        ========================================================== */
 
-    root
+    section.addEventListener(
+      'click',
+      (event) => {
+
+        if (
+          suppressClick
+        ) {
+
+          event.preventDefault();
+
+          event.stopPropagation();
+
+          suppressClick = false;
+
+        }
+
+      },
+      true
+    );
+
+
+    /* ==========================================================
+       IMAGE DRAG PROTECTION
+       ========================================================== */
+
+    section
       .querySelectorAll('img')
       .forEach(
         (image) => {
@@ -1436,84 +1557,184 @@
       );
 
 
-    viewport.addEventListener(
-      'dragstart',
-      (event) => {
-
-        event.preventDefault();
-
-      }
-    );
-
-
     /* ==========================================================
        KEYBOARD
        ========================================================== */
 
-    root.addEventListener(
+    section.addEventListener(
       'keydown',
       (event) => {
 
         if (
-          event.key === 'ArrowRight'
+          event.key !==
+          'ArrowLeft' &&
+          event.key !==
+          'ArrowRight'
+        ) {
+          return;
+        }
+
+
+        event.preventDefault();
+
+
+        const distance =
+          getSlideDistance();
+
+
+        const currentSlide =
+          getCurrentSlide();
+
+
+        let target =
+          currentSlide;
+
+
+        if (
+          event.key ===
+          'ArrowRight'
         ) {
 
-          event.preventDefault();
-
-          nextSlide();
+          target =
+            Math.min(
+              slides.length - 1,
+              currentSlide + 1
+            );
 
         }
 
 
         if (
-          event.key === 'ArrowLeft'
+          event.key ===
+          'ArrowLeft'
         ) {
 
-          event.preventDefault();
-
-          previousSlide();
+          target =
+            Math.max(
+              0,
+              currentSlide - 1
+            );
 
         }
 
+
+        track.scrollTo({
+
+          left:
+            target *
+            distance,
+
+          behavior:
+            'smooth'
+
+        });
+
       }
     );
 
 
     /* ==========================================================
-       RESIZE
+       MOUSE PARALLAX
        ========================================================== */
 
-    let resizeTimeout;
+    track.addEventListener(
+      'pointermove',
+      (event) => {
+
+        if (
+          event.pointerType !==
+          'mouse'
+        ) {
+          return;
+        }
 
 
-    window.addEventListener(
-      'resize',
-      () => {
-
-        clearTimeout(
-          resizeTimeout
-        );
+        if (isDragging) {
+          return;
+        }
 
 
-        resizeTimeout =
-          setTimeout(
-            () => {
-
-              setPosition(false);
-
-            },
-            100
+        const slide =
+          event.target.closest(
+            '[data-forma-editorial-slide]'
           );
 
+
+        if (!slide) {
+          return;
+        }
+
+
+        const image =
+          slide.querySelector(
+            '.forma-editorial__image'
+          );
+
+
+        if (!image) {
+          return;
+        }
+
+
+        const rect =
+          slide.getBoundingClientRect();
+
+
+        const percentage =
+          (
+            event.clientX -
+            rect.left
+          ) /
+          rect.width -
+          .5;
+
+
+        image.style.setProperty(
+          '--forma-parallax-x',
+          `${percentage * -8}px`
+        );
+
       }
     );
 
 
     /* ==========================================================
-       INITIAL POSITION
+       RESET PARALLAX
        ========================================================== */
 
-    setPosition(false);
+    track.addEventListener(
+      'pointerleave',
+      () => {
+
+        slides.forEach(
+          (slide) => {
+
+            const image =
+              slide.querySelector(
+                '.forma-editorial__image'
+              );
+
+
+            if (!image) return;
+
+
+            image.style.setProperty(
+              '--forma-parallax-x',
+              '0px'
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+    /* ==========================================================
+       INITIALIZE
+       ========================================================== */
+
+    updateUI();
 
   })();
 
@@ -1539,12 +1760,12 @@
     {
       "type": "range",
       "id": "max_width",
-      "min": 1000,
+      "min": 1100,
       "max": 1600,
       "step": 20,
       "unit": "px",
       "label": "Maximum width",
-      "default": 1380
+      "default": 1480
     },
 
     {
@@ -1553,7 +1774,7 @@
       "min": 55,
       "max": 85,
       "step": 1,
-      "unit": "%",
+      "unit": "vh",
       "label": "Desktop height",
       "default": 74
     },
@@ -1562,32 +1783,32 @@
       "type": "range",
       "id": "mobile_height",
       "min": 60,
-      "max": 88,
+      "max": 90,
       "step": 1,
-      "unit": "%",
+      "unit": "vh",
       "label": "Mobile height",
       "default": 74
     },
 
     {
       "type": "range",
-      "id": "side_space",
-      "min": 16,
-      "max": 100,
-      "step": 4,
+      "id": "side_spacing",
+      "min": 0,
+      "max": 80,
+      "step": 2,
       "unit": "px",
       "label": "Side spacing",
-      "default": 40
+      "default": 24
     },
 
     {
       "type": "range",
       "id": "slide_gap",
-      "min": 8,
+      "min": 0,
       "max": 40,
       "step": 2,
       "unit": "px",
-      "label": "Space between slides",
+      "label": "Slide gap",
       "default": 16
     },
 
@@ -1622,10 +1843,10 @@
       "type": "range",
       "id": "padding_top",
       "min": 0,
-      "max": 120,
+      "max": 100,
       "step": 5,
       "unit": "px",
-      "label": "Desktop top spacing",
+      "label": "Top spacing",
       "default": 0
     },
 
@@ -1633,10 +1854,10 @@
       "type": "range",
       "id": "padding_bottom",
       "min": 0,
-      "max": 120,
+      "max": 100,
       "step": 5,
       "unit": "px",
-      "label": "Desktop bottom spacing",
+      "label": "Bottom spacing",
       "default": 30
     },
 
@@ -1659,7 +1880,7 @@
       "step": 5,
       "unit": "px",
       "label": "Mobile bottom spacing",
-      "default": 25
+      "default": 24
     }
 
   ],
@@ -1703,7 +1924,7 @@
         {
           "type": "text",
           "id": "button_text",
-          "label": "Link text",
+          "label": "Button text",
           "default": "Explore"
         },
 
@@ -1714,6 +1935,7 @@
         }
 
       ]
+
     }
 
   ],
