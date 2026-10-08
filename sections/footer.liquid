@@ -1,4 +1,3 @@
-
 <style>
   #shopify-section-{{ section.id }} {
     --forma-footer-bg: #f4f4f1;
@@ -252,6 +251,7 @@
     padding: 0 0 0 48px;
     border-left: 1px solid var(--forma-footer-border);
     text-align: left;
+    container-type: inline-size; /* lets the title scale with the column (cqw) */
   }
 
   #shopify-section-{{ section.id }} .forma-footer__letter::before {
@@ -278,10 +278,12 @@
   #shopify-section-{{ section.id }} .forma-footer__letter-title {
     margin: 0;
     font-family: var(--font-heading-family, inherit);
-    font-size: clamp(42px, 5.4vw, 76px);
+    font-size: clamp(36px, 4vw, 76px);   /* fallback for older browsers */
+    font-size: clamp(36px, 13cqw, 76px); /* scales with the column width */
     line-height: 0.98;
     font-weight: 400;
     letter-spacing: -0.045em;
+    white-space: nowrap;
   }
 
   #shopify-section-{{ section.id }} .forma-footer__letter-description {
@@ -527,7 +529,8 @@
     }
 
     #shopify-section-{{ section.id }} .forma-footer__letter-title {
-      font-size: 43px;
+      font-size: 43px;                     /* fallback for older browsers */
+      font-size: clamp(32px, 13cqw, 43px); /* shrinks on very narrow phones */
       letter-spacing: -0.045em;
     }
 
