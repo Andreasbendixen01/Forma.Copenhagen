@@ -1,13 +1,21 @@
-
 <style>
+  /* ============================================================
+     FORMA — FOOTER
+     FINAL VERSION
+     Desktop navigation + mobile accordion
+     No JavaScript required
+     ============================================================ */
   #shopify-section-{{ section.id }} {
     --forma-footer-bg: #f4f4f1;
     --forma-footer-text: #171717;
     --forma-footer-muted: rgba(23, 23, 23, 0.52);
+    --forma-footer-faint: rgba(23, 23, 23, 0.18);
     --forma-footer-border: rgba(23, 23, 23, 0.10);
     --forma-footer-max: 1480px;
   }
-
+  /* ============================================================
+     BASE
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer {
     width: 100%;
     margin: 0;
@@ -16,21 +24,22 @@
     color: var(--forma-footer-text);
     overflow: hidden;
   }
-
   #shopify-section-{{ section.id }} .forma-footer a {
     color: inherit;
     text-decoration: none;
   }
-
+  /* ============================================================
+     INNER
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__inner {
     width: 100%;
     max-width: var(--forma-footer-max);
     margin: 0 auto;
     padding: 0 48px;
   }
-
-  /* BRAND */
-
+  /* ============================================================
+     BRAND AREA
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__brand {
     display: flex;
     align-items: flex-end;
@@ -39,7 +48,6 @@
     padding: 72px 0 54px;
     border-bottom: 1px solid var(--forma-footer-border);
   }
-
   #shopify-section-{{ section.id }} .forma-footer__brand-mark {
     margin: 0;
     font-size: clamp(72px, 11vw, 170px);
@@ -50,7 +58,6 @@
     color: var(--forma-footer-text);
     user-select: none;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__brand-note {
     max-width: 300px;
     margin: 0 0 4px;
@@ -61,33 +68,32 @@
     color: var(--forma-footer-muted);
     text-align: right;
   }
-
-  /* MAIN TWO-COLUMN LAYOUT */
-
+  /* ============================================================
+     MAIN FOOTER LAYOUT
+     Navigation left + Forma Letter right
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__main {
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
     align-items: start;
     gap: 72px;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__navigation {
     min-width: 0;
   }
-
-  /* DESKTOP NAVIGATION */
-
+  /* ============================================================
+     DESKTOP NAVIGATION
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__desktop-navigation {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: 40px;
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+    column-gap: 80px;
     padding: 58px 0 62px;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__desktop-column {
     min-width: 0;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__desktop-heading {
     display: block;
     margin: 0 0 22px;
@@ -98,9 +104,9 @@
     text-transform: uppercase;
     color: var(--forma-footer-muted);
   }
-
-  /* LINKS */
-
+  /* ============================================================
+     DESKTOP LINKS
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__links {
     display: flex;
     flex-direction: column;
@@ -110,12 +116,10 @@
     margin: 0;
     list-style: none;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__links li {
     margin: 0;
     padding: 0;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__links a {
     position: relative;
     display: inline-block;
@@ -124,9 +128,10 @@
     font-weight: 400;
     letter-spacing: -0.005em;
     color: rgba(23,23,23,0.72);
-    transition: color 0.25s ease, transform 0.25s ease;
+    transition:
+      color 0.25s ease,
+      transform 0.25s ease;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__links a::after {
     content: "";
     position: absolute;
@@ -137,39 +142,37 @@
     background: currentColor;
     transform: scaleX(0);
     transform-origin: right center;
-    transition: transform 0.3s cubic-bezier(.22,.61,.36,1);
+    transition:
+      transform 0.3s cubic-bezier(.22,.61,.36,1);
   }
-
   #shopify-section-{{ section.id }} .forma-footer__links a:hover {
     color: var(--forma-footer-text);
     transform: translateX(3px);
   }
-
   #shopify-section-{{ section.id }} .forma-footer__links a:hover::after {
     transform: scaleX(1);
     transform-origin: left center;
   }
-
-  /* MOBILE NAVIGATION */
-
+  /* ============================================================
+     MOBILE NAVIGATION
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__mobile-navigation {
     display: none;
   }
-
+  /* ============================================================
+     MOBILE ACCORDION
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__accordion {
     border: 0;
     margin: 0;
     padding: 0;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__accordion summary {
     list-style: none;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__accordion summary::-webkit-details-marker {
     display: none;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__heading-row {
     display: flex;
     align-items: center;
@@ -184,7 +187,6 @@
     user-select: none;
     -webkit-tap-highlight-color: transparent;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__heading {
     display: flex;
     align-items: center;
@@ -197,7 +199,9 @@
     text-transform: uppercase;
     color: var(--forma-footer-text);
   }
-
+  /* ============================================================
+     MOBILE PLUS
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__accordion-icon {
     display: flex;
     align-items: center;
@@ -210,50 +214,60 @@
     line-height: 1;
     font-weight: 300;
     color: var(--forma-footer-text);
-    transition: transform 0.25s ease;
+    transition:
+      transform 0.25s ease;
   }
-
-  #shopify-section-{{ section.id }} .forma-footer__accordion[open] .forma-footer__accordion-icon {
+  /* OPEN = MINUS */
+  #shopify-section-{{ section.id }}
+  .forma-footer__accordion[open]
+  .forma-footer__accordion-icon {
     font-size: 0;
     transform: rotate(180deg);
   }
-
-  #shopify-section-{{ section.id }} .forma-footer__accordion[open] .forma-footer__accordion-icon::after {
+  #shopify-section-{{ section.id }}
+  .forma-footer__accordion[open]
+  .forma-footer__accordion-icon::after {
     content: "−";
     font-size: 18px;
     line-height: 1;
     font-weight: 300;
   }
-
+  /* ============================================================
+     MOBILE ACCORDION CONTENT
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__accordion-content {
     padding: 0 0 20px;
   }
-
-  #shopify-section-{{ section.id }} .forma-footer__accordion-content .forma-footer__links {
+  #shopify-section-{{ section.id }}
+  .forma-footer__accordion-content
+  .forma-footer__links {
     gap: 10px;
   }
-
-  #shopify-section-{{ section.id }} .forma-footer__accordion-content .forma-footer__links a {
+  #shopify-section-{{ section.id }}
+  .forma-footer__accordion-content
+  .forma-footer__links a {
     font-size: 13px;
     color: rgba(23,23,23,0.62);
     transform: none;
   }
-
-  #shopify-section-{{ section.id }} .forma-footer__accordion-content .forma-footer__links a::after {
+  #shopify-section-{{ section.id }}
+  .forma-footer__accordion-content
+  .forma-footer__links a::after {
     display: none;
   }
-
-  /* THE FORMA LETTER */
-
+  /* ============================================================
+     FORMA LETTER
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__letter {
     position: relative;
     min-width: 0;
     margin: 58px 0 62px;
     padding: 0 0 0 48px;
+    border-top: 0;
+    border-bottom: 0;
     border-left: 1px solid var(--forma-footer-border);
     text-align: left;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__letter::before {
     content: "";
     position: absolute;
@@ -264,7 +278,6 @@
     background: var(--forma-footer-border);
     transform: translateX(-50%);
   }
-
   #shopify-section-{{ section.id }} .forma-footer__letter-eyebrow {
     margin: 0 0 24px;
     font-size: 9px;
@@ -274,16 +287,15 @@
     text-transform: uppercase;
     color: var(--forma-footer-muted);
   }
-
   #shopify-section-{{ section.id }} .forma-footer__letter-title {
     margin: 0;
     font-family: var(--font-heading-family, inherit);
-    font-size: clamp(42px, 5.4vw, 76px);
-    line-height: 0.98;
+    font-size: clamp(26px, 3.2vw, 42px);
+    line-height: 1;
     font-weight: 400;
     letter-spacing: -0.045em;
+    white-space: nowrap;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__letter-description {
     max-width: 520px;
     margin: 22px 0 0;
@@ -291,26 +303,24 @@
     line-height: 1.6;
     color: var(--forma-footer-muted);
   }
-
-  /* NEWSLETTER FORM */
-
+  /* ============================================================
+     NEWSLETTER FORM
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__form {
     width: min(720px, 100%);
     margin: 54px 0 0;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__input-row {
     display: flex;
     align-items: center;
     width: 100%;
     border-bottom: 1px solid rgba(23,23,23,0.55);
-    transition: border-color 0.25s ease;
+    transition:
+      border-color 0.25s ease;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__input-row:focus-within {
     border-color: var(--forma-footer-text);
   }
-
   #shopify-section-{{ section.id }} .forma-footer__input {
     flex: 1;
     min-width: 0;
@@ -325,11 +335,9 @@
     font-size: 15px;
     line-height: 1;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__input::placeholder {
     color: rgba(23,23,23,0.40);
   }
-
   #shopify-section-{{ section.id }} .forma-footer__submit {
     display: flex;
     align-items: center;
@@ -344,13 +352,12 @@
     cursor: pointer;
     font-size: 24px;
     line-height: 1;
-    transition: transform 0.25s ease;
+    transition:
+      transform 0.25s ease;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__submit:hover {
     transform: translateX(5px);
   }
-
   #shopify-section-{{ section.id }} .forma-footer__letter-signature {
     margin: 22px 0 0;
     font-size: 9px;
@@ -360,15 +367,17 @@
     text-transform: uppercase;
     color: rgba(23,23,23,0.35);
   }
-
+  /* ============================================================
+     MESSAGE
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__message {
-    margin: 22px 0 0;
+    margin: 22px auto 0;
     font-size: 12px;
     color: var(--forma-footer-muted);
   }
-
-  /* FOOTER BOTTOM */
-
+  /* ============================================================
+     BOTTOM
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__bottom {
     display: flex;
     align-items: center;
@@ -376,13 +385,11 @@
     gap: 30px;
     padding: 24px 0 28px;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__bottom-left {
     display: flex;
     align-items: center;
     gap: 28px;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__copyright {
     margin: 0;
     font-size: 9px;
@@ -391,36 +398,41 @@
     text-transform: uppercase;
     color: rgba(23,23,23,0.42);
   }
-
   #shopify-section-{{ section.id }} .forma-footer__shopify {
     font-size: 9px;
     color: rgba(23,23,23,0.35);
   }
-
-  /* LOCALIZATION */
-
-  #shopify-section-{{ section.id }} .forma-footer__localization,
-  #shopify-section-{{ section.id }} .forma-footer__localization .localization-selectors {
+  /* ============================================================
+     LOCALIZATION
+     ============================================================ */
+  #shopify-section-{{ section.id }} .forma-footer__localization {
     display: flex;
     align-items: center;
     gap: 8px;
   }
-
-  #shopify-section-{{ section.id }} .forma-footer__localization button,
-  #shopify-section-{{ section.id }} .forma-footer__localization select {
+  #shopify-section-{{ section.id }}
+  .forma-footer__localization
+  .localization-selectors {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  #shopify-section-{{ section.id }}
+  .forma-footer__localization button,
+  #shopify-section-{{ section.id }}
+  .forma-footer__localization select {
     font-size: 10px !important;
     letter-spacing: 0.05em;
   }
-
-  /* PAYMENT METHODS */
-
+  /* ============================================================
+     PAYMENT METHODS
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__payments {
     display: flex;
     align-items: center;
     gap: 7px;
     margin-left: auto;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__payments-list {
     display: flex;
     align-items: center;
@@ -431,8 +443,8 @@
     list-style: none;
     flex-wrap: wrap;
   }
-
-  #shopify-section-{{ section.id }} .forma-footer__payments-list li {
+  #shopify-section-{{ section.id }}
+  .forma-footer__payments-list li {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -443,20 +455,19 @@
     border-radius: 3px;
     background: rgba(255,255,255,0.40);
   }
-
-  #shopify-section-{{ section.id }} .forma-footer__payments-list svg {
+  #shopify-section-{{ section.id }}
+  .forma-footer__payments-list svg {
     width: auto;
     max-width: 30px;
     height: 15px;
   }
-
-  /* SIGNATURE */
-
+  /* ============================================================
+     SIGNATURE
+     ============================================================ */
   #shopify-section-{{ section.id }} .forma-footer__signature {
     padding: 0 0 20px;
     text-align: center;
   }
-
   #shopify-section-{{ section.id }} .forma-footer__signature p {
     margin: 0;
     font-size: 8px;
@@ -465,53 +476,63 @@
     text-transform: uppercase;
     color: rgba(23,23,23,0.25);
   }
-
-  /* MOBILE */
-
+  /* ============================================================
+     MOBILE
+     ============================================================ */
   @media screen and (max-width: 749px) {
+    /* ----------------------------------------------------------
+       INNER
+       ---------------------------------------------------------- */
     #shopify-section-{{ section.id }} .forma-footer__inner {
       padding: 0 18px;
     }
-
+    /* ----------------------------------------------------------
+       BRAND
+       ---------------------------------------------------------- */
     #shopify-section-{{ section.id }} .forma-footer__brand {
       display: block;
       padding: 48px 0 36px;
     }
-
     #shopify-section-{{ section.id }} .forma-footer__brand-mark {
       font-size: 76px;
       line-height: 0.8;
     }
-
     #shopify-section-{{ section.id }} .forma-footer__brand-note {
       margin-top: 26px;
       max-width: 260px;
       font-size: 9px;
       text-align: left;
     }
-
-    #shopify-section-{{ section.id }} .forma-footer__main {
-      display: block;
-    }
-
-    #shopify-section-{{ section.id }} .forma-footer__desktop-navigation {
+    /* ----------------------------------------------------------
+       DESKTOP NAV HIDDEN
+       ---------------------------------------------------------- */
+    #shopify-section-{{ section.id }}
+    .forma-footer__desktop-navigation {
       display: none;
     }
-
-    #shopify-section-{{ section.id }} .forma-footer__mobile-navigation {
+    /* ----------------------------------------------------------
+       MOBILE NAVIGATION
+       ---------------------------------------------------------- */
+    #shopify-section-{{ section.id }}
+    .forma-footer__mobile-navigation {
       display: block;
       padding: 0;
       border-bottom: 1px solid var(--forma-footer-border);
     }
-
-    #shopify-section-{{ section.id }} .forma-footer__mobile-column {
+    #shopify-section-{{ section.id }}
+    .forma-footer__mobile-column {
       border-top: 1px solid var(--forma-footer-border);
     }
-
-    #shopify-section-{{ section.id }} .forma-footer__mobile-column:first-child {
+    #shopify-section-{{ section.id }}
+    .forma-footer__mobile-column:first-child {
       border-top: 0;
     }
-
+    /* ----------------------------------------------------------
+       LETTER
+       ---------------------------------------------------------- */
+    #shopify-section-{{ section.id }} .forma-footer__main {
+      display: block;
+    }
     #shopify-section-{{ section.id }} .forma-footer__letter {
       margin: 0;
       padding: 70px 0 76px;
@@ -520,37 +541,43 @@
       border-left: 0;
       text-align: center;
     }
-
+    #shopify-section-{{ section.id }} .forma-footer__letter-description {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #shopify-section-{{ section.id }} .forma-footer__form {
+      margin-left: auto;
+      margin-right: auto;
+    }
     #shopify-section-{{ section.id }} .forma-footer__letter::before {
       left: 50%;
       transform: translateX(-50%);
     }
-
     #shopify-section-{{ section.id }} .forma-footer__letter-title {
-      font-size: 43px;
+      font-size: 25px;
       letter-spacing: -0.045em;
+      white-space: nowrap;
     }
-
     #shopify-section-{{ section.id }} .forma-footer__letter-description {
       max-width: 320px;
-      margin-left: auto;
-      margin-right: auto;
       font-size: 12px;
     }
-
+    /* ----------------------------------------------------------
+       FORM
+       ---------------------------------------------------------- */
     #shopify-section-{{ section.id }} .forma-footer__form {
-      margin: 42px auto 0;
+      margin-top: 42px;
     }
-
     #shopify-section-{{ section.id }} .forma-footer__input {
       height: 54px;
       font-size: 14px;
     }
-
     #shopify-section-{{ section.id }} .forma-footer__submit {
       height: 54px;
     }
-
+    /* ----------------------------------------------------------
+       BOTTOM
+       ---------------------------------------------------------- */
     #shopify-section-{{ section.id }} .forma-footer__bottom {
       display: flex;
       flex-direction: column;
@@ -558,27 +585,25 @@
       gap: 24px;
       padding: 24px 0;
     }
-
     #shopify-section-{{ section.id }} .forma-footer__bottom-left {
       width: 100%;
       justify-content: space-between;
     }
-
     #shopify-section-{{ section.id }} .forma-footer__payments {
       width: 100%;
       margin-left: 0;
       justify-content: flex-start;
     }
-
     #shopify-section-{{ section.id }} .forma-footer__payments-list {
       justify-content: flex-start;
     }
-
     #shopify-section-{{ section.id }} .forma-footer__signature {
       padding-bottom: 18px;
     }
   }
-
+  /* ============================================================
+     REDUCED MOTION
+     ============================================================ */
   @media (prefers-reduced-motion: reduce) {
     #shopify-section-{{ section.id }} *,
     #shopify-section-{{ section.id }} *::before,
@@ -588,72 +613,195 @@
     }
   }
 </style>
-
-<footer class="forma-footer" aria-label="FORMA footer">
+<footer
+  class="forma-footer"
+  aria-label="FORMA footer"
+>
   <div class="forma-footer__inner">
-
+    <!-- ========================================================
+         BRAND
+         ======================================================== -->
     <div class="forma-footer__brand">
-      <p class="forma-footer__brand-mark">FORMA</p>
+      <p class="forma-footer__brand-mark">
+        FORMA
+      </p>
       <p class="forma-footer__brand-note">
         A curated world of brands,<br>
         places, stories and ideas.
       </p>
     </div>
-
-    <!-- NAVIGATION LEFT + NEWSLETTER RIGHT -->
-
+    <!-- ========================================================
+         MAIN FOOTER LAYOUT
+         Navigation left + The Forma Letter right
+         ======================================================== -->
     <div class="forma-footer__main">
-
       <div class="forma-footer__navigation">
-
-        <!-- DESKTOP NAVIGATION -->
-
-        <div class="forma-footer__desktop-navigation">
-
-          <div class="forma-footer__desktop-column">
-            <p class="forma-footer__desktop-heading">
+    <!-- ========================================================
+         DESKTOP NAVIGATION
+         ======================================================== -->
+    <div class="forma-footer__desktop-navigation">
+      <!-- INFORMATION -->
+      <div class="forma-footer__desktop-column">
+        <p class="forma-footer__desktop-heading">
+          {{ section.settings.information_heading }}
+        </p>
+        {% assign information_desktop_menu = section.settings.information_desktop_menu %}
+        {% if information_desktop_menu != blank %}
+          {% assign menu = linklists[information_desktop_menu] %}
+          {% if menu != blank and menu.links.size > 0 %}
+            <ul class="forma-footer__links">
+              {% for link in menu.links %}
+                <li>
+                  <a href="{{ link.url }}">
+                    {{ link.title }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endif %}
+      </div>
+      <!-- FORMA -->
+      <div class="forma-footer__desktop-column">
+        <p class="forma-footer__desktop-heading">
+          {{ section.settings.forma_heading }}
+        </p>
+        {% assign forma_desktop_menu = section.settings.forma_desktop_menu %}
+        {% if forma_desktop_menu != blank %}
+          {% assign menu = linklists[forma_desktop_menu] %}
+          {% if menu != blank and menu.links.size > 0 %}
+            <ul class="forma-footer__links">
+              {% for link in menu.links %}
+                <li>
+                  <a href="{{ link.url }}">
+                    {{ link.title }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endif %}
+      </div>
+      <!-- SOCIAL -->
+      <div class="forma-footer__desktop-column">
+        <p class="forma-footer__desktop-heading">
+          {{ section.settings.social_heading }}
+        </p>
+        {% assign social_desktop_menu = section.settings.social_desktop_menu %}
+        {% if social_desktop_menu != blank %}
+          {% assign menu = linklists[social_desktop_menu] %}
+          {% if menu != blank and menu.links.size > 0 %}
+            <ul class="forma-footer__links">
+              {% for link in menu.links %}
+                <li>
+                  <a
+                    href="{{ link.url }}"
+                    {% if link.url contains 'instagram.com'
+                      or link.url contains 'facebook.com'
+                      or link.url contains 'linkedin.com'
+                      or link.url contains 'tiktok.com'
+                    %}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    {% endif %}
+                  >
+                    {{ link.title }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+    <!-- ========================================================
+         MOBILE NAVIGATION
+         ======================================================== -->
+    <div class="forma-footer__mobile-navigation">
+      <!-- INFORMATION -->
+      <div class="forma-footer__mobile-column">
+        <details class="forma-footer__accordion">
+          <summary class="forma-footer__heading-row">
+            <span class="forma-footer__heading">
               {{ section.settings.information_heading }}
-            </p>
-
-            {% assign information_desktop_menu = section.settings.information_desktop_menu %}
-            {% if information_desktop_menu != blank %}
-              {% assign menu = linklists[information_desktop_menu] %}
+            </span>
+            <span
+              class="forma-footer__accordion-icon"
+              aria-hidden="true"
+            >
+              +
+            </span>
+          </summary>
+          <div class="forma-footer__accordion-content">
+            {% assign information_mobile_menu = section.settings.information_mobile_menu %}
+            {% if information_mobile_menu != blank %}
+              {% assign menu = linklists[information_mobile_menu] %}
               {% if menu != blank and menu.links.size > 0 %}
                 <ul class="forma-footer__links">
                   {% for link in menu.links %}
-                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                    <li>
+                      <a href="{{ link.url }}">
+                        {{ link.title }}
+                      </a>
+                    </li>
                   {% endfor %}
                 </ul>
               {% endif %}
             {% endif %}
           </div>
-
-          <div class="forma-footer__desktop-column">
-            <p class="forma-footer__desktop-heading">
+        </details>
+      </div>
+      <!-- FORMA -->
+      <div class="forma-footer__mobile-column">
+        <details class="forma-footer__accordion">
+          <summary class="forma-footer__heading-row">
+            <span class="forma-footer__heading">
               {{ section.settings.forma_heading }}
-            </p>
-
-            {% assign forma_desktop_menu = section.settings.forma_desktop_menu %}
-            {% if forma_desktop_menu != blank %}
-              {% assign menu = linklists[forma_desktop_menu] %}
+            </span>
+            <span
+              class="forma-footer__accordion-icon"
+              aria-hidden="true"
+            >
+              +
+            </span>
+          </summary>
+          <div class="forma-footer__accordion-content">
+            {% assign forma_mobile_menu = section.settings.forma_mobile_menu %}
+            {% if forma_mobile_menu != blank %}
+              {% assign menu = linklists[forma_mobile_menu] %}
               {% if menu != blank and menu.links.size > 0 %}
                 <ul class="forma-footer__links">
                   {% for link in menu.links %}
-                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                    <li>
+                      <a href="{{ link.url }}">
+                        {{ link.title }}
+                      </a>
+                    </li>
                   {% endfor %}
                 </ul>
               {% endif %}
             {% endif %}
           </div>
-
-          <div class="forma-footer__desktop-column">
-            <p class="forma-footer__desktop-heading">
+        </details>
+      </div>
+      <!-- SOCIAL -->
+      <div class="forma-footer__mobile-column">
+        <details class="forma-footer__accordion">
+          <summary class="forma-footer__heading-row">
+            <span class="forma-footer__heading">
               {{ section.settings.social_heading }}
-            </p>
-
-            {% assign social_desktop_menu = section.settings.social_desktop_menu %}
-            {% if social_desktop_menu != blank %}
-              {% assign menu = linklists[social_desktop_menu] %}
+            </span>
+            <span
+              class="forma-footer__accordion-icon"
+              aria-hidden="true"
+            >
+              +
+            </span>
+          </summary>
+          <div class="forma-footer__accordion-content">
+            {% assign social_mobile_menu = section.settings.social_mobile_menu %}
+            {% if social_mobile_menu != blank %}
+              {% assign menu = linklists[social_mobile_menu] %}
               {% if menu != blank and menu.links.size > 0 %}
                 <ul class="forma-footer__links">
                   {% for link in menu.links %}
@@ -668,209 +816,112 @@
                           target="_blank"
                           rel="noopener noreferrer"
                         {% endif %}
-                      >{{ link.title }}</a>
+                      >
+                        {{ link.title }}
+                      </a>
                     </li>
                   {% endfor %}
                 </ul>
               {% endif %}
             {% endif %}
           </div>
-
-        </div>
-
-        <!-- MOBILE ACCORDION NAVIGATION -->
-
-        <div class="forma-footer__mobile-navigation">
-
-          <div class="forma-footer__mobile-column">
-            <details class="forma-footer__accordion">
-              <summary class="forma-footer__heading-row">
-                <span class="forma-footer__heading">
-                  {{ section.settings.information_heading }}
-                </span>
-                <span class="forma-footer__accordion-icon" aria-hidden="true">+</span>
-              </summary>
-
-              <div class="forma-footer__accordion-content">
-                {% assign information_mobile_menu = section.settings.information_mobile_menu %}
-                {% if information_mobile_menu != blank %}
-                  {% assign menu = linklists[information_mobile_menu] %}
-                  {% if menu != blank and menu.links.size > 0 %}
-                    <ul class="forma-footer__links">
-                      {% for link in menu.links %}
-                        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                      {% endfor %}
-                    </ul>
-                  {% endif %}
-                {% endif %}
-              </div>
-            </details>
-          </div>
-
-          <div class="forma-footer__mobile-column">
-            <details class="forma-footer__accordion">
-              <summary class="forma-footer__heading-row">
-                <span class="forma-footer__heading">
-                  {{ section.settings.forma_heading }}
-                </span>
-                <span class="forma-footer__accordion-icon" aria-hidden="true">+</span>
-              </summary>
-
-              <div class="forma-footer__accordion-content">
-                {% assign forma_mobile_menu = section.settings.forma_mobile_menu %}
-                {% if forma_mobile_menu != blank %}
-                  {% assign menu = linklists[forma_mobile_menu] %}
-                  {% if menu != blank and menu.links.size > 0 %}
-                    <ul class="forma-footer__links">
-                      {% for link in menu.links %}
-                        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                      {% endfor %}
-                    </ul>
-                  {% endif %}
-                {% endif %}
-              </div>
-            </details>
-          </div>
-
-          <div class="forma-footer__mobile-column">
-            <details class="forma-footer__accordion">
-              <summary class="forma-footer__heading-row">
-                <span class="forma-footer__heading">
-                  {{ section.settings.social_heading }}
-                </span>
-                <span class="forma-footer__accordion-icon" aria-hidden="true">+</span>
-              </summary>
-
-              <div class="forma-footer__accordion-content">
-                {% assign social_mobile_menu = section.settings.social_mobile_menu %}
-                {% if social_mobile_menu != blank %}
-                  {% assign menu = linklists[social_mobile_menu] %}
-                  {% if menu != blank and menu.links.size > 0 %}
-                    <ul class="forma-footer__links">
-                      {% for link in menu.links %}
-                        <li>
-                          <a
-                            href="{{ link.url }}"
-                            {% if link.url contains 'instagram.com'
-                              or link.url contains 'facebook.com'
-                              or link.url contains 'linkedin.com'
-                              or link.url contains 'tiktok.com'
-                            %}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            {% endif %}
-                          >{{ link.title }}</a>
-                        </li>
-                      {% endfor %}
-                    </ul>
-                  {% endif %}
-                {% endif %}
-              </div>
-            </details>
-          </div>
-
-        </div>
+        </details>
       </div>
-
-      <!-- THE FORMA LETTER RIGHT -->
-
+      </div><!-- /.forma-footer__navigation -->
+      <!-- ========================================================
+           THE FORMA LETTER
+           ======================================================== -->
       <section class="forma-footer__letter">
-        <p class="forma-footer__letter-eyebrow">From Forma</p>
-
-        <h2 class="forma-footer__letter-title">The Forma Letter</h2>
-
-        <p class="forma-footer__letter-description">
-          Stories, places, brands and ideas worth knowing.
-        </p>
-
-        {% assign newsletter_form_id = 'forma-letter-' | append: section.id %}
-
-        {% form 'customer',
-          id: newsletter_form_id,
-          class: 'forma-footer__form'
-        %}
-
-          {% if form.posted_successfully? %}
+      <p class="forma-footer__letter-eyebrow">
+        From Forma
+      </p>
+      <h2 class="forma-footer__letter-title">
+        The Forma Letter
+      </h2>
+      <p class="forma-footer__letter-description">
+        Stories, places, brands and ideas worth knowing.
+      </p>
+      {% assign newsletter_form_id = 'forma-letter-' | append: section.id %}
+      {% form 'customer',
+        id: newsletter_form_id,
+        class: 'forma-footer__form'
+      %}
+        {% if form.posted_successfully? %}
+          <p class="forma-footer__message">
+            You're in. Welcome to Forma.
+          </p>
+        {% else %}
+          {% if form.errors %}
             <p class="forma-footer__message">
-              You're in. Welcome to Forma.
+              {{ form.errors.translated_fields['email'] }}
+              {{ form.errors.messages['email'] }}
             </p>
-          {% else %}
-
-            {% if form.errors %}
-              <p class="forma-footer__message">
-                {{ form.errors.translated_fields['email'] }}
-                {{ form.errors.messages['email'] }}
-              </p>
-            {% endif %}
-
-            <input type="hidden" name="contact[tags]" value="newsletter">
-
-            <div class="forma-footer__input-row">
-              <input
-                class="forma-footer__input"
-                type="email"
-                name="contact[email]"
-                value="{{ form.email }}"
-                autocomplete="email"
-                autocorrect="off"
-                autocapitalize="off"
-                placeholder="Your email"
-                aria-label="Your email"
-                required
-              >
-
-              <button
-                type="submit"
-                class="forma-footer__submit"
-                aria-label="Subscribe"
-              >→</button>
-            </div>
-
           {% endif %}
-        {% endform %}
-
-        <p class="forma-footer__letter-signature">
-          Stories. Places. Brands. Ideas.
-        </p>
+          <input
+            type="hidden"
+            name="contact[tags]"
+            value="newsletter"
+          >
+          <div class="forma-footer__input-row">
+            <input
+              class="forma-footer__input"
+              type="email"
+              name="contact[email]"
+              value="{{ form.email }}"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              placeholder="Your email"
+              aria-label="Your email"
+              required
+            >
+            <button
+              type="submit"
+              class="forma-footer__submit"
+              aria-label="Subscribe"
+            >
+              →
+            </button>
+          </div>
+        {% endif %}
+      {% endform %}
+      <p class="forma-footer__letter-signature">
+        Stories. Places. Brands. Ideas.
+      </p>
       </section>
-
-    </div>
-
-    <!-- FOOTER BOTTOM -->
-
+    </div><!-- /.forma-footer__main -->
+    <!-- ========================================================
+         BOTTOM
+         ======================================================== -->
     <div class="forma-footer__bottom">
-
       <div class="forma-footer__bottom-left">
         <p class="forma-footer__copyright">
           © {{ 'now' | date: '%Y' }} — {{ shop.name }}
         </p>
-
         {% if section.settings.show_powered_by_shopify %}
           <span class="forma-footer__shopify">
             {{ powered_by_link }}
           </span>
         {% endif %}
       </div>
-
+      <!-- ======================================================
+           LOCALIZATION
+           ====================================================== -->
       {% assign show_country_selector = false %}
       {% assign show_locale_selector = false %}
-
       {% if section.settings.show_country_selector
         and localization.available_countries.size > 1
       %}
         {% assign show_country_selector = true %}
       {% endif %}
-
       {% if section.settings.show_locale_selector
         and localization.available_languages.size > 1
       %}
         {% assign show_locale_selector = true %}
       {% endif %}
-
       {% if show_country_selector or show_locale_selector %}
         <div class="forma-footer__localization">
           <div class="localization-selectors">
-
             {% if show_country_selector %}
               {% render 'localization-selector',
                 type: 'country',
@@ -879,39 +930,42 @@
                 show_country_flag: section.settings.show_country_flag
               %}
             {% endif %}
-
             {% if show_locale_selector %}
               {% render 'localization-selector',
                 type: 'locale',
                 placement: 'top-start'
               %}
             {% endif %}
-
           </div>
         </div>
       {% endif %}
-
+      <!-- ======================================================
+           PAYMENT METHODS
+           ====================================================== -->
       {% if section.settings.show_payment_icons
         and shop.enabled_payment_types.size > 0
       %}
         <div class="forma-footer__payments">
           <ul class="forma-footer__payments-list">
             {% for type in shop.enabled_payment_types %}
-              <li>{{ type | payment_type_svg_tag }}</li>
+              <li>
+                {{ type | payment_type_svg_tag }}
+              </li>
             {% endfor %}
           </ul>
         </div>
       {% endif %}
-
     </div>
-
+    <!-- ========================================================
+         SIGNATURE
+         ======================================================== -->
     <div class="forma-footer__signature">
-      <p>Copenhagen · Scandinavia · Everywhere</p>
+      <p>
+        Copenhagen · Scandinavia · Everywhere
+      </p>
     </div>
-
   </div>
 </footer>
-
 {% schema %}
 {
   "name": "FORMA Footer",
@@ -1009,14 +1063,16 @@
       "id": "show_country_name",
       "label": "Show country name",
       "default": true,
-      "visible_if": "{{ section.settings.show_country_selector }}"
+      "visible_if":
+        "{{ section.settings.show_country_selector }}"
     },
     {
       "type": "checkbox",
       "id": "show_country_flag",
       "label": "Show country flag",
       "default": true,
-      "visible_if": "{{ section.settings.show_country_selector }}"
+      "visible_if":
+        "{{ section.settings.show_country_selector }}"
     },
     {
       "type": "checkbox",
