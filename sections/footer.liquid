@@ -1,7 +1,3 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500&display=swap">
-
 <style>
   #shopify-section-{{ section.id }} {
     --forma-footer-bg: #f4f4f1;
@@ -18,13 +14,6 @@
     background: var(--forma-footer-bg);
     color: var(--forma-footer-text);
     overflow: hidden;
-  }
-
-  /* FONT – applies to all text in the footer */
-
-  #shopify-section-{{ section.id }} .forma-footer,
-  #shopify-section-{{ section.id }} .forma-footer * {
-    font-family: 'Abhaya Libre', Georgia, serif;
   }
 
   #shopify-section-{{ section.id }} .forma-footer a {
@@ -55,7 +44,7 @@
     font-size: clamp(72px, 11vw, 170px);
     line-height: 0.78;
     font-weight: 400;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.075em;
     text-transform: uppercase;
     color: var(--forma-footer-text);
     user-select: none;
@@ -288,11 +277,12 @@
 
   #shopify-section-{{ section.id }} .forma-footer__letter-title {
     margin: 0;
+    font-family: var(--font-heading-family, inherit);
     font-size: clamp(36px, 4vw, 76px);   /* fallback for older browsers */
-    font-size: clamp(36px, 12cqw, 76px); /* scales with the column width */
+    font-size: clamp(36px, 13cqw, 76px); /* scales with the column width */
     line-height: 0.98;
     font-weight: 400;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.045em;
     white-space: nowrap;
   }
 
@@ -333,6 +323,7 @@
     outline: none;
     background: transparent;
     color: var(--forma-footer-text);
+    font-family: inherit;
     font-size: 15px;
     line-height: 1;
   }
@@ -540,7 +531,7 @@
     #shopify-section-{{ section.id }} .forma-footer__letter-title {
       font-size: 43px;                     /* fallback for older browsers */
       font-size: clamp(32px, 13cqw, 43px); /* shrinks on very narrow phones */
-      letter-spacing: -0.02em;
+      letter-spacing: -0.045em;
     }
 
     #shopify-section-{{ section.id }} .forma-footer__letter-description {
@@ -789,7 +780,7 @@
       <section class="forma-footer__letter">
         <p class="forma-footer__letter-eyebrow">From Forma</p>
 
-        <h2 class="forma-footer__letter-title">The FORMA Letter</h2>
+        <h2 class="forma-footer__letter-title">The Forma Letter</h2>
 
         <p class="forma-footer__letter-description">
           Stories, places, brands and ideas worth knowing.
