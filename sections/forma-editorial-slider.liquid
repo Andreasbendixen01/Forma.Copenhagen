@@ -344,7 +344,7 @@
   #forma-editorial-{{ section.id }}
   .forma-editorial__image {
 
-    position: absolute;
+ position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -1135,6 +1135,106 @@
 
       }
     );
+
+        /* ========================================================
+       AUTOPLAY — EVERY 5 SECONDS
+       Pauses on hover and during user interaction
+       ======================================================== */
+
+    let autoplayTimer = null;
+    let isHovered = false;
+    let isInteracting = false;
+
+    const AUTOPLAY_DELAY = 5000;
+
+    function getCurrentSlideIndex() {
+      const distance = getSlideDistance();
+
+      if (!distance) return 0;
+
+      return Math.round(track.scrollLeft / distance);
+    }
+
+    function goToNextSlide() {
+      if (slides.length <= 1) return;
+
+      const distance = getSlideDistance();
+
+      if (!distance) return;
+
+      const currentIndex = getCurrentSlideIndex();
+
+      const nextIndex = (currentIndex + 1) % slides.length;
+
+      track.scrollTo({
+        left: nextIndex * distance,
+        behavior: 'smooth'
+      });
+    }
+
+    function stopAutoplay() {
+      clearTimeout(autoplayTimer);
+      autoplayTimer = null;
+    }
+
+    function scheduleAutoplay() {
+      stopAutoplay();
+
+      if (
+        document.hidden ||
+        isHovered ||
+        isDragging ||
+        isInteracting ||
+        slides.length <= 1
+      ) {
+        return;
+      }
+
+      autoplayTimer = setTimeout(() => {
+        goToNextSlide();
+        scheduleAutoplay();
+      }, AUTOPLAY_DELAY);
+    }
+
+    track.addEventListener('pointerenter', (event) => {
+      if (event.pointerType === 'mouse') {
+        isHovered = true;
+        stopAutoplay();
+      }
+    });
+
+    track.addEventListener('pointerleave', () => {
+      isHovered = false;
+      scheduleAutoplay();
+    });
+
+    track.addEventListener('pointerdown', () => {
+      isInteracting = true;
+      stopAutoplay();
+    });
+
+    track.addEventListener('pointerup', () => {
+      isInteracting = false;
+
+      setTimeout(() => {
+        scheduleAutoplay();
+      }, 700);
+    });
+
+    track.addEventListener('pointercancel', () => {
+      isInteracting = false;
+      scheduleAutoplay();
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stopAutoplay();
+      } else {
+        scheduleAutoplay();
+      }
+    });
+
+    scheduleAutoplay();
 
   })();
 
