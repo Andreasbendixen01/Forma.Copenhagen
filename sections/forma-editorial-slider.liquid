@@ -219,7 +219,7 @@
 
     margin: 0;
 
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
 
     scroll-snap-type: x mandatory;
 
@@ -1156,7 +1156,7 @@
     }
 
     function goToNextSlide() {
-    if (slides.length <= 1) return;
+    if (slides.length <= 1 || isDragging) return;
 
     const distance = getSlideDistance();
     if (!distance) return;
@@ -1164,22 +1164,27 @@
     const currentIndex = getCurrentSlideIndex();
     const nextIndex = (currentIndex + 1) % slides.length;
 
-    const targetPosition = nextIndex * distance;
     const startPosition = track.scrollLeft;
+    const targetPosition = nextIndex * distance;
     const distanceToTravel = targetPosition - startPosition;
 
     const duration = 1400;
     const startTime = performance.now();
 
+    // Prevent scroll-snap from interrupting the animation
+    const originalSnapType = track.style.scrollSnapType;
+    const originalScrollBehavior = track.style.scrollBehavior;
+
+    track.style.scrollSnapType = 'none';
+    track.style.scrollBehavior = 'auto';
+
     function animateSlide(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
 
-        // Elegant ease-in-out transition
+        // Slow, elegant ease-in-out
         const easedProgress =
-        progress < 0.5
-            ? 4 * progress * progress * progress
-            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+        0.5 - Math.cos(Math.PI * progress) / 2;
 
         track.scrollLeft =
         startPosition + distanceToTravel * easedProgress;
@@ -1188,8 +1193,16 @@
         requestAnimationFrame(animateSlide);
         } else {
         track.scrollLeft = targetPosition;
+
+        requestAnimationFrame(() => {
+            track.style.scrollSnapType = originalSnapType;
+            track.style.scrollBehavior = originalScrollBehavior;
+        });
         }
-  }
+    }
+
+  requestAnimationFrame(animateSlide);
+}
 
   requestAnimationFrame(animateSlide);
 }
