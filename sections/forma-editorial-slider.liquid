@@ -1115,6 +1115,36 @@
       }
     );
 
+    ```css
+/* =========================================================
+   FORMA EDITORIAL SLIDER — REMOVE RIGHT-HAND GAP
+   ========================================================= */
+
+#shopify-section-{{ section.id }} {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+#shopify-section-{{ section.id }} .forma-editorial-slider,
+#shopify-section-{{ section.id }} .forma-editorial-slider__viewport {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+#shopify-section-{{ section.id }} .forma-editorial-slider__track {
+  box-sizing: border-box;
+}
+
+/* Undgå at billederne efterlader en sort kant */
+#shopify-section-{{ section.id }} img {
+  display: block;
+}
+```
+
 
     /* ========================================================
        RESET PARALLAX
