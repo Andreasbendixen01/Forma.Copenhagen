@@ -680,6 +680,211 @@
     #forma-contact-{{ section.id }} *::after {
       transition-duration: .01ms !important;
     }
+
+
+/* ==========================================
+   FORMA CONTACT — REFINED SPACING
+   ========================================== */
+
+#forma-contact-{{ section.id }} .forma-contact__inner {
+  padding-top: clamp(54px, 6vw, 88px);
+}
+
+/* Hero: give overskrift og introduktion mere ro */
+#forma-contact-{{ section.id }} .forma-contact__eyebrow {
+  margin-bottom: clamp(36px, 4.5vw, 64px);
+}
+
+#forma-contact-{{ section.id }} .forma-contact__hero {
+  gap: clamp(40px, 5vw, 84px);
+}
+
+#forma-contact-{{ section.id }} .forma-contact__intro-copy {
+  max-width: 320px;
+  line-height: 2;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__location {
+  margin-top: clamp(32px, 4vw, 52px);
+  padding: 22px 0 24px;
+}
+
+/* Kontaktområdet: tydeligere opdeling */
+#forma-contact-{{ section.id }} .forma-contact__content {
+  grid-template-columns: minmax(250px, 0.72fr) minmax(0, 1.6fr);
+  gap: clamp(42px, 6vw, 100px);
+  padding: clamp(42px, 5vw, 68px) 0 clamp(48px, 5vw, 70px);
+}
+
+/* Venstre kolonne */
+#forma-contact-{{ section.id }} .forma-contact__details {
+  padding-right: clamp(30px, 4vw, 60px);
+}
+
+#forma-contact-{{ section.id }} .forma-contact__details-title {
+  margin-top: 38px;
+  margin-bottom: 20px;
+  line-height: 1.17;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__details-copy {
+  max-width: 330px;
+  line-height: 2;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__email-block {
+  gap: 16px;
+  margin-top: 40px;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__details-note {
+  margin-top: 34px;
+  padding-top: 24px;
+  line-height: 1.9;
+}
+
+/* Højre kolonne */
+#forma-contact-{{ section.id }} .forma-contact__form-heading {
+  padding-bottom: 24px;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__fields {
+  column-gap: clamp(24px, 3vw, 42px);
+  row-gap: 32px;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__field {
+  padding-top: 30px;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__field label {
+  margin-bottom: 16px;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__field input {
+  min-height: 40px;
+  padding-bottom: 15px;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__field--message {
+  padding-top: 2px;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__field textarea {
+  min-height: 125px;
+  padding-bottom: 16px;
+  line-height: 1.9;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__form-bottom {
+  margin-top: 32px;
+  gap: 30px;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__privacy {
+  max-width: 340px;
+  line-height: 2;
+}
+
+#forma-contact-{{ section.id }} .forma-contact__submit {
+  min-width: 220px;
+  min-height: 54px;
+  padding-inline: 20px;
+}
+
+/* Afslutning */
+#forma-contact-{{ section.id }} .forma-contact__bottom-line {
+  margin-top: 0;
+}
+
+/* Tablet */
+@media screen and (max-width: 900px) {
+  #forma-contact-{{ section.id }} .forma-contact__content {
+    gap: 34px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__details {
+    padding-right: 25px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__fields {
+    row-gap: 24px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__form-bottom {
+    gap: 22px;
+  }
+}
+
+/* Mobil: kompakt, men stadig luftigt */
+@media screen and (max-width: 640px) {
+  #forma-contact-{{ section.id }} .forma-contact__inner {
+    padding-top: 42px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__eyebrow {
+    margin-bottom: 32px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__location {
+    margin-top: 26px;
+    padding: 18px 0 20px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__content {
+    gap: 30px;
+    padding: 30px 0 38px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__details {
+    padding: 0 0 28px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__details-title {
+    margin-top: 26px;
+    margin-bottom: 14px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__email-block {
+    margin-top: 28px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__details-note {
+    margin-top: 24px;
+    padding-top: 19px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__form-heading {
+    padding-bottom: 18px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__fields {
+    row-gap: 22px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__field {
+    padding-top: 23px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__field--message {
+    padding-top: 0;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__field textarea {
+    min-height: 115px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__form-bottom {
+    margin-top: 26px;
+    gap: 22px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__submit {
+    min-width: 0;
+    min-height: 52px;
+  }
+}
+
   }
 </style>
 
