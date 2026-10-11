@@ -128,7 +128,8 @@
 
       <div class="forma-contact__form-column">
 
-        {%- form 'contact', id: 'FormaContactForm-' | append: section.id, class: 'forma-contact__form' -%}
+        {%- assign forma_contact_form_id = 'FormaContactForm-' | append: section.id -%}
+{%- form 'contact', id: forma_contact_form_id, class: 'forma-contact__form' -%}
 
           {% if form.posted_successfully? %}
             <div class="forma-contact__notice forma-contact__notice--success" role="status" tabindex="-1">
