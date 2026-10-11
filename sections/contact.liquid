@@ -1,259 +1,124 @@
 
-{% comment %}
-  FORMA COPENHAGEN — CONTACT
-  Minimal editorial contact page
-{% endcomment %}
-
-{%- assign forma_contact_form_id = 'FormaContactForm-' | append: section.id -%}
-{%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
+{% liquid
+  assign contact_email = section.settings.contact_email | default: 'Customercare@formacopenhagen.com'
+%}
 
 <section
   id="forma-contact-{{ section.id }}"
-  class="forma-contact color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }}"
+  class="forma-contact"
 >
   <div class="forma-contact__inner">
 
-    {% comment %} INTRO {% endcomment %}
-
-    <header class="forma-contact__intro">
-      <div class="forma-contact__eyebrow">
-        <span class="forma-contact__eyebrow-line"></span>
-        {{ section.settings.eyebrow | escape }}
-      </div>
-
-      <div class="forma-contact__intro-grid">
-        <h1 class="forma-contact__headline">
-          {{ section.settings.heading | escape | newline_to_br }}
-        </h1>
-
-        <div class="forma-contact__intro-copy">
-          <p>{{ section.settings.description | escape | newline_to_br }}</p>
-
-          {% if section.settings.intro_link_label != blank and section.settings.intro_link != blank %}
-            <a class="forma-contact__text-link" href="{{ section.settings.intro_link }}">
-              {{ section.settings.intro_link_label | escape }}
-              <span aria-hidden="true">↗</span>
-            </a>
-          {% endif %}
-        </div>
-      </div>
-
-      <div class="forma-contact__meta">
-        <span>{{ section.settings.location_label | escape }}</span>
-        <span class="forma-contact__meta-divider"></span>
-        <span>{{ section.settings.meta_label | escape }}</span>
-      </div>
-    </header>
-
-
-    {% comment %} OPTIONAL IMAGE {% endcomment %}
-
-    {% if section.settings.hero_image != blank %}
-      <div class="forma-contact__image-wrap">
-        {{
-          section.settings.hero_image
-          | image_url: width: 2400
-          | image_tag:
-            widths: '750, 1100, 1500, 2000, 2400',
-            sizes: '100vw',
-            loading: 'lazy',
-            class: 'forma-contact__image'
-        }}
-
-        {% if section.settings.image_caption != blank %}
-          <span class="forma-contact__image-caption">
-            {{ section.settings.image_caption | escape }}
-          </span>
-        {% endif %}
-      </div>
-    {% endif %}
-
-
-    {% comment %} CONTACT CONTENT {% endcomment %}
-
+    <!-- INTRODUCTION -->
     <div class="forma-contact__main">
 
-      <aside class="forma-contact__sidebar">
-        <div class="forma-contact__section-index">
-          <span>01</span>
-          <span class="forma-contact__index-line"></span>
-          <span>{{ section.settings.form_label | escape }}</span>
+      <div class="forma-contact__intro">
+        <div class="forma-contact__eyebrow">
+          <span class="forma-contact__number">01</span>
+          <span class="forma-contact__eyebrow-line"></span>
+          <span>{{ section.settings.eyebrow | escape }}</span>
         </div>
 
-        <h2 class="forma-contact__sidebar-heading">
-          {{ section.settings.form_heading | escape | newline_to_br }}
-        </h2>
+        <h1 class="forma-contact__title">
+          {{ section.settings.title | escape }}
+        </h1>
 
-        <p class="forma-contact__sidebar-copy">
-          {{ section.settings.form_description | escape }}
-        </p>
+        <div class="forma-contact__description">
+          {{ section.settings.description }}
+        </div>
 
         <div class="forma-contact__email-block">
-          <span class="forma-contact__small-label">
-            {{ section.settings.email_label | escape }}
-          </span>
+          <span class="forma-contact__label">PREFER EMAIL?</span>
 
           <a
-            class="forma-contact__email-link"
-            href="mailto:Customercare@formacopenhagen.com"
+            class="forma-contact__email"
+            href="mailto:{{ contact_email | strip | escape }}"
           >
-            Customercare@formacopenhagen.com
+            {{ contact_email | escape }}
             <span aria-hidden="true">↗</span>
           </a>
-        </div>
 
-        {% if section.settings.response_note != blank %}
-          <p class="forma-contact__response-note">
-            {{ section.settings.response_note | escape }}
+          <p class="forma-contact__note">
+            {{ section.settings.email_note | escape }}
           </p>
-        {% endif %}
-      </aside>
+        </div>
+      </div>
 
-
+      <!-- FORM -->
       <div class="forma-contact__form-column">
 
-        {%- form 'contact', id: forma_contact_form_id, class: 'forma-contact__form' -%}
+        <div class="forma-contact__form-heading">
+          <span class="forma-contact__label">CONTACT FORM</span>
+          <span class="forma-contact__required">* REQUIRED FIELDS</span>
+        </div>
+
+        {% form 'contact', id: 'FormaContactForm', class: 'forma-contact__form' %}
 
           {% if form.posted_successfully? %}
-            <div class="forma-contact__notice forma-contact__notice--success" role="status" tabindex="-1">
-              <span aria-hidden="true">✓</span>
+            <div class="forma-contact__notice forma-contact__notice--success" role="status">
+              <span class="forma-contact__notice-mark">✓</span>
               <div>
-                <strong>{{ section.settings.success_heading | escape }}</strong>
-                <p>{{ 'contact.form.success_message' | t }}</p>
+                <strong>Thank you for reaching out.</strong>
+                <p>Your message has been submitted successfully.</p>
               </div>
             </div>
           {% endif %}
 
           {% if form.errors %}
-            <div class="forma-contact__notice forma-contact__notice--error" role="alert" tabindex="-1">
-              <strong>{{ section.settings.error_heading | escape }}</strong>
-              {{ form.errors | default_errors }}
+            <div class="forma-contact__notice forma-contact__notice--error" role="alert">
+              <strong>Something needs your attention.</strong>
+              <p>
+                {{ form.errors.translated_fields.email | default: 'Please check the required fields and try again.' }}
+                {% if form.errors.messages.email %}
+                  — {{ form.errors.messages.email }}
+                {% endif %}
+              </p>
             </div>
           {% endif %}
-
-          <div class="forma-contact__form-topline">
-            <span>{{ section.settings.form_topline | escape }}</span>
-            <span>* {{ section.settings.required_note | escape }}</span>
-          </div>
 
           <div class="forma-contact__fields">
 
             <div class="forma-contact__field">
               <label for="FormaContactName-{{ section.id }}">
-                {{ 'contact.form.name' | t }} <span>*</span>
+                NAME <span>*</span>
               </label>
-
               <input
                 id="FormaContactName-{{ section.id }}"
                 type="text"
                 name="contact[name]"
-                value="{% if form.name %}{{ form.name | escape }}{% elsif customer %}{{ customer.name | escape }}{% endif %}"
                 autocomplete="name"
-                placeholder="{{ section.settings.name_placeholder | escape }}"
+                placeholder="Your full name"
+                value="{{ form.name | default: customer.name | escape }}"
                 required
               >
             </div>
 
             <div class="forma-contact__field">
               <label for="FormaContactEmail-{{ section.id }}">
-                {{ 'contact.form.email' | t }} <span>*</span>
+                E-MAIL <span>*</span>
               </label>
-
               <input
                 id="FormaContactEmail-{{ section.id }}"
                 type="email"
                 name="contact[email]"
-                value="{% if form.email %}{{ form.email | escape }}{% elsif customer %}{{ customer.email | escape }}{% endif %}"
                 autocomplete="email"
                 autocorrect="off"
                 autocapitalize="off"
-                placeholder="{{ section.settings.email_placeholder | escape }}"
+                placeholder="Your email address"
+                value="{{ form.email | default: customer.email | escape }}"
                 required
-                {% if form.errors contains 'email' %}
-                  aria-invalid="true"
-                {% endif %}
               >
             </div>
 
-            {% for block in section.blocks %}
-              {% assign field_title = block.settings.title %}
-
-              {% if field_title == blank %}
-                {% assign field_title = 'Custom field' %}
-              {% endif %}
-
-              {% capture field_name %}contact[{{ field_title | escape }}]{% endcapture %}
-
-              {% if block.type == 'text' %}
-                <div
-                  class="forma-contact__field {% if block.settings.use_long_text %}forma-contact__field--full{% endif %}"
-                  {{ block.shopify_attributes }}
-                >
-                  <label for="FormaCustom-{{ section.id }}-{{ block.id }}">
-                    {{ field_title | escape }}
-                    {% if block.settings.required %}<span>*</span>{% endif %}
-                  </label>
-
-                  {% if block.settings.use_long_text %}
-                    <textarea
-                      id="FormaCustom-{{ section.id }}-{{ block.id }}"
-                      name="{{ field_name }}"
-                      rows="3"
-                      placeholder="{{ block.settings.placeholder | escape }}"
-                      {% if block.settings.required %}required{% endif %}
-                    ></textarea>
-                  {% else %}
-                    <input
-                      id="FormaCustom-{{ section.id }}-{{ block.id }}"
-                      type="text"
-                      name="{{ field_name }}"
-                      placeholder="{{ block.settings.placeholder | escape }}"
-                      {% if block.settings.required %}required{% endif %}
-                    >
-                  {% endif %}
-                </div>
-
-              {% elsif block.type == 'dropdown' and block.settings.values != blank %}
-                {% assign dropdown_values = block.settings.values | split: ',' %}
-
-                <div class="forma-contact__field" {{ block.shopify_attributes }}>
-                  <label for="FormaSelect-{{ section.id }}-{{ block.id }}">
-                    {{ field_title | escape }}
-                    {% if block.settings.required %}<span>*</span>{% endif %}
-                  </label>
-
-                  <select
-                    id="FormaSelect-{{ section.id }}-{{ block.id }}"
-                    name="{{ field_name }}"
-                    {% if block.settings.required %}required{% endif %}
-                  >
-                    <option value="" disabled selected>
-                      {{ block.settings.placeholder | escape }}
-                    </option>
-
-                    {% for option in dropdown_values %}
-                      {% assign clean_option = option | strip %}
-                      {% if clean_option != blank %}
-                        <option value="{{ clean_option | escape }}">
-                          {{ clean_option | escape }}
-                        </option>
-                      {% endif %}
-                    {% endfor %}
-                  </select>
-                </div>
-              {% endif %}
-            {% endfor %}
-
-            <div class="forma-contact__field forma-contact__field--full">
+            <div class="forma-contact__field forma-contact__field--message">
               <label for="FormaContactMessage-{{ section.id }}">
-                {{ 'contact.form.message' | t }} <span>*</span>
+                MESSAGE <span>*</span>
               </label>
-
               <textarea
                 id="FormaContactMessage-{{ section.id }}"
                 name="contact[body]"
-                rows="4"
-                placeholder="{{ section.settings.message_placeholder | escape }}"
+                rows="5"
+                placeholder="Tell us what is on your mind..."
                 required
               >{{ form.body | escape }}</textarea>
             </div>
@@ -261,46 +126,35 @@
           </div>
 
           <div class="forma-contact__form-bottom">
-            <p class="forma-contact__privacy-note">
-              {{ section.settings.privacy_note | escape }}
+            <p class="forma-contact__privacy">
+              Your information will only be used to respond to your enquiry.
             </p>
 
             <button type="submit" class="forma-contact__submit">
-              <span>{{ section.settings.submit_label | escape }}</span>
+              <span>{{ section.settings.button_text | escape }}</span>
               <span class="forma-contact__submit-arrow" aria-hidden="true">↗</span>
             </button>
           </div>
 
-        {%- endform -%}
-
+        {% endform %}
       </div>
-    </div>
 
-
-    {% comment %} SIGNATURE {% endcomment %}
-
-    <div class="forma-contact__signature">
-      <span class="forma-contact__signature-wordmark">FORMA</span>
-      <span class="forma-contact__signature-caption">
-        {{ section.settings.signature_caption | escape }}
-      </span>
     </div>
 
   </div>
 </section>
 
-
 <style>
   #forma-contact-{{ section.id }} {
-    --fc-ink: {{ section.settings.text_color }};
-    --fc-muted: {{ section.settings.muted_color }};
-    --fc-line: {{ section.settings.line_color }};
-    --fc-surface: {{ section.settings.surface_color }};
-    --fc-accent: {{ section.settings.button_color }};
-    --fc-button-text: {{ section.settings.button_text_color }};
+    --fc-bg: #f5f4f0;
+    --fc-text: #1b1b1a;
+    --fc-muted: #85847e;
+    --fc-line: rgba(27, 27, 26, 0.14);
+    --fc-gutter: clamp(24px, 5.2vw, 80px);
 
-    background: var(--fc-surface);
-    color: var(--fc-ink);
+    background: var(--fc-bg);
+    color: var(--fc-text);
+    width: 100%;
     overflow: hidden;
   }
 
@@ -312,514 +166,430 @@
 
   #forma-contact-{{ section.id }} .forma-contact__inner {
     width: 100%;
-    max-width: 1800px;
-    margin: 0 auto;
-    padding: 42px 5.2% 0;
+    padding: 64px var(--fc-gutter) 72px;
+  }
+
+  /* MAIN LAYOUT */
+
+  #forma-contact-{{ section.id }} .forma-contact__main {
+    display: grid;
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+    gap: clamp(40px, 8vw, 140px);
+    border-top: 1px solid var(--fc-line);
+    border-bottom: 1px solid var(--fc-line);
+    padding: 42px 0 58px;
   }
 
   /* INTRO */
 
   #forma-contact-{{ section.id }} .forma-contact__intro {
-    padding: 8px 0 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
   }
 
-  #forma-contact-{{ section.id }} .forma-contact__eyebrow,
-  #forma-contact-{{ section.id }} .forma-contact__section-index,
-  #forma-contact-{{ section.id }} .forma-contact__small-label {
+  #forma-contact-{{ section.id }} .forma-contact__eyebrow {
     display: flex;
     align-items: center;
-    gap: 11px;
+    gap: 13px;
+    margin-bottom: 48px;
     color: var(--fc-muted);
     font-size: 10px;
     font-weight: 600;
-    letter-spacing: .15em;
+    letter-spacing: 0.16em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__number {
+    font-variant-numeric: tabular-nums;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__eyebrow-line {
+    width: 28px;
+    height: 1px;
+    background: var(--fc-line);
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__title {
+    max-width: 560px;
+    margin: 0 0 25px;
+    font-size: clamp(42px, 5.1vw, 76px);
+    font-weight: 400;
+    letter-spacing: -0.075em;
+    line-height: 0.99;
+    overflow-wrap: anywhere;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__description {
+    max-width: 370px;
+    color: var(--fc-muted);
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__description p {
+    margin: 0 0 12px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__description p:last-child {
+    margin-bottom: 0;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__email-block {
+    width: 100%;
+    max-width: 370px;
+    margin-top: auto;
+    padding-top: 58px;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__label {
+    display: block;
+    color: var(--fc-muted);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
     line-height: 1.5;
     text-transform: uppercase;
   }
 
-  #forma-contact-{{ section.id }} .forma-contact__eyebrow-line {
-    width: 25px;
-    height: 1px;
-    background: currentColor;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__intro-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(250px, .6fr);
-    align-items: end;
-    gap: 7%;
-    padding: 38px 0 28px;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__headline {
-    margin: 0;
-    font-size: clamp(58px, 7.2vw, 118px);
-    font-weight: 400;
-    line-height: .88;
-    letter-spacing: -.075em;
-    overflow-wrap: anywhere;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__intro-copy {
-    padding-bottom: 5px;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__intro-copy p {
-    max-width: 360px;
-    margin: 0;
-    color: var(--fc-muted);
-    font-size: 14px;
-    line-height: 1.8;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__text-link {
+  #forma-contact-{{ section.id }} .forma-contact__email {
     display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 20px;
-    padding-bottom: 7px;
-    border-bottom: 1px solid var(--fc-line);
-    color: var(--fc-ink);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: .13em;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: gap .25s ease;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__text-link:hover {
-    gap: 21px;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__meta {
-    display: flex;
     align-items: center;
     gap: 12px;
-    padding: 15px 0;
-    border-top: 1px solid var(--fc-line);
-    color: var(--fc-muted);
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: .13em;
-    text-transform: uppercase;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__meta-divider {
-    width: 20px;
-    height: 1px;
-    background: var(--fc-line);
-  }
-
-  /* OPTIONAL IMAGE */
-
-  #forma-contact-{{ section.id }} .forma-contact__image-wrap {
-    position: relative;
-    margin-top: 12px;
-    overflow: hidden;
-    background: #e9e7e1;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__image {
-    display: block;
-    width: 100%;
-    height: clamp(260px, 36vw, 520px);
-    object-fit: cover;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__image-caption {
-    position: absolute;
-    right: 16px;
-    bottom: 16px;
-    padding: 8px 11px;
-    background: rgba(0, 0, 0, .35);
-    color: #fff;
-    font-size: 9px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-  }
-
-  /* CONTACT GRID */
-
-  #forma-contact-{{ section.id }} .forma-contact__main {
-    display: grid;
-    grid-template-columns: minmax(220px, .7fr) minmax(0, 1.3fr);
-    gap: 8%;
-    padding: 65px 0 65px;
-    border-bottom: 1px solid var(--fc-line);
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__index-line {
-    width: 24px;
-    height: 1px;
-    background: var(--fc-line);
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__sidebar-heading {
-    max-width: 380px;
-    margin: 26px 0 15px;
-    font-size: clamp(34px, 3.5vw, 52px);
-    font-weight: 400;
-    line-height: .99;
-    letter-spacing: -.055em;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__sidebar-copy {
-    max-width: 340px;
-    margin: 0;
-    color: var(--fc-muted);
+    max-width: 100%;
+    margin-top: 16px;
+    color: var(--fc-text);
     font-size: 13px;
-    line-height: 1.8;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__email-block {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    margin-top: 32px;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__email-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--fc-ink);
-    font-size: 12px;
+    font-weight: 500;
     text-decoration: none;
     overflow-wrap: anywhere;
+    transition: opacity 220ms ease;
   }
 
-  #forma-contact-{{ section.id }} .forma-contact__email-link span {
-    transition: transform .25s ease;
+  #forma-contact-{{ section.id }} .forma-contact__email span {
+    font-size: 18px;
+    transition: transform 220ms ease;
   }
 
-  #forma-contact-{{ section.id }} .forma-contact__email-link:hover span {
+  #forma-contact-{{ section.id }} .forma-contact__email:hover {
+    opacity: 0.65;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__email:hover span {
     transform: translate(3px, -3px);
   }
 
-  #forma-contact-{{ section.id }} .forma-contact__response-note {
-    max-width: 310px;
-    margin: 17px 0 0;
+  #forma-contact-{{ section.id }} .forma-contact__note {
+    max-width: 330px;
+    margin: 25px 0 0;
     color: var(--fc-muted);
     font-size: 11px;
-    line-height: 1.7;
+    line-height: 1.8;
   }
 
-  /* FORM */
+  /* FORM COLUMN */
 
-  #forma-contact-{{ section.id }} .forma-contact__form {
-    width: 100%;
-    max-width: 760px;
-    margin: 0;
+  #forma-contact-{{ section.id }} .forma-contact__form-column {
+    min-width: 0;
+    padding-left: clamp(28px, 4.5vw, 68px);
+    border-left: 1px solid var(--fc-line);
   }
 
-  #forma-contact-{{ section.id }} .forma-contact__form-topline {
+  #forma-contact-{{ section.id }} .forma-contact__form-heading {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 25px;
-    padding-bottom: 13px;
+    gap: 20px;
+    padding: 0 0 20px;
     border-bottom: 1px solid var(--fc-line);
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__required {
     color: var(--fc-muted);
     font-size: 9px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-align: right;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__form {
+    margin-top: 12px;
   }
 
   #forma-contact-{{ section.id }} .forma-contact__fields {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 28px;
-    row-gap: 22px;
   }
 
   #forma-contact-{{ section.id }} .forma-contact__field {
     display: flex;
     flex-direction: column;
     min-width: 0;
-    gap: 8px;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__field--full {
-    grid-column: 1 / -1;
+    padding: 23px 0 0;
   }
 
   #forma-contact-{{ section.id }} .forma-contact__field label {
-    margin: 0;
-    color: var(--fc-muted);
-    font-size: 9px;
+    display: block;
+    margin-bottom: 13px;
+    color: var(--fc-text);
+    font-size: 10px;
     font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    line-height: 1.5;
   }
 
   #forma-contact-{{ section.id }} .forma-contact__field label span {
-    color: var(--fc-ink);
+    color: var(--fc-muted);
   }
 
   #forma-contact-{{ section.id }} .forma-contact__field input,
-  #forma-contact-{{ section.id }} .forma-contact__field textarea,
-  #forma-contact-{{ section.id }} .forma-contact__field select {
+  #forma-contact-{{ section.id }} .forma-contact__field textarea {
     display: block;
     width: 100%;
     min-width: 0;
     margin: 0;
-    padding: 12px 0;
+    padding: 0 0 16px;
     border: 0;
     border-bottom: 1px solid var(--fc-line);
     border-radius: 0;
     outline: none;
-    box-shadow: none;
     background: transparent;
-    color: var(--fc-ink);
-    font: inherit;
+    box-shadow: none;
+    color: var(--fc-text);
+    font-family: inherit;
     font-size: 13px;
-    line-height: 1.65;
-    transition: border-color .25s ease;
+    font-weight: 400;
+    line-height: 1.7;
+    transition: border-color 220ms ease;
   }
 
   #forma-contact-{{ section.id }} .forma-contact__field input {
-    min-height: 43px;
+    min-height: 42px;
   }
 
   #forma-contact-{{ section.id }} .forma-contact__field textarea {
-    min-height: 100px;
+    min-height: 155px;
+    padding-top: 2px;
     resize: vertical;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__field select {
-    min-height: 43px;
-    cursor: pointer;
   }
 
   #forma-contact-{{ section.id }} .forma-contact__field input::placeholder,
   #forma-contact-{{ section.id }} .forma-contact__field textarea::placeholder {
-    color: var(--fc-muted);
-    opacity: .8;
+    color: #999891;
+    opacity: 1;
   }
 
   #forma-contact-{{ section.id }} .forma-contact__field input:focus,
-  #forma-contact-{{ section.id }} .forma-contact__field textarea:focus,
-  #forma-contact-{{ section.id }} .forma-contact__field select:focus {
-    border-bottom-color: var(--fc-ink);
+  #forma-contact-{{ section.id }} .forma-contact__field textarea:focus {
+    border-bottom-color: var(--fc-text);
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__field--message {
+    grid-column: 1 / -1;
+    padding-top: 34px;
   }
 
   #forma-contact-{{ section.id }} .forma-contact__form-bottom {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
-    gap: 20px;
-    margin-top: 24px;
+    gap: 28px;
+    margin-top: 34px;
   }
 
-  #forma-contact-{{ section.id }} .forma-contact__privacy-note {
+  #forma-contact-{{ section.id }} .forma-contact__privacy {
     max-width: 300px;
     margin: 0;
     color: var(--fc-muted);
     font-size: 10px;
-    line-height: 1.7;
+    line-height: 1.8;
   }
+
+  /* SUBMIT BUTTON */
 
   #forma-contact-{{ section.id }} .forma-contact__submit {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    gap: 30px;
-    min-height: 50px;
-    padding: 0 18px;
-    border: 1px solid var(--fc-accent);
+    gap: 35px;
+    min-width: 230px;
+    min-height: 58px;
+    padding: 0 22px;
+    border: 1px solid var(--fc-text);
     border-radius: 0;
-    background: var(--fc-accent);
-    color: var(--fc-button-text);
-    font: inherit;
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
+    background: var(--fc-text);
+    color: #fff;
     cursor: pointer;
-    transition: background .25s ease, color .25s ease, border-color .25s ease;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    line-height: 1.4;
+    text-align: left;
+    text-transform: uppercase;
+    transition:
+      background 250ms ease,
+      color 250ms ease,
+      border-color 250ms ease;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__submit-arrow {
+    font-size: 21px;
+    font-weight: 300;
+    transition: transform 250ms ease;
   }
 
   #forma-contact-{{ section.id }} .forma-contact__submit:hover {
     background: transparent;
-    color: var(--fc-ink);
-    border-color: var(--fc-ink);
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__submit-arrow {
-    font-size: 16px;
-    transition: transform .25s ease;
+    color: var(--fc-text);
   }
 
   #forma-contact-{{ section.id }} .forma-contact__submit:hover .forma-contact__submit-arrow {
     transform: translate(3px, -3px);
   }
 
+  #forma-contact-{{ section.id }} .forma-contact__submit:focus-visible,
+  #forma-contact-{{ section.id }} .forma-contact__email:focus-visible {
+    outline: 2px solid var(--fc-text);
+    outline-offset: 5px;
+  }
+
   /* FORM FEEDBACK */
 
   #forma-contact-{{ section.id }} .forma-contact__notice {
     display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 24px;
-    padding: 17px;
+    gap: 14px;
+    margin: 0 0 20px;
+    padding: 18px;
     border: 1px solid var(--fc-line);
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.7;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__notice strong {
-    display: block;
-    margin-bottom: 5px;
   }
 
   #forma-contact-{{ section.id }} .forma-contact__notice p {
-    margin: 0;
+    margin: 4px 0 0;
+  }
+
+  #forma-contact-{{ section.id }} .forma-contact__notice--success {
+    background: rgba(255, 255, 255, 0.4);
   }
 
   #forma-contact-{{ section.id }} .forma-contact__notice--error {
-    border-color: #b54b42;
+    border-color: #b64a42;
   }
 
-  /* SIGNATURE */
-
-  #forma-contact-{{ section.id }} .forma-contact__signature {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 25px;
-    padding: 32px 0 24px;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__signature-wordmark {
-    font-size: clamp(80px, 14vw, 205px);
-    font-weight: 400;
-    line-height: .78;
-    letter-spacing: -.085em;
-  }
-
-  #forma-contact-{{ section.id }} .forma-contact__signature-caption {
-    max-width: 190px;
-    padding-bottom: 3px;
-    color: var(--fc-muted);
-    font-size: 9px;
-    line-height: 1.7;
-    letter-spacing: .1em;
-    text-align: right;
-    text-transform: uppercase;
+  #forma-contact-{{ section.id }} .forma-contact__notice-mark {
+    font-size: 17px;
   }
 
   /* TABLET */
 
   @media screen and (max-width: 900px) {
     #forma-contact-{{ section.id }} .forma-contact__inner {
-      padding-right: 4%;
-      padding-left: 4%;
-    }
-
-    #forma-contact-{{ section.id }} .forma-contact__intro-grid {
-      grid-template-columns: minmax(0, 1.2fr) minmax(210px, .8fr);
-      gap: 5%;
+      padding-top: 45px;
+      padding-bottom: 55px;
     }
 
     #forma-contact-{{ section.id }} .forma-contact__main {
-      grid-template-columns: minmax(190px, .7fr) minmax(0, 1.3fr);
-      gap: 5%;
+      grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+      gap: 32px;
+    }
+
+    #forma-contact-{{ section.id }} .forma-contact__form-column {
+      padding-left: 28px;
     }
 
     #forma-contact-{{ section.id }} .forma-contact__form-bottom {
-      align-items: flex-start;
+      align-items: stretch;
       flex-direction: column;
+      gap: 22px;
+    }
+
+    #forma-contact-{{ section.id }} .forma-contact__submit {
+      width: 100%;
     }
   }
 
   /* MOBILE */
 
-  @media screen and (max-width: 749px) {
+  @media screen and (max-width: 640px) {
     #forma-contact-{{ section.id }} .forma-contact__inner {
-      padding: 28px 20px 0;
-    }
-
-    #forma-contact-{{ section.id }} .forma-contact__intro-grid {
-      grid-template-columns: 1fr;
-      gap: 22px;
-      padding: 32px 0 25px;
-    }
-
-    #forma-contact-{{ section.id }} .forma-contact__headline {
-      font-size: clamp(55px, 13.5vw, 82px);
-      line-height: .9;
-    }
-
-    #forma-contact-{{ section.id }} .forma-contact__intro-copy p {
-      font-size: 13px;
-    }
-
-    #forma-contact-{{ section.id }} .forma-contact__meta {
-      flex-wrap: wrap;
-      font-size: 8px;
-    }
-
-    #forma-contact-{{ section.id }} .forma-contact__image {
-      height: 62vw;
-      min-height: 230px;
-      max-height: 400px;
+      padding: 28px 22px 42px;
     }
 
     #forma-contact-{{ section.id }} .forma-contact__main {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 38px;
-      padding: 42px 0 45px;
+      padding: 27px 0 36px;
     }
 
-    #forma-contact-{{ section.id }} .forma-contact__sidebar-heading {
-      margin-top: 22px;
-      font-size: 41px;
+    #forma-contact-{{ section.id }} .forma-contact__eyebrow {
+      margin-bottom: 32px;
+    }
+
+    #forma-contact-{{ section.id }} .forma-contact__title {
+      max-width: 100%;
+      margin-bottom: 18px;
+      font-size: clamp(43px, 12vw, 64px);
+    }
+
+    #forma-contact-{{ section.id }} .forma-contact__description {
+      max-width: 100%;
+      font-size: 13px;
     }
 
     #forma-contact-{{ section.id }} .forma-contact__email-block {
-      margin-top: 25px;
+      margin-top: 0;
+      padding-top: 32px;
     }
 
-    #forma-contact-{{ section.id }} .forma-contact__form-topline {
-      margin-bottom: 22px;
-      font-size: 8px;
+    #forma-contact-{{ section.id }} .forma-contact__note {
+      margin-top: 16px;
+    }
+
+    #forma-contact-{{ section.id }} .forma-contact__form-column {
+      padding: 28px 0 0;
+      border-top: 1px solid var(--fc-line);
+      border-left: 0;
+    }
+
+    #forma-contact-{{ section.id }} .forma-contact__form-heading {
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    #forma-contact-{{ section.id }} .forma-contact__required {
+      max-width: 120px;
+      line-height: 1.7;
     }
 
     #forma-contact-{{ section.id }} .forma-contact__fields {
-      grid-template-columns: 1fr;
-      row-gap: 21px;
+      grid-template-columns: minmax(0, 1fr);
+      column-gap: 0;
     }
 
-    #forma-contact-{{ section.id }} .forma-contact__field--full {
+    #forma-contact-{{ section.id }} .forma-contact__field {
+      padding-top: 25px;
+    }
+
+    #forma-contact-{{ section.id }} .forma-contact__field--message {
       grid-column: auto;
+      padding-top: 28px;
+    }
+
+    #forma-contact-{{ section.id }} .forma-contact__field textarea {
+      min-height: 125px;
     }
 
     #forma-contact-{{ section.id }} .forma-contact__form-bottom {
-      gap: 20px;
-      margin-top: 24px;
+      margin-top: 28px;
     }
 
     #forma-contact-{{ section.id }} .forma-contact__submit {
-      width: 100%;
-      min-height: 53px;
-    }
-
-    #forma-contact-{{ section.id }} .forma-contact__signature {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 17px;
-      padding: 28px 0 22px;
-    }
-
-    #forma-contact-{{ section.id }} .forma-contact__signature-wordmark {
-      font-size: 24vw;
-    }
-
-    #forma-contact-{{ section.id }} .forma-contact__signature-caption {
-      max-width: 240px;
-      text-align: left;
+      min-height: 56px;
     }
   }
 
@@ -827,288 +597,52 @@
     #forma-contact-{{ section.id }} *,
     #forma-contact-{{ section.id }} *::before,
     #forma-contact-{{ section.id }} *::after {
-      transition-duration: .01ms !important;
-      animation-duration: .01ms !important;
-      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
     }
   }
 </style>
-
 
 {% schema %}
 {
   "name": "FORMA Contact",
   "tag": "section",
   "class": "shopify-section--forma-contact",
-  "disabled_on": {
-    "groups": ["header", "custom.overlay"]
-  },
   "settings": [
-    {
-      "type": "header",
-      "content": "Introduction"
-    },
     {
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
-      "default": "We would love to hear from you"
-    },
-    {
-      "type": "textarea",
-      "id": "heading",
-      "label": "Main heading",
-      "default": "Every good thing starts somewhere."
-    },
-    {
-      "type": "textarea",
-      "id": "description",
-      "label": "Introduction text",
-      "default": "A question, a collaboration or an idea worth sharing. Whatever brings you here, there's a place for it at Forma."
+      "default": "YOUR MESSAGE"
     },
     {
       "type": "text",
-      "id": "intro_link_label",
-      "label": "Introduction link label",
-      "default": "Get in touch"
-    },
-    {
-      "type": "url",
-      "id": "intro_link",
-      "label": "Introduction link"
-    },
-    {
-      "type": "text",
-      "id": "location_label",
-      "label": "Location label",
-      "default": "Copenhagen, Denmark"
-    },
-    {
-      "type": "text",
-      "id": "meta_label",
-      "label": "Secondary label",
-      "default": "Scandinavia and beyond"
-    },
-    {
-      "type": "image_picker",
-      "id": "hero_image",
-      "label": "Editorial image"
-    },
-    {
-      "type": "text",
-      "id": "image_caption",
-      "label": "Image caption",
-      "default": "A considered world of brands and ideas"
-    },
-    {
-      "type": "header",
-      "content": "Contact information"
-    },
-    {
-      "type": "text",
-      "id": "form_label",
-      "label": "Form index label",
-      "default": "Your message"
-    },
-    {
-      "type": "textarea",
-      "id": "form_heading",
-      "label": "Form heading",
+      "id": "title",
+      "label": "Heading",
       "default": "What brings you to Forma?"
     },
     {
+      "type": "richtext",
+      "id": "description",
+      "label": "Introduction",
+      "default": "<p>Tell us a little about what you have in mind. Whether it is a question, a partnership or a creative idea, we are listening.</p>"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Contact email",
+      "default": "Customercare@formacopenhagen.com"
+    },
+    {
       "type": "textarea",
-      "id": "form_description",
-      "label": "Form description",
-      "default": "Tell us a little about what you have in mind. Whether it is a question, a partnership or a creative idea, we are listening."
-    },
-    {
-      "type": "text",
-      "id": "email_label",
-      "label": "Email label",
-      "default": "Prefer email?"
-    },
-    {
-      "type": "text",
-      "id": "response_note",
-      "label": "Response note",
+      "id": "email_note",
+      "label": "Email note",
       "default": "For questions about a product, delivery or return, please contact the brand you purchased from directly."
     },
     {
-      "type": "header",
-      "content": "Form labels"
-    },
-    {
       "type": "text",
-      "id": "form_topline",
-      "label": "Form top label",
-      "default": "Contact form"
-    },
-    {
-      "type": "text",
-      "id": "required_note",
-      "label": "Required fields note",
-      "default": "Required fields"
-    },
-    {
-      "type": "text",
-      "id": "name_placeholder",
-      "label": "Name placeholder",
-      "default": "Your full name"
-    },
-    {
-      "type": "text",
-      "id": "email_placeholder",
-      "label": "Email placeholder",
-      "default": "you@example.com"
-    },
-    {
-      "type": "text",
-      "id": "message_placeholder",
-      "label": "Message placeholder",
-      "default": "Tell us what is on your mind..."
-    },
-    {
-      "type": "text",
-      "id": "submit_label",
-      "label": "Submit button label",
-      "default": "Send your message"
-    },
-    {
-      "type": "text",
-      "id": "privacy_note",
-      "label": "Privacy note",
-      "default": "Your information will only be used to respond to your enquiry."
-    },
-    {
-      "type": "text",
-      "id": "success_heading",
-      "label": "Success heading",
-      "default": "Thank you for reaching out."
-    },
-    {
-      "type": "text",
-      "id": "error_heading",
-      "label": "Error heading",
-      "default": "Please check your details."
-    },
-    {
-      "type": "header",
-      "content": "Footer signature"
-    },
-    {
-      "type": "text",
-      "id": "signature_caption",
-      "label": "Signature caption",
-      "default": "A curated world of brands, places, stories and ideas."
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Theme color scheme",
-      "default": "scheme-1"
-    },
-    {
-      "type": "color",
-      "id": "surface_color",
-      "label": "Section background",
-      "default": "#F5F4F0"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Main text",
-      "default": "#191919"
-    },
-    {
-      "type": "color",
-      "id": "muted_color",
-      "label": "Secondary text",
-      "default": "#77756F"
-    },
-    {
-      "type": "color",
-      "id": "line_color",
-      "label": "Lines",
-      "default": "#D8D6D0"
-    },
-    {
-      "type": "color",
-      "id": "button_color",
-      "label": "Button background",
-      "default": "#191919"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color",
+      "id": "button_text",
       "label": "Button text",
-      "default": "#FFFFFF"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "text",
-      "name": "Custom text field",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Field label",
-          "default": "Company"
-        },
-        {
-          "type": "checkbox",
-          "id": "use_long_text",
-          "label": "Use multiline field",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "required",
-          "label": "Required",
-          "default": false
-        },
-        {
-          "type": "text",
-          "id": "placeholder",
-          "label": "Placeholder",
-          "default": "Enter your answer"
-        }
-      ]
-    },
-    {
-      "type": "dropdown",
-      "name": "Dropdown field",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Field label",
-          "default": "Enquiry type"
-        },
-        {
-          "type": "text",
-          "id": "values",
-          "label": "Options, separated by commas",
-          "default": "General enquiry,Brand partnership,Press and media,Other"
-        },
-        {
-          "type": "text",
-          "id": "placeholder",
-          "label": "Placeholder",
-          "default": "Choose a subject"
-        },
-        {
-          "type": "checkbox",
-          "id": "required",
-          "label": "Required",
-          "default": true
-        }
-      ]
+      "default": "SEND YOUR MESSAGE"
     }
   ],
   "presets": [
