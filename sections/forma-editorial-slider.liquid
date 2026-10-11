@@ -1156,55 +1156,48 @@
     }
 
     function goToNextSlide() {
-    if (slides.length <= 1 || isDragging) return;
+  if (slides.length <= 1 || isDragging) return;
 
-    const distance = getSlideDistance();
-    if (!distance) return;
+  const distance = getSlideDistance();
+  if (!distance) return;
 
-    const currentIndex = getCurrentSlideIndex();
-    const nextIndex = (currentIndex + 1) % slides.length;
+  const currentIndex = getCurrentSlideIndex();
+  const nextIndex = (currentIndex + 1) % slides.length;
 
-    const startPosition = track.scrollLeft;
-    const targetPosition = nextIndex * distance;
-    const distanceToTravel = targetPosition - startPosition;
+  const startPosition = track.scrollLeft;
+  const targetPosition = Math.min(
+    nextIndex * distance,
+    track.scrollWidth - track.clientWidth
+  );
 
-    const duration = 1400;
-    const startTime = performance.now();
+  const duration = 1400;
+  const startTime = performance.now();
 
-    // Prevent scroll-snap from interrupting the animation
-    const originalSnapType = track.style.scrollSnapType;
-    const originalScrollBehavior = track.style.scrollBehavior;
+  track.style.setProperty('scroll-snap-type', 'none', 'important');
+  track.style.setProperty('scroll-behavior', 'auto', 'important');
 
-    track.style.scrollSnapType = 'none';
-    track.style.scrollBehavior = 'auto';
+  function animate(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
 
-    function animateSlide(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
+    // Smooth cubic ease-in-out
+    const eased = progress < 0.5
+      ? 4 * progress * progress * progress
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
-        // Slow, elegant ease-in-out
-        const easedProgress =
-        0.5 - Math.cos(Math.PI * progress) / 2;
+    track.scrollLeft =
+      startPosition + (targetPosition - startPosition) * eased;
 
-        track.scrollLeft =
-        startPosition + distanceToTravel * easedProgress;
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      track.scrollLeft = targetPosition;
 
-        if (progress < 1) {
-        requestAnimationFrame(animateSlide);
-        } else {
-        track.scrollLeft = targetPosition;
-
-        requestAnimationFrame(() => {
-            track.style.scrollSnapType = originalSnapType;
-            track.style.scrollBehavior = originalScrollBehavior;
-        });
-        }
+      track.style.removeProperty('scroll-snap-type');
+      track.style.removeProperty('scroll-behavior');
     }
+  }
 
-  requestAnimationFrame(animateSlide);
-}
-
-  requestAnimationFrame(animateSlide);
+  requestAnimationFrame(animate);
 }
 
 
