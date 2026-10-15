@@ -12,11 +12,20 @@
     "main": {
       "type": "main-page",
       "disabled": true,
-      "settings": {}
+      "settings": {
+        "color_scheme": "",
+        "show_title": true,
+        "page_width": "xs"
+      }
     },
     "contact-form": {
       "type": "contact",
-      "settings": {}
+      "settings": {
+        "eyebrow": "WE WOULD LOVE TO HEAR FROM YOU",
+        "heading": "Every good thing starts with a conversation.",
+        "intro": "A question, a collaboration or an idea worth sharing. Whatever brings you here, there's a place for it at Forma.",
+        "contact_email": "Info@formacopenhagen.com"
+      }
     }
   },
   "order": [
