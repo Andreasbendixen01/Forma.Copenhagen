@@ -117,7 +117,11 @@
 
           {%- when 'vendor' -%}
             {%- if product != blank -%}
-              {%- render 'vendor' with product.vendor, class: 'h6 link-faded' -%}
+              
+            <div class="forma-brand-follow">
+              <div class="forma-brand-follow__name">
+                {%- render 'vendor' with product.vendor, class: 'h6 link-faded' -%}
+              </div>
 
               <button
                 type="button"
@@ -127,10 +131,10 @@
                 data-brand-handle="{{ product.vendor | handleize }}"
                 aria-pressed="false"
               >
-                <span data-forma-follow-label>
-                  + Follow brand
-                </span>
+                <span data-forma-follow-label>Follow brand</span>
               </button>
+            </div>
+
             
             {%- else -%}
               {%- assign placeholder_vendor = 'general.on_boarding.product_vendor' | t -%}
