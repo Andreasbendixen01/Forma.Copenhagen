@@ -170,15 +170,37 @@
   }
 }
 
-/* FORMA — tighter product gallery spacing */
+/* FORMA ‚Äî reduce the visible space between product gallery slides.
+   Keep the existing slide dimensions and image sizing unchanged. */
 @media screen and (min-width: 750px) {
-  .product-gallery__media-list {
-    column-gap: 4px !important;
-    gap: 4px !important;
+  #shopify-section-{{ section.id }} .product-gallery {
+    --product-gallery-gap: 4px !important;
+    --media-gallery-gap: 4px !important;
+    --carousel-gap: 4px !important;
   }
 
-  .product-gallery__media {
-    margin: 0 !important;
+  #shopify-section-{{ section.id }} .product-gallery__media-list {
+    gap: 4px !important;
+    column-gap: 4px !important;
+    grid-column-gap: 4px !important;
+    padding-inline: 0 !important;
+    scroll-padding-inline: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-gallery__media-list > *,
+  #shopify-section-{{ section.id }} .product-gallery__media {
+    margin-inline: 0 !important;
+    scroll-margin-inline: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-gallery__media {
+    padding-inline: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-gallery__media-list[style*="gap"],
+  #shopify-section-{{ section.id }} .product-gallery__media-list[style*="column-gap"] {
+    column-gap: 4px !important;
+    gap: 4px !important;
   }
 }
 
@@ -210,7 +232,7 @@
   }
 }
 
-/* FORMA WHY MODAL ‚Äö√Ñ√Æ the modal is moved to <body> by the script below,
+/* FORMA WHY MODAL ‚Äö√Ñ√∂‚àö√ë‚àö√Ü the modal is moved to <body> by the script below,
    so it is not clipped by the product info panel or its glass effect. */
 #forma-why-modal-portal.forma-score-card__details {
   position: fixed !important;
@@ -301,7 +323,7 @@
 }
 
 #forma-why-modal-portal .forma-score-card__reasons li::before {
-  content: "‚Äö√Ñ¬¢" !important;
+  content: "‚Äö√Ñ√∂‚àö√ë¬¨¬¢" !important;
   position: absolute !important;
   left: 2px !important;
   top: 0 !important;
@@ -327,7 +349,7 @@
   cursor: pointer !important;
 }
 #forma-why-modal-portal .forma-score-card__details-close::before {
-  content: "‚àö√≥" !important;
+  content: "‚Äö√†√∂‚àö‚â•" !important;
   font-family: Arial, sans-serif !important;
   font-size: 24px !important;
   font-weight: 300 !important;
@@ -354,7 +376,7 @@
     font-size: 22px !important;
   }
 }
-/* FORMA MATCH ‚Äö√Ñ√Æ independent full-screen explanation modal */
+/* FORMA MATCH ‚Äö√Ñ√∂‚àö√ë‚àö√Ü independent full-screen explanation modal */
 .forma-why-overlay {
   position: fixed !important;
   inset: 0 !important;
@@ -621,7 +643,7 @@ window.formaProduct = {
 
 
 <script>
-/* FORMA WHY ‚Äö√Ñ√Æ build a clean, independent modal. The gallery and slider are untouched. */
+/* FORMA WHY ‚Äö√Ñ√∂‚àö√ë‚àö√Ü build a clean, independent modal. The gallery and slider are untouched. */
 (function () {
   if (window.__formaWhyModalV3) return;
   window.__formaWhyModalV3 = true;
@@ -2447,5 +2469,6 @@ window.formaProduct = {
   ]
 }
 {% endschema %}
+
 
 
