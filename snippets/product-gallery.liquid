@@ -457,6 +457,65 @@
   }
 }
 
+/* =========================================================
+   FORMA — SLIDER CONTINUES BEHIND GLASS INFO PANEL
+   ========================================================= */
+
+@media screen and (min-width: 1000px) {
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto {
+    position: relative !important;
+    width: 100% !important;
+    max-width: none !important;
+    overflow: visible !important;
+    z-index: 1 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto
+  .product-gallery__image-list {
+    position: relative !important;
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto
+  .product-gallery__carousel {
+    position: relative !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-behavior: auto !important;
+    z-index: 1 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto
+  .product-gallery__media {
+    position: relative !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Keep the image and its media layers moving together */
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto
+  .product-gallery__media img,
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto
+  .product-gallery__media video,
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto
+  .product-gallery__media model-viewer {
+    transform: none !important;
+  }
+
+  /* Keep the glass panel above the moving gallery */
+  #shopify-section-{{ section.id }} .product-info {
+    z-index: 20 !important;
+    background: transparent !important;
+    isolation: isolate !important;
+    pointer-events: auto;
+  }
+
+  #shopify-section-{{ section.id }} .product-info::before {
+    z-index: -1 !important;
+    pointer-events: none !important;
+  }
+}
+
 </style>
 
 {%- comment -%}
