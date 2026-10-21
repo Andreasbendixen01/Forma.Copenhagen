@@ -1,25 +1,33 @@
 
-
 {% liquid
-  assign brand_name = product.vendor | default: 'Selected brand'
+  assign current_brand = blank
+  assign product_brand_name = product.vendor | strip | downcase
 
-  assign brand_story = product.metafields.custom.brand_story.value
-  assign brand_image = product.metafields.custom.brand_image.value
-  assign brand_url = product.metafields.custom.brand_url.value
+  for brand in shop.metaobjects.brand_profile.values
+    assign saved_brand_name = brand.brand_name.value | strip | downcase
 
-  if brand_image != blank
-    assign brand_image_url = brand_image | image_url: width: 1800
+    if saved_brand_name == product_brand_name
+      assign current_brand = brand
+      break
+    endif
+  endfor
+
+  if current_brand != blank
+    assign brand_name = current_brand.brand_name.value
+    assign brand_story = current_brand.brand_story.value
+    assign brand_image = current_brand.brand_image.value
+    assign brand_url = current_brand.brand_url.value
+    assign section_heading = 'Inside ' | append: brand_name
   endif
-
-  assign section_heading = 'Inside ' | append: brand_name
 %}
 
-
+{% if current_brand != blank %}
 <section
   id="forma-explore-brand-{{ section.id }}"
   class="forma-editorial-brand"
   aria-label="Explore {{ brand_name | escape }}"
 >
+
   <div class="forma-editorial-brand__topline">
     <span class="forma-editorial-brand__eyebrow">THE FORMA BRAND FILE</span>
     <span class="forma-editorial-brand__index">01 — BRAND PROFILE</span>
