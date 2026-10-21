@@ -1,4 +1,102 @@
 
+{% liquid
+  assign brand_name = product.vendor | default: 'Selected brand'
+  assign brand_story = product.metafields.custom.brand_story.value
+  assign brand_image = product.metafields.custom.brand_image.value
+  assign brand_url = product.metafields.custom.brand_url.value
+
+  if brand_image == blank
+    assign brand_image = product.featured_image
+  endif
+
+  if brand_url == blank
+    assign brand_url = routes.collections_url | append: '/vendors?q=' | append: brand_name | url_encode
+  endif
+
+  if brand_story == blank
+    assign brand_story = 'Discover the design philosophy, distinctive details and creative perspective behind ' | append: brand_name | append: '.'
+  endif
+
+  assign section_heading = 'Inside ' | append: brand_name
+%}
+
+<section
+  id="forma-explore-brand-{{ section.id }}"
+  class="forma-editorial-brand"
+  aria-label="Explore {{ brand_name | escape }}"
+>
+  <div class="forma-editorial-brand__topline">
+    <span class="forma-editorial-brand__eyebrow">THE FORMA BRAND FILE</span>
+    <span class="forma-editorial-brand__index">01 — BRAND PROFILE</span>
+  </div>
+
+  <div class="forma-editorial-brand__layout">
+
+    <div class="forma-editorial-brand__visual">
+      {% if brand_image != blank %}
+        {{
+          brand_image
+          | image_url: width: 1800
+          | image_tag:
+            class: 'forma-editorial-brand__image',
+            widths: '600, 900, 1200, 1500, 1800',
+            sizes: '(max-width: 749px) 100vw, 58vw',
+            loading: 'lazy',
+            alt: brand_name
+        }}
+      {% endif %}
+
+      <span class="forma-editorial-brand__image-caption">
+        DISCOVERED BY FORMA
+      </span>
+    </div>
+
+    <div class="forma-editorial-brand__content">
+      <div class="forma-editorial-brand__content-inner">
+
+        <p class="forma-editorial-brand__kicker">
+          A CLOSER LOOK AT THE BRAND
+        </p>
+
+        <h2 class="forma-editorial-brand__title">
+          {{ section_heading | escape }}
+          <span class="forma-editorial-brand__period">.</span>
+        </h2>
+
+        <div class="forma-editorial-brand__rule"></div>
+
+        <p class="forma-editorial-brand__story">
+          {{ brand_story | escape }}
+        </p>
+
+        <div class="forma-editorial-brand__footer">
+          <span class="forma-editorial-brand__footer-label">
+            THE PEOPLE. THE PERSPECTIVE. THE DESIGN.
+          </span>
+
+          <a
+            class="forma-editorial-brand__link"
+            href="{{ brand_url }}"
+            aria-label="Explore the {{ brand_name | escape }} brand"
+          >
+            <span>EXPLORE THE BRAND</span>
+            <span class="forma-editorial-brand__arrow" aria-hidden="true">
+              &rarr;
+            </span>
+          </a>
+        </div>
+
+      </div>
+
+      <span class="forma-editorial-brand__watermark" aria-hidden="true">
+        F.
+      </span>
+    </div>
+
+  </div>
+</section>
+
+
 #shopify-section-{{ section.id }} .forma-editorial-brand {
   --feb-ink: #20201d;
   --feb-paper: #efeee9;
@@ -254,3 +352,16 @@
     transition: none;
   }
 }
+
+
+{% schema %}
+{
+  "name": "Explore the brand",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Explore the brand"
+    }
+  ]
+}
+{% endschema %}
