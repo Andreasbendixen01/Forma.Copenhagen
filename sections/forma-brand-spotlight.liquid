@@ -1,12 +1,10 @@
-{% liquid
-  assign brand_name = product.vendor | default: section.settings.fallback_brand_name
-  assign brand_story = product.metafields.custom.brand_story.value | default: section.settings.brand_story
-  assign brand_image = product.metafields.custom.brand_image.value | default: section.settings.brand_image | default: product.featured_media.preview_image
-  assign brand_link = product.metafields.custom.brand_link.value | default: section.settings.brand_link
-  if brand_link == blank and product.vendor != blank
-    assign brand_link = routes.all_products_collection_url | append: '?filter.p.vendor=' | append: product.vendor | url_encode
-  endif
-%}
+{% assign brand_name = product.vendor | default: section.settings.fallback_brand_name %}
+{% assign brand_story = product.metafields.custom.brand_story.value | default: section.settings.brand_story %}
+{% assign brand_image = product.metafields.custom.brand_image.value | default: section.settings.brand_image | default: product.featured_media.preview_image %}
+{% assign brand_link = product.metafields.custom.brand_link.value | default: section.settings.brand_link %}
+{% if brand_link == blank and product.vendor != blank %}
+  {% assign brand_link = routes.all_products_collection_url | append: '?filter.p.vendor=' | append: product.vendor | url_encode %}
+{% endif %}
 {% if brand_name != blank %}
 <section class="forma-brand-spotlight section-spacing" id="forma-brand-{{ section.id }}">
   <div class="forma-brand-spotlight__inner">
@@ -19,7 +17,7 @@
       <p class="forma-brand-spotlight__eyebrow">THE BRAND</p>
       <h2 class="forma-brand-spotlight__title">Explore {{ brand_name | escape }}</h2>
       {% if brand_story != blank %}
-        <div class="forma-brand-spotlight__story rte">{{ brand_story | metafield_tag }}</div>
+        <div class="forma-brand-spotlight__story rte">{{ brand_story }}</div>
       {% else %}
         <p class="forma-brand-spotlight__story">Discover the world of {{ brand_name | escape }} ‚Äî its point of view, signature style and the pieces that define the brand.</p>
       {% endif %}

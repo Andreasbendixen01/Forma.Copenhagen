@@ -19,14 +19,11 @@
     },
     "forma-brand-spotlight": {
       "type": "forma-brand-spotlight",
-      "settings": { "fallback_brand_name": 
-      "The brand", "brand_story": 
-      "<p>A closer look at the people, perspective and design language behind the brand.</p>" }
+      "settings": { "fallback_brand_name": "The brand", "brand_story": "<p>A closer look at the people, perspective and design language behind the brand.</p>" }
     },
     "related-products": {
       "type": "related-products",
-      "settings": { "color_scheme": "", 
-      "separate_section_with_border": true, "hide_product_information": false, "stack_products": true, "recommendations_count": 10, "products_per_row_mobile": "2", "products_per_row_desktop": 4, "horizontal_spacing_factor": 0.2, "vertical_spacing_factor": 0.2, "subheading": "", "title": "", "content": "" }
+      "settings": { "color_scheme": "", "separate_section_with_border": true, "hide_product_information": false, "stack_products": true, "recommendations_count": 10, "products_per_row_mobile": "2", "products_per_row_desktop": 4, "horizontal_spacing_factor": 0.2, "vertical_spacing_factor": 0.2, "subheading": "", "title": "", "content": "" }
     }
   },
   "order": ["main", "forma-brand-spotlight", "related-products"]
