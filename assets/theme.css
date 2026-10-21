@@ -10711,49 +10711,49 @@ section[id*="blog_posts"] .section-stack {
 }
 
 
+
 /* =========================================================
-   FORMA — REFINED FOLLOW BRAND
-   Rounded, minimal and editorial
+   FORMA — EDITORIAL FOLLOW BRAND
    ========================================================= */
 
+/* Button */
 .forma-follow-brand {
-  display: inline-flex;
+  display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 8px;
 
+  width: fit-content;
   min-height: 34px;
-  padding: 7px 14px;
+  margin: 10px 0 0 !important;
+  padding: 7px 13px;
 
-  border: 1px solid rgba(25, 25, 25, 0.22);
-  border-radius: 999px;
+  border: 1px solid rgba(30, 30, 30, 0.25);
+  border-radius: 100px;
 
-  background: rgba(255, 255, 255, 0.22);
-  color: #202020;
+  background: rgba(255, 255, 255, 0.18);
+  color: #252525;
 
-  font-family: inherit;
+  font: inherit;
   font-size: 9px;
   font-weight: 600;
   line-height: 1;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-
   white-space: nowrap;
+
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 
   transition:
-    background-color 220ms ease,
-    color 220ms ease,
-    border-color 220ms ease,
-    box-shadow 220ms ease,
-    transform 220ms ease;
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease;
 }
 
-/* Circular plus marker */
+/* Plus icon */
 .forma-follow-brand [data-forma-follow-label]::before {
   content: "+";
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -10768,76 +10768,49 @@ section[id*="blog_posts"] .section-stack {
   font-size: 12px;
   font-weight: 400;
   line-height: 1;
-  vertical-align: middle;
-
-  transition:
-    transform 220ms ease,
-    background-color 220ms ease,
-    color 220ms ease;
 }
 
-/* Refined hover */
+/* Hover */
 .forma-follow-brand:hover {
-  background: #202020;
-  border-color: #202020;
-  color: #ffffff;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  background: #242424;
+  border-color: #242424;
+  color: #fff;
 }
 
-.forma-follow-brand:hover
-[data-forma-follow-label]::before {
-  transform: rotate(90deg);
-}
-
-/* Followed state */
+/* Following state */
 .forma-follow-brand[aria-pressed="true"] {
-  background: #202020;
-  border-color: #202020;
-  color: #ffffff;
+  background: #242424;
+  border-color: #242424;
+  color: #fff;
 }
 
 .forma-follow-brand[aria-pressed="true"]
 [data-forma-follow-label]::before {
   content: "✓";
   font-size: 10px;
-  transform: none;
 }
 
-/* Accessible keyboard focus */
+/* Keyboard focus */
 .forma-follow-brand:focus-visible {
-  outline: 2px solid #202020;
+  outline: 2px solid currentColor;
   outline-offset: 3px;
 }
 
-/* Brand row: allow the button to sit neatly beside the vendor */
-.product-info .forma-follow-brand {
-  margin-top: 5px;
-  vertical-align: middle;
-}
-
-/* Mobile sizing */
+/* Mobile */
 @media screen and (max-width: 749px) {
   .forma-follow-brand {
     min-height: 32px;
     padding: 6px 11px;
-    gap: 6px;
     font-size: 8px;
-  }
-
-  .forma-follow-brand [data-forma-follow-label]::before {
-    width: 15px;
-    height: 15px;
-    margin-right: 5px;
   }
 }
 
-/* Respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .forma-follow-brand,
-  .forma-follow-brand [data-forma-follow-label]::before {
+  .forma-follow-brand {
     transition: none;
   }
 }
+
 
 
 
