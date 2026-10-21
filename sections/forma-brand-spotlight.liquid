@@ -1,24 +1,19 @@
 
+
 {% liquid
   assign brand_name = product.vendor | default: 'Selected brand'
+
   assign brand_story = product.metafields.custom.brand_story.value
   assign brand_image = product.metafields.custom.brand_image.value
   assign brand_url = product.metafields.custom.brand_url.value
 
-  if brand_image == blank
-    assign brand_image = product.featured_image
-  endif
-
-  if brand_url == blank
-    assign brand_url = routes.collections_url | append: '/vendors?q=' | append: brand_name | url_encode
-  endif
-
-  if brand_story == blank
-    assign brand_story = 'Discover the design philosophy, distinctive details and creative perspective behind ' | append: brand_name | append: '.'
+  if brand_image != blank
+    assign brand_image_url = brand_image | image_url: width: 1800
   endif
 
   assign section_heading = 'Inside ' | append: brand_name
 %}
+
 
 <section
   id="forma-explore-brand-{{ section.id }}"
@@ -32,24 +27,28 @@
 
   <div class="forma-editorial-brand__layout">
 
+    
     <div class="forma-editorial-brand__visual">
-      {% if brand_image != blank %}
+    {% if brand_image != blank %}
         {{
-          brand_image
-          | image_url: width: 1800
-          | image_tag:
+        brand_image
+        | image_url: width: 1800
+        | image_tag:
             class: 'forma-editorial-brand__image',
             widths: '600, 900, 1200, 1500, 1800',
-            sizes: '(max-width: 749px) 100vw, 58vw',
+            sizes: '(max-width: 749px) 100vw, 45vw',
             loading: 'lazy',
             alt: brand_name
         }}
-      {% endif %}
+    {% endif %}
 
-      <span class="forma-editorial-brand__image-caption">
+    {% if brand_image != blank %}
+        <span class="forma-editorial-brand__image-caption">
         DISCOVERED BY FORMA
-      </span>
+        </span>
+    {% endif %}
     </div>
+
 
     <div class="forma-editorial-brand__content">
       <div class="forma-editorial-brand__content-inner">
@@ -66,7 +65,7 @@
         <div class="forma-editorial-brand__rule"></div>
 
         <p class="forma-editorial-brand__story">
-          {{ brand_story | escape }}
+          {{ brand_story | metafield_tag }}
         </p>
 
         <div class="forma-editorial-brand__footer">
@@ -74,23 +73,23 @@
             THE PEOPLE. THE PERSPECTIVE. THE DESIGN.
           </span>
 
-          <a
+          
+        {% if brand_url != blank %}
+        <a
             class="forma-editorial-brand__link"
-            href="{{ brand_url }}"
+            href="{{ brand_url | escape }}"
             aria-label="Explore the {{ brand_name | escape }} brand"
-          >
+        >
             <span>EXPLORE THE BRAND</span>
             <span class="forma-editorial-brand__arrow" aria-hidden="true">
-              &rarr;
+            &rarr;
             </span>
-          </a>
+        </a>
+        {% endif %}
+
         </div>
 
       </div>
-
-      <span class="forma-editorial-brand__watermark" aria-hidden="true">
-        F.
-      </span>
     </div>
 
   </div>
