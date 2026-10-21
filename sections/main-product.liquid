@@ -191,151 +191,140 @@
   }
 }
 
-/* WHY modal ‚Äî full viewport overlay, independent of the glass product panel. */
-#shopify-section-{{ section.id }} .product-info:has(.forma-score-card__details:not([hidden])) {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
+/* FORMA ‚Äî Why modal. Keep it independent from the product panel and gallery. */
 #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) {
   position: fixed !important;
   inset: 0 !important;
-  z-index: 99999 !important;
+  z-index: 2147483000 !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: center !important;
   align-items: center !important;
+  justify-content: center !important;
   gap: 0 !important;
-  box-sizing: border-box !important;
   width: 100vw !important;
-  max-width: 100vw !important;
+  max-width: none !important;
   height: 100vh !important;
   height: 100dvh !important;
   max-height: 100dvh !important;
+  margin: 0 !important;
+  padding: 24px !important;
+  box-sizing: border-box !important;
   overflow-y: auto !important;
-  padding: 24px 20px !important;
-  background: rgba(18, 18, 18, .62) !important;
-  backdrop-filter: blur(7px) !important;
-  -webkit-backdrop-filter: blur(7px) !important;
+  overflow-x: hidden !important;
+  background: transparent !important;
   isolation: isolate !important;
 }
 
-/* One clean, centered panel behind both the heading and the reasons. */
 #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden])::before {
   content: "" !important;
   position: fixed !important;
+  inset: 0 !important;
   z-index: -1 !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  width: min(620px, calc(100vw - 40px)) !important;
-  height: auto !important;
-  min-height: 180px !important;
-  max-height: calc(100dvh - 48px) !important;
-  background: #f8f7f4 !important;
-  border-radius: 14px !important;
-  box-shadow: 0 24px 80px rgba(0,0,0,.24) !important;
-  pointer-events: none !important;
+  background: rgba(18, 18, 18, .58) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
 }
 
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) > * {
-  position: relative !important;
-  z-index: 1 !important;
-  width: min(100%, 620px) !important;
-  max-width: 620px !important;
-  box-sizing: border-box !important;
-  padding: 18px 28px !important;
+#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-header,
+#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons {
+  display: block !important;
+  flex: 0 0 auto !important;
+  width: min(100%, 560px) !important;
+  max-width: 560px !important;
   margin: 0 !important;
-  background: transparent !important;
+  padding: 22px 26px !important;
+  box-sizing: border-box !important;
+  background: #fff !important;
   color: #171717 !important;
-  border: 0 !important;
+  text-align: left !important;
   box-shadow: none !important;
 }
 
 #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-header {
-  flex: 0 0 auto !important;
+  position: relative !important;
+  border: 0 !important;
   border-radius: 14px 14px 0 0 !important;
   padding-top: 30px !important;
-  padding-bottom: 8px !important;
+  padding-bottom: 12px !important;
 }
 
 #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-title {
-  margin: 0 44px 10px 0 !important;
+  margin: 0 42px 10px 0 !important;
   color: #171717 !important;
-  font-size: clamp(24px, 2.2vw, 32px) !important;
-  line-height: 1.15 !important;
-  font-weight: 500 !important;
-  letter-spacing: -.025em !important;
+  font-size: 22px !important;
+  line-height: 1.25 !important;
+  font-weight: 600 !important;
 }
 
 #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-description {
   margin: 0 !important;
-  color: #66635f !important;
+  color: #555 !important;
   font-size: 14px !important;
   line-height: 1.65 !important;
 }
 
 #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons {
-  flex: 0 1 auto !important;
-  min-height: 0 !important;
-  overflow-y: auto !important;
-  margin: 0 !important;
-  padding: 8px 28px 30px !important;
-  list-style: none !important;
+  border: 0 !important;
   border-radius: 0 0 14px 14px !important;
+  padding-top: 8px !important;
+  padding-bottom: 28px !important;
+  color: #252525 !important;
+  font-size: 14px !important;
+  line-height: 1.65 !important;
+  list-style: none !important;
 }
 
 #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons li {
-  padding: 14px 0 !important;
-  margin: 0 !important;
-  border-bottom: 1px solid rgba(23,23,23,.12) !important;
-  color: #292825 !important;
-  font-size: 15px !important;
-  line-height: 1.65 !important;
-  overflow-wrap: anywhere !important;
+  position: relative !important;
+  margin: 0 0 12px !important;
+  padding-left: 22px !important;
 }
 
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons li:last-child {
-  border-bottom: 0 !important;
-}
-
-#shopify-section-{{ section.id }} .forma-score-card__details-close {
+#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons li::before {
+  content: "‚Ä¢" !important;
   position: absolute !important;
-  top: 20px !important;
-  right: max(24px, calc((100vw - 620px) / 2 + 22px)) !important;
-  z-index: 5 !important;
-  display: grid !important;
-  place-items: center !important;
-  width: 38px !important;
-  height: 38px !important;
-  border: 1px solid rgba(23,23,23,.18) !important;
-  border-radius: 50% !important;
-  background: #f8f7f4 !important;
+  left: 2px !important;
+  top: 0 !important;
   color: #171717 !important;
-  font-size: 25px !important;
+}
+
+#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-close {
+  position: absolute !important;
+  top: 18px !important;
+  right: 20px !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border: 1px solid #dedbd5 !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  color: #171717 !important;
+  font-size: 23px !important;
   line-height: 1 !important;
   cursor: pointer !important;
 }
 
 #shopify-section-{{ section.id }} .forma-score-card__toggle {
-  cursor: pointer;
-  text-underline-offset: 3px;
+  cursor: pointer !important;
+  text-underline-offset: 3px !important;
 }
 
-@media screen and (max-width: 699px) {
+@media screen and (max-width: 600px) {
   #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) {
-    padding: 16px 12px !important;
+    padding: 16px !important;
   }
-  #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) > * {
+
+  #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-header,
+  #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons {
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
-  #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons {
-    padding-bottom: 22px !important;
-  }
-  #shopify-section-{{ section.id }} .forma-score-card__details-close {
-    top: 12px !important;
-    right: 20px !important;
+
+  #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-title {
+    font-size: 19px !important;
   }
 }
 </style>
