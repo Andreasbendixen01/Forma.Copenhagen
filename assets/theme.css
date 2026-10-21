@@ -10772,21 +10772,8 @@ section[id*="blog_posts"] .section-stack {
 
 /* Small outlined plus */
 .forma-follow-brand [data-forma-follow-label]::before {
-  content: "+";
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 16px;
-  height: 16px;
-  margin-right: 6px;
-
-  border: 1px solid currentColor;
-  border-radius: 50%;
-
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 1;
+  content: none !important;
+  display: none !important;
 }
 
 /* Hover */
