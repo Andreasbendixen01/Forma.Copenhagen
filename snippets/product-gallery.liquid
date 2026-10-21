@@ -516,6 +516,28 @@
   }
 }
 
+
+/* =========================================================
+   FORMA — HIDE GALLERY THUMBNAILS AND COUNTER
+   ========================================================= */
+
+/* Hide thumbnail images below the main gallery */
+#shopify-section-main-product .product-gallery__thumbnail-list,
+.product-gallery .product-gallery__thumbnail-list {
+  display: none !important;
+}
+
+/* Hide the image counter and progress indicator */
+.product-gallery .forma-gallery-meta,
+.product-gallery .forma-gallery-counter,
+.product-gallery .forma-gallery-progress,
+.product-gallery [class*="forma-gallery-meta"],
+.product-gallery [class*="forma-gallery-counter"],
+.product-gallery [class*="forma-gallery-progress"] {
+  display: none !important;
+}
+
+
 </style>
 
 {%- comment -%}
