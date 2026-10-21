@@ -433,7 +433,7 @@
                   class="forma-score-card__value"
                   data-forma-score-value
                 >
-                  —
+                  ‚Äî
                 </span>
 
                 <span class="forma-score-card__percentage">
@@ -470,6 +470,13 @@
             hidden
           >
             <div class="forma-score-card__details-header">
+              <button
+                type="button"
+                class="forma-score-card__details-close"
+                data-forma-score-close
+                aria-label="Close explanation"
+              >√ó</button>
+
               <p class="forma-score-card__details-title">
                 Why it matches you
               </p>
@@ -709,4 +716,38 @@
       <input type="hidden" disabled name="id" value="{{ product.selected_or_first_available_variant.id }}">
     {%- endform -%}
   {%- endunless -%}
-</safe-sticky>
+
+<script>
+  (() => {
+    if (window.formaWhyModalInitialized) return;
+    window.formaWhyModalInitialized = true;
+
+    document.addEventListener('click', (event) => {
+      const closeButton = event.target.closest('[data-forma-score-close]');
+      if (closeButton) {
+        const card = closeButton.closest('[data-forma-score-card]');
+        const toggle = card && card.querySelector('[data-forma-score-toggle]');
+        if (toggle) toggle.click();
+        return;
+      }
+
+      const openDetails = event.target.closest('.forma-score-card__details:not([hidden])');
+      if (openDetails && event.target === openDetails) {
+        const card = openDetails.closest('[data-forma-score-card]');
+        const toggle = card && card.querySelector('[data-forma-score-toggle]');
+        if (toggle) toggle.click();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      const details = document.querySelector('.forma-score-card__details:not([hidden])');
+      if (!details) return;
+      const card = details.closest('[data-forma-score-card]');
+      const toggle = card && card.querySelector('[data-forma-score-toggle]');
+      if (toggle) toggle.click();
+    });
+  })();
+</script>
+\n</safe-sticky>
+

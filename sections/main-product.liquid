@@ -51,98 +51,60 @@
 
   
 /* ============================================================
-   FORMA — PRODUCT GALLERY + GLASS INFO
-   Aligned gallery, compact panel, readable content
+   FORMA ‚Äî PRODUCT PAGE LAYOUT
+   Keep the existing product-gallery snippet and slider untouched.
    ============================================================ */
 
 @media screen and (min-width: 1000px) {
-
-  /* Main product wrapper */
   #shopify-section-{{ section.id }} .product {
     position: relative !important;
     display: block !important;
     width: 100% !important;
   }
 
-  /* Gallery — preserve the working slider */
+  /* Gallery sizing only: no slider/carousel rules or JavaScript changed. */
   #shopify-section-{{ section.id }} .product-gallery {
     position: relative !important;
     display: block !important;
     width: 100% !important;
     max-width: none !important;
-
-    height: clamp(700px, calc(100vh - 140px), 920px) !important;
-    min-height: 700px !important;
-    max-height: 920px !important;
-
-    overflow: hidden !important;
+    height: clamp(680px, calc(100vh - 150px), 900px) !important;
+    min-height: 680px !important;
+    max-height: 900px !important;
     z-index: 1 !important;
   }
 
-  #shopify-section-{{ section.id }} .product-gallery__image-list,
-  #shopify-section-{{ section.id }} .product-gallery__carousel {
-    width: 100% !important;
-    height: 100% !important;
-    overflow: hidden !important;
-  }
-
-  /* Glass information panel */
   #shopify-section-{{ section.id }} .product-info {
     position: absolute !important;
     top: 0 !important;
     right: calc((100vw - 100%) / -2) !important;
     bottom: auto !important;
-
     width: min(39vw, 590px) !important;
-    height: clamp(700px, calc(100vh - 140px), 920px) !important;
-    min-height: 700px !important;
-    max-height: 920px !important;
-
+    height: clamp(680px, calc(100vh - 150px), 900px) !important;
+    min-height: 680px !important;
+    max-height: 900px !important;
     box-sizing: border-box !important;
-    padding: clamp(20px, 2vw, 32px) !important;
-
-    background: transparent !important;
-    background-color: transparent !important;
+    padding: 24px 28px !important;
+    background: rgba(225, 224, 221, 0.78) !important;
     background-image: none !important;
-
     border: 0 !important;
-    border-left: 1px solid rgba(255, 255, 255, 0.22) !important;
-    box-shadow: -15px 0 45px rgba(0, 0, 0, 0.035) !important;
-
+    border-left: 1px solid rgba(255,255,255,.55) !important;
+    box-shadow: -15px 0 45px rgba(0,0,0,.035) !important;
+    backdrop-filter: blur(24px) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(115%) !important;
     isolation: isolate !important;
-    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
     z-index: 20 !important;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,.25) transparent;
   }
 
-  /* Glass layer */
-  #shopify-section-{{ section.id }} .product-info::before {
-    content: "" !important;
-    position: absolute !important;
-    inset: 0 !important;
-    z-index: -1 !important;
-
-    background: rgba(105, 105, 103, 0.28) !important;
-    backdrop-filter: blur(26px) saturate(115%) !important;
-    -webkit-backdrop-filter: blur(26px) saturate(115%) !important;
-
-    pointer-events: none !important;
-  }
-
-  /* Keep panel content above the glass */
-  #shopify-section-{{ section.id }} .product-info > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  /*
-   * Compact spacing to fit product details,
-   * FORMA Match and purchase controls more comfortably.
-   */
   #shopify-section-{{ section.id }} .product-info__block-list {
     display: flex !important;
     flex-direction: column !important;
     gap: 12px !important;
-
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
@@ -152,159 +114,30 @@
     margin-block: 0 !important;
   }
 
-  /* More readable product description */
-  #shopify-section-{{ section.id }} .product-info .prose {
-    color: #202020 !important;
-    font-size: 13px !important;
-    line-height: 1.6 !important;
-    letter-spacing: 0.005em;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .prose p {
-    margin-block: 0 10px !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .prose ul,
-  #shopify-section-{{ section.id }} .product-info .prose ol {
-    margin-block: 8px !important;
-    padding-inline-start: 18px !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .prose li {
-    margin-block: 4px !important;
-  }
-
-  /* Header remains above the gallery */
-  .header,
-  .shopify-section-group-header-group,
-  #shopify-section-header,
-  header {
-    position: relative !important;
-    z-index: 100 !important;
-  }
-
-  /* Gallery controls remain functional */
-  #shopify-section-{{ section.id }} .product-gallery carousel-navigation {
-    position: relative !important;
-    z-index: 10 !important;
-  }
-}
-
-/* Mobile and tablet — natural layout */
-@media screen and (max-width: 999px) {
-  #shopify-section-{{ section.id }} .product-info {
-    position: relative !important;
-    inset: auto !important;
-    width: 100% !important;
-
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-
-    overflow: visible !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info__block-list {
-    height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .prose {
-    font-size: 14px !important;
-    line-height: 1.7 !important;
-  }
-}
-
-
-  @media screen and (min-width: 1000px) {
-    #shopify-section-{{ section.id }} {
-      {%- if has_content_below_gallery -%}
-        --product-grid: "product-gallery product-info" auto "product-content product-info" minmax(0, 1fr) / minmax(0, {{ 100.0 | minus: product_info_size | divided_by: 100.0 }}fr) minmax(0, {{ product_info_size | divided_by: 100.0 }}fr);
-      {%- else -%}
-        --product-grid: "product-gallery product-info" / minmax(0, {{ 100.0 | minus: product_info_size | divided_by: 100.0 }}fr) minmax(0, {{ product_info_size | divided_by: 100.0 }}fr);
-      {%- endif -%}
-    }
-  }
-
-
-
-
-/* ============================================================
-   FORMA — PRODUCT PANEL FINAL LAYOUT OVERRIDE
-   Keep product information and purchase buttons together
-   ============================================================ */
-
-@media screen and (min-width: 1000px) {
-
-  /* Keep gallery and panel aligned */
-  #shopify-section-{{ section.id }} .product-gallery {
-    height: clamp(680px, calc(100vh - 150px), 900px) !important;
-    min-height: 680px !important;
-    max-height: 900px !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info {
-    top: 0 !important;
-    height: clamp(680px, calc(100vh - 150px), 900px) !important;
-    min-height: 680px !important;
-    max-height: 900px !important;
-
-    padding: 22px 28px !important;
-    box-sizing: border-box !important;
-
-    /*
-     * Do not clip the Why? details.
-     * Content spacing is tightened below.
-     */
-    overflow: visible !important;
-  }
-
-  /* Compact vertical rhythm */
-  #shopify-section-{{ section.id }} .product-info__block-list {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 9px !important;
-
-    height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info__block-item {
-    margin-block: 0 !important;
-  }
-
-  /* Reduce oversized spacing around the product title */
   #shopify-section-{{ section.id }} .product-info .product-title {
     margin-block: 0 6px !important;
     line-height: 1.15 !important;
   }
 
-  /* More compact but readable product description */
   #shopify-section-{{ section.id }} .product-info .prose {
-    font-size: 12.5px !important;
-    line-height: 1.5 !important;
     color: #202020 !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    letter-spacing: .005em;
   }
 
   #shopify-section-{{ section.id }} .product-info .prose p {
-    margin-block: 0 7px !important;
+    margin-block: 0 9px !important;
   }
 
   #shopify-section-{{ section.id }} .product-info .prose ul,
   #shopify-section-{{ section.id }} .product-info .prose ol {
-    margin-block: 6px !important;
-    padding-inline-start: 16px !important;
+    margin-block: 7px !important;
+    padding-inline-start: 18px !important;
   }
 
   #shopify-section-{{ section.id }} .product-info .prose li {
-    margin-block: 3px !important;
-  }
-
-  /* Keep FORMA Match and buy buttons within the same block */
-  #shopify-section-{{ section.id }} .forma-score-card {
-    margin-block: 8px !important;
+    margin-block: 4px !important;
   }
 
   #shopify-section-{{ section.id }} .product-info .buy-buttons,
@@ -316,21 +149,93 @@
     min-height: 44px !important;
   }
 
-  /* Ensure Why? details appear above nearby content */
-  #shopify-section-{{ section.id }} .forma-score-card {
-    position: relative;
-    z-index: 30;
+  .header,
+  .shopify-section-group-header-group,
+  #shopify-section-header,
+  header {
+    position: relative !important;
+    z-index: 100 !important;
   }
 
-  #shopify-section-{{ section.id }} .forma-score-card__details {
-    position: relative;
-    z-index: 31;
+  #shopify-section-{{ section.id }} .product-gallery carousel-navigation {
+    position: relative !important;
+    z-index: 10 !important;
   }
 }
 
+@media screen and (max-width: 999px) {
+  #shopify-section-{{ section.id }} .product-info {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 22px 18px !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
 
+  #shopify-section-{{ section.id }} .product-info__block-list {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    gap: 14px !important;
+  }
 
+  #shopify-section-{{ section.id }} .product-info .prose {
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+  }
+}
 
+/* Why opens as an overlay, so it never changes the height of the product panel. */
+#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0 !important;
+  box-sizing: border-box !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow-y: auto !important;
+  padding: 24px 20px !important;
+  background: rgba(18, 18, 18, .58) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) > * {
+  width: min(100%, 620px) !important;
+  box-sizing: border-box !important;
+  padding: 24px !important;
+  background: #f7f6f3 !important;
+  color: #171717 !important;
+}
+
+#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-header {
+  border-radius: 12px 12px 0 0 !important;
+  padding-bottom: 0 !important;
+}
+
+#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons {
+  margin-top: 0 !important;
+  border-radius: 0 0 12px 12px !important;
+  padding-top: 8px !important;
+}
+
+#shopify-section-{{ section.id }} .forma-score-card__toggle {
+  cursor: pointer;
+  text-underline-offset: 3px;
+}
 </style>
 
 {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
@@ -2215,3 +2120,4 @@ window.formaProduct = {
   ]
 }
 {% endschema %}
+
