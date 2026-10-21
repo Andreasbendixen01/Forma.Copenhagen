@@ -1,4 +1,3 @@
-
 {% liquid
   assign current_brand = blank
   assign product_brand_name = product.vendor | strip | downcase
@@ -27,342 +26,381 @@
   class="forma-editorial-brand"
   aria-label="Explore {{ brand_name | escape }}"
 >
-
   <div class="forma-editorial-brand__topline">
     <span class="forma-editorial-brand__eyebrow">THE FORMA BRAND FILE</span>
-    <span class="forma-editorial-brand__index">01 — BRAND PROFILE</span>
+    <span class="forma-editorial-brand__index">01 ‚Äî BRAND PROFILE</span>
   </div>
 
   <div class="forma-editorial-brand__layout">
-
-    
-    <div class="forma-editorial-brand__visual">
     {% if brand_image != blank %}
+      <div class="forma-editorial-brand__visual">
         {{
-        brand_image
-        | image_url: width: 1800
-        | image_tag:
+          brand_image
+          | image_url: width: 1800
+          | image_tag:
             class: 'forma-editorial-brand__image',
             widths: '600, 900, 1200, 1500, 1800',
             sizes: '(max-width: 749px) 100vw, 45vw',
             loading: 'lazy',
             alt: brand_name
         }}
+        <span class="forma-editorial-brand__image-caption">DISCOVERED BY FORMA</span>
+      </div>
     {% endif %}
 
-    {% if brand_image != blank %}
-        <span class="forma-editorial-brand__image-caption">
-        DISCOVERED BY FORMA
-        </span>
-    {% endif %}
-    </div>
-
-
-    <div class="forma-editorial-brand__content">
+    <div class="forma-editorial-brand__content{% if brand_image == blank %} forma-editorial-brand__content--no-image{% endif %}">
       <div class="forma-editorial-brand__content-inner">
-
-        <p class="forma-editorial-brand__kicker">
-          A CLOSER LOOK AT THE BRAND
-        </p>
+        <p class="forma-editorial-brand__kicker">A CLOSER LOOK AT THE BRAND</p>
 
         <h2 class="forma-editorial-brand__title">
-          {{ section_heading | escape }}
-          <span class="forma-editorial-brand__period">.</span>
+          {{ section_heading | escape }}<span class="forma-editorial-brand__period">.</span>
         </h2>
 
         <div class="forma-editorial-brand__rule"></div>
 
-        <p class="forma-editorial-brand__story">
-          {{ brand_story | metafield_tag }}
-        </p>
-
-        <div class="forma-editorial-brand__footer">
-          <span class="forma-editorial-brand__footer-label">
-            THE PEOPLE. THE PERSPECTIVE. THE DESIGN.
-          </span>
-
-          
-        {% if brand_url != blank %}
-        <a
-            class="forma-editorial-brand__link"
-            href="{{ brand_url | escape }}"
-            aria-label="Explore the {{ brand_name | escape }} brand"
-        >
-            <span>EXPLORE THE BRAND</span>
-            <span class="forma-editorial-brand__arrow" aria-hidden="true">
-            &rarr;
-            </span>
-        </a>
+        {% if brand_story != blank %}
+          <div class="forma-editorial-brand__story rte">
+            {{ brand_story | metafield_tag }}
+          </div>
         {% endif %}
 
+        <div class="forma-editorial-brand__footer">
+          <span class="forma-editorial-brand__footer-label">THE PEOPLE. THE PERSPECTIVE. THE DESIGN.</span>
+
+          {% if brand_url != blank %}
+            <a
+              class="forma-editorial-brand__link"
+              href="{{ brand_url }}"
+              aria-label="Explore the {{ brand_name | escape }} brand"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>EXPLORE THE BRAND</span>
+              <span class="forma-editorial-brand__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          {% endif %}
         </div>
-
       </div>
-    </div>
 
+      <span class="forma-editorial-brand__watermark" aria-hidden="true">F.</span>
+    </div>
   </div>
 </section>
 
 <style>
-  
-#shopify-section-{{ section.id }} .forma-editorial-brand {
-  --feb-ink: #20201d;
-  --feb-paper: #efeee9;
-  --feb-muted: #77766f;
-
-  width: 100%;
-  margin: 0;
-  padding: 28px 0;
-  color: var(--feb-ink);
-  background: var(--feb-paper);
-  overflow: hidden;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand * {
-  box-sizing: border-box;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__topline {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  margin: 0 32px 16px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(32, 32, 29, .2);
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__eyebrow,
-#shopify-section-{{ section.id }} .forma-editorial-brand__index {
-  font-size: 9px;
-  letter-spacing: .14em;
-  line-height: 1.4;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__index {
-  color: var(--feb-muted);
-  text-align: right;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__layout {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  align-items: stretch;
-  max-width: 1440px;
-  margin: 0 auto;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__visual {
-  position: relative;
-  min-width: 0;
-  height: clamp(300px, 32vw, 440px);
-  overflow: hidden;
-  background: #dedbd3;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transition: transform 700ms ease;
-}
-
-@media (hover: hover) {
-  #shopify-section-{{ section.id }} .forma-editorial-brand__visual:hover
-  .forma-editorial-brand__image {
-    transform: scale(1.025);
+  #shopify-section-{{ section.id }} {
+    --feb-ink: #20201d;
+    --feb-paper: #f8f7f4;
+    --feb-muted: #85837b;
+    --feb-accent: #a18b65;
+    background: transparent !important;
   }
-}
 
-#shopify-section-{{ section.id }} .forma-editorial-brand__image-caption {
-  position: absolute;
-  left: 16px;
-  bottom: 16px;
-  padding: 8px 10px;
-  color: #fff;
-  background: rgba(25, 25, 23, .58);
-  font-size: 8px;
-  letter-spacing: .13em;
-  backdrop-filter: blur(8px);
-}
+  #shopify-section-{{ section.id }} .forma-editorial-brand,
+  #shopify-section-{{ section.id }} .forma-editorial-brand * {
+    box-sizing: border-box;
+  }
 
-#shopify-section-{{ section.id }} .forma-editorial-brand__content {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-width: 0;
-  min-height: 300px;
-  padding: clamp(28px, 4vw, 58px);
-  overflow: hidden;
-  background: var(--feb-paper);
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__content-inner {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 480px;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__kicker {
-  margin: 0 0 18px;
-  color: var(--feb-muted);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: .17em;
-  line-height: 1.5;
-  text-transform: uppercase;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__title {
-  max-width: 520px;
-  margin: 0;
-  color: var(--feb-ink);
-  font-family: inherit;
-  font-size: clamp(34px, 3.5vw, 56px);
-  font-weight: 400;
-  letter-spacing: -.065em;
-  line-height: 1.02;
-  overflow-wrap: anywhere;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__period {
-  color: #a18b65;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__rule {
-  width: 42px;
-  height: 1px;
-  margin: 22px 0 17px;
-  background: var(--feb-ink);
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__story {
-  max-width: 350px;
-  margin: 0;
-  color: #5c5b55;
-  font-size: 13px;
-  line-height: 1.8;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__footer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 17px;
-  margin-top: 30px;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__footer-label {
-  color: var(--feb-muted);
-  font-size: 8px;
-  line-height: 1.5;
-  letter-spacing: .11em;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 28px;
-  min-width: 200px;
-  padding: 0 0 10px;
-  border-bottom: 1px solid var(--feb-ink);
-  color: var(--feb-ink);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: .12em;
-  line-height: 1.5;
-  text-decoration: none;
-  transition: gap 200ms ease, opacity 200ms ease;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__link:hover {
-  gap: 36px;
-  opacity: .7;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__arrow {
-  font-size: 18px;
-  font-weight: 400;
-  line-height: .8;
-}
-
-#shopify-section-{{ section.id }} .forma-editorial-brand__watermark {
-  position: absolute;
-  right: -4px;
-  bottom: -55px;
-  color: rgba(32, 32, 29, .035);
-  font-family: Georgia, serif;
-  font-size: 220px;
-  line-height: 1;
-  pointer-events: none;
-  user-select: none;
-}
-
-@media screen and (max-width: 749px) {
   #shopify-section-{{ section.id }} .forma-editorial-brand {
-    padding: 24px 0 0;
+    width: 100%;
+    margin: 0;
+    padding: clamp(22px, 3vw, 38px) 0 clamp(30px, 4vw, 52px);
+    color: var(--feb-ink);
+    background: var(--feb-paper);
+    overflow: hidden;
   }
 
   #shopify-section-{{ section.id }} .forma-editorial-brand__topline {
-    margin: 0 18px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin: 0 clamp(18px, 2.2vw, 34px) clamp(16px, 2vw, 24px);
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(32, 32, 29, .14);
+  }
+
+  #shopify-section-{{ section.id }} .forma-editorial-brand__eyebrow,
+  #shopify-section-{{ section.id }} .forma-editorial-brand__index {
+    margin: 0;
+    font-size: 8px;
+    letter-spacing: .15em;
+    line-height: 1.5;
+    font-weight: 600;
+    text-transform: uppercase;
   }
 
   #shopify-section-{{ section.id }} .forma-editorial-brand__index {
-    font-size: 7px;
+    color: var(--feb-muted);
+    text-align: right;
   }
 
   #shopify-section-{{ section.id }} .forma-editorial-brand__layout {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, .98fr);
+    align-items: center;
+    gap: clamp(28px, 4.2vw, 68px);
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 clamp(18px, 2.4vw, 36px);
   }
 
   #shopify-section-{{ section.id }} .forma-editorial-brand__visual {
-    height: auto;
-    aspect-ratio: 5 / 4;
+    position: relative;
+    min-width: 0;
+    height: clamp(280px, 31vw, 430px);
+    overflow: hidden;
+    background: #eeede8;
+  }
+
+  #shopify-section-{{ section.id }} .forma-editorial-brand__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 700ms cubic-bezier(.2, .65, .3, 1);
+  }
+
+  @media (hover: hover) {
+    #shopify-section-{{ section.id }} .forma-editorial-brand__visual:hover .forma-editorial-brand__image {
+      transform: scale(1.018);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .forma-editorial-brand__image-caption {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    padding: 8px 10px;
+    color: #fff;
+    background: rgba(25, 25, 23, .52);
+    font-size: 7px;
+    font-weight: 600;
+    letter-spacing: .13em;
+    line-height: 1.4;
+    backdrop-filter: blur(8px);
   }
 
   #shopify-section-{{ section.id }} .forma-editorial-brand__content {
-    min-height: 0;
-    padding: 30px 22px 36px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    min-height: 280px;
+    padding: clamp(8px, 1.4vw, 22px) 0;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  #shopify-section-{{ section.id }} .forma-editorial-brand__content-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 490px;
+    margin: 0 auto;
   }
 
   #shopify-section-{{ section.id }} .forma-editorial-brand__kicker {
-    margin-bottom: 16px;
+    margin: 0 0 17px;
+    color: var(--feb-muted);
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: .17em;
+    line-height: 1.5;
+    text-transform: uppercase;
   }
 
   #shopify-section-{{ section.id }} .forma-editorial-brand__title {
-    font-size: clamp(36px, 10vw, 48px);
+    max-width: 540px;
+    margin: 0;
+    color: var(--feb-ink);
+    font-family: inherit;
+    font-size: clamp(34px, 3.2vw, 52px);
+    font-weight: 400;
+    letter-spacing: -.065em;
+    line-height: 1.04;
+    overflow-wrap: anywhere;
+  }
+
+  #shopify-section-{{ section.id }} .forma-editorial-brand__period {
+    margin-left: .08em;
+    color: var(--feb-accent);
   }
 
   #shopify-section-{{ section.id }} .forma-editorial-brand__rule {
-    margin: 19px 0 15px;
+    width: 38px;
+    height: 1px;
+    margin: 21px 0 16px;
+    background: rgba(32, 32, 29, .72);
+  }
+
+  #shopify-section-{{ section.id }} .forma-editorial-brand__story {
+    max-width: 390px;
+    margin: 0;
+    color: #68675f;
+    font-size: 12px;
+    line-height: 1.85;
+    font-weight: 400;
+  }
+
+  #shopify-section-{{ section.id }} .forma-editorial-brand__story > * {
+    margin-top: 0;
+    margin-bottom: .85em;
+  }
+
+  #shopify-section-{{ section.id }} .forma-editorial-brand__story > *:last-child {
+    margin-bottom: 0;
   }
 
   #shopify-section-{{ section.id }} .forma-editorial-brand__footer {
-    gap: 15px;
-    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 17px;
+    margin-top: clamp(22px, 2.5vw, 32px);
+  }
+
+  #shopify-section-{{ section.id }} .forma-editorial-brand__footer-label {
+    color: #9a988f;
+    font-size: 7px;
+    font-weight: 600;
+    line-height: 1.6;
+    letter-spacing: .12em;
+  }
+
+  #shopify-section-{{ section.id }} .forma-editorial-brand__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 26px;
+    min-width: 190px;
+    padding: 0 0 9px;
+    border-bottom: 1px solid rgba(32, 32, 29, .75);
+    color: var(--feb-ink);
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: gap 200ms ease, opacity 200ms ease;
+  }
+
+  #shopify-section-{{ section.id }} .forma-editorial-brand__link:hover {
+    gap: 34px;
+    opacity: .68;
+  }
+
+  #shopify-section-{{ section.id }} .forma-editorial-brand__arrow {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: .8;
   }
 
   #shopify-section-{{ section.id }} .forma-editorial-brand__watermark {
-    bottom: -45px;
-    font-size: 170px;
+    position: absolute;
+    right: -8px;
+    bottom: -62px;
+    color: rgba(32, 32, 29, .025);
+    font-family: Georgia, serif;
+    font-size: clamp(150px, 16vw, 220px);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  #shopify-section-{{ section.id }} .forma-editorial-brand__image,
-  #shopify-section-{{ section.id }} .forma-editorial-brand__link {
-    transition: none;
+  #shopify-section-{{ section.id }} .forma-editorial-brand__content--no-image {
+    grid-column: 1 / -1;
+    padding-inline: 8%;
   }
-}
 
+  @media screen and (min-width: 1500px) {
+    #shopify-section-{{ section.id }} .forma-editorial-brand__layout {
+      gap: 76px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .forma-editorial-brand {
+      padding: 22px 0 28px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__topline {
+      margin: 0 18px 16px;
+      padding-bottom: 9px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__eyebrow {
+      font-size: 7px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__index {
+      font-size: 6px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__layout {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding: 0 18px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__visual {
+      height: auto;
+      aspect-ratio: 5 / 4;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__content {
+      min-height: 0;
+      padding: 30px 2px 8px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__content-inner {
+      max-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__kicker {
+      margin-bottom: 14px;
+      font-size: 7px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__title {
+      font-size: clamp(34px, 9vw, 46px);
+      line-height: 1.04;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__rule {
+      margin: 18px 0 14px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__story {
+      max-width: none;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__footer {
+      gap: 14px;
+      margin-top: 23px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__watermark {
+      right: -5px;
+      bottom: -45px;
+      font-size: 160px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-editorial-brand__content--no-image {
+      padding-inline: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .forma-editorial-brand__image,
+    #shopify-section-{{ section.id }} .forma-editorial-brand__link {
+      transition: none;
+    }
+  }
 </style>
-
 {% endif %}
 
 {% schema %}
@@ -376,3 +414,4 @@
   ]
 }
 {% endschema %}
+
