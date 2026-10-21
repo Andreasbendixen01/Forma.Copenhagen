@@ -1,55 +1,371 @@
-{% assign brand_name = product.vendor | default: section.settings.fallback_brand_name %}
-{% assign brand_story = product.metafields.custom.brand_story.value | default: section.settings.brand_story %}
-{% assign brand_image = product.metafields.custom.brand_image.value | default: section.settings.brand_image | default: product.featured_media.preview_image %}
-{% assign brand_link = product.metafields.custom.brand_link.value | default: section.settings.brand_link %}
-{% if brand_link == blank and product.vendor != blank %}
-  {% assign brand_link = routes.all_products_collection_url | append: '?filter.p.vendor=' | append: product.vendor | url_encode %}
-{% endif %}
-{% if brand_name != blank %}
-<section class="forma-brand-spotlight section-spacing" id="forma-brand-{{ section.id }}">
-  <div class="forma-brand-spotlight__inner">
-    <div class="forma-brand-spotlight__media">
+
+{% liquid
+  assign brand_name = product.vendor | default: 'Selected brand'
+  assign brand_story = product.metafields.custom.brand_story.value
+  assign brand_image = product.metafields.custom.brand_image.value
+  assign brand_url = product.metafields.custom.brand_url.value
+
+  if brand_image == blank
+    assign brand_image = product.featured_image
+  endif
+
+  if brand_url == blank
+    assign brand_url = routes.collections_url | append: '/vendors?q=' | append: brand_name | url_encode
+  endif
+
+  if brand_story == blank
+    assign brand_story = 'Discover the design philosophy, distinctive details and creative perspective behind ' | append: brand_name | append: '.'
+  endif
+
+  assign section_heading = 'Inside ' | append: brand_name
+%}
+
+<section
+  id="forma-explore-brand-{{ section.id }}"
+  class="forma-editorial-brand"
+  aria-label="Explore {{ brand_name | escape }}"
+>
+  <div class="forma-editorial-brand__topline">
+    <span class="forma-editorial-brand__eyebrow">THE FORMA BRAND FILE</span>
+    <span class="forma-editorial-brand__index">01 — BRAND PROFILE</span>
+  </div>
+
+  <div class="forma-editorial-brand__layout">
+
+    <div class="forma-editorial-brand__visual">
       {% if brand_image != blank %}
-        {{ brand_image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '480,720,960,1200,1400', sizes: '(min-width: 1000px) 50vw, 100vw', alt: brand_name | escape }}
+        {{
+          brand_image
+          | image_url: width: 1800
+          | image_tag:
+            class: 'forma-editorial-brand__image',
+            widths: '600, 900, 1200, 1500, 1800',
+            sizes: '(max-width: 749px) 100vw, 58vw',
+            loading: 'lazy',
+            alt: brand_name
+        }}
       {% endif %}
+
+      <span class="forma-editorial-brand__image-caption">
+        DISCOVERED BY FORMA
+      </span>
     </div>
-    <div class="forma-brand-spotlight__content">
-      <p class="forma-brand-spotlight__eyebrow">THE BRAND</p>
-      <h2 class="forma-brand-spotlight__title">Explore {{ brand_name | escape }}</h2>
-      {% if brand_story != blank %}
-        <div class="forma-brand-spotlight__story rte">{{ brand_story }}</div>
-      {% else %}
-        <p class="forma-brand-spotlight__story">Discover the world of {{ brand_name | escape }} ‚Äî its point of view, signature style and the pieces that define the brand.</p>
-      {% endif %}
-      {% if brand_link != blank %}
-        <a class="forma-brand-spotlight__link" href="{{ brand_link }}">Explore the brand <span aria-hidden="true">‚Üó</span></a>
-      {% endif %}
+
+    <div class="forma-editorial-brand__content">
+      <div class="forma-editorial-brand__content-inner">
+
+        <p class="forma-editorial-brand__kicker">
+          A CLOSER LOOK AT THE BRAND
+        </p>
+
+        <h2 class="forma-editorial-brand__title">
+          {{ section_heading | escape }}
+          <span class="forma-editorial-brand__period">.</span>
+        </h2>
+
+        <div class="forma-editorial-brand__rule"></div>
+
+        <p class="forma-editorial-brand__story">
+          {{ brand_story | escape }}
+        </p>
+
+        <div class="forma-editorial-brand__footer">
+          <span class="forma-editorial-brand__footer-label">
+            THE PEOPLE. THE PERSPECTIVE. THE DESIGN.
+          </span>
+
+          <a
+            class="forma-editorial-brand__link"
+            href="{{ brand_url }}"
+            aria-label="Explore the {{ brand_name | escape }} brand"
+          >
+            <span>EXPLORE THE BRAND</span>
+            <span class="forma-editorial-brand__arrow" aria-hidden="true">
+              &rarr;
+            </span>
+          </a>
+        </div>
+
+      </div>
+
+      <span class="forma-editorial-brand__watermark" aria-hidden="true">
+        F.
+      </span>
     </div>
+
   </div>
 </section>
-{% endif %}
+
 <style>
-  #forma-brand-{{ section.id }} { padding-block: clamp(42px,7vw,100px); }
-  #forma-brand-{{ section.id }} .forma-brand-spotlight__inner { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); align-items:center; gap:clamp(28px,6vw,90px); max-width:1440px; margin:0 auto; padding-inline:clamp(20px,5vw,72px); }
-  #forma-brand-{{ section.id }} .forma-brand-spotlight__media { overflow:hidden; background:#eeece7; }
-  #forma-brand-{{ section.id }} .forma-brand-spotlight__media img { display:block; width:100%; height:100%; max-height:720px; aspect-ratio:4/5; object-fit:cover; }
-  #forma-brand-{{ section.id }} .forma-brand-spotlight__content { max-width:490px; }
-  #forma-brand-{{ section.id }} .forma-brand-spotlight__eyebrow { margin:0 0 18px; font-size:10px; letter-spacing:.18em; text-transform:uppercase; opacity:.62; }
-  #forma-brand-{{ section.id }} .forma-brand-spotlight__title { margin:0 0 22px; font-size:clamp(30px,4vw,54px); line-height:1.04; letter-spacing:-.045em; font-weight:500; }
-  #forma-brand-{{ section.id }} .forma-brand-spotlight__story { max-width:430px; margin:0 0 28px; font-size:14px; line-height:1.85; opacity:.78; }
-  #forma-brand-{{ section.id }} .forma-brand-spotlight__link { display:inline-flex; align-items:center; gap:22px; padding-bottom:8px; border-bottom:1px solid currentColor; color:inherit; text-decoration:none; font-size:11px; letter-spacing:.1em; text-transform:uppercase; }
-  @media(max-width:749px) { #forma-brand-{{ section.id }} .forma-brand-spotlight__inner { grid-template-columns:1fr; gap:28px; } #forma-brand-{{ section.id }} .forma-brand-spotlight__media img { aspect-ratio:4/3; } }
+  #forma-explore-brand-{{ section.id }} {
+    --feb-ink: #20201d;
+    --feb-paper: #efeee9;
+    --feb-muted: #77766f;
+    width: 100%;
+    margin: 0;
+    padding: clamp(32px, 5vw, 76px) 0;
+    color: var(--feb-ink);
+    background: var(--feb-paper);
+    overflow: hidden;
+  }
+
+  #forma-explore-brand-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__topline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin: 0 clamp(20px, 5vw, 76px) 24px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(32, 32, 29, .24);
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__eyebrow,
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__index {
+    font-size: 10px;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__index {
+    color: var(--feb-muted);
+    text-align: right;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+    min-height: 620px;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__visual {
+    position: relative;
+    min-width: 0;
+    min-height: 620px;
+    overflow: hidden;
+    background: #dedbd3;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 620px;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 900ms cubic-bezier(.2, .7, .2, 1);
+  }
+
+  @media (hover: hover) {
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__visual:hover
+    .forma-editorial-brand__image {
+      transform: scale(1.035);
+    }
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__image-caption {
+    position: absolute;
+    left: 24px;
+    bottom: 24px;
+    padding: 10px 13px;
+    color: #fff;
+    background: rgba(25, 25, 23, .58);
+    font-size: 9px;
+    letter-spacing: .15em;
+    line-height: 1.4;
+    backdrop-filter: blur(10px);
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    padding: clamp(32px, 5.5vw, 88px);
+    overflow: hidden;
+    background: var(--feb-paper);
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__content-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 540px;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__kicker {
+    margin: 0 0 27px;
+    color: var(--feb-muted);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .19em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__title {
+    max-width: 650px;
+    margin: 0;
+    color: var(--feb-ink);
+    font-family: inherit;
+    font-size: clamp(42px, 5.2vw, 82px);
+    font-weight: 400;
+    letter-spacing: -.075em;
+    line-height: .98;
+    overflow-wrap: anywhere;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__period {
+    color: #a18b65;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__rule {
+    width: 52px;
+    height: 1px;
+    margin: 32px 0 25px;
+    background: var(--feb-ink);
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__story {
+    max-width: 390px;
+    margin: 0;
+    color: #5c5b55;
+    font-size: clamp(14px, 1.15vw, 16px);
+    line-height: 1.9;
+    letter-spacing: .005em;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 23px;
+    margin-top: 50px;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__footer-label {
+    color: var(--feb-muted);
+    font-size: 9px;
+    line-height: 1.5;
+    letter-spacing: .12em;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 36px;
+    min-width: 220px;
+    padding: 0 0 13px;
+    border-bottom: 1px solid var(--feb-ink);
+    color: var(--feb-ink);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .13em;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: gap 250ms ease, opacity 250ms ease;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__link:hover {
+    gap: 48px;
+    opacity: .7;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__arrow {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: .8;
+  }
+
+  #forma-explore-brand-{{ section.id }} .forma-editorial-brand__watermark {
+    position: absolute;
+    right: -10px;
+    bottom: -105px;
+    color: rgba(32, 32, 29, .035);
+    font-family: Georgia, serif;
+    font-size: clamp(220px, 28vw, 420px);
+    font-weight: 400;
+    letter-spacing: -.12em;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    #forma-explore-brand-{{ section.id }} {
+      padding: 35px 0 0;
+    }
+
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__topline {
+      margin: 0 20px 18px;
+    }
+
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__index {
+      font-size: 8px;
+    }
+
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__layout {
+      grid-template-columns: 1fr;
+    }
+
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__visual,
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__image {
+      min-height: 0;
+      height: auto;
+      aspect-ratio: 4 / 5;
+    }
+
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__content {
+      min-height: 410px;
+      padding: 42px 25px 52px;
+    }
+
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__kicker {
+      margin-bottom: 22px;
+    }
+
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__title {
+      font-size: clamp(44px, 12vw, 66px);
+    }
+
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__rule {
+      margin: 25px 0 20px;
+    }
+
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__footer {
+      gap: 20px;
+      margin-top: 35px;
+    }
+
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__watermark {
+      right: -8px;
+      bottom: -65px;
+      font-size: 230px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__image,
+    #forma-explore-brand-{{ section.id }} .forma-editorial-brand__link {
+      transition: none;
+    }
+  }
 </style>
+
 {% schema %}
 {
   "name": "Explore the brand",
-  "settings": [
-    { "type": "text", "id": "fallback_brand_name", "label": "Fallback brand name", "default": "The brand" },
-    { "type": "image_picker", "id": "brand_image", "label": "Fallback brand image" },
-    { "type": "richtext", "id": "brand_story", "label": "Fallback brand story", "default": "<p>A closer look at the people, perspective and design language behind the brand.</p>" },
-    { "type": "url", "id": "brand_link", "label": "Fallback brand link" }
-  ],
-  "presets": [{ "name": "Explore the brand" }]
+  "settings": [],
+  "presets": [
+    {
+      "name": "Explore the brand"
+    }
+  ]
 }
 {% endschema %}
-
