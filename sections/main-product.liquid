@@ -247,6 +247,95 @@
       {%- endif -%}
     }
   }
+
+
+
+/* =========================================================
+   FORMA — PRODUCT INFO PANEL REFINEMENT
+   Better height, readable typography and unclipped popovers
+   ========================================================= */
+
+@media screen and (min-width: 1000px) {
+
+  /* Match the panel to the visible gallery */
+  #shopify-section-{{ section.id }} .product-info {
+    top: 0 !important;
+    bottom: auto !important;
+
+    height: clamp(560px, calc(100vh - 160px), 900px) !important;
+    min-height: 0 !important;
+    max-height: calc(100vh - 160px) !important;
+
+    padding: clamp(24px, 2.4vw, 40px) !important;
+    box-sizing: border-box !important;
+
+    /* Let popovers such as "Why?" extend outside the panel */
+    overflow: visible !important;
+  }
+
+  /* Remove internal clipping */
+  #shopify-section-{{ section.id }} .product-info__block-list {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Improve readability */
+  #shopify-section-{{ section.id }} .product-info .prose {
+    color: rgba(20, 20, 20, 0.92);
+    font-size: 14px;
+    line-height: 1.75;
+    letter-spacing: 0.005em;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .prose p {
+    margin-block: 0 1rem;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .prose ul,
+  #shopify-section-{{ section.id }} .product-info .prose ol {
+    margin-block: 1rem;
+    padding-inline-start: 1.2rem;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .prose li {
+    margin-block: 0.45rem;
+  }
+
+  /* Tighten excessive spacing between product information blocks */
+  #shopify-section-{{ section.id }} .product-info__block-list {
+    row-gap: clamp(12px, 1.5vh, 20px) !important;
+  }
+
+  /* Keep the glass appearance */
+  #shopify-section-{{ section.id }} .product-info::before {
+    backdrop-filter: blur(26px) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(115%) !important;
+  }
+}
+
+/* Mobile: natural height and normal document flow */
+@media screen and (max-width: 999px) {
+  #shopify-section-{{ section.id }} .product-info {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info__block-list {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .prose {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+}
+
+
+
+
 </style>
 
 {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
