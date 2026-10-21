@@ -10710,4 +10710,94 @@ section[id*="blog_posts"] .section-stack {
   }
 }
 
+/* =========================================================
+   FORMA — PREMIUM FOLLOW BRAND BUTTON
+   ========================================================= */
+
+.forma-follow-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  min-height: 38px;
+  padding: 9px 15px;
+
+  border: 1px solid rgba(20, 20, 20, 0.24);
+  border-radius: 2px;
+
+  background: rgba(255, 255, 255, 0.12);
+  color: #171717;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    border-color 220ms ease,
+    transform 220ms ease;
+}
+
+/* Lille plus-symbol */
+.forma-follow-brand [data-forma-follow-label]::before {
+  content: "+";
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 0.8;
+  vertical-align: -1px;
+}
+
+/* Hover */
+.forma-follow-brand:hover {
+  background: #171717;
+  border-color: #171717;
+  color: #ffffff;
+}
+
+/* Tastaturfokus */
+.forma-follow-brand:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Følger allerede brandet */
+.forma-follow-brand[aria-pressed="true"] {
+  background: #171717;
+  border-color: #171717;
+  color: #ffffff;
+}
+
+/* Skift plus til flueben, når brandet følges */
+.forma-follow-brand[aria-pressed="true"]
+[data-forma-follow-label]::before {
+  content: "✓";
+  font-size: 12px;
+}
+
+/* Mobil */
+@media screen and (max-width: 749px) {
+  .forma-follow-brand {
+    min-height: 36px;
+    padding: 8px 12px;
+    font-size: 9px;
+  }
+}
+
+/* Respektér brugerens bevægelsesindstillinger */
+@media (prefers-reduced-motion: reduce) {
+  .forma-follow-brand {
+    transition: none;
+  }
+}
+
 
