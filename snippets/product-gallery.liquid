@@ -493,7 +493,7 @@
 <product-gallery
   class="product-gallery product-gallery--forma-auto"
   data-forma-auto-slider="true"
-  data-forma-auto-slider-speed="0.18"
+  data-forma-auto-slider-speed="0.025"
   form="{{ product_form_id }}"
   filtered-indexes="{{ filtered_indexes | json }}"
   {% if enable_media_autoplay %}
@@ -791,220 +791,309 @@
 
   <script>
 (() => {
-  const gallery = document.currentScript.closest('product-gallery');
+  const script = document.currentScript;
+  const gallery = script?.closest('product-gallery');
 
-  if (!gallery) return;
+  if (!gallery || gallery.dataset.formaSliderInitialized === 'true') {
+    return;
+  }
 
-  const carousel = gallery.querySelector(
-    '.product-gallery__carousel'
-  );
+  const carousel = gallery.querySelector('.product-gallery__carousel');
 
   if (!carousel) return;
 
-  const slides = [
-    ...carousel.querySelectorAll(
+  const reducedMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  );
+
+  const originalSlides = Array.from(
+    carousel.querySelectorAll(
       '.product-gallery__media:not([hidden])'
     )
-  ];
+  ).filter(slide => !slide.classList.contains('forma-gallery-clone'));
 
-  if (slides.length < 2) return;
+  if (originalSlides.length < 2) return;
 
-  let isPaused = false;
-  let animationFrame;
-  let lastTime = performance.now();
+  gallery.dataset.formaSliderInitialized = 'true';
 
-  const speed = Number(
-    gallery.dataset.formaAutoSliderSpeed || 0.18
+  let paused = false;
+  let manuallyPaused = false;
+  let frameId = null;
+  let previousTime = 0;
+  let originalWidth = 0;
+  let resizeObserver = null;
+  let resumeTimer = null;
+  let destroyed = false;
+
+  // Rolig, kontinuerlig bevægelse — pixels pr. millisekund.
+  const SPEED = 0.025;
+
+  // Undgå store spring efter tabskift eller langsomme frames.
+  const MAX_FRAME_DELTA = 32;
+
+  const pauseButton = gallery.querySelector('.forma-gallery-pause');
+  const nextButton = gallery.querySelector('.forma-gallery-next');
+  const previousButton = gallery.querySelector('.forma-gallery-prev');
+
+  const getClones = () => Array.from(
+    carousel.querySelectorAll('.forma-gallery-clone')
   );
 
-  /*
-   * Duplicate the first set of slides.
-   *
-   * This gives us a seamless infinite loop rather
-   * than jumping back to the first image.
-   */
+  function updateOriginalWidth() {
+    originalWidth = originalSlides.reduce((total, slide) => {
+      return total + slide.getBoundingClientRect().width;
+    }, 0);
 
-  const originalSlides = [...slides];
+    return originalWidth;
+  }
 
-  originalSlides.forEach(slide => {
-    const clone = slide.cloneNode(true);
+  function updatePauseButton() {
+    if (!pauseButton) return;
 
-    clone.classList.add(
-      'forma-gallery-clone'
+    pauseButton.innerHTML = paused
+      ? '<span aria-hidden="true">▶</span>'
+      : '<span aria-hidden="true">Ⅱ</span>';
+
+    pauseButton.setAttribute(
+      'aria-label',
+      paused ? 'Start slideshow' : 'Pause slideshow'
     );
 
-    clone.setAttribute(
-      'aria-hidden',
-      'true'
+    pauseButton.setAttribute(
+      'aria-pressed',
+      String(paused)
+    );
+  }
+
+  function setPaused(value) {
+    paused = Boolean(value);
+    previousTime = 0;
+    updatePauseButton();
+  }
+
+  function removeClones() {
+    getClones().forEach(clone => clone.remove());
+  }
+
+  function createClones() {
+    removeClones();
+
+    originalSlides.forEach(slide => {
+      const clone = slide.cloneNode(true);
+
+      clone.classList.add('forma-gallery-clone');
+      clone.setAttribute('aria-hidden', 'true');
+      clone.setAttribute('inert', '');
+
+      // Undgå dublerede ID'er i klonede elementer.
+      clone.querySelectorAll('[id]').forEach(element => {
+        element.removeAttribute('id');
+      });
+
+      carousel.appendChild(clone);
+    });
+
+    updateOriginalWidth();
+  }
+
+  function animate(timestamp) {
+    if (destroyed) return;
+
+    if (previousTime === 0) {
+      previousTime = timestamp;
+    }
+
+    const delta = Math.min(
+      timestamp - previousTime,
+      MAX_FRAME_DELTA
     );
 
-    carousel.appendChild(clone);
-  });
+    previousTime = timestamp;
 
-  const originalWidth = originalSlides.reduce(
-    (total, slide) => total + slide.offsetWidth,
-    0
-  );
+    if (
+      !paused &&
+      !reducedMotion.matches &&
+      originalWidth > 0
+    ) {
+      carousel.scrollLeft += SPEED * delta;
 
-  const animate = now => {
-
-    if (!isPaused) {
-
-      const delta = now - lastTime;
-
-      carousel.scrollLeft +=
-        speed * delta;
-
-      /*
-       * Once we've travelled through the original
-       * set of images, move back by exactly that
-       * width.
-       *
-       * Because the images are duplicated, the user
-       * will not see the reset.
-       */
-
-      if (
-        carousel.scrollLeft >=
-        originalWidth
-      ) {
-        carousel.scrollLeft -=
-          originalWidth;
+      // Loop kun, når vi har en gyldig måling.
+      if (carousel.scrollLeft >= originalWidth) {
+        carousel.scrollLeft -= originalWidth;
       }
     }
 
-    lastTime = now;
+    frameId = window.requestAnimationFrame(animate);
+  }
 
-    animationFrame =
-      requestAnimationFrame(animate);
-  };
+  function pauseTemporarily() {
+    window.clearTimeout(resumeTimer);
+    setPaused(true);
 
-  /*
-   * Pause while the user interacts.
-   */
-
-  carousel.addEventListener(
-    'mouseenter',
-    () => {
-      isPaused = true;
+    if (!manuallyPaused) {
+      resumeTimer = window.setTimeout(() => {
+        setPaused(false);
+      }, 1400);
     }
-  );
+  }
 
-  carousel.addEventListener(
-    'mouseleave',
-    () => {
-      isPaused = false;
-      lastTime = performance.now();
-    }
-  );
+  function moveBy(direction) {
+    pauseTemporarily();
 
-  carousel.addEventListener(
-    'touchstart',
-    () => {
-      isPaused = true;
-    },
-    { passive: true }
-  );
-
-  carousel.addEventListener(
-    'touchend',
-    () => {
-      setTimeout(() => {
-        isPaused = false;
-        lastTime = performance.now();
-      }, 600);
-    },
-    { passive: true }
-  );
-
-  /*
-   * Manual controls.
-   */
-
-  const nextButton =
-    gallery.querySelector(
-      '.forma-gallery-next'
+    const distance = Math.max(
+      carousel.clientWidth * 0.55,
+      160
     );
 
-  const previousButton =
-    gallery.querySelector(
-      '.forma-gallery-prev'
+    carousel.scrollBy({
+      left: direction * distance,
+      behavior: reducedMotion.matches ? 'auto' : 'smooth'
+    });
+  }
+
+  function onNext() {
+    moveBy(1);
+  }
+
+  function onPrevious() {
+    moveBy(-1);
+  }
+
+  function onPauseToggle() {
+    manuallyPaused = !manuallyPaused;
+    window.clearTimeout(resumeTimer);
+    setPaused(manuallyPaused);
+  }
+
+  function onMouseEnter() {
+    setPaused(true);
+  }
+
+  function onMouseLeave() {
+    if (!manuallyPaused) {
+      setPaused(false);
+    }
+  }
+
+  function onTouchStart() {
+    setPaused(true);
+  }
+
+  function onTouchEnd() {
+    if (!manuallyPaused) {
+      window.clearTimeout(resumeTimer);
+
+      resumeTimer = window.setTimeout(() => {
+        setPaused(false);
+      }, 900);
+    }
+  }
+
+  function onVisibilityChange() {
+    previousTime = 0;
+
+    if (document.hidden) {
+      setPaused(true);
+    } else if (!manuallyPaused && !reducedMotion.matches) {
+      setPaused(false);
+    }
+  }
+
+  function onReducedMotionChange(event) {
+    if (event.matches) {
+      setPaused(true);
+    } else if (!manuallyPaused) {
+      setPaused(false);
+    }
+  }
+
+  function cleanup() {
+    destroyed = true;
+
+    if (frameId !== null) {
+      window.cancelAnimationFrame(frameId);
+    }
+
+    window.clearTimeout(resumeTimer);
+
+    resizeObserver?.disconnect();
+
+    carousel.removeEventListener('mouseenter', onMouseEnter);
+    carousel.removeEventListener('mouseleave', onMouseLeave);
+    carousel.removeEventListener('touchstart', onTouchStart);
+    carousel.removeEventListener('touchend', onTouchEnd);
+
+    nextButton?.removeEventListener('click', onNext);
+    previousButton?.removeEventListener('click', onPrevious);
+    pauseButton?.removeEventListener('click', onPauseToggle);
+
+    document.removeEventListener(
+      'visibilitychange',
+      onVisibilityChange
     );
 
-  const pauseButton =
-    gallery.querySelector(
-      '.forma-gallery-pause'
+    reducedMotion.removeEventListener(
+      'change',
+      onReducedMotionChange
     );
 
-  nextButton?.addEventListener(
-    'click',
-    () => {
+    delete gallery.dataset.formaSliderInitialized;
+  }
 
-      isPaused = true;
+  createClones();
 
-      carousel.scrollBy({
-        left: carousel.clientWidth * .55,
-        behavior: 'smooth'
-      });
+  // Recalculate widths if images or viewport dimensions change.
+  if ('ResizeObserver' in window) {
+    resizeObserver = new ResizeObserver(() => {
+      updateOriginalWidth();
+    });
 
-      setTimeout(() => {
-        lastTime = performance.now();
-        isPaused = false;
-      }, 1200);
+    originalSlides.forEach(slide => {
+      resizeObserver.observe(slide);
+    });
 
-    }
+    resizeObserver.observe(carousel);
+  } else {
+    window.addEventListener('resize', updateOriginalWidth);
+  }
+
+  carousel.addEventListener('mouseenter', onMouseEnter);
+  carousel.addEventListener('mouseleave', onMouseLeave);
+  carousel.addEventListener('touchstart', onTouchStart, {
+    passive: true
+  });
+  carousel.addEventListener('touchend', onTouchEnd, {
+    passive: true
+  });
+
+  nextButton?.addEventListener('click', onNext);
+  previousButton?.addEventListener('click', onPrevious);
+  pauseButton?.addEventListener('click', onPauseToggle);
+
+  document.addEventListener(
+    'visibilitychange',
+    onVisibilityChange
   );
 
-  previousButton?.addEventListener(
-    'click',
-    () => {
-
-      isPaused = true;
-
-      carousel.scrollBy({
-        left: -(carousel.clientWidth * .55),
-        behavior: 'smooth'
-      });
-
-      setTimeout(() => {
-        lastTime = performance.now();
-        isPaused = false;
-      }, 1200);
-
-    }
+  reducedMotion.addEventListener(
+    'change',
+    onReducedMotionChange
   );
 
-  pauseButton?.addEventListener(
-    'click',
-    () => {
-
-      isPaused = !isPaused;
-
-      pauseButton.innerHTML =
-        `<span aria-hidden="true">${
-          isPaused ? '▶' : 'Ⅱ'
-        }</span>`;
-
-      pauseButton.setAttribute(
-        'aria-label',
-        isPaused
-          ? 'Play image slideshow'
-          : 'Pause image slideshow'
-      );
-
-      lastTime = performance.now();
+  // Stop the animation if Shopify removes this section.
+  document.addEventListener('shopify:section:unload', event => {
+    if (event.target.contains(gallery)) {
+      cleanup();
     }
-  );
+  });
 
-  /*
-   * Start.
-   */
+  if (reducedMotion.matches) {
+    setPaused(true);
+  } else {
+    setPaused(false);
+  }
 
-  lastTime = performance.now();
-
-  animationFrame =
-    requestAnimationFrame(animate);
-
+  frameId = window.requestAnimationFrame(animate);
 })();
 </script>
 
