@@ -607,28 +607,37 @@ window.formaProduct = {
 
   function cleanWhyContent(root) {
     if (!root) return;
+
     var close = root.querySelector('[data-forma-score-close]');
-    if (close) {
-      close.textContent = '';
+    if (!close) {
+      close = document.createElement('button');
+      close.type = 'button';
+      close.className = 'forma-score-card__details-close';
+      close.setAttribute('data-forma-score-close', '');
       close.setAttribute('aria-label', 'Close explanation');
+      close.textContent = 'Close';
+      var header = root.querySelector('.forma-score-card__details-header');
+      if (header) header.appendChild(close);
     }
+    if (close) {
+      close.setAttribute('aria-label', 'Close explanation');
+      close.textContent = '';
+    }
+
     var reasons = root.querySelector('[data-forma-score-reasons]');
     if (reasons) {
       Array.prototype.forEach.call(reasons.querySelectorAll('li'), function (item) {
-        var text = item.textContent || '';
-        /* Remove common UTF-8/Windows-1252 mojibake and legacy typed bullets.
-           The visual bullet is supplied consistently by CSS. */
-        text = text.replace(/^(?:\\s|‚Äö√Ñ¬¢|√¢‚Ç¨¬¢|√É¬¢√¢‚Äö¬¨√Ç¬¢|√Ç¬∑|¬∑|‚Ä¢|√Ø‚Äö¬∑)+/g, '');
-        text = text.replace(/^(?:\\u00c3\\u00a2\\u0082\\u00ac\\u00a2)+/g, '');
-        item.textContent = text.trim();
+        var original = item.textContent || '';
+        var cleaned = original
+          .replace(/^[\s\u00a0]*(?:√¢‚Ç¨¬¢|√É¬¢√¢‚Äö¬¨√Ç¬¢|‚Äö√Ñ¬¢|√Ø‚Äö¬∑|√Ç¬∑|¬∑|‚Ä¢)+[\s\u00a0]*/g, '')
+          .replace(/^[\s\u00a0]+|[\s\u00a0]+$/g, '');
+        if (cleaned !== original) item.textContent = cleaned;
       });
     }
   }
 
-  var contentObserver = new MutationObserver(function () {
-    if (modal) cleanWhyContent(modal);
-  });
-  contentObserver.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+  /* Intentionally no MutationObserver here: rewriting modal text inside an observer
+     creates a mutation loop and can freeze unrelated page interactions, including the gallery. */
 
   document.addEventListener('click', function (event) {
     var toggle = event.target.closest && event.target.closest('[data-forma-score-toggle]');
