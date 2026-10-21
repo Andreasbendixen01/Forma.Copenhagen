@@ -77,7 +77,7 @@
   #shopify-section-{{ section.id }} .product-info {
     position: absolute !important;
     top: 0 !important;
-    right: calc((100vw - 100%) / -2) !important;
+    right: 0 !important;
     bottom: auto !important;
     width: min(39vw, 590px) !important;
     height: clamp(680px, calc(100vh - 150px), 900px) !important;
@@ -308,7 +308,7 @@
   cursor: pointer !important;
 }
 #forma-why-modal-portal .forma-score-card__details-close::before {
-  content: "x" !important;
+  content: "√ó" !important;
   font-family: Arial, sans-serif !important;
   font-size: 24px !important;
   font-weight: 300 !important;
@@ -334,7 +334,67 @@
   #forma-why-modal-portal .forma-score-card__details-title {
     font-size: 22px !important;
   }
-}</style>
+}
+/* FORMA MATCH ‚Äî independent full-screen explanation modal */
+.forma-why-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483647 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  height: 100dvh !important;
+  margin: 0 !important;
+  padding: 24px !important;
+  box-sizing: border-box !important;
+  background: rgba(20, 20, 19, .62) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(10px) !important;
+}
+.forma-why-dialog {
+  position: relative !important;
+  display: block !important;
+  width: min(100%, 620px) !important;
+  max-width: 620px !important;
+  max-height: min(82dvh, 680px) !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  overflow: auto !important;
+  border: 1px solid rgba(255,255,255,.7) !important;
+  border-radius: 4px !important;
+  background: #f8f7f4 !important;
+  color: #171715 !important;
+  box-shadow: 0 28px 90px rgba(0,0,0,.28) !important;
+  text-align: left !important;
+  font-family: inherit !important;
+}
+.forma-why-dialog__header { position: relative !important; padding: 34px 38px 18px !important; }
+.forma-why-dialog__eyebrow { margin: 0 48px 14px 0 !important; color: #77736c !important; font-size: 10px !important; line-height: 1.4 !important; letter-spacing: .18em !important; text-transform: uppercase !important; }
+.forma-why-dialog__title { margin: 0 48px 0 0 !important; color: #171715 !important; font-size: clamp(24px, 3vw, 32px) !important; line-height: 1.12 !important; letter-spacing: -.045em !important; font-weight: 500 !important; }
+.forma-why-dialog__close { position: absolute !important; top: 28px !important; right: 28px !important; display: flex !important; align-items: center !important; justify-content: center !important; width: 38px !important; height: 38px !important; padding: 0 !important; border: 1px solid #d7d4cd !important; border-radius: 50% !important; background: transparent !important; color: #171715 !important; cursor: pointer !important; }
+.forma-why-dialog__close svg { display: block !important; width: 17px !important; height: 17px !important; fill: none !important; stroke: currentColor !important; stroke-width: 1.5 !important; stroke-linecap: round !important; }
+.forma-why-dialog__description { margin: 0 !important; padding: 0 38px 25px !important; color: #55534e !important; font-size: 15px !important; line-height: 1.75 !important; }
+.forma-why-dialog__divider { height: 1px !important; margin: 0 !important; background: #dedbd4 !important; }
+.forma-why-dialog__reasons { display: grid !important; gap: 0 !important; margin: 0 !important; padding: 8px 38px !important; list-style: none !important; }
+.forma-why-dialog__reason { display: grid !important; grid-template-columns: 10px minmax(0,1fr) !important; align-items: start !important; column-gap: 13px !important; margin: 0 !important; padding: 17px 0 !important; border-bottom: 1px solid #e8e5df !important; color: #25241f !important; font-size: 14px !important; line-height: 1.65 !important; }
+.forma-why-dialog__reason:last-child { border-bottom: 0 !important; }
+.forma-why-dialog__marker { display: block !important; width: 6px !important; height: 6px !important; margin-top: 8px !important; border-radius: 50% !important; background: #26251f !important; }
+.forma-why-dialog__footer { display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 20px !important; padding: 20px 38px 28px !important; border-top: 1px solid #dedbd4 !important; color: #77736c !important; font-size: 11px !important; line-height: 1.5 !important; letter-spacing: .02em !important; }
+.forma-why-dialog__done { flex: 0 0 auto !important; min-width: 100px !important; padding: 12px 20px !important; border: 1px solid #171715 !important; border-radius: 0 !important; background: #171715 !important; color: #fff !important; font-size: 11px !important; letter-spacing: .08em !important; text-transform: uppercase !important; cursor: pointer !important; }
+@media (max-width: 600px) {
+  .forma-why-overlay { padding: 16px !important; }
+  .forma-why-dialog { max-height: 88dvh !important; }
+  .forma-why-dialog__header { padding: 27px 23px 16px !important; }
+  .forma-why-dialog__close { top: 21px !important; right: 20px !important; width: 34px !important; height: 34px !important; }
+  .forma-why-dialog__title { font-size: 25px !important; }
+  .forma-why-dialog__description { padding: 0 23px 22px !important; font-size: 14px !important; }
+  .forma-why-dialog__reasons { padding: 6px 23px !important; }
+  .forma-why-dialog__footer { align-items: flex-start !important; flex-direction: column !important; padding: 18px 23px 23px !important; }
+}
+
+</style>
 
 {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 {%- capture product_form_id -%}product-form-main-{{ product.id }}-{{ section.id }}{%- endcapture -%}
@@ -540,135 +600,151 @@ window.formaProduct = {
 
 
 <script>
-/* FORMA WHY MODAL ‚Äî portal the existing explanation to <body> to prevent clipping.
-   This leaves the gallery/slider markup and slider JavaScript untouched. */
+/* FORMA WHY ‚Äî build a clean, independent modal. The gallery and slider are untouched. */
 (function () {
-  if (window.__formaWhyModalPortalInstalled) return;
-  window.__formaWhyModalPortalInstalled = true;
+  if (window.__formaWhyModalV3) return;
+  window.__formaWhyModalV3 = true;
 
-  var modal = null;
-  var placeholder = null;
-  var originalParent = null;
-  var originalNextSibling = null;
+  var overlay = null;
+  var previousFocus = null;
 
-  function findModalFromToggle(toggle) {
-    var card = toggle.closest('.forma-score-card');
-    return card ? card.querySelector('[data-forma-score-details]') : null;
+  function cleanReason(text) {
+    var value = String(text || '').replace(/\s+/g, ' ').trim();
+    var lower = value.toLowerCase();
+    if (lower.indexOf('similar') !== -1 || lower.indexOf('explored') !== -1) {
+      return 'Similar to brands you have explored';
+    }
+    if (lower.indexOf('viewed') !== -1 || lower.indexOf('product before') !== -1) {
+      return 'You have viewed this product before';
+    }
+    return value
+      .replace(/^(?:[\u00c2\u00c3\u201a\u00e2\u0080\u0099\u009c\u009d\u00a2\u00b7\u2022\u00ef\u201a\u00b7\s.,;:]+)+/, '')
+      .replace(/^[^A-Za-z0-9]+/, '')
+      .trim();
   }
 
-  function openModal(toggle) {
-    var found = findModalFromToggle(toggle);
-    if (!found) return;
-
-    modal = found;
-    if (!placeholder) {
-      placeholder = document.createComment('forma-why-modal-placeholder');
-      originalParent = modal.parentNode;
-      originalNextSibling = modal.nextSibling;
-      originalParent.insertBefore(placeholder, modal);
-    }
-
-    modal.id = 'forma-why-modal-portal';
-    modal.hidden = false;
-    modal.setAttribute('role', 'dialog');
-    modal.setAttribute('aria-modal', 'true');
-    modal.setAttribute('aria-label', 'Why it matches you');
-    document.body.appendChild(modal);
-    cleanWhyContent(modal);
-    document.documentElement.classList.add('forma-why-modal-open');
-    document.body.style.overflow = 'hidden';
-
-    var close = modal.querySelector('[data-forma-score-close]');
-    if (close) close.focus({ preventScroll: true });
+  function make(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
   }
 
   function closeModal() {
-    if (!modal) return;
-    modal.hidden = true;
-    modal.removeAttribute('role');
-    modal.removeAttribute('aria-modal');
-    modal.removeAttribute('aria-label');
-    modal.removeAttribute('id');
-
-    if (placeholder && placeholder.parentNode) {
-      placeholder.parentNode.insertBefore(modal, placeholder);
-      placeholder.parentNode.removeChild(placeholder);
-    } else if (originalParent) {
-      originalParent.insertBefore(modal, originalNextSibling);
-    }
-
-    placeholder = null;
-    modal = null;
-    originalParent = null;
-    originalNextSibling = null;
+    if (!overlay) return;
+    overlay.remove();
+    overlay = null;
     document.documentElement.classList.remove('forma-why-modal-open');
     document.body.style.overflow = '';
+    if (previousFocus && document.contains(previousFocus)) previousFocus.focus({ preventScroll: true });
+    previousFocus = null;
   }
 
-  function cleanWhyContent(root) {
-    if (!root) return;
+  function openModal(toggle) {
+    if (overlay) closeModal();
+    var card = toggle.closest('[data-forma-score-card]');
+    var source = card && card.querySelector('[data-forma-score-details]');
+    if (!source) return;
 
-    var close = root.querySelector('[data-forma-score-close]');
-    if (!close) {
-      close = document.createElement('button');
-      close.type = 'button';
-      close.className = 'forma-score-card__details-close';
-      close.setAttribute('data-forma-score-close', '');
-      close.setAttribute('aria-label', 'Close explanation');
-      close.textContent = 'Close';
-      var header = root.querySelector('.forma-score-card__details-header');
-      if (header) header.appendChild(close);
-    }
-    if (close) {
-      close.setAttribute('aria-label', 'Close explanation');
-      close.textContent = '';
-    }
+    previousFocus = toggle;
+    overlay = make('div', 'forma-why-overlay');
+    overlay.setAttribute('role', 'presentation');
 
-    var reasons = root.querySelector('[data-forma-score-reasons]');
-    if (reasons) {
-      Array.prototype.forEach.call(reasons.querySelectorAll('li'), function (item) {
-        var original = item.textContent || '';
-        var cleaned = original
-          .replace(/^[\s\u00a0]*(?:√¢‚Ç¨¬¢|√É¬¢√¢‚Äö¬¨√Ç¬¢|‚Äö√Ñ¬¢|√Ø‚Äö¬∑|√Ç¬∑|¬∑|‚Ä¢)+[\s\u00a0]*/g, '')
-          .replace(/^[\s\u00a0]+|[\s\u00a0]+$/g, '');
-        if (cleaned !== original) item.textContent = cleaned;
-      });
+    var dialog = make('section', 'forma-why-dialog');
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.setAttribute('aria-labelledby', 'forma-why-title');
+
+    var header = make('div', 'forma-why-dialog__header');
+    var eyebrow = make('p', 'forma-why-dialog__eyebrow', 'FORMA MATCH');
+    var title = make('h2', 'forma-why-dialog__title', 'Why it matches you');
+    title.id = 'forma-why-title';
+    var close = make('button', 'forma-why-dialog__close', '');
+    close.type = 'button';
+    close.setAttribute('aria-label', 'Close explanation');
+    close.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" /></svg>';
+    header.appendChild(eyebrow);
+    header.appendChild(title);
+    header.appendChild(close);
+
+    var description = make('p', 'forma-why-dialog__description', 'Your match is based on the brands, products and styles you interact with.');
+    var divider = make('div', 'forma-why-dialog__divider');
+    var list = make('ul', 'forma-why-dialog__reasons');
+    var reasonNodes = source.querySelectorAll('[data-forma-score-reasons] li');
+    var reasons = [];
+    Array.prototype.forEach.call(reasonNodes, function (item) {
+      var reason = cleanReason(item.textContent);
+      if (reason && reasons.indexOf(reason) === -1) reasons.push(reason);
+    });
+    if (!reasons.length) {
+      reasons = ['Similar to brands you have explored', 'You have viewed this product before'];
     }
+    reasons.forEach(function (reason) {
+      var li = make('li', 'forma-why-dialog__reason');
+      var marker = make('span', 'forma-why-dialog__marker', '');
+      marker.setAttribute('aria-hidden', 'true');
+      var text = make('span', '', reason);
+      li.appendChild(marker);
+      li.appendChild(text);
+      list.appendChild(li);
+    });
+
+    var footer = make('div', 'forma-why-dialog__footer');
+    footer.appendChild(make('span', '', 'A more personal way to discover Forma.'));
+    var done = make('button', 'forma-why-dialog__done', 'Got it');
+    done.type = 'button';
+    footer.appendChild(done);
+
+    dialog.appendChild(header);
+    dialog.appendChild(description);
+    dialog.appendChild(divider);
+    dialog.appendChild(list);
+    dialog.appendChild(footer);
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+    document.documentElement.classList.add('forma-why-modal-open');
+    document.body.style.overflow = 'hidden';
+    close.focus({ preventScroll: true });
   }
-
-  /* Intentionally no MutationObserver here: rewriting modal text inside an observer
-     creates a mutation loop and can freeze unrelated page interactions, including the gallery. */
 
   document.addEventListener('click', function (event) {
     var toggle = event.target.closest && event.target.closest('[data-forma-score-toggle]');
     if (toggle) {
-      /* Let Forma's existing score logic populate/show the panel first. */
-      window.setTimeout(function () { openModal(toggle); }, 0);
-      return;
-    }
-
-    if (!modal) return;
-
-    if (event.target.closest && event.target.closest('[data-forma-score-close]')) {
       event.preventDefault();
       event.stopPropagation();
+      if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+      openModal(toggle);
+      return;
+    }
+    if (!overlay) return;
+    if (event.target.closest && event.target.closest('.forma-why-dialog__close, .forma-why-dialog__done')) {
+      event.preventDefault();
       closeModal();
       return;
     }
-
-    if (event.target === modal) {
-      closeModal();
-    }
+    if (event.target === overlay) closeModal();
   }, true);
 
   document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape' && modal) {
+    if (!overlay) return;
+    if (event.key === 'Escape') {
       event.preventDefault();
       closeModal();
+      return;
+    }
+    if (event.key === 'Tab') {
+      var focusable = overlay.querySelectorAll('button');
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
     }
   });
-})();
-</script>
+})();</script>
 
 {% schema %}
 {
