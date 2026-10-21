@@ -68,10 +68,17 @@
     display: block !important;
     width: 100% !important;
     max-width: none !important;
-    height: clamp(680px, calc(100vh - 150px), 900px) !important;
-    min-height: 680px !important;
-    max-height: 900px !important;
+    height: clamp(520px, calc(100vh - 180px), 760px) !important;
+    min-height: 520px !important;
+    max-height: 760px !important;
     z-index: 1 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-gallery__media,
+  #shopify-section-{{ section.id }} .product-gallery__media img,
+  #shopify-section-{{ section.id }} .product-gallery img {
+    object-fit: contain !important;
+    object-position: center center !important;
   }
 
   #shopify-section-{{ section.id }} .product-info {
@@ -80,9 +87,9 @@
     right: 0 !important;
     bottom: auto !important;
     width: min(39vw, 590px) !important;
-    height: clamp(680px, calc(100vh - 150px), 900px) !important;
-    min-height: 680px !important;
-    max-height: 900px !important;
+    height: clamp(520px, calc(100vh - 180px), 760px) !important;
+    min-height: 520px !important;
+    max-height: 760px !important;
     box-sizing: border-box !important;
     padding: 24px 28px !important;
     background: rgba(225, 224, 221, 0.78) !important;
@@ -471,7 +478,7 @@
   </div>
 </div>
 
-{%- if section.settings.show_sticky_add_to_cart and product.available -%}
+{%- if false and section.settings.show_sticky_add_to_cart and product.available -%}
   <product-rerender id="{{ product_form_id }}-sticky-bar" observe-form="{{ product_form_id }}">
     <product-sticky-bar form="{{ product_form_id }}" class="product-sticky-bar">
       <div class="product-sticky-bar__info sm-max:hidden">

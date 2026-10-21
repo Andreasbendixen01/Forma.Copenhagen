@@ -196,7 +196,8 @@
             {%- endif -%}
 
           {%- when 'payment_terms' -%}
-            {%- if product != blank -%}
+            {%- comment -%}FORMA is a discovery platform; checkout happens on the brand's own site.{%- endcomment -%}
+            {%- if false and product != blank -%}
               <payment-terms class="payment-terms">
                 {%- capture product_installment_form_id -%}{{ product_form_id }}-payment-installment{%- endcapture -%}
 
@@ -353,7 +354,8 @@
             {%- endif -%}
 
           {%- when 'quantity_selector' -%}
-            {%- if product.available -%}
+            {%- comment -%}Quantity is selected on the brand's own product page.{%- endcomment -%}
+            {%- if false and product.available -%}
               <div class="v-stack gap-1 justify-items-start">
                 {%- liquid
                   assign variant = product.selected_or_first_available_variant
@@ -414,12 +416,20 @@
               data-product-price="{{ product.price | money | escape }}"
               aria-pressed="false"
             >
-              <span class="forma-save-destination__icon" aria-hidden="true">‚ô°</span>
+              <span class="forma-save-destination__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
               <span class="forma-save-destination__copy">
                 <span class="forma-save-destination__title" data-forma-save-label>Save to Your Forma</span>
                 <span class="forma-save-destination__subtitle">Keep the pieces you love in one place.</span>
               </span>
-              <span class="forma-save-destination__arrow" aria-hidden="true">‚Üó</span>
+              <span class="forma-save-destination__arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.5 12h14M12.5 5.5 19 12l-6.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </button>
             <p class="forma-save-destination__feedback" data-forma-save-feedback role="status" aria-live="polite" hidden></p>
           </div>
@@ -457,7 +467,7 @@
                   class="forma-score-card__value"
                   data-forma-score-value
                 >
-                  ‚Äö√Ñ√Æ
+                  ‚Äî
                 </span>
 
                 <span class="forma-score-card__percentage">
@@ -499,7 +509,11 @@
                 class="forma-score-card__details-close"
                 data-forma-score-close
                 aria-label="Close explanation"
-              >‚àö√≥</button>
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </button>
 
               <p class="forma-score-card__details-title">
                 Why it matches you
@@ -518,16 +532,23 @@
         </div>
 
 
-            {%- render 'buy-buttons',
-                product: product,
-                form_id: product_form_id,
-                show_payment_button: block.settings.show_payment_button,
-                show_gift_card_recipient: block.settings.show_gift_card_recipient,
-                atc_button_background: block.settings.atc_button_background,
-                atc_button_text_color: block.settings.atc_button_text_color,
-                payment_button_background: block.settings.payment_button_background,
-                payment_button_text_color: block.settings.payment_button_text_color
-            -%}
+            {%- assign external_product_url = product.metafields.custom.external_product_url.value -%}
+            {%- if external_product_url != blank -%}
+              <a
+                class="forma-shop-at-brand"
+                href="{{ external_product_url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Shop {{ product.title | escape }} at {{ product.vendor | escape }}"
+              >
+                <span>SHOP AT BRAND</span>
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M7 17 17 7M7.5 7H17v9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            {%- else -%}
+              <p class="forma-shop-at-brand__notice">Brand product link coming soon.</p>
+            {%- endif -%}
 
           {%- when 'pickup_availability' -%}
             {%- if product != blank -%}
@@ -745,12 +766,13 @@
   .forma-save-destination { margin: 0 0 14px; }
   .forma-save-destination__button { display:flex; align-items:center; gap:13px; width:100%; padding:14px 15px; border:1px solid rgba(30,30,28,.22); background:rgba(255,255,255,.24); color:inherit; text-align:left; cursor:pointer; transition:background .2s ease,border-color .2s ease; }
   .forma-save-destination__button:hover { background:rgba(255,255,255,.55); border-color:rgba(30,30,28,.5); }
-  .forma-save-destination__icon { display:flex; align-items:center; justify-content:center; width:35px; height:35px; flex:0 0 35px; border:1px solid rgba(30,30,28,.25); border-radius:50%; font-size:24px; line-height:1; }
+  .forma-save-destination__icon { display:flex; align-items:center; justify-content:center; width:35px; height:35px; flex:0 0 35px; border:1px solid rgba(30,30,28,.25); border-radius:50%; }
+  .forma-save-destination__icon svg, .forma-save-destination__arrow svg { display:block; flex:0 0 auto; }
+  .forma-save-destination__arrow { display:flex; align-items:center; justify-content:center; width:24px; height:24px; flex:0 0 24px; }
   .forma-save-destination__copy { display:flex; flex:1; min-width:0; flex-direction:column; gap:3px; }
   .forma-save-destination__title { font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
   .forma-save-destination__subtitle { font-size:12px; line-height:1.45; opacity:.72; }
-  .forma-save-destination__arrow { font-size:18px; }
-  .forma-save-destination__button[aria-pressed="true"] .forma-save-destination__icon { background:#22221f; color:#fff; border-color:#22221f; }
+    .forma-save-destination__button[aria-pressed="true"] .forma-save-destination__icon { background:#22221f; color:#fff; border-color:#22221f; }
   .forma-save-destination__feedback { margin:7px 0 0; font-size:12px; line-height:1.5; }
   .forma-score-card { border:1px solid rgba(30,30,28,.2); padding:18px; background:rgba(255,255,255,.34); }
   .forma-score-card__eyebrow { font-size:11px !important; font-weight:600 !important; letter-spacing:.14em !important; text-transform:uppercase !important; }
@@ -758,6 +780,11 @@
   .forma-score-card__main { align-items:center; gap:17px !important; }
   .forma-score-card__progress { height:4px !important; margin-top:15px !important; background:rgba(0,0,0,.1) !important; }
   .forma-score-card__progress-bar { background:#25251f !important; }
+  .forma-shop-at-brand { display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; margin-top:14px; padding:16px 18px; border:1px solid rgba(30,30,28,.72); background:#20201d; color:#fff; text-decoration:none; font-size:11px; font-weight:600; letter-spacing:.13em; text-transform:uppercase; transition:background .2s ease,color .2s ease,border-color .2s ease; }
+  .forma-shop-at-brand:hover { background:transparent; color:inherit; border-color:currentColor; }
+  .forma-shop-at-brand svg { flex:0 0 auto; }
+  .forma-shop-at-brand__notice { margin:12px 0 0; font-size:11px; opacity:.65; }
+  .forma-score-card__details-close { display:flex; align-items:center; justify-content:center; }
   @media(max-width:699px) { .forma-save-destination__button { padding:13px; } .forma-score-card { padding:15px; } }
 </style>
 
@@ -793,7 +820,11 @@
     const icon = button.querySelector('.forma-save-destination__icon');
     const feedback = button.closest('[data-forma-save-destination]')?.querySelector('[data-forma-save-feedback]');
     if (label) label.textContent = savedState ? 'Saved to Your Forma' : 'Save to Your Forma';
-    if (icon) icon.textContent = savedState ? '‚ô•' : '‚ô°';
+    if (icon) {
+      icon.innerHTML = savedState
+        ? '<svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-4.35-9.5-8C.5 9.5 2.4 5 6.8 5c2.1 0 3.5 1.2 5.2 3 1.7-1.8 3.1-3 5.2-3C21.6 5 23.5 9.5 21.5 13 19 16.65 12 21 12 21z"/></svg>'
+        : '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    }
     if (feedback) { feedback.hidden = !savedState; feedback.textContent = savedState ? 'This piece is saved in your personal Forma.' : ''; }
   };
   const refresh = () => document.querySelectorAll('[data-forma-save-product]').forEach(button => paint(button, readSaved()));
@@ -857,5 +888,6 @@
   })();
 </script>
 </safe-sticky>
+
 
 
