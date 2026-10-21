@@ -191,8 +191,9 @@
   }
 }
 
-/* FORMA ‚Äî Why modal. Keep it independent from the product panel and gallery. */
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) {
+/* FORMA WHY MODAL ‚Äî the modal is moved to <body> by the script below,
+   so it is not clipped by the product info panel or its glass effect. */
+#forma-why-modal-portal.forma-score-card__details {
   position: fixed !important;
   inset: 0 !important;
   z-index: 2147483000 !important;
@@ -209,30 +210,25 @@
   margin: 0 !important;
   padding: 24px !important;
   box-sizing: border-box !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  background: transparent !important;
-  isolation: isolate !important;
+  overflow: auto !important;
+  background: rgba(18, 18, 18, .62) !important;
+  backdrop-filter: blur(7px) !important;
+  -webkit-backdrop-filter: blur(7px) !important;
 }
 
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden])::before {
-  content: "" !important;
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: -1 !important;
-  background: rgba(18, 18, 18, .58) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
+#forma-why-modal-portal.forma-score-card__details[hidden] {
+  display: none !important;
 }
 
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-header,
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons {
+#forma-why-modal-portal .forma-score-card__details-header,
+#forma-why-modal-portal .forma-score-card__reasons {
   display: block !important;
+  position: relative !important;
   flex: 0 0 auto !important;
   width: min(100%, 560px) !important;
   max-width: 560px !important;
   margin: 0 !important;
-  padding: 22px 26px !important;
+  padding: 22px 28px !important;
   box-sizing: border-box !important;
   background: #fff !important;
   color: #171717 !important;
@@ -240,47 +236,46 @@
   box-shadow: none !important;
 }
 
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-header {
-  position: relative !important;
+#forma-why-modal-portal .forma-score-card__details-header {
   border: 0 !important;
   border-radius: 14px 14px 0 0 !important;
   padding-top: 30px !important;
   padding-bottom: 12px !important;
 }
 
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-title {
+#forma-why-modal-portal .forma-score-card__details-title {
   margin: 0 42px 10px 0 !important;
   color: #171717 !important;
   font-size: 22px !important;
-  line-height: 1.25 !important;
+  line-height: 1.3 !important;
   font-weight: 600 !important;
 }
 
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-description {
+#forma-why-modal-portal .forma-score-card__details-description {
   margin: 0 !important;
   color: #555 !important;
   font-size: 14px !important;
   line-height: 1.65 !important;
 }
 
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons {
+#forma-why-modal-portal .forma-score-card__reasons {
   border: 0 !important;
   border-radius: 0 0 14px 14px !important;
   padding-top: 8px !important;
-  padding-bottom: 28px !important;
+  padding-bottom: 26px !important;
   color: #252525 !important;
   font-size: 14px !important;
   line-height: 1.65 !important;
   list-style: none !important;
 }
 
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons li {
+#forma-why-modal-portal .forma-score-card__reasons li {
   position: relative !important;
   margin: 0 0 12px !important;
   padding-left: 22px !important;
 }
 
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons li::before {
+#forma-why-modal-portal .forma-score-card__reasons li::before {
   content: "‚Ä¢" !important;
   position: absolute !important;
   left: 2px !important;
@@ -288,11 +283,11 @@
   color: #171717 !important;
 }
 
-#shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-close {
+#forma-why-modal-portal .forma-score-card__details-close {
   position: absolute !important;
-  top: 18px !important;
-  right: 20px !important;
-  z-index: 2 !important;
+  top: 15px !important;
+  right: 18px !important;
+  z-index: 5 !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -313,21 +308,20 @@
 }
 
 @media screen and (max-width: 600px) {
-  #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) {
+  #forma-why-modal-portal.forma-score-card__details {
     padding: 16px !important;
   }
 
-  #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-header,
-  #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__reasons {
+  #forma-why-modal-portal .forma-score-card__details-header,
+  #forma-why-modal-portal .forma-score-card__reasons {
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
 
-  #shopify-section-{{ section.id }} .forma-score-card__details:not([hidden]) .forma-score-card__details-title {
+  #forma-why-modal-portal .forma-score-card__details-title {
     font-size: 19px !important;
   }
-}
-</style>
+}</style>
 
 {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 {%- capture product_form_id -%}product-form-main-{{ product.id }}-{{ section.id }}{%- endcapture -%}
@@ -530,6 +524,103 @@ window.formaProduct = {
 };
 </script>
 
+
+
+<script>
+/* FORMA WHY MODAL ‚Äî portal the existing explanation to <body> to prevent clipping.
+   This leaves the gallery/slider markup and slider JavaScript untouched. */
+(function () {
+  if (window.__formaWhyModalPortalInstalled) return;
+  window.__formaWhyModalPortalInstalled = true;
+
+  var modal = null;
+  var placeholder = null;
+  var originalParent = null;
+  var originalNextSibling = null;
+
+  function findModalFromToggle(toggle) {
+    var card = toggle.closest('.forma-score-card');
+    return card ? card.querySelector('[data-forma-score-details]') : null;
+  }
+
+  function openModal(toggle) {
+    var found = findModalFromToggle(toggle);
+    if (!found) return;
+
+    modal = found;
+    if (!placeholder) {
+      placeholder = document.createComment('forma-why-modal-placeholder');
+      originalParent = modal.parentNode;
+      originalNextSibling = modal.nextSibling;
+      originalParent.insertBefore(placeholder, modal);
+    }
+
+    modal.id = 'forma-why-modal-portal';
+    modal.hidden = false;
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Why it matches you');
+    document.body.appendChild(modal);
+    document.documentElement.classList.add('forma-why-modal-open');
+    document.body.style.overflow = 'hidden';
+
+    var close = modal.querySelector('[data-forma-score-close]');
+    if (close) close.focus({ preventScroll: true });
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.hidden = true;
+    modal.removeAttribute('role');
+    modal.removeAttribute('aria-modal');
+    modal.removeAttribute('aria-label');
+    modal.removeAttribute('id');
+
+    if (placeholder && placeholder.parentNode) {
+      placeholder.parentNode.insertBefore(modal, placeholder);
+      placeholder.parentNode.removeChild(placeholder);
+    } else if (originalParent) {
+      originalParent.insertBefore(modal, originalNextSibling);
+    }
+
+    placeholder = null;
+    modal = null;
+    originalParent = null;
+    originalNextSibling = null;
+    document.documentElement.classList.remove('forma-why-modal-open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('click', function (event) {
+    var toggle = event.target.closest && event.target.closest('[data-forma-score-toggle]');
+    if (toggle) {
+      /* Let Forma's existing score logic populate/show the panel first. */
+      window.setTimeout(function () { openModal(toggle); }, 0);
+      return;
+    }
+
+    if (!modal) return;
+
+    if (event.target.closest && event.target.closest('[data-forma-score-close]')) {
+      event.preventDefault();
+      event.stopPropagation();
+      closeModal();
+      return;
+    }
+
+    if (event.target === modal) {
+      closeModal();
+    }
+  }, true);
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && modal) {
+      event.preventDefault();
+      closeModal();
+    }
+  });
+})();
+</script>
 
 {% schema %}
 {
