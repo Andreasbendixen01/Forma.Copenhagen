@@ -110,6 +110,29 @@
         padding: 0 5px 8px !important;
         overflow-x: auto !important;
         scrollbar-width: none;
+        box-sizing: border-box !important;
+      }
+
+      /* Remove the theme's grey card/slide background and edge gutters */
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card,
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure,
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card__image,
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card__media,
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure::before,
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure::after {
+        background: #fff !important;
+        border: 0 !important;
+        outline: 0 !important;
+        box-shadow: none !important;
+      }
+
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card {
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure {
+        border-radius: 0 !important;
       }
 
       #shopify-section-{{ section.id }} .forma-product-carousel .product-list::-webkit-scrollbar {
