@@ -10710,32 +10710,35 @@ section[id*="blog_posts"] .section-stack {
   }
 }
 
+
 /* =========================================================
-   FORMA — PREMIUM FOLLOW BRAND BUTTON
+   FORMA — REFINED FOLLOW BRAND
+   Rounded, minimal and editorial
    ========================================================= */
 
 .forma-follow-brand {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 9px;
 
-  min-height: 38px;
-  padding: 9px 15px;
+  min-height: 34px;
+  padding: 7px 14px;
 
-  border: 1px solid rgba(20, 20, 20, 0.24);
-  border-radius: 2px;
+  border: 1px solid rgba(25, 25, 25, 0.22);
+  border-radius: 999px;
 
-  background: rgba(255, 255, 255, 0.12);
-  color: #171717;
+  background: rgba(255, 255, 255, 0.22);
+  color: #202020;
 
   font-family: inherit;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: 0.11em;
+  line-height: 1;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 
+  white-space: nowrap;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 
@@ -10743,61 +10746,98 @@ section[id*="blog_posts"] .section-stack {
     background-color 220ms ease,
     color 220ms ease,
     border-color 220ms ease,
+    box-shadow 220ms ease,
     transform 220ms ease;
 }
 
-/* Lille plus-symbol */
+/* Circular plus marker */
 .forma-follow-brand [data-forma-follow-label]::before {
   content: "+";
-  display: inline-block;
-  margin-right: 8px;
-  font-size: 15px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 17px;
+  height: 17px;
+  margin-right: 7px;
+
+  border: 1px solid currentColor;
+  border-radius: 50%;
+
+  font-size: 12px;
   font-weight: 400;
-  line-height: 0.8;
-  vertical-align: -1px;
+  line-height: 1;
+  vertical-align: middle;
+
+  transition:
+    transform 220ms ease,
+    background-color 220ms ease,
+    color 220ms ease;
 }
 
-/* Hover */
+/* Refined hover */
 .forma-follow-brand:hover {
-  background: #171717;
-  border-color: #171717;
+  background: #202020;
+  border-color: #202020;
   color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
-/* Tastaturfokus */
-.forma-follow-brand:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 3px;
+.forma-follow-brand:hover
+[data-forma-follow-label]::before {
+  transform: rotate(90deg);
 }
 
-/* Følger allerede brandet */
+/* Followed state */
 .forma-follow-brand[aria-pressed="true"] {
-  background: #171717;
-  border-color: #171717;
+  background: #202020;
+  border-color: #202020;
   color: #ffffff;
 }
 
-/* Skift plus til flueben, når brandet følges */
 .forma-follow-brand[aria-pressed="true"]
 [data-forma-follow-label]::before {
   content: "✓";
-  font-size: 12px;
+  font-size: 10px;
+  transform: none;
 }
 
-/* Mobil */
+/* Accessible keyboard focus */
+.forma-follow-brand:focus-visible {
+  outline: 2px solid #202020;
+  outline-offset: 3px;
+}
+
+/* Brand row: allow the button to sit neatly beside the vendor */
+.product-info .forma-follow-brand {
+  margin-top: 5px;
+  vertical-align: middle;
+}
+
+/* Mobile sizing */
 @media screen and (max-width: 749px) {
   .forma-follow-brand {
-    min-height: 36px;
-    padding: 8px 12px;
-    font-size: 9px;
+    min-height: 32px;
+    padding: 6px 11px;
+    gap: 6px;
+    font-size: 8px;
+  }
+
+  .forma-follow-brand [data-forma-follow-label]::before {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
   }
 }
 
-/* Respektér brugerens bevægelsesindstillinger */
+/* Respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .forma-follow-brand {
+  .forma-follow-brand,
+  .forma-follow-brand [data-forma-follow-label]::before {
     transition: none;
   }
 }
+
 
 
