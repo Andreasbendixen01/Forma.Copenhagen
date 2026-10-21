@@ -51,7 +51,7 @@
 
   
 /* ============================================================
-   FORMA ‚Äö√Ñ√Æ PRODUCT PAGE LAYOUT
+   FORMA, PRODUCT PAGE LAYOUT
    Keep the existing product-gallery snippet and slider untouched.
    ============================================================ */
 
@@ -167,6 +167,18 @@
   #shopify-section-{{ section.id }} .product-gallery carousel-navigation {
     position: relative !important;
     z-index: 10 !important;
+  }
+}
+
+/* FORMA — tighter product gallery spacing */
+@media screen and (min-width: 750px) {
+  .product-gallery__media-list {
+    column-gap: 4px !important;
+    gap: 4px !important;
+  }
+
+  .product-gallery__media {
+    margin: 0 !important;
   }
 }
 
@@ -400,6 +412,8 @@
   .forma-why-dialog__reasons { padding: 6px 23px !important; }
   .forma-why-dialog__footer { align-items: flex-start !important; flex-direction: column !important; padding: 18px 23px 23px !important; }
 }
+
+
 
 </style>
 
