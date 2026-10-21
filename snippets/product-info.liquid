@@ -1,28 +1,3 @@
-
-<style>
-  .forma-score-card__your-forma {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 14px;
-    padding: 12px 0 2px;
-    border-top: 1px solid rgba(30, 30, 30, .16);
-    color: inherit;
-    font-size: 12px;
-    line-height: 1.5;
-    text-decoration: none;
-    letter-spacing: .02em;
-  }
-  .forma-score-card__your-forma span {
-    font-size: 18px;
-    transition: transform .2s ease;
-  }
-  .forma-score-card__your-forma:hover span {
-    transform: translateX(3px);
-  }
-</style>
-
 {%- comment -%}
   ----------------------------------------------------------------------------------------------------------------------
   PRODUCT INFO
@@ -425,6 +400,30 @@
 
           {%- when 'buy_buttons' -%}
 
+          <div class="forma-save-destination" data-forma-save-destination>
+            <button
+              type="button"
+              class="forma-save-destination__button"
+              data-forma-save-product
+              data-product-id="{{ product.id }}"
+              data-product-handle="{{ product.handle | escape }}"
+              data-product-title="{{ product.title | escape }}"
+              data-product-vendor="{{ product.vendor | escape }}"
+              data-product-url="{{ product.url }}"
+              data-product-image="{{ product.featured_image | image_url: width: 700 }}"
+              data-product-price="{{ product.price | money | escape }}"
+              aria-pressed="false"
+            >
+              <span class="forma-save-destination__icon" aria-hidden="true">‚ô°</span>
+              <span class="forma-save-destination__copy">
+                <span class="forma-save-destination__title" data-forma-save-label>Save to Your Forma</span>
+                <span class="forma-save-destination__subtitle">Keep the pieces you love in one place.</span>
+              </span>
+              <span class="forma-save-destination__arrow" aria-hidden="true">‚Üó</span>
+            </button>
+            <p class="forma-save-destination__feedback" data-forma-save-feedback role="status" aria-live="polite" hidden></p>
+          </div>
+
           <div
           class="forma-score-card"
           data-forma-score-card
@@ -488,10 +487,6 @@
               ></span>
             </div>
           </div>
-
-          <a class="forma-score-card__your-forma" href="/pages/your-forma">
-            Discover your Forma <span aria-hidden="true">‚Üí</span>
-          </a>
 
           <div
             class="forma-score-card__details"
@@ -745,6 +740,89 @@
       <input type="hidden" disabled name="id" value="{{ product.selected_or_first_available_variant.id }}">
     {%- endform -%}
   {%- endunless -%}
+
+<style>
+  .forma-save-destination { margin: 0 0 14px; }
+  .forma-save-destination__button { display:flex; align-items:center; gap:13px; width:100%; padding:14px 15px; border:1px solid rgba(30,30,28,.22); background:rgba(255,255,255,.24); color:inherit; text-align:left; cursor:pointer; transition:background .2s ease,border-color .2s ease; }
+  .forma-save-destination__button:hover { background:rgba(255,255,255,.55); border-color:rgba(30,30,28,.5); }
+  .forma-save-destination__icon { display:flex; align-items:center; justify-content:center; width:35px; height:35px; flex:0 0 35px; border:1px solid rgba(30,30,28,.25); border-radius:50%; font-size:24px; line-height:1; }
+  .forma-save-destination__copy { display:flex; flex:1; min-width:0; flex-direction:column; gap:3px; }
+  .forma-save-destination__title { font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
+  .forma-save-destination__subtitle { font-size:12px; line-height:1.45; opacity:.72; }
+  .forma-save-destination__arrow { font-size:18px; }
+  .forma-save-destination__button[aria-pressed="true"] .forma-save-destination__icon { background:#22221f; color:#fff; border-color:#22221f; }
+  .forma-save-destination__feedback { margin:7px 0 0; font-size:12px; line-height:1.5; }
+  .forma-score-card { border:1px solid rgba(30,30,28,.2); padding:18px; background:rgba(255,255,255,.34); }
+  .forma-score-card__eyebrow { font-size:11px !important; font-weight:600 !important; letter-spacing:.14em !important; text-transform:uppercase !important; }
+  .forma-score-card__value { font-size:clamp(38px,4vw,54px) !important; font-weight:500 !important; letter-spacing:-.06em !important; line-height:1 !important; }
+  .forma-score-card__main { align-items:center; gap:17px !important; }
+  .forma-score-card__progress { height:4px !important; margin-top:15px !important; background:rgba(0,0,0,.1) !important; }
+  .forma-score-card__progress-bar { background:#25251f !important; }
+  @media(max-width:699px) { .forma-save-destination__button { padding:13px; } .forma-score-card { padding:15px; } }
+</style>
+
+<script>
+(() => {
+  if (window.formaSaveToYourFormaInitialized) return;
+  window.formaSaveToYourFormaInitialized = true;
+  const storageKey = 'savedProducts';
+  const legacyKeys = ['forma_saved_products', 'forma-saved-products'];
+  const readSaved = () => {
+    for (const key of [storageKey, ...legacyKeys]) {
+      try {
+        const value = JSON.parse(localStorage.getItem(key) || '[]');
+        if (Array.isArray(value)) return value;
+      } catch (error) {}
+    }
+    return [];
+  };
+  const productFromButton = (button) => ({
+    id: String(button.dataset.productId || ''),
+    handle: button.dataset.productHandle || '',
+    title: button.dataset.productTitle || '',
+    vendor: button.dataset.productVendor || '',
+    url: button.dataset.productUrl || '',
+    image: button.dataset.productImage || '',
+    price: button.dataset.productPrice || ''
+  });
+  const isSaved = (button, saved) => saved.some(item => String(item.id ?? item.productId ?? '') === String(button.dataset.productId) || item.handle === button.dataset.productHandle);
+  const paint = (button, saved) => {
+    const savedState = isSaved(button, saved);
+    button.setAttribute('aria-pressed', String(savedState));
+    const label = button.querySelector('[data-forma-save-label]');
+    const icon = button.querySelector('.forma-save-destination__icon');
+    const feedback = button.closest('[data-forma-save-destination]')?.querySelector('[data-forma-save-feedback]');
+    if (label) label.textContent = savedState ? 'Saved to Your Forma' : 'Save to Your Forma';
+    if (icon) icon.textContent = savedState ? '‚ô•' : '‚ô°';
+    if (feedback) { feedback.hidden = !savedState; feedback.textContent = savedState ? 'This piece is saved in your personal Forma.' : ''; }
+  };
+  const refresh = () => document.querySelectorAll('[data-forma-save-product]').forEach(button => paint(button, readSaved()));
+  document.addEventListener('click', event => {
+    const button = event.target.closest('[data-forma-save-product]');
+    if (!button) return;
+    event.preventDefault();
+    const product = productFromButton(button);
+    let saved = readSaved();
+    const exists = isSaved(button, saved);
+    if (exists) saved = saved.filter(item => String(item.id ?? item.productId ?? '') !== product.id && item.handle !== product.handle);
+    else saved.unshift(product);
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(saved));
+      localStorage.setItem('forma_saved_products', JSON.stringify(saved));
+      document.dispatchEvent(new CustomEvent('forma:saved-products-updated', { detail: saved }));
+      document.dispatchEvent(new CustomEvent('forma: wishlist-updated'.trim(), { detail: saved }));
+      refresh();
+    } catch (error) {
+      const feedback = button.closest('[data-forma-save-destination]')?.querySelector('[data-forma-save-feedback]');
+      if (feedback) { feedback.hidden = false; feedback.textContent = 'Your browser could not save this piece. Please try again.'; }
+    }
+  });
+  document.addEventListener('DOMContentLoaded', refresh);
+  document.addEventListener('shopify:section:load', refresh);
+  window.addEventListener('storage', refresh);
+  refresh();
+})();
+</script>
 
 <script>
   (() => {
