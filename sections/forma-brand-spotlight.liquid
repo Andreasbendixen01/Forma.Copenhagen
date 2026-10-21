@@ -1,0 +1,64 @@
+{%- liquid
+  assign brand_name = product.vendor | default: section.settings.fallback_brand_name
+  assign brand_story = product.metafields.custom.brand_story.value
+  assign brand_image = product.metafields.custom.brand_image.value
+  assign brand_link = product.metafields.custom.brand_link.value
+  if brand_link == blank
+    assign brand_link = routes.collections_url | append: '/vendors?q=' | append: product.vendor | url_encode
+  endif
+  if brand_image == blank
+    assign brand_image = product.featured_image
+  endif
+-%}
+{%- if brand_name != blank -%}
+<section id="forma-brand-spotlight-{{ section.id }}" class="forma-brand-spotlight">
+  <div class="forma-brand-spotlight__inner">
+    <div class="forma-brand-spotlight__media">
+      {%- if brand_image != blank -%}
+        {{ brand_image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '480, 720, 1000, 1400', sizes: '(min-width: 900px) 50vw, 100vw', alt: brand_name, class: 'forma-brand-spotlight__image' }}
+      {%- endif -%}
+    </div>
+    <div class="forma-brand-spotlight__content">
+      <p class="forma-brand-spotlight__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      <h2 class="forma-brand-spotlight__title">{{ section.settings.heading | escape }} <span>{{ brand_name | escape }}</span></h2>
+      {%- if brand_story != blank -%}
+        <div class="forma-brand-spotlight__story rte">{{ brand_story | metafield_tag }}</div>
+      {%- elsif section.settings.body != blank -%}
+        <div class="forma-brand-spotlight__story rte">{{ section.settings.body }}</div>
+      {%- else -%}
+        <p class="forma-brand-spotlight__story">Discover the brand behind this piece and explore more of its collection on Forma.</p>
+      {%- endif -%}
+      <a class="forma-brand-spotlight__link" href="{{ brand_link | escape }}">
+        {{ section.settings.button_label | escape }} <span aria-hidden="true">‚Üí</span>
+      </a>
+    </div>
+  </div>
+</section>
+<style>
+  #forma-brand-spotlight-{{ section.id }} { padding: clamp(36px, 6vw, 88px) 24px; background: {{ section.settings.background }}; color: {{ section.settings.text_color }}; }
+  #forma-brand-spotlight-{{ section.id }} .forma-brand-spotlight__inner { max-width: 1440px; margin: 0 auto; display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,.95fr); align-items: center; gap: clamp(28px, 6vw, 90px); }
+  #forma-brand-spotlight-{{ section.id }} .forma-brand-spotlight__media { overflow: hidden; background: rgba(0,0,0,.04); }
+  #forma-brand-spotlight-{{ section.id }} .forma-brand-spotlight__image { display: block; width: 100%; height: 100%; max-height: 680px; object-fit: cover; }
+  #forma-brand-spotlight-{{ section.id }} .forma-brand-spotlight__eyebrow { margin: 0 0 20px; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; opacity: .7; }
+  #forma-brand-spotlight-{{ section.id }} .forma-brand-spotlight__title { margin: 0 0 20px; font-size: clamp(30px, 4vw, 58px); line-height: 1.04; font-weight: 400; letter-spacing: -.045em; }
+  #forma-brand-spotlight-{{ section.id }} .forma-brand-spotlight__title span { display: block; font-style: italic; }
+  #forma-brand-spotlight-{{ section.id }} .forma-brand-spotlight__story { max-width: 540px; font-size: 14px; line-height: 1.8; opacity: .84; }
+  #forma-brand-spotlight-{{ section.id }} .forma-brand-spotlight__link { display: inline-flex; align-items: center; gap: 22px; margin-top: 18px; padding-bottom: 8px; border-bottom: 1px solid currentColor; color: inherit; text-decoration: none; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+  @media(max-width: 749px) { #forma-brand-spotlight-{{ section.id }} { padding: 32px 18px; } #forma-brand-spotlight-{{ section.id }} .forma-brand-spotlight__inner { grid-template-columns: 1fr; gap: 28px; } #forma-brand-spotlight-{{ section.id }} .forma-brand-spotlight__image { max-height: 460px; } }
+</style>
+{% schema %}
+{
+  "name": "Forma Brand Spotlight",
+  "settings": [
+    {"type":"text","id":"eyebrow","label":"Eyebrow","default":"The brand behind the piece"},
+    {"type":"text","id":"heading","label":"Heading","default":"Meet"},
+    {"type":"richtext","id":"body","label":"Fallback story","default":"<p>Discover the brand behind this piece and explore more of its collection on Forma.</p>"},
+    {"type":"text","id":"fallback_brand_name","label":"Fallback brand name"},
+    {"type":"text","id":"button_label","label":"Button label","default":"Explore the brand"},
+    {"type":"color","id":"background","label":"Background","default":"#F2F0EB"},
+    {"type":"color","id":"text_color","label":"Text","default":"#1D1D1B"}
+  ],
+  "presets":[{"name":"Forma Brand Spotlight"}]
+}
+{% endschema %}
+

@@ -1,3 +1,28 @@
+
+<style>
+  .forma-score-card__your-forma {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 14px;
+    padding: 12px 0 2px;
+    border-top: 1px solid rgba(30, 30, 30, .16);
+    color: inherit;
+    font-size: 12px;
+    line-height: 1.5;
+    text-decoration: none;
+    letter-spacing: .02em;
+  }
+  .forma-score-card__your-forma span {
+    font-size: 18px;
+    transition: transform .2s ease;
+  }
+  .forma-score-card__your-forma:hover span {
+    transform: translateX(3px);
+  }
+</style>
+
 {%- comment -%}
   ----------------------------------------------------------------------------------------------------------------------
   PRODUCT INFO
@@ -433,7 +458,7 @@
                   class="forma-score-card__value"
                   data-forma-score-value
                 >
-                  ‚Äî
+                  ‚Äö√Ñ√Æ
                 </span>
 
                 <span class="forma-score-card__percentage">
@@ -464,6 +489,10 @@
             </div>
           </div>
 
+          <a class="forma-score-card__your-forma" href="/pages/your-forma">
+            Discover your Forma <span aria-hidden="true">‚Üí</span>
+          </a>
+
           <div
             class="forma-score-card__details"
             data-forma-score-details
@@ -475,7 +504,7 @@
                 class="forma-score-card__details-close"
                 data-forma-score-close
                 aria-label="Close explanation"
-              >√ó</button>
+              >‚àö√≥</button>
 
               <p class="forma-score-card__details-title">
                 Why it matches you
@@ -750,4 +779,5 @@
   })();
 </script>
 </safe-sticky>
+
 
