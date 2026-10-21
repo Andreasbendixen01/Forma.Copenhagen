@@ -227,6 +227,110 @@
     }
   }
 
+
+
+
+/* ============================================================
+   FORMA — PRODUCT PANEL FINAL LAYOUT OVERRIDE
+   Keep product information and purchase buttons together
+   ============================================================ */
+
+@media screen and (min-width: 1000px) {
+
+  /* Keep gallery and panel aligned */
+  #shopify-section-{{ section.id }} .product-gallery {
+    height: clamp(680px, calc(100vh - 150px), 900px) !important;
+    min-height: 680px !important;
+    max-height: 900px !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info {
+    top: 0 !important;
+    height: clamp(680px, calc(100vh - 150px), 900px) !important;
+    min-height: 680px !important;
+    max-height: 900px !important;
+
+    padding: 22px 28px !important;
+    box-sizing: border-box !important;
+
+    /*
+     * Do not clip the Why? details.
+     * Content spacing is tightened below.
+     */
+    overflow: visible !important;
+  }
+
+  /* Compact vertical rhythm */
+  #shopify-section-{{ section.id }} .product-info__block-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 9px !important;
+
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info__block-item {
+    margin-block: 0 !important;
+  }
+
+  /* Reduce oversized spacing around the product title */
+  #shopify-section-{{ section.id }} .product-info .product-title {
+    margin-block: 0 6px !important;
+    line-height: 1.15 !important;
+  }
+
+  /* More compact but readable product description */
+  #shopify-section-{{ section.id }} .product-info .prose {
+    font-size: 12.5px !important;
+    line-height: 1.5 !important;
+    color: #202020 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .prose p {
+    margin-block: 0 7px !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .prose ul,
+  #shopify-section-{{ section.id }} .product-info .prose ol {
+    margin-block: 6px !important;
+    padding-inline-start: 16px !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .prose li {
+    margin-block: 3px !important;
+  }
+
+  /* Keep FORMA Match and buy buttons within the same block */
+  #shopify-section-{{ section.id }} .forma-score-card {
+    margin-block: 8px !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .buy-buttons,
+  #shopify-section-{{ section.id }} .product-info .shopify-payment-button {
+    margin-block: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .shopify-payment-button__button {
+    min-height: 44px !important;
+  }
+
+  /* Ensure Why? details appear above nearby content */
+  #shopify-section-{{ section.id }} .forma-score-card {
+    position: relative;
+    z-index: 30;
+  }
+
+  #shopify-section-{{ section.id }} .forma-score-card__details {
+    position: relative;
+    z-index: 31;
+  }
+}
+
+
+
+
 </style>
 
 {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
