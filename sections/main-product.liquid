@@ -49,194 +49,173 @@
     {%- endif -%}
   }
 
-  /* ============================================================
-   FORMA — PRODUCT GALLERY + GLASS INFO
-   ============================================================ */
-
+  
 /* ============================================================
-   FORMA — FINAL PRODUCT EXPERIENCE
+   FORMA — PRODUCT GALLERY + GLASS INFO
+   Aligned gallery, compact panel, readable content
    ============================================================ */
 
 @media screen and (min-width: 1000px) {
 
-  /* ----------------------------------------------------------
-     PRODUCT WRAPPER
-     ---------------------------------------------------------- */
-
+  /* Main product wrapper */
   #shopify-section-{{ section.id }} .product {
     position: relative !important;
     display: block !important;
     width: 100% !important;
   }
 
-
-  /* ----------------------------------------------------------
-     FULL PRODUCT GALLERY
-     ---------------------------------------------------------- */
-
+  /* Gallery — preserve the working slider */
   #shopify-section-{{ section.id }} .product-gallery {
     position: relative !important;
-
     display: block !important;
-
     width: 100% !important;
     max-width: none !important;
 
-    height: clamp(760px, calc(100vh - 120px), 920px) !important;
-
-    min-height: 760px !important;
+    height: clamp(700px, calc(100vh - 140px), 920px) !important;
+    min-height: 700px !important;
     max-height: 920px !important;
 
     overflow: hidden !important;
-
     z-index: 1 !important;
   }
 
-
-  #shopify-section-{{ section.id }} .product-gallery__image-list {
-    width: 100% !important;
-    height: 100% !important;
-
-    overflow: hidden !important;
-  }
-
-
+  #shopify-section-{{ section.id }} .product-gallery__image-list,
   #shopify-section-{{ section.id }} .product-gallery__carousel {
     width: 100% !important;
     height: 100% !important;
-
     overflow: hidden !important;
-
-    z-index: 1 !important;
   }
 
-
-  /* ----------------------------------------------------------
-     FORMA GLASS PANEL
-     ---------------------------------------------------------- */
-
+  /* Glass information panel */
   #shopify-section-{{ section.id }} .product-info {
-
     position: absolute !important;
-
     top: 0 !important;
-
-    /*
-     * Push the glass all the way to the viewport edge.
-     * The product sits inside Prestige's container,
-     * so we compensate for the container margin.
-     */
-
     right: calc((100vw - 100%) / -2) !important;
-
     bottom: auto !important;
 
     width: min(39vw, 590px) !important;
-
-   height: clamp(760px, calc(100vh - 120px), 920px) !important;
-
-  min-height: 760px !important;
-  max-height: 920px !important;
-
-    z-index: 20 !important;
+    height: clamp(700px, calc(100vh - 140px), 920px) !important;
+    min-height: 700px !important;
+    max-height: 920px !important;
 
     box-sizing: border-box !important;
-
-    padding: 2.5rem 2.5rem !important;
+    padding: clamp(20px, 2vw, 32px) !important;
 
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
 
-    isolation: isolate !important;
-
-    /*
-     * Keep content inside the glass.
-     * No second scrollbar.
-     */
-
-    overflow: hidden !important;
-
     border: 0 !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.22) !important;
+    box-shadow: -15px 0 45px rgba(0, 0, 0, 0.035) !important;
 
-    border-left:
-      1px solid rgba(255,255,255,.18) !important;
-
-    box-shadow:
-      -15px 0 45px rgba(0,0,0,.035) !important;
+    isolation: isolate !important;
+    overflow: visible !important;
+    z-index: 20 !important;
   }
 
-
-  /* ----------------------------------------------------------
-     GLASS SURFACE
-     ---------------------------------------------------------- */
-
+  /* Glass layer */
   #shopify-section-{{ section.id }} .product-info::before {
-
     content: "" !important;
-
     position: absolute !important;
-
     inset: 0 !important;
-
     z-index: -1 !important;
 
-    background:
-      rgba(105,105,103,.24) !important;
-
-    backdrop-filter:
-      blur(26px)
-      saturate(115%) !important;
-
-    -webkit-backdrop-filter:
-      blur(26px)
-      saturate(115%) !important;
+    background: rgba(105, 105, 103, 0.28) !important;
+    backdrop-filter: blur(26px) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(115%) !important;
 
     pointer-events: none !important;
   }
 
-
-  /* ----------------------------------------------------------
-     PRODUCT INFO ABOVE GLASS
-     ---------------------------------------------------------- */
-
+  /* Keep panel content above the glass */
   #shopify-section-{{ section.id }} .product-info > * {
-
-    position: relative !important;
-
-    z-index: 1 !important;
+    position: relative;
+    z-index: 1;
   }
 
+  /*
+   * Compact spacing to fit product details,
+   * FORMA Match and purchase controls more comfortably.
+   */
+  #shopify-section-{{ section.id }} .product-info__block-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
 
-  /* ----------------------------------------------------------
-     HEADER ALWAYS ABOVE EVERYTHING
-     ---------------------------------------------------------- */
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
 
+  #shopify-section-{{ section.id }} .product-info__block-item {
+    margin-block: 0 !important;
+  }
+
+  /* More readable product description */
+  #shopify-section-{{ section.id }} .product-info .prose {
+    color: #202020 !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    letter-spacing: 0.005em;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .prose p {
+    margin-block: 0 10px !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .prose ul,
+  #shopify-section-{{ section.id }} .product-info .prose ol {
+    margin-block: 8px !important;
+    padding-inline-start: 18px !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .prose li {
+    margin-block: 4px !important;
+  }
+
+  /* Header remains above the gallery */
   .header,
   .shopify-section-group-header-group,
   #shopify-section-header,
   header {
-
     position: relative !important;
-
     z-index: 100 !important;
   }
 
-
-  /* ----------------------------------------------------------
-     GALLERY CONTROLS
-     Keep them above the image but below the glass.
-     ---------------------------------------------------------- */
-
-  #shopify-section-{{ section.id }} .product-gallery
-  carousel-navigation {
-
+  /* Gallery controls remain functional */
+  #shopify-section-{{ section.id }} .product-gallery carousel-navigation {
     position: relative !important;
-
     z-index: 10 !important;
   }
-
 }
+
+/* Mobile and tablet — natural layout */
+@media screen and (max-width: 999px) {
+  #shopify-section-{{ section.id }} .product-info {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    overflow: visible !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info__block-list {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-info .prose {
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+  }
+}
+
 
   @media screen and (min-width: 1000px) {
     #shopify-section-{{ section.id }} {
@@ -247,111 +226,6 @@
       {%- endif -%}
     }
   }
-
-
-
-/* =========================================================
-   FORMA — ALIGNED GLASS PRODUCT PANEL
-   ========================================================= */
-
-@media screen and (min-width: 1000px) {
-
-  /* Match the gallery's dimensions */
-  #shopify-section-{{ section.id }} .product-gallery {
-    height: clamp(760px, calc(100vh - 120px), 920px) !important;
-    min-height: 760px !important;
-    max-height: 920px !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info {
-    position: absolute !important;
-    top: 0 !important;
-    right: calc((100vw - 100%) / -2) !important;
-    bottom: auto !important;
-
-    width: min(39vw, 590px) !important;
-    height: clamp(760px, calc(100vh - 120px), 920px) !important;
-    min-height: 760px !important;
-    max-height: 920px !important;
-
-    box-sizing: border-box !important;
-    padding: 28px 30px !important;
-
-    background: transparent !important;
-    background-color: transparent !important;
-    background-image: none !important;
-
-    overflow: visible !important;
-    isolation: isolate !important;
-    z-index: 20 !important;
-  }
-
-  /* Preserve the glass surface */
-  #shopify-section-{{ section.id }} .product-info::before {
-    content: "" !important;
-    position: absolute !important;
-    inset: 0 !important;
-    z-index: -1 !important;
-
-    background: rgba(105, 105, 103, 0.24) !important;
-    backdrop-filter: blur(26px) saturate(115%) !important;
-    -webkit-backdrop-filter: blur(26px) saturate(115%) !important;
-
-    pointer-events: none !important;
-  }
-
-  /* Keep product content above the glass */
-  #shopify-section-{{ section.id }} .product-info > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Compact spacing so more fits in the panel */
-  #shopify-section-{{ section.id }} .product-info__block-list {
-    display: flex;
-    flex-direction: column;
-    gap: 13px !important;
-    height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .prose {
-    color: #202020 !important;
-    font-size: 13px !important;
-    line-height: 1.6 !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .prose p {
-    margin-block: 0 10px !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .prose ul,
-  #shopify-section-{{ section.id }} .product-info .prose ol {
-    margin-block: 10px !important;
-    padding-inline-start: 18px !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .prose li {
-    margin-block: 5px !important;
-  }
-}
-
-/* Mobile/tablet: return to natural document flow */
-@media screen and (max-width: 999px) {
-  #shopify-section-{{ section.id }} .product-info {
-    position: relative !important;
-    inset: auto !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-}
-
-
-
 
 </style>
 
