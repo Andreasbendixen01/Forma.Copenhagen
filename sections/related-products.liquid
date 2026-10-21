@@ -1,4 +1,9 @@
-<product-recommendations class="block" product="{{ product.id }}" limit="{{ section.settings.recommendations_count }}" intent="related">
+<product-recommendations
+  class="block forma-related"
+  product="{{ product.id }}"
+  limit="{{ section.settings.recommendations_count }}"
+  intent="related"
+>
   {%- if recommendations.performed and recommendations.products_count > 0 -%}
     <style>
       #shopify-section-{{ section.id }} {
@@ -12,21 +17,327 @@
           --product-list-items-per-row: {{ section.settings.products_per_row_desktop }};
         }
       }
+
+      /* FORMA ‚Äî related product editorial section */
+      #shopify-section-{{ section.id }} {
+        --forma-related-ink: #171715;
+        --forma-related-muted: #777772;
+        --forma-related-line: rgba(23, 23, 21, .14);
+        background: #f5f4f0;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related__section {
+        padding-block: clamp(52px, 7vw, 104px);
+        overflow: hidden;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related__container {
+        width: min(100% - 64px, 1600px);
+        margin-inline: auto;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related__header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 32px;
+        margin-bottom: clamp(28px, 4vw, 54px);
+        padding-bottom: 22px;
+        border-bottom: 1px solid var(--forma-related-line);
+      }
+
+      #shopify-section-{{ section.id }} .forma-related__heading-wrap {
+        max-width: 820px;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related__eyebrow {
+        display: block;
+        margin: 0 0 14px;
+        color: var(--forma-related-muted);
+        font-size: 10px;
+        line-height: 1.4;
+        letter-spacing: .19em;
+        text-transform: uppercase;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related__heading {
+        margin: 0;
+        color: var(--forma-related-ink);
+        font-size: clamp(30px, 4.4vw, 66px);
+        line-height: .98;
+        letter-spacing: -.055em;
+        font-weight: 400;
+        text-transform: uppercase;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related__intro {
+        max-width: 300px;
+        margin: 0 0 3px;
+        color: var(--forma-related-muted);
+        font-size: 11px;
+        line-height: 1.65;
+        letter-spacing: .045em;
+        text-align: right;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related__intro p {
+        margin: 0;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related__list-shell {
+        position: relative;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related product-list {
+        display: block;
+        position: relative;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related scroll-carousel.product-list {
+        display: flex;
+        gap: clamp(12px, 1.5vw, 24px);
+        padding: 0 0 10px;
+        scroll-padding-inline: 0;
+        scrollbar-width: none;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related scroll-carousel.product-list::-webkit-scrollbar {
+        display: none;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related scroll-carousel.product-list > * {
+        flex: 0 0 calc((100% - (3 * clamp(12px, 1.5vw, 24px))) / 4);
+        min-width: 0;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .product-list:not(scroll-carousel) {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: clamp(12px, 1.5vw, 24px);
+      }
+
+      /* Keep the product photography clean and consistent */
+      #shopify-section-{{ section.id }} .forma-related .product-card {
+        min-width: 0;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .product-card__figure,
+      #shopify-section-{{ section.id }} .forma-related .product-card__image {
+        background: #eeede8;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .product-card__figure {
+        overflow: hidden;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .product-card img {
+        transition: transform .55s cubic-bezier(.2, .65, .3, 1);
+      }
+
+      @media (hover: hover) {
+        #shopify-section-{{ section.id }} .forma-related .product-card:hover img {
+          transform: scale(1.035);
+        }
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .product-card__info,
+      #shopify-section-{{ section.id }} .forma-related .product-card__details {
+        padding-top: 15px;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .product-card__vendor,
+      #shopify-section-{{ section.id }} .forma-related .vendor {
+        color: var(--forma-related-muted);
+        font-size: 9px;
+        line-height: 1.4;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .product-card__title,
+      #shopify-section-{{ section.id }} .forma-related .product-card__title a {
+        color: var(--forma-related-ink);
+        font-size: 11px;
+        line-height: 1.5;
+        letter-spacing: .035em;
+        text-decoration: none;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .price {
+        margin-top: 5px;
+        color: var(--forma-related-muted);
+        font-size: 11px;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .floating-controls-container__control {
+        top: 38%;
+        z-index: 3;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .prev-next-button {
+        width: 42px;
+        height: 42px;
+        border: 1px solid rgba(23, 23, 21, .18);
+        background: rgba(245, 244, 240, .94);
+        color: var(--forma-related-ink);
+        box-shadow: none;
+        opacity: 0;
+        transition: opacity .2s ease, background .2s ease;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .prev-next-button:disabled {
+        opacity: 0 !important;
+      }
+
+      @media (hover: hover) {
+        #shopify-section-{{ section.id }} .forma-related__list-shell:hover .prev-next-button:not(:disabled) {
+          opacity: 1;
+        }
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .prev-next-button:not(:disabled) {
+        opacity: 1;
+      }
+
+      #shopify-section-{{ section.id }} .forma-related .prev-next-button:hover {
+        background: #171715;
+        color: #fff;
+      }
+
+      @media screen and (max-width: 999px) {
+        #shopify-section-{{ section.id }} .forma-related__container {
+          width: min(100% - 36px, 1600px);
+        }
+
+        #shopify-section-{{ section.id }} .forma-related__header {
+          align-items: start;
+        }
+
+        #shopify-section-{{ section.id }} .forma-related__intro {
+          max-width: 220px;
+          font-size: 10px;
+        }
+
+        #shopify-section-{{ section.id }} .forma-related scroll-carousel.product-list > * {
+          flex-basis: calc((100% - 2 * 14px) / 3);
+        }
+
+        #shopify-section-{{ section.id }} .forma-related .product-list:not(scroll-carousel) {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        #shopify-section-{{ section.id }} .forma-related .prev-next-button {
+          opacity: 1;
+          width: 36px;
+          height: 36px;
+        }
+      }
+
+      @media screen and (max-width: 699px) {
+        #shopify-section-{{ section.id }} .forma-related__section {
+          padding-block: 44px 56px;
+        }
+
+        #shopify-section-{{ section.id }} .forma-related__container {
+          width: calc(100% - 32px);
+        }
+
+        #shopify-section-{{ section.id }} .forma-related__header {
+          display: block;
+          margin-bottom: 24px;
+          padding-bottom: 18px;
+        }
+
+        #shopify-section-{{ section.id }} .forma-related__eyebrow {
+          margin-bottom: 10px;
+          font-size: 9px;
+        }
+
+        #shopify-section-{{ section.id }} .forma-related__heading {
+          font-size: clamp(29px, 9vw, 42px);
+          line-height: 1;
+        }
+
+        #shopify-section-{{ section.id }} .forma-related__intro {
+          margin-top: 14px;
+          max-width: 300px;
+          text-align: left;
+          font-size: 10px;
+        }
+
+        #shopify-section-{{ section.id }} .forma-related scroll-carousel.product-list > * {
+          flex-basis: 72%;
+        }
+
+        #shopify-section-{{ section.id }} .forma-related .product-list:not(scroll-carousel) {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 24px 12px;
+        }
+
+        #shopify-section-{{ section.id }} .forma-related .product-card__info,
+        #shopify-section-{{ section.id }} .forma-related .product-card__details {
+          padding-top: 10px;
+        }
+
+        #shopify-section-{{ section.id }} .forma-related .product-card__title,
+        #shopify-section-{{ section.id }} .forma-related .product-card__title a {
+          font-size: 10px;
+        }
+
+        #shopify-section-{{ section.id }} .forma-related .prev-next-button {
+          width: 32px;
+          height: 32px;
+        }
+
+        #shopify-section-{{ section.id }} .forma-related .floating-controls-container__control {
+          top: 34%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #shopify-section-{{ section.id }} .forma-related .product-card img,
+        #shopify-section-{{ section.id }} .forma-related .prev-next-button {
+          transition: none;
+        }
+      }
     </style>
 
-    {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
+    <div class="forma-related__section color-scheme color-scheme--{{ section.settings.color_scheme.id }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+      <div class="forma-related__container">
+        <header class="forma-related__header">
+          <div class="forma-related__heading-wrap">
+            {%- if section.settings.subheading != blank -%}
+              <p class="forma-related__eyebrow">{{ section.settings.subheading }}</p>
+            {%- else -%}
+              <p class="forma-related__eyebrow">THE FORMA EDIT</p>
+            {%- endif -%}
 
-    <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
-      <div class="container">
-        <div class="section-stack">
-          {%- render 'section-header', subheading: section.settings.subheading, heading: section.settings.title, content: section.settings.content -%}
+            {%- if section.settings.title != blank -%}
+              <h2 class="forma-related__heading">{{ section.settings.title }}</h2>
+            {%- else -%}
+              <h2 class="forma-related__heading">Complete your Forma</h2>
+            {%- endif -%}
+          </div>
 
-          {%- capture product_list -%}
-            {%- for product in recommendations.products -%}
-              {%- render 'product-card', product: product, reveal: settings.stagger_products_apparition, position: forloop.index, hide_product_information: section.settings.hide_product_information -%}
-            {%- endfor -%}
-          {%- endcapture -%}
+          {%- if section.settings.content != blank -%}
+            <div class="forma-related__intro">{{ section.settings.content }}</div>
+          {%- else -%}
+            <p class="forma-related__intro">Considered pieces. New perspectives. Your next favourite find.</p>
+          {%- endif -%}
+        </header>
 
+        {%- capture product_list -%}
+          {%- for product in recommendations.products -%}
+            {%- render 'product-card',
+              product: product,
+              reveal: settings.stagger_products_apparition,
+              position: forloop.index,
+              hide_product_information: section.settings.hide_product_information
+            -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+
+        <div class="forma-related__list-shell">
           {%- if section.settings.stack_products -%}
             <product-list class="product-list {% if section.settings.hide_product_information %}product-list--compact{% endif %} justify-center">
               {{- product_list -}}
@@ -176,12 +487,13 @@
       "type": "inline_richtext",
       "id": "title",
       "label": "t:global.text.heading",
-      "default": "Related products"
+      "default": "Complete your Forma"
     },
     {
       "type": "richtext",
       "id": "content",
-      "label": "t:global.text.content"
+      "label": "t:global.text.content",
+      "default": "<p>Considered pieces. New perspectives. Your next favourite find.</p>"
     }
   ],
   "presets": [
@@ -192,3 +504,4 @@
   ]
 }
 {% endschema %}
+
