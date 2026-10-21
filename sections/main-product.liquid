@@ -211,7 +211,7 @@
   padding: 24px !important;
   box-sizing: border-box !important;
   overflow: auto !important;
-  background: rgba(18, 18, 18, .62) !important;
+  background: rgba(17, 17, 17, .64) !important;
   backdrop-filter: blur(7px) !important;
   -webkit-backdrop-filter: blur(7px) !important;
 }
@@ -225,10 +225,10 @@
   display: block !important;
   position: relative !important;
   flex: 0 0 auto !important;
-  width: min(100%, 560px) !important;
-  max-width: 560px !important;
+  width: min(100%, 600px) !important;
+  max-width: 600px !important;
   margin: 0 !important;
-  padding: 22px 28px !important;
+  padding: 25px 32px !important;
   box-sizing: border-box !important;
   background: #fff !important;
   color: #171717 !important;
@@ -238,40 +238,46 @@
 
 #forma-why-modal-portal .forma-score-card__details-header {
   border: 0 !important;
-  border-radius: 14px 14px 0 0 !important;
-  padding-top: 30px !important;
-  padding-bottom: 12px !important;
+  border-radius: 16px 16px 0 0 !important;
+  padding-top: 34px !important;
+  padding-bottom: 14px !important;
+  border-bottom: 1px solid #eeeae4 !important;
 }
 
 #forma-why-modal-portal .forma-score-card__details-title {
   margin: 0 42px 10px 0 !important;
   color: #171717 !important;
-  font-size: 22px !important;
-  line-height: 1.3 !important;
-  font-weight: 600 !important;
+  font-family: inherit !important;
+  font-size: 25px !important;
+  letter-spacing: -.035em !important;
+  line-height: 1.2 !important;
+  font-weight: 500 !important;
 }
 
 #forma-why-modal-portal .forma-score-card__details-description {
   margin: 0 !important;
   color: #555 !important;
-  font-size: 14px !important;
-  line-height: 1.65 !important;
+  font-family: inherit !important;
+  font-size: 15px !important;
+  line-height: 1.75 !important;
 }
 
 #forma-why-modal-portal .forma-score-card__reasons {
   border: 0 !important;
-  border-radius: 0 0 14px 14px !important;
-  padding-top: 8px !important;
-  padding-bottom: 26px !important;
+  border-radius: 0 0 16px 16px !important;
+  padding-top: 15px !important;
+  padding-bottom: 28px !important;
   color: #252525 !important;
+  font-family: inherit !important;
   font-size: 14px !important;
-  line-height: 1.65 !important;
+  line-height: 1.75 !important;
+  box-shadow: 0 24px 80px rgba(0,0,0,.18) !important;
   list-style: none !important;
 }
 
 #forma-why-modal-portal .forma-score-card__reasons li {
   position: relative !important;
-  margin: 0 0 12px !important;
+  margin: 0 0 14px !important;
   padding-left: 22px !important;
 }
 
@@ -297,9 +303,16 @@
   border-radius: 50% !important;
   background: #fff !important;
   color: #171717 !important;
-  font-size: 23px !important;
+  font-size: 0 !important;
   line-height: 1 !important;
   cursor: pointer !important;
+}
+#forma-why-modal-portal .forma-score-card__details-close::before {
+  content: "√ó" !important;
+  font-family: Arial, sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 300 !important;
+  line-height: 1 !important;
 }
 
 #shopify-section-{{ section.id }} .forma-score-card__toggle {
@@ -314,12 +327,12 @@
 
   #forma-why-modal-portal .forma-score-card__details-header,
   #forma-why-modal-portal .forma-score-card__reasons {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
+    padding-left: 22px !important;
+    padding-right: 22px !important;
   }
 
   #forma-why-modal-portal .forma-score-card__details-title {
-    font-size: 19px !important;
+    font-size: 22px !important;
   }
 }</style>
 
@@ -561,6 +574,7 @@ window.formaProduct = {
     modal.setAttribute('aria-modal', 'true');
     modal.setAttribute('aria-label', 'Why it matches you');
     document.body.appendChild(modal);
+    cleanWhyContent(modal);
     document.documentElement.classList.add('forma-why-modal-open');
     document.body.style.overflow = 'hidden';
 
@@ -590,6 +604,31 @@ window.formaProduct = {
     document.documentElement.classList.remove('forma-why-modal-open');
     document.body.style.overflow = '';
   }
+
+  function cleanWhyContent(root) {
+    if (!root) return;
+    var close = root.querySelector('[data-forma-score-close]');
+    if (close) {
+      close.textContent = '';
+      close.setAttribute('aria-label', 'Close explanation');
+    }
+    var reasons = root.querySelector('[data-forma-score-reasons]');
+    if (reasons) {
+      Array.prototype.forEach.call(reasons.querySelectorAll('li'), function (item) {
+        var text = item.textContent || '';
+        /* Remove common UTF-8/Windows-1252 mojibake and legacy typed bullets.
+           The visual bullet is supplied consistently by CSS. */
+        text = text.replace(/^(?:\\s|‚Äö√Ñ¬¢|√¢‚Ç¨¬¢|√É¬¢√¢‚Äö¬¨√Ç¬¢|√Ç¬∑|¬∑|‚Ä¢|√Ø‚Äö¬∑)+/g, '');
+        text = text.replace(/^(?:\\u00c3\\u00a2\\u0082\\u00ac\\u00a2)+/g, '');
+        item.textContent = text.trim();
+      });
+    }
+  }
+
+  var contentObserver = new MutationObserver(function () {
+    if (modal) cleanWhyContent(modal);
+  });
+  contentObserver.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
 
   document.addEventListener('click', function (event) {
     var toggle = event.target.closest && event.target.closest('[data-forma-score-toggle]');
