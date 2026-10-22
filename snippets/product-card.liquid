@@ -559,95 +559,69 @@
      FORMA PRODUCT IMAGE CAROUSEL
      ======================================================================== */
 
-  if (!window.formaProductCarouselInitialized) {
-
+  (function () {
+    if (window.formaProductCarouselInitialized) return;
     window.formaProductCarouselInitialized = true;
 
-    document.addEventListener('click', function(event) {
+    /*
+     * Capture the click before Prestige's product-card/link handlers.
+     * This prevents an arrow click from opening the product page.
+     */
+    document.addEventListener('click', function (event) {
+      const button = event.target.closest(
+        '[data-forma-carousel-next], [data-forma-carousel-prev]'
+      );
 
-      const nextButton = event.target.closest('[data-forma-carousel-next]');
-      const prevButton = event.target.closest('[data-forma-carousel-prev]');
+      if (!button) return;
 
-      if (!nextButton && !prevButton) {
-        return;
-      }
-
-      event.preventDefault();
-      event.stopPropagation();
-
-      if (typeof event.stopImmediatePropagation === 'function') {
-        event.stopImmediatePropagation();
-      }
-
-      const viewport = event.target.closest('[data-forma-product-carousel]');
-
-      if (!viewport) {
-        return;
-      }
+      const viewport = button.closest('[data-forma-product-carousel]');
+      if (!viewport) return;
 
       const slides = Array.from(
         viewport.querySelectorAll('[data-forma-carousel-slide]')
       );
 
-      if (slides.length < 2) {
-        return;
+      if (slides.length < 2) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      if (typeof event.stopImmediatePropagation === 'function') {
+        event.stopImmediatePropagation();
       }
 
-      let currentIndex = slides.findIndex(function(slide) {
-        return slide.classList.contains('is-active');
-      });
+      const currentIndex = Math.max(
+        0,
+        slides.findIndex(function (slide) {
+          return slide.classList.contains('is-active');
+        })
+      );
 
-      if (currentIndex < 0) {
-        currentIndex = 0;
-      }
+      const nextIndex = button.hasAttribute('data-forma-carousel-next')
+        ? (currentIndex + 1) % slides.length
+        : (currentIndex - 1 + slides.length) % slides.length;
 
-      let newIndex;
+      slides.forEach(function (slide, index) {
+        const active = index === nextIndex;
+        slide.classList.toggle('is-active', active);
+        slide.setAttribute('aria-hidden', active ? 'false' : 'true');
 
-      if (nextButton) {
-        newIndex = (currentIndex + 1) % slides.length;
-      } else {
-        newIndex = (currentIndex - 1 + slides.length) % slides.length;
-      }
-
-      slides.forEach(function(slide, index) {
-
-        const isActive = index === newIndex;
-
-        slide.classList.toggle('is-active', isActive);
-
-        slide.setAttribute(
-          'aria-hidden',
-          isActive ? 'false' : 'true'
-        );
-
-        if (isActive) {
+        if (active) {
           slide.removeAttribute('tabindex');
         } else {
           slide.setAttribute('tabindex', '-1');
         }
-
       });
+    }, true);
 
-    });
-
-
-    /* Keyboard navigation */
-
-    document.addEventListener('keydown', function(event) {
-
-      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
-        return;
-      }
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
 
       const activeElement = document.activeElement;
-
       const viewport = activeElement
         ? activeElement.closest('[data-forma-product-carousel]')
         : null;
 
-      if (!viewport) {
-        return;
-      }
+      if (!viewport) return;
 
       const button = event.key === 'ArrowRight'
         ? viewport.querySelector('[data-forma-carousel-next]')
@@ -657,8 +631,6 @@
         event.preventDefault();
         button.click();
       }
-
     });
-
-  }
+  })();
 </script>
