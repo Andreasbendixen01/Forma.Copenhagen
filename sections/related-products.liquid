@@ -63,25 +63,12 @@
         margin: 0 !important;
         padding: 0 !important;
         font-family: inherit !important;
-        font-size: clamp(22px, 2.6vw, 38px) !important;
+        font-size: clamp(22px, 2.1vw, 30px) !important;
         font-weight: 400 !important;
         line-height: .98 !important;
         letter-spacing: -.055em !important;
         text-transform: uppercase;
         color: #111 !important;
-      }
-
-      #shopify-section-{{ section.id }} .forma-related-intro {
-        max-width: 300px;
-        margin: 0 0 2px;
-        color: #777772;
-        font-size: 11px;
-        line-height: 1.65;
-        text-align: right;
-      }
-
-      #shopify-section-{{ section.id }} .forma-related-intro p {
-        margin: 0;
       }
 
       #shopify-section-{{ section.id }} .forma-edit-row,
@@ -225,10 +212,7 @@
       }
 
       @media screen and (max-width: 999px) {
-        #shopify-section-{{ section.id }} .forma-related-intro {
-          max-width: 220px;
-          font-size: 10px;
-        }
+
       }
 
       @media screen and (max-width: 699px) {
@@ -252,11 +236,6 @@
           line-height: 1 !important;
         }
 
-        #shopify-section-{{ section.id }} .forma-related-intro {
-          margin-top: 10px;
-          max-width: 300px;
-          text-align: left;
-        }
 
         #shopify-section-{{ section.id }} .forma-product-carousel .product-list {
           grid-auto-columns: 78% !important;
@@ -290,20 +269,13 @@
             <p class="forma-edit-section-header__eyebrow">{{ section.settings.subheading | default: 'The Forma Edit' }}</p>
             <h2 class="forma-edit-section-header__title">{{ section.settings.title | default: 'Complete your Forma' }}</h2>
           </div>
-          <div class="forma-related-intro">
-            {%- if section.settings.content != blank -%}
-              {{ section.settings.content }}
-            {%- else -%}
-              <p>Considered pieces. New perspectives. Your next favourite find.</p>
-            {%- endif -%}
-          </div>
         </header>
 
         <div class="forma-edit-row">
           <div class="forma-edit-products">
             <product-list class="floating-controls-container floating-controls-container--inside forma-product-carousel">
               <carousel-prev-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
-                <button type="button" class="prev-next-button prev-next-button--prev circle-button hover:animate-icon-inline" disabled>
+                <button type="button" class="prev-next-button prev-next-button--prev circle-button hover:animate-icon-inline" data-forma-related-prev aria-controls="{{ carousel_id }}" disabled>
                   <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
                   {%- render 'icon' with 'arrow-left', direction_aware: true -%}
                 </button>
@@ -326,7 +298,7 @@
               </scroll-carousel>
 
               <carousel-next-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
-                <button type="button" class="prev-next-button prev-next-button--next circle-button hover:animate-icon-inline">
+                <button type="button" class="prev-next-button prev-next-button--next circle-button hover:animate-icon-inline" data-forma-related-next aria-controls="{{ carousel_id }}">
                   <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
                   {%- render 'icon' with 'arrow-right', direction_aware: true -%}
                 </button>
@@ -337,6 +309,50 @@
       </div>
     </section>
   {%- endif -%}
+
+  <script>
+    (() => {
+      const root = document.querySelector('#shopify-section-{{ section.id }} product-recommendations');
+      if (!root || root.dataset.formaRelatedReady === 'true') return;
+      root.dataset.formaRelatedReady = 'true';
+
+      const carousel = root.querySelector('#{{ carousel_id }}');
+      const prev = root.querySelector('[data-forma-related-prev]');
+      const next = root.querySelector('[data-forma-related-next]');
+      if (!carousel || !prev || !next) return;
+
+      const updateControls = () => {
+        const maxScroll = Math.max(0, carousel.scrollWidth - carousel.clientWidth);
+        prev.disabled = carousel.scrollLeft <= 2;
+        next.disabled = carousel.scrollLeft >= maxScroll - 2;
+        const canScroll = maxScroll > 2;
+        prev.closest('carousel-prev-button').hidden = !canScroll;
+        next.closest('carousel-next-button').hidden = !canScroll;
+      };
+
+      const scrollByCard = (direction) => {
+        const card = carousel.querySelector('.product-card');
+        const gap = parseFloat(getComputedStyle(carousel).columnGap || getComputedStyle(carousel).gap) || 0;
+        const distance = card ? card.getBoundingClientRect().width + gap : carousel.clientWidth * 0.8;
+        carousel.scrollBy({ left: direction * distance, behavior: 'smooth' });
+      };
+
+      prev.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        scrollByCard(-1);
+      });
+      next.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        scrollByCard(1);
+      });
+      carousel.addEventListener('scroll', updateControls, { passive: true });
+      window.addEventListener('resize', updateControls);
+      if ('ResizeObserver' in window) new ResizeObserver(updateControls).observe(carousel);
+      requestAnimationFrame(updateControls);
+    })();
+  </script>
 </product-recommendations>
 
 {% schema %}
@@ -368,8 +384,7 @@
     { "type": "range", "min": 0.2, "max": 2, "step": 0.1, "id": "vertical_spacing_factor", "label": "t:global.product_list.vertical_spacing_factor", "default": 1 },
     { "type": "header", "content": "t:global.section.header_category" },
     { "type": "inline_richtext", "id": "subheading", "label": "t:global.text.subheading", "default": "The Forma Edit" },
-    { "type": "inline_richtext", "id": "title", "label": "t:global.text.heading", "default": "Complete your Forma" },
-    { "type": "richtext", "id": "content", "label": "t:global.text.content", "default": "<p>Considered pieces. New perspectives. Your next favourite find.</p>" }
+    { "type": "inline_richtext", "id": "title", "label": "t:global.text.heading", "default": "Complete your Forma" }
   ],
   "presets": [
     { "name": "t:sections.related_products.presets.related_products.name", "category": "t:global.categories.products" }
