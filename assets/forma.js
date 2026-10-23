@@ -112,3 +112,97 @@
   };
 
 })();
+
+
+/* ==========================================================
+   FORMA — PRODUCT CARD IMAGE CAROUSEL
+   Supports dynamically loaded Shopify recommendations
+   ========================================================== */
+
+(function () {
+  "use strict";
+
+  if (window.__formaProductCardCarouselV2) return;
+  window.__formaProductCardCarouselV2 = true;
+
+  function getCarouselButton(target) {
+    if (!target || typeof target.closest !== "function") return null;
+
+    return target.closest(
+      "[data-forma-carousel-next], [data-forma-carousel-prev]"
+    );
+  }
+
+  function changeSlide(button) {
+    const viewport = button.closest("[data-forma-product-carousel]");
+    if (!viewport) return;
+
+    const slides = Array.from(
+      viewport.querySelectorAll("[data-forma-carousel-slide]")
+    );
+
+    if (slides.length < 2) return;
+
+    let currentIndex = slides.findIndex(function (slide) {
+      return slide.classList.contains("is-active");
+    });
+
+    if (currentIndex < 0) currentIndex = 0;
+
+    const direction = button.hasAttribute("data-forma-carousel-next") ? 1 : -1;
+    const nextIndex = (currentIndex + direction + slides.length) % slides.length;
+
+    slides.forEach(function (slide, index) {
+      const active = index === nextIndex;
+
+      slide.classList.toggle("is-active", active);
+      slide.setAttribute("aria-hidden", active ? "false" : "true");
+
+      if (active) {
+        slide.removeAttribute("tabindex");
+      } else {
+        slide.setAttribute("tabindex", "-1");
+      }
+    });
+
+    viewport.setAttribute("data-active-slide", String(nextIndex));
+  }
+
+  window.addEventListener("click", function (event) {
+    const button = getCarouselButton(event.target);
+    if (!button) return;
+
+    const viewport = button.closest("[data-forma-product-carousel]");
+    if (!viewport) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (typeof event.stopImmediatePropagation === "function") {
+      event.stopImmediatePropagation();
+    }
+
+    changeSlide(button);
+  }, true);
+
+  window.addEventListener("keydown", function (event) {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+
+    const activeElement = document.activeElement;
+    if (!activeElement || typeof activeElement.closest !== "function") return;
+
+    const viewport = activeElement.closest("[data-forma-product-carousel]");
+    if (!viewport) return;
+
+    const button = viewport.querySelector(
+      event.key === "ArrowRight"
+        ? "[data-forma-carousel-next]"
+        : "[data-forma-carousel-prev]"
+    );
+
+    if (!button) return;
+
+    event.preventDefault();
+    changeSlide(button);
+  }, true);
+})();
