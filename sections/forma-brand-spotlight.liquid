@@ -96,7 +96,7 @@
       --fbs-line: rgba(36, 36, 33, .18);
       width: 100%;
       margin: 0;
-      padding: clamp(22px, 2.5vw, 34px) 0;
+      padding: clamp(18px, 2vw, 26px) 0;
       color: var(--fbs-ink);
       background: transparent;
       border-top: 0;
@@ -104,14 +104,14 @@
     }
     #shopify-section-{{ section.id }} .forma-brand-spotlight * { box-sizing: border-box; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__main {
-      display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); align-items: stretch;
-      gap: clamp(30px, 5vw, 76px);
+      display: grid; grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr); align-items: center;
+      gap: clamp(28px, 4vw, 60px);
     }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__image-link {
-      position: relative; display: block; min-width: 0; min-height: 320px; aspect-ratio: 1.12 / 1; overflow: hidden;
+      position: relative; display: block; min-width: 0; min-height: 0; height: clamp(300px, 30vw, 390px); aspect-ratio: 1.18 / 1; overflow: hidden;
       color: inherit; background: transparent; text-decoration: none;
     }
-    #shopify-section-{{ section.id }} .forma-brand-spotlight__image { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 600ms ease; }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__image { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 38%; transition: transform 600ms ease; }
     @media (hover: hover) {
       #shopify-section-{{ section.id }} .forma-brand-spotlight__image-link:hover .forma-brand-spotlight__image { transform: scale(1.02); }
     }
@@ -121,10 +121,10 @@
     }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__content {
       min-width: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
-      padding: clamp(8px, 2vw, 24px) 0; max-width: 680px;
+      padding: clamp(6px, 1.2vw, 16px) 0; max-width: 680px;
     }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__kicker { margin: 0 0 15px; color: var(--fbs-muted); font-size: 9px; font-weight: 600; letter-spacing: .18em; line-height: 1.5; text-transform: uppercase; }
-    #shopify-section-{{ section.id }} .forma-brand-spotlight__title { margin: 0; color: var(--fbs-ink); font-family: inherit; font-size: clamp(42px, 5vw, 72px); font-weight: 400; letter-spacing: -.075em; line-height: .98; overflow-wrap: anywhere; }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__title { margin: 0; color: var(--fbs-ink); font-family: inherit; font-size: clamp(40px, 4.2vw, 62px); font-weight: 400; letter-spacing: -.075em; line-height: .98; overflow-wrap: anywhere; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__title-period { color: #a18b65; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__title-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; width: 100%; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__story { max-width: 560px; margin: 20px 0 0; color: var(--fbs-muted); font-size: 13px; line-height: 1.85; }
@@ -158,9 +158,9 @@
     #shopify-section-{{ section.id }} .forma-brand-spotlight__follow[aria-pressed="true"] .forma-brand-spotlight__check { display: block; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__note { margin: 13px 0 0; color: var(--fbs-muted); font-size: 10px; line-height: 1.6; }
     @media screen and (max-width: 749px) {
-      #shopify-section-{{ section.id }} .forma-brand-spotlight { padding: 22px 0; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight { padding: 18px 0; }
       #shopify-section-{{ section.id }} .forma-brand-spotlight__main { grid-template-columns: 1fr; gap: 22px; }
-      #shopify-section-{{ section.id }} .forma-brand-spotlight__image-link { min-height: 0; aspect-ratio: 5 / 4; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__image-link { min-height: 0; height: auto; aspect-ratio: 4 / 5; }
       #shopify-section-{{ section.id }} .forma-brand-spotlight__image-tag { left: 9px; bottom: 9px; padding: 6px 7px; font-size: 7px; }
       #shopify-section-{{ section.id }} .forma-brand-spotlight__content { padding: 0 2px; }
       #shopify-section-{{ section.id }} .forma-brand-spotlight__kicker { margin-bottom: 10px; font-size: 8px; }
