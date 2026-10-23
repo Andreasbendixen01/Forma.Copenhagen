@@ -13,10 +13,9 @@
 
   if current_brand != blank
     assign brand_name = current_brand.brand_name.value | default: product.vendor
-    assign brand_story = current_brand.brand_story.value | strip_html | strip
+    assign brand_story = current_brand.brand_story.value
     assign brand_image = current_brand.brand_image.value
     assign brand_url = current_brand.brand_url.value
-    assign brand_story_short = brand_story | truncate: 260
   endif
 %}
 
@@ -49,30 +48,8 @@
 
       <div class="forma-brand-spotlight__content">
         <p class="forma-brand-spotlight__kicker">CURATED BY FORMA</p>
-        <h2 class="forma-brand-spotlight__title">{{ brand_name | escape }}<span class="forma-brand-spotlight__title-period">.</span></h2>
-
-        {% if brand_story != blank %}
-          <p class="forma-brand-spotlight__story">{{ brand_story_short | escape }}</p>
-          <details class="forma-brand-spotlight__read-more">
-            <summary><span class="forma-brand-spotlight__read-label">READ THE BRAND STORY</span><span class="forma-brand-spotlight__read-mark" aria-hidden="true">+</span></summary>
-            <div class="forma-brand-spotlight__full-story">{{ current_brand.brand_story.value | metafield_tag }}</div>
-          </details>
-        {% else %}
-          <p class="forma-brand-spotlight__story">Discover the perspective and design behind the piece you‚Äôre looking at.</p>
-        {% endif %}
-
-        <div class="forma-brand-spotlight__actions">
-          {% if brand_url != blank %}
-            <a class="forma-brand-spotlight__discover" href="{{ brand_url | escape }}" target="_blank" rel="noopener noreferrer">
-              <span>DISCOVER THE BRAND</span>
-              <span class="forma-brand-spotlight__arrow" aria-hidden="true">
-                <svg viewBox="0 0 16 16" width="14" height="14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3.5 12.5L12 4M5 4H12V11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          {% endif %}
-
+        <div class="forma-brand-spotlight__title-row">
+          <h2 class="forma-brand-spotlight__title">{{ brand_name | escape }}<span class="forma-brand-spotlight__title-period">.</span></h2>
           <button
             class="forma-brand-spotlight__follow forma-follow-brand"
             type="button"
@@ -80,18 +57,33 @@
             data-brand-name="{{ brand_name | escape }}"
             data-brand-handle="{{ product_brand_handle }}"
             aria-pressed="false"
+            aria-label="Follow {{ brand_name | escape }}"
+            title="Follow brand"
           >
             <span class="forma-brand-spotlight__follow-icon" aria-hidden="true">
-              <svg class="forma-brand-spotlight__plus" viewBox="0 0 16 16" width="13" height="13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-              </svg>
-              <svg class="forma-brand-spotlight__check" viewBox="0 0 16 16" width="13" height="13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 8.2L6.2 11.2L13 4.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <svg class="forma-brand-spotlight__plus" viewBox="0 0 16 16" width="13" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              <svg class="forma-brand-spotlight__check" viewBox="0 0 16 16" width="13" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8.2L6.2 11.2L13 4.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
-            <span data-forma-follow-label>FOLLOW BRAND</span>
+            <span class="forma-brand-spotlight__follow-label" data-forma-follow-label>FOLLOW</span>
           </button>
         </div>
+
+        {% if brand_story != blank %}
+          <div class="forma-brand-spotlight__story rte">{{ current_brand.brand_story.value | metafield_tag }}</div>
+        {% else %}
+          <p class="forma-brand-spotlight__story">Discover the perspective and design behind the piece you‚Äôre looking at.</p>
+        {% endif %}
+
+        {% if brand_url != blank %}
+          <div class="forma-brand-spotlight__actions">
+            <a class="forma-brand-spotlight__discover" href="{{ brand_url | escape }}" target="_blank" rel="noopener noreferrer">
+              <span>READ THE BRAND STORY</span>
+              <span class="forma-brand-spotlight__arrow" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 12.5L12 4M5 4H12V11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </a>
+          </div>
+        {% endif %}
         <p class="forma-brand-spotlight__note">Follow the brands you love. Find them again in Your Forma.</p>
       </div>
     </div>
@@ -107,8 +99,8 @@
       padding: clamp(22px, 2.5vw, 34px) 0;
       color: var(--fbs-ink);
       background: transparent;
-      border-top: 1px solid var(--fbs-line);
-      border-bottom: 1px solid var(--fbs-line);
+      border-top: 0;
+      border-bottom: 0;
     }
     #shopify-section-{{ section.id }} .forma-brand-spotlight * { box-sizing: border-box; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__main {
@@ -134,17 +126,25 @@
     #shopify-section-{{ section.id }} .forma-brand-spotlight__kicker { margin: 0 0 15px; color: var(--fbs-muted); font-size: 9px; font-weight: 600; letter-spacing: .18em; line-height: 1.5; text-transform: uppercase; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__title { margin: 0; color: var(--fbs-ink); font-family: inherit; font-size: clamp(42px, 5vw, 72px); font-weight: 400; letter-spacing: -.075em; line-height: .98; overflow-wrap: anywhere; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__title-period { color: #a18b65; }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__title-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; width: 100%; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__story { max-width: 560px; margin: 20px 0 0; color: var(--fbs-muted); font-size: 13px; line-height: 1.85; }
-    #shopify-section-{{ section.id }} .forma-brand-spotlight__actions { display: flex; flex-wrap: wrap; align-items: center; gap: clamp(18px, 2.5vw, 34px); margin-top: 28px; }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__story p { margin: 0 0 10px; }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__story p:last-child { margin-bottom: 0; }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 24px; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__discover,
     #shopify-section-{{ section.id }} .forma-brand-spotlight__follow {
       display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-      min-height: 44px; padding: 0 18px; border: 1px solid var(--fbs-ink);
+      min-height: 42px; padding: 0 17px; border: 1px solid var(--fbs-ink);
       border-radius: 0; background: var(--fbs-ink); color: #fff; font: inherit;
-      font-size: 9px; font-weight: 600; letter-spacing: .12em; line-height: 1.4;
+      font-size: 9px; font-weight: 600; letter-spacing: .1em; line-height: 1.4;
       text-decoration: none; text-transform: uppercase; cursor: pointer;
       transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
     }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__follow {
+      flex: 0 0 34px; width: 34px; min-width: 34px; height: 34px; min-height: 34px;
+      padding: 0; border-radius: 50%; gap: 0; letter-spacing: 0;
+    }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__follow-label { display: none; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__discover:hover,
     #shopify-section-{{ section.id }} .forma-brand-spotlight__follow:hover {
       background: transparent; color: var(--fbs-ink); opacity: 1;
@@ -156,18 +156,6 @@
     #shopify-section-{{ section.id }} .forma-brand-spotlight__follow[aria-pressed="true"] { background: transparent; color: var(--fbs-ink); }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__follow[aria-pressed="true"] .forma-brand-spotlight__plus { display: none; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__follow[aria-pressed="true"] .forma-brand-spotlight__check { display: block; }
-    #shopify-section-{{ section.id }} .forma-brand-spotlight__read-more { width: 100%; max-width: 560px; margin-top: 16px; }
-    #shopify-section-{{ section.id }} .forma-brand-spotlight__read-more summary {
-      display: inline-flex; align-items: center; justify-content: space-between; gap: 18px;
-      min-height: 42px; padding: 0 15px; border: 1px solid var(--fbs-line);
-      color: var(--fbs-ink); background: transparent; cursor: pointer; list-style: none;
-      font-size: 9px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
-    }
-    #shopify-section-{{ section.id }} .forma-brand-spotlight__read-more summary::-webkit-details-marker { display: none; }
-    #shopify-section-{{ section.id }} .forma-brand-spotlight__read-mark { font-size: 18px; line-height: 1; transition: transform 180ms ease; }
-    #shopify-section-{{ section.id }} .forma-brand-spotlight__read-more[open] .forma-brand-spotlight__read-mark { transform: rotate(45deg); }
-    #shopify-section-{{ section.id }} .forma-brand-spotlight__full-story { padding: 15px 0 0; color: var(--fbs-muted); font-size: 12px; line-height: 1.85; }
-    #shopify-section-{{ section.id }} .forma-brand-spotlight__full-story p { margin: 0 0 10px; }
     #shopify-section-{{ section.id }} .forma-brand-spotlight__note { margin: 13px 0 0; color: var(--fbs-muted); font-size: 10px; line-height: 1.6; }
     @media screen and (max-width: 749px) {
       #shopify-section-{{ section.id }} .forma-brand-spotlight { padding: 22px 0; }
@@ -178,9 +166,10 @@
       #shopify-section-{{ section.id }} .forma-brand-spotlight__kicker { margin-bottom: 10px; font-size: 8px; }
       #shopify-section-{{ section.id }} .forma-brand-spotlight__title { font-size: clamp(42px, 11vw, 58px); }
       #shopify-section-{{ section.id }} .forma-brand-spotlight__story { margin-top: 13px; font-size: 12px; line-height: 1.75; }
-      #shopify-section-{{ section.id }} .forma-brand-spotlight__actions { gap: 20px; margin-top: 22px; }
-      #shopify-section-{{ section.id }} .forma-brand-spotlight__discover,
-      #shopify-section-{{ section.id }} .forma-brand-spotlight__follow { min-height: 42px; padding: 0 13px; font-size: 8px; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__title-row { gap: 12px; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__actions { gap: 12px; margin-top: 20px; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__discover { min-height: 40px; padding: 0 13px; font-size: 8px; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__follow { width: 32px; min-width: 32px; height: 32px; min-height: 32px; padding: 0; }
       #shopify-section-{{ section.id }} .forma-brand-spotlight__note { margin-top: 11px; font-size: 9px; }
     }
     @media (prefers-reduced-motion: reduce) {

@@ -90,14 +90,14 @@
       #shopify-section-{{ section.id }} .forma-product-carousel .product-list {
         display: grid !important;
         grid-auto-flow: column !important;
-        grid-auto-columns: calc((100% - 15px) / 4) !important;
+        grid-auto-columns: 355px !important;
         gap: 5px !important;
         scroll-snap-type: x mandatory;
         scroll-behavior: smooth;
         width: 100% !important;
         max-width: none !important;
         margin: 0 !important;
-        padding: 0 5px 8px !important;
+        padding: 0 10px 8px !important;
         overflow-x: auto !important;
         scrollbar-width: none;
         box-sizing: border-box !important;
@@ -131,9 +131,42 @@
 
       /* Match The Forma Edit product-card image proportions and image fit */
       #shopify-section-{{ section.id }} .forma-product-carousel .product-card {
-        min-width: 0 !important;
-        width: 100% !important;
+        min-width: 355px !important;
+        width: 355px !important;
+        max-width: 355px !important;
+        margin: 0 !important;
+        padding: 0 !important;
         scroll-snap-align: start;
+      }
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card__info {
+        display: block !important; width: 100% !important; height: auto !important;
+        min-height: 0 !important; margin: 0 !important; padding: 11px 0 0 !important;
+        opacity: 1 !important; visibility: visible !important; text-align: left !important;
+      }
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card__info > .v-stack {
+        display: grid !important; grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start; column-gap: 12px; width: 100% !important; margin: 0 !important; padding: 0 !important;
+      }
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card__info > .v-stack > :first-child {
+        grid-column: 2; grid-row: 1; justify-self: end; margin: 1px 0 0 !important; padding: 0 !important;
+        text-align: right !important; font-family: Arial, Helvetica, sans-serif !important;
+        font-size: 9px !important; font-weight: 400 !important; line-height: 1.2 !important;
+        letter-spacing: .08em !important; text-transform: uppercase !important; color: #777 !important;
+      }
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card__info > .v-stack > :last-child {
+        grid-column: 1; grid-row: 1; display: flex !important; flex-direction: column !important;
+        align-items: flex-start !important; width: 100% !important; margin: 0 !important; padding: 0 !important; text-align: left !important;
+      }
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card__info .product-title {
+        display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important;
+        font-family: Georgia, "Times New Roman", serif !important; font-size: 12px !important;
+        font-weight: 300 !important; line-height: 1.25 !important; letter-spacing: 0 !important; color: #111 !important; text-align: left !important;
+      }
+      #shopify-section-{{ section.id }} .forma-product-carousel .product-card__info .price-list {
+        display: flex !important; justify-content: flex-start !important; align-items: flex-start !important;
+        width: 100% !important; margin: 3px 0 0 !important; padding: 0 !important;
+        font-family: Arial, Helvetica, sans-serif !important; font-size: 11px !important; font-weight: 400 !important;
+        line-height: 1.2 !important; color: #555 !important; text-align: left !important;
       }
 
       #shopify-section-{{ section.id }} .forma-product-carousel .product-card__figure {
@@ -150,7 +183,7 @@
         height: 100% !important;
         max-width: 100% !important;
         max-height: 100% !important;
-        object-fit: contain !important;
+        object-fit: cover !important;
         object-position: center center !important;
       }
 
@@ -207,7 +240,7 @@
 
       @media screen and (min-width: 700px) {
         #shopify-section-{{ section.id }} .forma-product-carousel .product-list {
-          grid-auto-columns: calc((100% - 15px) / 4) !important;
+          grid-auto-columns: 355px !important;
         }
       }
 
@@ -238,8 +271,16 @@
 
 
         #shopify-section-{{ section.id }} .forma-product-carousel .product-list {
-          grid-auto-columns: 78% !important;
+          grid-auto-columns: 78vw !important;
+          gap: 12px !important;
+          padding-left: 6px !important;
+          padding-right: 6px !important;
         }
+        #shopify-section-{{ section.id }} .forma-product-carousel .product-card {
+          min-width: 78vw !important; width: 78vw !important; max-width: 78vw !important;
+        }
+        #shopify-section-{{ section.id }} .forma-product-carousel .product-card__info .product-title { font-size: 13px !important; }
+        #shopify-section-{{ section.id }} .forma-product-carousel .product-card__info > .v-stack > :first-child { font-size: 8px !important; }
 
         #shopify-section-{{ section.id }} .forma-product-carousel .floating-controls-container__control {
           top: 38%;
