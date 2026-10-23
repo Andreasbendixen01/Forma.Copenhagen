@@ -302,7 +302,7 @@
                         endif
                       endfor
 
-                      render 'product-card', product: product, reveal: settings.stagger_products_apparition, position: forloop.index, hide_product_information: section.settings.hide_product_information, stacked: true
+                      render 'product-card', product: product, reveal: settings.stagger_products_apparition, position: forloop.index, hide_product_information: section.settings.hide_product_information, stacked: true, show_secondary_image: true
                     endfor
                   %}
                 </product-list>
