@@ -294,21 +294,19 @@
                   collection-mobile-layout="{{ products_mobile_grid_mode }}"
                   collection-desktop-layout="{{ products_desktop_grid_mode }}"
                 >
-                  {% liquid
-                    for product in collection.products
-                      for block in section.blocks
-                        if forloop.parentloop.index == block.settings.position
-                          render 'collection-promo-block', block: block, reveal: true
-                        endif
-                      endfor
-
-                      render 'product-card',
-                        product: product,
-                        reveal: settings.stagger_products_apparition,
-                        position: forloop.index,
-                        hide_product_information: section.settings.hide_product_information
+                  
+                {% liquid
+                  for product in collection.products
+                    for block in section.blocks
+                      if forloop.parentloop.index == block.settings.position
+                        render 'collection-promo-block', block: block, reveal: true
+                      endif
                     endfor
-                  %}
+
+                    render 'product-card', product: product, reveal: settings.stagger_products_apparition, position: forloop.index, hide_product_information: section.settings.hide_product_information
+                  endfor
+                %}
+
                 </product-list>
 
                 {%- render 'pagination', paginate: paginate, facet: true -%}
