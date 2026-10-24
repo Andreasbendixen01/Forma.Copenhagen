@@ -58,6 +58,38 @@
     --product-list-max-items-per-row-allowed: 99 !important; {% comment %}On collection page, we explicitly set a number of items so we don't want this{% endcomment %}
   }
 
+  /* FORMA ‚Äî MATCH FEATURED COLLECTION PRODUCT IMAGE PRESENTATION */
+  #shopify-section-{{ section.id }} .product-card__figure {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    aspect-ratio: 4 / 5 !important;
+    overflow: hidden !important;
+    background: #f5f5f5 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-card__figure .forma-product-carousel__viewport {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-card__figure .forma-product-carousel__slides,
+  #shopify-section-{{ section.id }} .product-card__figure .forma-product-carousel__slide {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-card__figure .forma-product-carousel__slide img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+
   @media screen and (min-width: 700px) {
     #shopify-section-{{ section.id }} {
       {% comment %}On tablet, we do not have any sidebar, so we can fix it{% endcomment %}
@@ -294,19 +326,17 @@
                   collection-mobile-layout="{{ products_mobile_grid_mode }}"
                   collection-desktop-layout="{{ products_desktop_grid_mode }}"
                 >
-                  
-                {% liquid
-                  for product in collection.products
-                    for block in section.blocks
-                      if forloop.parentloop.index == block.settings.position
-                        render 'collection-promo-block', block: block, reveal: true
-                      endif
+                  {% liquid
+                    for product in collection.products
+                      for block in section.blocks
+                        if forloop.parentloop.index == block.settings.position
+                          render 'collection-promo-block', block: block, reveal: true
+                        endif
+                      endfor
+
+                      render 'product-card', product: product, reveal: settings.stagger_products_apparition, position: forloop.index, hide_product_information: section.settings.hide_product_information
                     endfor
-
-                    render 'product-card', product: product, reveal: settings.stagger_products_apparition, position: forloop.index, hide_product_information: section.settings.hide_product_information
-                  endfor
-                %}
-
+                  %}
                 </product-list>
 
                 {%- render 'pagination', paginate: paginate, facet: true -%}
