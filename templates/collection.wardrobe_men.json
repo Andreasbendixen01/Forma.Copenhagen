@@ -27,6 +27,215 @@
         "overlay_opacity": 30
       }
     },
+    "collection_list_4RbACp": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_zFWWJG": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-6d7fbbd5-e9b9-4f26-a9f4-3af9c4eb667b",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-center text-center",
+            "subheading": "T-Shirt",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_qUq6JE": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-6d7fbbd5-e9b9-4f26-a9f4-3af9c4eb667b",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-center text-center",
+            "subheading": "Shirt",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_RNVNAn": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-6d7fbbd5-e9b9-4f26-a9f4-3af9c4eb667b",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-center text-center",
+            "subheading": "Knitwear",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_kL8jgt": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-6d7fbbd5-e9b9-4f26-a9f4-3af9c4eb667b",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-center text-center",
+            "subheading": "Sweatshirt & hoodies",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_EDPHa3": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-6d7fbbd5-e9b9-4f26-a9f4-3af9c4eb667b",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-center text-center",
+            "subheading": "Trousers",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_8YPmRY": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-6d7fbbd5-e9b9-4f26-a9f4-3af9c4eb667b",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-center text-center",
+            "subheading": "Chinos",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_3mgFte": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-6d7fbbd5-e9b9-4f26-a9f4-3af9c4eb667b",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-center text-center",
+            "subheading": "Jeans",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_iWkiPJ": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-6d7fbbd5-e9b9-4f26-a9f4-3af9c4eb667b",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-center text-center",
+            "subheading": "Shorts",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_V9jf3q": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-6d7fbbd5-e9b9-4f26-a9f4-3af9c4eb667b",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-center text-center",
+            "subheading": "Jackets & Coats",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_iqT7X4": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-6d7fbbd5-e9b9-4f26-a9f4-3af9c4eb667b",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-center text-center",
+            "subheading": "Suits & Tailoring",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "collection_8C8YLJ": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-6d7fbbd5-e9b9-4f26-a9f4-3af9c4eb667b",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-center text-center",
+            "subheading": "Shoes",
+            "title": "",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        }
+      },
+      "block_order": [
+        "collection_zFWWJG",
+        "collection_qUq6JE",
+        "collection_RNVNAn",
+        "collection_kL8jgt",
+        "collection_EDPHa3",
+        "collection_8YPmRY",
+        "collection_3mgFte",
+        "collection_iWkiPJ",
+        "collection_V9jf3q",
+        "collection_iqT7X4",
+        "collection_8C8YLJ"
+      ],
+      "name": "t:sections.collection_list.presets.collection_list.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "image_size": "xs",
+        "show_text_outside": false,
+        "space_items": false,
+        "stack_collections": false,
+        "collections_per_row_desktop": 4,
+        "stack_collections_mobile": true,
+        "collections_per_row_mobile": "1",
+        "subheading": "",
+        "title": "",
+        "content": ""
+      }
+    },
     "main": {
       "type": "main-collection",
       "settings": {
@@ -51,6 +260,7 @@
   },
   "order": [
     "collection-banner",
+    "collection_list_4RbACp",
     "main"
   ]
 }
