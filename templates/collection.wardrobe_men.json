@@ -14,13 +14,13 @@
       "settings": {
         "color_scheme": "",
         "image_size": "auto",
-        "allow_transparent_header": true,
+        "allow_transparent_header": false,
         "show_image": false,
         "reveal": true,
         "enable_parallax": true,
         "show_collection_title": false,
-        "show_collection_description": true,
-        "show_breadcrumb": true,
+        "show_collection_description": false,
+        "show_breadcrumb": false,
         "content_width": "md",
         "text_alignment": "center",
         "overlay_color": "#000000",
@@ -160,6 +160,9 @@
     "main": {
       "type": "main-collection",
       "settings": {
+        "show_collection_breadcrumb": true,
+        "show_collection_intro": true,
+        "show_collection_seo_text": true,
         "color_scheme": "",
         "hide_product_information": false,
         "products_per_page": 48,
