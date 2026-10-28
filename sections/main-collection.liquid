@@ -165,8 +165,8 @@
         --collection-items-per-row-medium: 3;
         --collection-items-per-row-large: 2;
       {%- else -%}
-        --collection-items-per-row-compact: 6;
-        --collection-items-per-row-medium: 5;
+        --collection-items-per-row-compact: 4;
+        --collection-items-per-row-medium: 4;
         --collection-items-per-row-large: 4;
       {%- endif -%}
     }
@@ -208,7 +208,16 @@
     --product-list-vertical-spacing-factor: 0.65;
   }
 
-  /* FORMA ‚Äî four-column editorial grid with near-flush product imagery */
+  /* FORMA ‚Äî full-bleed four-column editorial product grid */
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .collection__main .product-list {
+      width: 100vw !important;
+      max-width: 100vw !important;
+      margin-inline: calc(50% - 50vw) !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+  }
+
   #shopify-section-{{ section.id }} .product-list {
     column-gap: 3px !important;
     row-gap: 18px !important;
