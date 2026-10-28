@@ -150,7 +150,7 @@
         "space_items": false,
         "stack_collections": false,
         "collections_per_row_desktop": 4,
-        "stack_collections_mobile": true,
+        "stack_collections_mobile": false,
         "collections_per_row_mobile": "1",
         "subheading": "",
         "title": "",
