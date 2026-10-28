@@ -232,7 +232,6 @@
     #shopify-section-{{ section.id }} .product-card__info,
     #shopify-section-{{ section.id }} .product-card__info-wrapper {
       padding-inline: 6px !important;
-      text-align: left !important;
     }
   }
 
@@ -243,21 +242,7 @@
     }
   }
 
-
-/* FORMA — left-aligned product information */
-#shopify-section-main-collection .product-card__info,
-#shopify-section-main-collection .product-card__info-wrapper {
-  text-align: left !important;
-}
-
-#shopify-section-main-collection .product-card__vendor,
-#shopify-section-main-collection .product-card__title,
-#shopify-section-main-collection .product-card__price {
-  text-align: left !important;
-}
-
-
-  /* FORMA ‚ full-width white collection toolbar, never sticky */
+  /* FORMA ‚Äî full-width white collection toolbar, never sticky */
   #shopify-section-{{ section.id }} .collection-toolbar,
   #shopify-section-{{ section.id }} height-observer.collection-toolbar {
     position: relative !important;
@@ -351,6 +336,37 @@
     background-color: transparent !important;
     box-shadow: none !important;
   }
+
+
+
+/* FORMA — left-align collection product information */
+#shopify-section-{{ section.id }} .product-card__info {
+  width: 100% !important;
+  text-align: left !important;
+}
+
+#shopify-section-{{ section.id }} .product-card__info > .v-stack,
+#shopify-section-{{ section.id }} .product-card__info .v-stack {
+  justify-items: start !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
+#shopify-section-{{ section.id }} .product-card__info .product-title,
+#shopify-section-{{ section.id }} .product-card__info .price-list,
+#shopify-section-{{ section.id }} .product-card__info .price-list *,
+#shopify-section-{{ section.id }} .product-card__info .vendor,
+#shopify-section-{{ section.id }} .product-card__info .smallcaps {
+  text-align: left !important;
+  justify-content: flex-start !important;
+  justify-items: start !important;
+}
+
+#shopify-section-{{ section.id }} .product-card__info .price-list {
+  align-self: flex-start !important;
+  width: 100% !important;
+}
+
 
 </style>
 
