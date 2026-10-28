@@ -242,20 +242,27 @@
     }
   }
 
-  /* The toolbar is a normal part of the page, never sticky or transparent */
+  /* FORMA ‚Äî full-width white collection toolbar, never sticky */
   #shopify-section-{{ section.id }} .collection-toolbar,
   #shopify-section-{{ section.id }} height-observer.collection-toolbar {
     position: relative !important;
     inset: auto !important;
     top: auto !important;
     z-index: 1 !important;
+    display: flex !important;
+    box-sizing: border-box !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 0 18px calc(50% - 50vw) !important;
     min-height: 48px !important;
-    margin: 0 0 18px !important;
-    padding: 0 12px !important;
-    background: #f7f6f3 !important;
-    background-color: #f7f6f3 !important;
-    border-top: 1px solid #e3e1dc !important;
-    border-bottom: 1px solid #e3e1dc !important;
+    padding: 0 3.2vw !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border-top: 1px solid #e5e5e5 !important;
+    border-bottom: 1px solid #e5e5e5 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-radius: 0 !important;
     box-shadow: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -294,7 +301,7 @@
     #shopify-section-{{ section.id }} height-observer.collection-toolbar {
       min-height: 46px !important;
       margin-bottom: 12px !important;
-      padding-inline: 8px !important;
+      padding-inline: 12px !important;
     }
   }
 
