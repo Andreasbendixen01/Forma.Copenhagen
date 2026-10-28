@@ -166,8 +166,8 @@
         --collection-items-per-row-large: 2;
       {%- else -%}
         --collection-items-per-row-compact: 6;
-        --collection-items-per-row-medium: 4;
-        --collection-items-per-row-large: 3;
+        --collection-items-per-row-medium: 5;
+        --collection-items-per-row-large: 4;
       {%- endif -%}
     }
 
@@ -208,16 +208,28 @@
     --product-list-vertical-spacing-factor: 0.65;
   }
 
-  /* FORMA ‚Äî compact product grid: reduce empty gutters between cards */
+  /* FORMA ‚Äî four-column editorial grid with near-flush product imagery */
   #shopify-section-{{ section.id }} .product-list {
-    column-gap: clamp(12px, 1.25vw, 22px) !important;
-    row-gap: clamp(22px, 2.2vw, 36px) !important;
+    column-gap: 3px !important;
+    row-gap: 18px !important;
+  }
+
+  /* Product imagery stays edge-to-edge inside each card; info keeps a little breathing room */
+  #shopify-section-{{ section.id }} .product-card__figure {
+    margin-inline: 0 !important;
+  }
+
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .product-card__info,
+    #shopify-section-{{ section.id }} .product-card__info-wrapper {
+      padding-inline: 6px !important;
+    }
   }
 
   @media screen and (max-width: 699px) {
     #shopify-section-{{ section.id }} .product-list {
-      column-gap: 10px !important;
-      row-gap: 22px !important;
+      column-gap: 3px !important;
+      row-gap: 16px !important;
     }
   }
 
