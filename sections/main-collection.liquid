@@ -305,6 +305,38 @@
     }
   }
 
+
+  /* FORMA ‚Äî transparent wishlist icon on collection product cards */
+  #shopify-section-{{ section.id }} .product-card__wishlist-button,
+  #shopify-section-{{ section.id }} .wishlist-button,
+  #shopify-section-{{ section.id }} .swym-button,
+  #shopify-section-{{ section.id }} button[aria-label*="wishlist" i],
+  #shopify-section-{{ section.id }} button[aria-label*="wish list" i] {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+    border-radius: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-card__wishlist-button::before,
+  #shopify-section-{{ section.id }} .product-card__wishlist-button::after,
+  #shopify-section-{{ section.id }} .wishlist-button::before,
+  #shopify-section-{{ section.id }} .wishlist-button::after {
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-card__wishlist-button:hover,
+  #shopify-section-{{ section.id }} .wishlist-button:hover,
+  #shopify-section-{{ section.id }} .swym-button:hover,
+  #shopify-section-{{ section.id }} button[aria-label*="wishlist" i]:hover,
+  #shopify-section-{{ section.id }} button[aria-label*="wish list" i]:hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
 </style>
 
 {%- comment -%}
