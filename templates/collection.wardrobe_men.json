@@ -159,6 +159,32 @@
     },
     "main": {
       "type": "main-collection",
+      "blocks": {
+        "push_promo_kwdrGx": {
+          "type": "push_promo",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "bordered": false,
+            "position": 5,
+            "size": "2",
+            "media_type": "video",
+            "video": "shopify://files/videos/LD_PS27_campaign_film_final_16x9_bars.mp4",
+            "mobile_video": "shopify://files/videos/LD_PS27_campaign_film_final_9x16.mp4",
+            "overlay_color": "#0000004d",
+            "content_position": "align-self-center",
+            "alignment": "center",
+            "subheading": "",
+            "heading": "",
+            "heading_tag": "h4",
+            "style": "solid",
+            "link_text": "",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "push_promo_kwdrGx"
+      ],
       "settings": {
         "show_collection_breadcrumb": true,
         "show_collection_intro": true,
