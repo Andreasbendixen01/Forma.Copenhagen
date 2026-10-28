@@ -243,7 +243,21 @@
     }
   }
 
-  /* FORMA ‚Äî full-width white collection toolbar, never sticky */
+
+/* FORMA — left-aligned product information */
+#shopify-section-main-collection .product-card__info,
+#shopify-section-main-collection .product-card__info-wrapper {
+  text-align: left !important;
+}
+
+#shopify-section-main-collection .product-card__vendor,
+#shopify-section-main-collection .product-card__title,
+#shopify-section-main-collection .product-card__price {
+  text-align: left !important;
+}
+
+
+  /* FORMA ‚ full-width white collection toolbar, never sticky */
   #shopify-section-{{ section.id }} .collection-toolbar,
   #shopify-section-{{ section.id }} height-observer.collection-toolbar {
     position: relative !important;
