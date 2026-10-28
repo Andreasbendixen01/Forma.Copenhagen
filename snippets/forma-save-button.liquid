@@ -1,12 +1,56 @@
+
 <style>
   .forma-save-button--card {
-  position: absolute !important;
-  top: 14px !important;
-  right: 14px !important;
-  left: auto !important;
-  transform: none !important;
-  z-index: 20 !important;
-}
+    position: absolute !important;
+    top: 14px !important;
+    right: 14px !important;
+    left: auto !important;
+    transform: none !important;
+    z-index: 20 !important;
+
+    /* FORMA: transparent heart, no white badge */
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    width: 24px !important;
+    height: 24px !important;
+    color: #333 !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  .forma-save-button--card::before,
+  .forma-save-button--card::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .forma-save-button--card .forma-save-button__icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 24px !important;
+    height: 24px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .forma-save-button--card svg {
+    display: block !important;
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .forma-save-button--card:hover {
+    background: transparent !important;
+    box-shadow: none !important;
+    opacity: 0.7;
+  }
 </style>
 
 <button
