@@ -58,63 +58,6 @@
     --product-list-max-items-per-row-allowed: 99 !important; {% comment %}On collection page, we explicitly set a number of items so we don't want this{% endcomment %}
   }
 
-  /* FORMA ‚Äî COLLECTION INTRO + BREADCRUMBS */
-  #shopify-section-{{ section.id }} .forma-collection-intro {
-    padding-top: clamp(22px, 3vw, 42px);
-    padding-bottom: clamp(24px, 3.5vw, 48px);
-  }
-  #shopify-section-{{ section.id }} .forma-collection-breadcrumb {
-    margin: 0 0 22px;
-    padding: 0;
-  }
-  #shopify-section-{{ section.id }} .forma-collection-breadcrumb__list {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    font-size: 10px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-  }
-  #shopify-section-{{ section.id }} .forma-collection-breadcrumb__list a { text-decoration: none; }
-  #shopify-section-{{ section.id }} .forma-collection-breadcrumb__separator { opacity: .45; }
-  #shopify-section-{{ section.id }} .forma-collection-intro__content {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(260px, .8fr);
-    align-items: end;
-    gap: clamp(20px, 5vw, 80px);
-  }
-  #shopify-section-{{ section.id }} .forma-collection-intro__title {
-    margin: 0;
-    font-size: clamp(32px, 4.2vw, 64px);
-    line-height: .98;
-    letter-spacing: -.045em;
-    font-weight: 400;
-  }
-  #shopify-section-{{ section.id }} .forma-collection-intro__description {
-    max-width: 560px;
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.75;
-    opacity: .78;
-  }
-  #shopify-section-{{ section.id }} .forma-collection-intro__description > :first-child { margin-top: 0; }
-  #shopify-section-{{ section.id }} .forma-collection-intro__description > :last-child { margin-bottom: 0; }
-  @media screen and (max-width: 699px) {
-    #shopify-section-{{ section.id }} .forma-collection-intro { padding-top: 20px; padding-bottom: 26px; }
-    #shopify-section-{{ section.id }} .forma-collection-breadcrumb { margin-bottom: 18px; }
-    #shopify-section-{{ section.id }} .forma-collection-intro__content {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 12px;
-    }
-    #shopify-section-{{ section.id }} .forma-collection-intro__title { font-size: clamp(30px, 9vw, 44px); }
-    #shopify-section-{{ section.id }} .forma-collection-intro__description { font-size: 13px; line-height: 1.65; }
-  }
-
-
   /* FORMA ‚Äö√Ñ√Æ MATCH FEATURED COLLECTION PRODUCT IMAGE PRESENTATION */
   #shopify-section-{{ section.id }} .product-card__figure {
     display: block !important;
@@ -189,6 +132,146 @@
       {%- endif -%}
     }
   }
+
+
+  /* ============================================================
+     FORMA COLLECTION ‚Äî EDITORIAL DESIGN SYSTEM
+     Preserves existing product images, carousel and wishlist.
+     ============================================================ */
+
+  /* 1. Desktop product grid: three spacious editorial columns */
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} {
+      --collection-items-per-row-compact: 3 !important;
+      --collection-items-per-row-medium: 3 !important;
+      --collection-items-per-row-large: 3 !important;
+      --product-list-horizontal-spacing-factor: 1.15;
+      --product-list-vertical-spacing-factor: 1.35;
+    }
+
+    /* Remove the standard grid-density switch; Forma uses one considered layout */
+    #shopify-section-{{ section.id }} .collection-toolbar__layout-switch-list[device="desktop"] {
+      display: none !important;
+    }
+  }
+
+  /* 2. Editorial filter / sort bar */
+  #shopify-section-{{ section.id }} .collection-toolbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    min-height: 58px !important;
+    padding: 0 0.25rem !important;
+    margin-block: 0 1.5rem !important;
+    border-top: 1px solid rgba(25, 25, 25, 0.14) !important;
+    border-bottom: 1px solid rgba(25, 25, 25, 0.14) !important;
+    background: transparent !important;
+  }
+
+  #shopify-section-{{ section.id }} .collection-toolbar__button-list {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+  }
+
+  #shopify-section-{{ section.id }} .collection-toolbar__button-container {
+    width: auto !important;
+    min-width: 0 !important;
+    border: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .collection-toolbar__button {
+    min-height: 42px !important;
+    padding: 0.65rem 0.8rem !important;
+    font-size: 10px !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+    color: #252525 !important;
+    background: transparent !important;
+    border: 0 !important;
+    transition: opacity 180ms ease !important;
+  }
+
+  #shopify-section-{{ section.id }} .collection-toolbar__button:hover {
+    opacity: 0.58 !important;
+  }
+
+  #shopify-section-{{ section.id }} .collection-toolbar__products-count {
+    margin: 0 auto 0 1rem !important;
+    font-size: 10px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    color: #777 !important;
+  }
+
+  /* 3. Product information: editorial left alignment and clear hierarchy */
+  #shopify-section-{{ section.id }} .product-card__info {
+    align-items: flex-start !important;
+    text-align: left !important;
+    padding-top: 0.85rem !important;
+    gap: 0.3rem !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-card__info > *,
+  #shopify-section-{{ section.id }} .product-card__info .price-list {
+    text-align: left !important;
+    justify-content: flex-start !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-card__vendor {
+    font-size: 9px !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    color: #777 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-card__title {
+    font-size: 11px !important;
+    letter-spacing: 0.035em !important;
+    line-height: 1.5 !important;
+    text-transform: uppercase !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-card__info .price-list {
+    font-size: 11px !important;
+    color: #686868 !important;
+  }
+
+  /* 4. Promo blocks: cleaner editorial treatment; size 2 can span two columns */
+  #shopify-section-{{ section.id }} .collection-promo-block {
+    overflow: hidden !important;
+    background: #f3f1ed !important;
+  }
+
+  #shopify-section-{{ section.id }} .collection-promo-block img,
+  #shopify-section-{{ section.id }} .collection-promo-block video {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  #shopify-section-{{ section.id }} .collection-promo-block .prose {
+    max-width: 34rem !important;
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .collection-toolbar {
+      min-height: 50px !important;
+      margin-bottom: 1rem !important;
+    }
+
+    #shopify-section-{{ section.id }} .collection-toolbar__button {
+      padding: 0.5rem 0.55rem !important;
+      font-size: 9px !important;
+    }
+
+    #shopify-section-{{ section.id }} .product-card__info {
+      padding-top: 0.65rem !important;
+    }
+  }
 </style>
 
 {%- comment -%}
@@ -199,28 +282,6 @@
 
 <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
   <div class="container">
-    <div class="forma-collection-intro">
-      {%- if section.settings.show_collection_breadcrumb -%}
-        <nav class="forma-collection-breadcrumb" aria-label="{{ 'general.breadcrumb.label' | t | escape }}">
-          <ol class="forma-collection-breadcrumb__list">
-            <li><a href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a></li>
-            <li class="forma-collection-breadcrumb__separator" aria-hidden="true">/</li>
-            <li><a href="{{ routes.all_products_collection_url }}">{{ 'general.breadcrumb.shop' | t }}</a></li>
-            <li class="forma-collection-breadcrumb__separator" aria-hidden="true">/</li>
-            <li aria-current="page">{{ collection.title | escape }}</li>
-          </ol>
-        </nav>
-      {%- endif -%}
-      {%- if section.settings.show_collection_intro -%}
-        <div class="forma-collection-intro__content">
-          <h1 class="forma-collection-intro__title">{{ collection.title | escape }}</h1>
-          {%- if section.settings.show_collection_seo_text and collection.description != blank -%}
-            <div class="forma-collection-intro__description rte">{{ collection.description }}</div>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
-    </div>
-
     <div class="v-stack gap-6 sm:gap-12">
       {%- if collection.all_products_count == 0 -%}
         <div class="empty-state">
@@ -434,28 +495,6 @@
   "class": "shopify-section--main-collection",
   "tag": "section",
   "settings": [
-    {
-      "type": "header",
-      "content": "FORMA ‚Äî Collection introduction"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_collection_breadcrumb",
-      "label": "Show breadcrumbs below category images",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_collection_intro",
-      "label": "Show collection heading",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_collection_seo_text",
-      "label": "Show collection SEO text",
-      "default": true
-    },
     {
       "type": "color_scheme",
       "id": "color_scheme",
