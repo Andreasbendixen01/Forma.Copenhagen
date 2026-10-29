@@ -1,0 +1,485 @@
+
+{% comment %}
+  FORMA CAREERS
+  Section for job listings and application form app blocks.
+{% endcomment %}
+
+<section
+  id="FormaCareers-{{ section.id }}"
+  class="forma-careers"
+>
+  <div class="forma-careers__inner">
+
+    <!-- INTRO -->
+    <header class="forma-careers__header">
+      {% if section.settings.eyebrow != blank %}
+        <p class="forma-careers__eyebrow">
+          {{ section.settings.eyebrow | escape }}
+        </p>
+      {% endif %}
+
+      <h1 class="forma-careers__title">
+        {{ section.settings.heading | escape }}
+      </h1>
+
+      {% if section.settings.intro != blank %}
+        <div class="forma-careers__intro">
+          {{ section.settings.intro }}
+        </div>
+      {% endif %}
+    </header>
+
+    <!-- OPEN POSITIONS -->
+    <div class="forma-careers__positions">
+      <div class="forma-careers__section-heading">
+        <h2>{{ section.settings.positions_heading | escape }}</h2>
+        <span>
+          {% assign job_count = 0 %}
+          {% for block in section.blocks %}
+            {% if block.type == 'job' %}
+              {% assign job_count = job_count | plus: 1 %}
+            {% endif %}
+          {% endfor %}
+          {{ job_count }} 
+          {% if job_count == 1 %}position{% else %}positions{% endif %}
+        </span>
+      </div>
+
+      {% assign job_count = 0 %}
+
+      {% for block in section.blocks %}
+        {% if block.type == 'job' %}
+          {% assign job_count = job_count | plus: 1 %}
+
+          <article
+            class="forma-careers__job"
+            {{ block.shopify_attributes }}
+          >
+            <div class="forma-careers__job-content">
+              <h3>{{ block.settings.title | escape }}</h3>
+
+              <div class="forma-careers__job-meta">
+                {% if block.settings.location != blank %}
+                  <span>{{ block.settings.location | escape }}</span>
+                {% endif %}
+
+                {% if block.settings.employment_type != blank %}
+                  <span>{{ block.settings.employment_type | escape }}</span>
+                {% endif %}
+              </div>
+
+              {% if block.settings.description != blank %}
+                <div class="forma-careers__job-description">
+                  {{ block.settings.description }}
+                </div>
+              {% endif %}
+            </div>
+
+            {% if block.settings.application_url != blank %}
+              <a
+                class="forma-careers__job-link"
+                href="{{ block.settings.application_url }}"
+              >
+                {{ block.settings.button_label | escape }}
+                <span aria-hidden="true">↗</span>
+              </a>
+            {% elsif block.settings.use_application_form %}
+              <a
+                class="forma-careers__job-link"
+                href="#FormaCareers-Application-{{ section.id }}"
+              >
+                {{ block.settings.button_label | escape }}
+                <span aria-hidden="true">↓</span>
+              </a>
+            {% endif %}
+          </article>
+        {% endif %}
+      {% endfor %}
+
+      {% if job_count == 0 %}
+        <div class="forma-careers__empty">
+          <h3>{{ section.settings.empty_heading | escape }}</h3>
+          <p>{{ section.settings.empty_text | escape }}</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- UNSOLICITED APPLICATIONS -->
+    <div
+      id="FormaCareers-Application-{{ section.id }}"
+      class="forma-careers__application"
+    >
+      <div class="forma-careers__application-copy">
+        <p class="forma-careers__eyebrow">
+          {{ section.settings.application_eyebrow | escape }}
+        </p>
+
+        <h2>
+          {{ section.settings.application_heading | escape }}
+        </h2>
+
+        <div class="forma-careers__application-text">
+          {{ section.settings.application_text }}
+        </div>
+      </div>
+
+      <div class="forma-careers__form">
+        {% assign has_app_block = false %}
+
+        {% for block in section.blocks %}
+          {% if block.type == '@app' %}
+            {% assign has_app_block = true %}
+            {% render block %}
+          {% endif %}
+        {% endfor %}
+
+        {% unless has_app_block %}
+          <div class="forma-careers__form-placeholder">
+            <p>
+              Add your application form here through the
+              Shopify Theme Editor.
+            </p>
+          </div>
+        {% endunless %}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .forma-careers {
+    --forma-careers-text: #20201e;
+    --forma-careers-muted: #777771;
+    --forma-careers-border: #deded8;
+    background: #fff;
+    color: var(--forma-careers-text);
+    padding: 72px 32px 100px;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__inner {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__header {
+    max-width: 760px;
+    margin: 0 auto 88px;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__eyebrow {
+    margin: 0 0 18px;
+    font-size: 11px;
+    letter-spacing: .16em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: var(--forma-careers-muted);
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__title {
+    margin: 0;
+    font-size: clamp(40px, 6vw, 68px);
+    font-weight: 400;
+    letter-spacing: -.045em;
+    line-height: 1.05;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__intro {
+    max-width: 580px;
+    margin: 24px auto 0;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--forma-careers-muted);
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--forma-careers-border);
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__section-heading h2,
+  #shopify-section-{{ section.id }} .forma-careers__application h2 {
+    margin: 0;
+    font-size: clamp(25px, 3vw, 36px);
+    font-weight: 400;
+    letter-spacing: -.035em;
+    line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__section-heading > span {
+    font-size: 12px;
+    color: var(--forma-careers-muted);
+    white-space: nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__job {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--forma-careers-border);
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__job-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__job h3 {
+    margin: 0 0 10px;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -.02em;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__job-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    font-size: 12px;
+    color: var(--forma-careers-muted);
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__job-description {
+    margin-top: 14px;
+    max-width: 680px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--forma-careers-muted);
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__job-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    color: inherit;
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding: 0 0 5px;
+    transition: opacity .2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__job-link:hover {
+    opacity: .6;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__empty {
+    padding: 34px 0;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__empty h3 {
+    margin: 0 0 10px;
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__empty p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--forma-careers-muted);
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__application {
+    display: grid;
+    grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+    gap: 64px;
+    align-items: start;
+    margin-top: 104px;
+    padding-top: 64px;
+    border-top: 1px solid var(--forma-careers-border);
+    scroll-margin-top: 40px;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__application-text {
+    margin-top: 18px;
+    max-width: 390px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--forma-careers-muted);
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__form {
+    min-width: 0;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__form-placeholder {
+    padding: 28px;
+    border: 1px dashed var(--forma-careers-border);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--forma-careers-muted);
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__form-placeholder p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__form input,
+  #shopify-section-{{ section.id }} .forma-careers__form select,
+  #shopify-section-{{ section.id }} .forma-careers__form textarea {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .forma-careers {
+      padding: 48px 20px 64px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-careers__header {
+      margin-bottom: 60px;
+      text-align: left;
+    }
+
+    #shopify-section-{{ section.id }} .forma-careers__intro {
+      margin-left: 0;
+      font-size: 15px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-careers__job {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .forma-careers__application {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-top: 72px;
+      padding-top: 44px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Forma Careers",
+  "tag": "section",
+  "class": "section-forma-careers",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Intro label",
+      "default": "FORMA COPENHAGEN / CAREERS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "Join Forma."
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Introduction",
+      "default": "<p>We're always interested in meeting talented people who share our passion for brands, creativity and building something meaningful.</p>"
+    },
+    {
+      "type": "text",
+      "id": "positions_heading",
+      "label": "Positions heading",
+      "default": "Open Positions"
+    },
+    {
+      "type": "text",
+      "id": "empty_heading",
+      "label": "No positions heading",
+      "default": "No open positions at the moment"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_text",
+      "label": "No positions message",
+      "default": "We don't have any open positions right now, but you're welcome to send us an unsolicited application below."
+    },
+    {
+      "type": "text",
+      "id": "application_eyebrow",
+      "label": "Application label",
+      "default": "MAKE YOUR INTRODUCTION"
+    },
+    {
+      "type": "text",
+      "id": "application_heading",
+      "label": "Application heading",
+      "default": "Unsolicited Applications"
+    },
+    {
+      "type": "richtext",
+      "id": "application_text",
+      "label": "Application description",
+      "default": "<p>Don't see a role that fits? Tell us a little about yourself, your experience and how you could contribute to Forma.</p><p>We look forward to hearing from you.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "job",
+      "name": "Job listing",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Job title",
+          "default": "Brand Partnerships Manager"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "Copenhagen, Denmark"
+        },
+        {
+          "type": "text",
+          "id": "employment_type",
+          "label": "Employment type",
+          "default": "Full-time"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Short description",
+          "default": "<p>Help us build meaningful relationships with the brands shaping the future of Scandinavian lifestyle.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "View position"
+        },
+        {
+          "type": "url",
+          "id": "application_url",
+          "label": "External application link",
+          "info": "Optional. If blank, the button can link to the application form below."
+        },
+        {
+          "type": "checkbox",
+          "id": "use_application_form",
+          "label": "Link to application form",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "max_blocks": 16,
+  "presets": [
+    {
+      "name": "Forma Careers"
+    }
+  ]
+}
+{% endschema %}
