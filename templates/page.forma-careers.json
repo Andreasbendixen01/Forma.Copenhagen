@@ -11,10 +11,31 @@
   "sections": {
     "main": {
       "type": "main-page",
-      "settings": {}
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "show_title": true,
+        "page_width": "xs"
+      }
+    },
+    "forma_careers_V8TqiV": {
+      "type": "forma-careers",
+      "name": "Forma Careers",
+      "settings": {
+        "eyebrow": "FORMA COPENHAGEN / CAREERS",
+        "heading": "Join Forma.",
+        "intro": "<p>We're always interested in meeting talented people who share our passion for brands, creativity and building something meaningful.</p>",
+        "positions_heading": "Open Positions",
+        "empty_heading": "No open positions at the moment",
+        "empty_text": "We don't have any open positions right now, but you're welcome to send us an unsolicited application below.",
+        "application_eyebrow": "MAKE YOUR INTRODUCTION",
+        "application_heading": "Unsolicited Applications",
+        "application_text": "<p>Don't see a role that fits? Tell us a little about yourself, your experience and how you could contribute to Forma.</p><p>We look forward to hearing from you.</p>"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "forma_careers_V8TqiV"
   ]
 }
