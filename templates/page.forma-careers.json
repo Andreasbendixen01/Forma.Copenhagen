@@ -20,6 +20,29 @@
     },
     "forma_careers_V8TqiV": {
       "type": "forma-careers",
+      "blocks": {
+        "job_t783qX": {
+          "type": "job",
+          "settings": {
+            "title": "Brand Partnerships Manager",
+            "location": "Copenhagen, Denmark",
+            "employment_type": "Full-time",
+            "short_description": "<p>Help us build meaningful relationships with the brands shaping the future of Scandinavian lifestyle.</p>",
+            "button_label": "View position",
+            "introduction": "<p>We are looking for a talented person to join Forma Copenhagen and help us grow our platform and brand partnerships.</p>",
+            "responsibilities_heading": "The role",
+            "responsibilities": "<ul><li>Build and maintain relationships with partner brands.</li><li>Identify new opportunities and support Forma's growth.</li><li>Work closely with the team on partnerships and initiatives.</li></ul>",
+            "qualifications_heading": "What we're looking for",
+            "qualifications": "<ul><li>Strong communication and relationship-building skills.</li><li>A proactive and structured approach to work.</li><li>An interest in fashion, design and lifestyle brands.</li></ul>",
+            "offer_heading": "What we offer",
+            "offer": "<p>The opportunity to help shape an ambitious platform, take ownership and make a meaningful impact as Forma grows.</p>",
+            "apply_label": "Apply for this position"
+          }
+        }
+      },
+      "block_order": [
+        "job_t783qX"
+      ],
       "name": "Forma Careers",
       "settings": {
         "eyebrow": "FORMA COPENHAGEN / CAREERS",
