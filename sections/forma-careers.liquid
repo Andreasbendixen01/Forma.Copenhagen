@@ -4,7 +4,7 @@
   - Editable open positions
   - Expandable job descriptions
   - Apply buttons linking to the application form
-  - Shopify app block area for an application form with file uploads
+  - Custom application form connected to Make.com with file uploads
 {% endcomment %}
 
 <section id="FormaCareers-{{ section.id }}" class="forma-careers">
@@ -103,7 +103,7 @@
 
                   <a class="forma-careers__apply-button" href="#FormaCareers-Application">
                     {{ block.settings.apply_label | escape }}
-                    <span aria-hidden="true">‚Üì</span>
+                    <span aria-hidden="true">‚Äö</span>
                   </a>
                 </div>
               </details>
@@ -135,23 +135,99 @@
       </div>
 
       <div class="forma-careers__form">
-        {% assign has_app_block = false %}
+        {% if section.settings.webhook_url != blank %}
+          <form
+            id="FormaCareersForm-{{ section.id }}"
+            class="forma-careers__application-form"
+            action="{{ section.settings.webhook_url | escape }}"
+            method="post"
+            enctype="multipart/form-data"
+            target="FormaCareersFrame-{{ section.id }}"
+            novalidate
+          >
+            <input type="hidden" name="form_name" value="Forma Copenhagen Careers">
+            <input type="hidden" name="source_page" value="{{ request.origin }}{{ request.path }}">
+            <input type="hidden" name="submitted_at" value="">
+            <div class="forma-careers__honeypot" aria-hidden="true">
+              <label for="FormaCareersWebsite-{{ section.id }}">Leave this field empty</label>
+              <input id="FormaCareersWebsite-{{ section.id }}" type="text" name="website" tabindex="-1" autocomplete="off">
+            </div>
 
-        {% for block in section.blocks %}
-          {% if block.type == '@app' %}
-            {% assign has_app_block = true %}
-            {% render block %}
-          {% endif %}
-        {% endfor %}
+            <div class="forma-careers__field-grid">
+              <div class="forma-careers__field">
+                <label for="FormaCareersName-{{ section.id }}">Full name <span>*</span></label>
+                <input id="FormaCareersName-{{ section.id }}" name="full_name" type="text" autocomplete="name" required>
+              </div>
+              <div class="forma-careers__field">
+                <label for="FormaCareersEmail-{{ section.id }}">Email address <span>*</span></label>
+                <input id="FormaCareersEmail-{{ section.id }}" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="forma-careers__field">
+                <label for="FormaCareersPhone-{{ section.id }}">Phone number</label>
+                <input id="FormaCareersPhone-{{ section.id }}" name="phone" type="tel" autocomplete="tel">
+              </div>
+              <div class="forma-careers__field">
+                <label for="FormaCareersPosition-{{ section.id }}">Position / area of interest <span>*</span></label>
+                <select id="FormaCareersPosition-{{ section.id }}" name="position" required>
+                  <option value="">Select an area</option>
+                  <option value="Open position">Open position</option>
+                  <option value="Brand Partnerships">Brand Partnerships</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Content & Editorial">Content & Editorial</option>
+                  <option value="Creative & Design">Creative & Design</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Operations">Operations</option>
+                  <option value="Internship">Internship</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
 
-        {% unless has_app_block %}
+            <div class="forma-careers__field">
+              <label for="FormaCareersIntroduction-{{ section.id }}">Tell us about yourself <span>*</span></label>
+              <textarea id="FormaCareersIntroduction-{{ section.id }}" name="introduction" rows="6" required placeholder="A little about you, your experience and why you'd like to join Forma..."></textarea>
+            </div>
+
+            <div class="forma-careers__field-grid forma-careers__uploads">
+              <div class="forma-careers__field">
+                <label for="FormaCareersCV-{{ section.id }}">CV <span>*</span></label>
+                <input id="FormaCareersCV-{{ section.id }}" name="cv" type="file" accept=".pdf,.doc,.docx" required>
+                <small>PDF, DOC or DOCX. Max. 4 MB combined for all files.</small>
+              </div>
+              <div class="forma-careers__field">
+                <label for="FormaCareersPortfolio-{{ section.id }}">Application / portfolio</label>
+                <input id="FormaCareersPortfolio-{{ section.id }}" name="portfolio" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
+                <small>Optional. PDF, DOC, DOCX, PNG or JPG.</small>
+              </div>
+            </div>
+
+            <div class="forma-careers__privacy">
+              <label for="FormaCareersPrivacy-{{ section.id }}">
+                <input id="FormaCareersPrivacy-{{ section.id }}" name="privacy_consent" type="checkbox" value="Yes" required>
+                <span>I have read Forma's <a href="/policies/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> and agree that my information may be processed in connection with this application. <span>*</span></span>
+              </label>
+            </div>
+
+            <p class="forma-careers__form-message" role="status" aria-live="polite"></p>
+
+            <button class="forma-careers__submit" type="submit">
+              <span>Submit application</span>
+              <span aria-hidden="true">‚Üó</span>
+            </button>
+            <p class="forma-careers__required-note">* Required fields</p>
+          </form>
+          <iframe
+            name="FormaCareersFrame-{{ section.id }}"
+            id="FormaCareersFrame-{{ section.id }}"
+            class="forma-careers__submit-frame"
+            title="Application submission"
+            tabindex="-1"
+          ></iframe>
+        {% else %}
           <div class="forma-careers__form-placeholder">
-            <p>
-              Add your application form here through the Shopify Theme Editor.
-              Choose an application form app block that supports file uploads.
-            </p>
+            <p>Add your Make.com webhook URL in the Forma Careers section settings to activate the application form.</p>
           </div>
-        {% endunless %}
+        {% endif %}
       </div>
     </div>
 
@@ -439,6 +515,110 @@
     scroll-margin-top: 40px;
   }
 
+  #shopify-section-{{ section.id }} .forma-careers__application-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 18px;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__field label {
+    font-size: 12px;
+    letter-spacing: .02em;
+    color: var(--forma-careers-text);
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__field label span,
+  #shopify-section-{{ section.id }} .forma-careers__privacy label span span {
+    color: #8a5b50;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__field input:not([type="file"]),
+  #shopify-section-{{ section.id }} .forma-careers__field select,
+  #shopify-section-{{ section.id }} .forma-careers__field textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 13px 14px;
+    border: 1px solid var(--forma-careers-border);
+    border-radius: 0;
+    background: #fff;
+    color: var(--forma-careers-text);
+    font: inherit;
+    font-size: 13px;
+    box-shadow: none;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__field textarea {
+    min-height: 140px;
+    resize: vertical;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__field input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--forma-careers-border);
+    background: #fff;
+    font-size: 12px;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__field small,
+  #shopify-section-{{ section.id }} .forma-careers__required-note {
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--forma-careers-muted);
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__privacy label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--forma-careers-muted);
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__privacy input {
+    flex: 0 0 auto;
+    margin-top: 3px;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__submit {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 17px 18px;
+    border: 1px solid var(--forma-careers-text);
+    border-radius: 0;
+    background: var(--forma-careers-text);
+    color: #fff;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: opacity .2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .forma-careers__submit:hover { opacity: .82; }
+  #shopify-section-{{ section.id }} .forma-careers__submit:disabled { opacity: .55; cursor: wait; }
+  #shopify-section-{{ section.id }} .forma-careers__form-message { margin: 0; font-size: 13px; line-height: 1.6; }
+  #shopify-section-{{ section.id }} .forma-careers__form-message.is-error { color: #9b3328; }
+  #shopify-section-{{ section.id }} .forma-careers__form-message.is-success { color: #356b48; }
+  #shopify-section-{{ section.id }} .forma-careers__submit-frame,
+  #shopify-section-{{ section.id }} .forma-careers__honeypot { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; }
+  #shopify-section-{{ section.id }} .forma-careers__required-note { margin: -14px 0 0; }
+
   @media screen and (max-width: 749px) {
     #shopify-section-{{ section.id }} .forma-careers {
       padding: 48px 20px 64px;
@@ -470,8 +650,92 @@
       margin-top: 72px;
       padding-top: 44px;
     }
+
+    #shopify-section-{{ section.id }} .forma-careers__field-grid { grid-template-columns: 1fr; }
   }
 </style>
+
+<script>
+  (() => {
+    const section = document.getElementById('FormaCareers-{{ section.id }}');
+    if (!section || section.dataset.formInitialized === 'true') return;
+    section.dataset.formInitialized = 'true';
+
+    const form = section.querySelector('#FormaCareersForm-{{ section.id }}');
+    const frame = section.querySelector('#FormaCareersFrame-{{ section.id }}');
+    if (!form || !frame) return;
+
+    const message = form.querySelector('.forma-careers__form-message');
+    const submit = form.querySelector('button[type="submit"]');
+    const maxCombinedBytes = 4 * 1024 * 1024;
+    let waitingForResponse = false;
+
+    const showMessage = (text, type) => {
+      message.textContent = text;
+      message.className = 'forma-careers__form-message ' + type;
+    };
+
+    frame.addEventListener('load', () => {
+      if (!waitingForResponse) return;
+      waitingForResponse = false;
+      submit.disabled = false;
+      submit.querySelector('span').textContent = 'Submit application';
+      form.reset();
+      showMessage('Thank you for your application. Your details have been submitted.', 'is-success');
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      showMessage('', '');
+
+      if (!form.reportValidity()) return;
+
+      const honeypot = form.querySelector('[name="website"]');
+      if (honeypot && honeypot.value.trim() !== '') return;
+
+      const files = [
+        form.querySelector('[name="cv"]').files[0],
+        form.querySelector('[name="portfolio"]').files[0]
+      ].filter(Boolean);
+      const totalBytes = files.reduce((total, file) => total + file.size, 0);
+
+      if (totalBytes > maxCombinedBytes) {
+        showMessage('The combined file size must be 4 MB or less. Please choose smaller files.', 'is-error');
+        return;
+      }
+
+      form.querySelector('[name="submitted_at"]').value = new Date().toISOString();
+      waitingForResponse = true;
+      submit.disabled = true;
+      submit.querySelector('span').textContent = 'Submitting...';
+      form.submit();
+    });
+
+    section.querySelectorAll('.forma-careers__apply-button').forEach((button) => {
+      button.addEventListener('click', () => {
+        const job = button.closest('.forma-careers__job');
+        const title = job ? job.querySelector('.forma-careers__job-main h3') : null;
+        const position = form.querySelector('[name="position"]');
+        if (title && position) {
+          const jobTitle = title.textContent.trim();
+          const matchingOption = Array.from(position.options).find((option) => option.value === jobTitle);
+          if (matchingOption) position.value = jobTitle;
+          else {
+            let customOption = position.querySelector('option[data-job-option="true"]');
+            if (!customOption) {
+              customOption = document.createElement('option');
+              customOption.dataset.jobOption = 'true';
+              position.appendChild(customOption);
+            }
+            customOption.value = jobTitle;
+            customOption.textContent = jobTitle;
+            position.value = jobTitle;
+          }
+        }
+      });
+    });
+  })();
+</script>
 
 {% schema %}
 {
@@ -532,6 +796,12 @@
       "id": "application_text",
       "label": "Application description",
       "default": "<p>Don't see a role that fits? Tell us a little about yourself, your experience and how you could contribute to Forma.</p><p>We look forward to hearing from you.</p>"
+    },
+    {
+      "type": "text",
+      "id": "webhook_url",
+      "label": "Make.com webhook URL",
+      "default": "https://or3de4aoa38biorfo9zvjldtz79qavrt@hook.eu1.make.com"
     }
   ],
   "blocks": [
@@ -631,4 +901,5 @@
   ]
 }
 {% endschema %}
+
 
