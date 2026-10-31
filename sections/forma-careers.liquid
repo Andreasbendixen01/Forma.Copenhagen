@@ -21,6 +21,7 @@
       {% if section.settings.intro != blank %}
         <div class="forma-careers__intro">{{ section.settings.intro }}</div>
       {% endif %}
+      <a class="forma-careers__hero-link" href="#FormaCareers-Application">Explore opportunities <span aria-hidden="true">‚Üò</span></a>
     </header>
 
     <!-- OPEN POSITIONS -->
@@ -121,17 +122,12 @@
     <!-- UNSOLICITED APPLICATIONS / APPLICATION FORM -->
     <div id="FormaCareers-Application" class="forma-careers__application">
       <div class="forma-careers__application-copy">
+        <div class="forma-careers__application-index">01 <span>/</span> YOUR NEXT CHAPTER</div>
         {% if section.settings.application_eyebrow != blank %}
-          <p class="forma-careers__eyebrow">
-            {{ section.settings.application_eyebrow | escape }}
-          </p>
+          <p class="forma-careers__eyebrow">{{ section.settings.application_eyebrow | escape }}</p>
         {% endif %}
-
         <h2>{{ section.settings.application_heading | escape }}</h2>
-
-        <div class="forma-careers__application-text">
-          {{ section.settings.application_text }}
-        </div>
+        <div class="forma-careers__application-text">{{ section.settings.application_text }}</div>
       </div>
 
       <div class="forma-careers__form">
@@ -183,7 +179,7 @@
               </div>
             </div>
 
-            <div class="forma-careers__field">
+            <div class="forma-careers__field forma-careers__field--full">
               <label for="FormaCareersIntroduction-{{ section.id }}">Tell us about yourself <span>*</span></label>
               <textarea id="FormaCareersIntroduction-{{ section.id }}" name="introduction" rows="6" required placeholder="A little about you, your experience and why you'd like to join Forma..."></textarea>
             </div>
@@ -1057,6 +1053,186 @@
     #shopify-section-{{ section.id }} .forma-careers__form {
       padding: 22px 18px;
     }
+  }
+
+
+  /* FORMA CAREERS ‚Äî new editorial composition */
+  #shopify-section-{{ section.id }} .forma-careers {
+    --forma-ink: #20201e;
+    --forma-muted: #777771;
+    --forma-line: #deded8;
+    padding: 0 28px 104px;
+    background: #fff;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__inner {
+    max-width: 1280px;
+    width: 100%;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 390px;
+    max-width: none;
+    margin: 0 calc(50% - 50vw) 92px;
+    padding: 72px max(7vw, calc((100vw - 1280px) / 2));
+    overflow: hidden;
+    text-align: left;
+    color: #fff;
+    background: #242421;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__header::after {
+    content: "F";
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-56%);
+    color: rgba(255,255,255,.055);
+    font-family: Georgia, serif;
+    font-size: clamp(260px, 34vw, 520px);
+    line-height: .8;
+    pointer-events: none;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__header > * { position: relative; z-index: 1; }
+  #shopify-section-{{ section.id }} .forma-careers__header .forma-careers__eyebrow {
+    margin: 0 0 22px;
+    color: rgba(255,255,255,.62);
+    font-size: 10px;
+    letter-spacing: .2em;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__title {
+    max-width: 760px;
+    font-size: clamp(48px, 6.2vw, 82px);
+    line-height: .99;
+    letter-spacing: -.06em;
+    font-weight: 400;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__intro {
+    max-width: 520px;
+    margin: 24px 0 0;
+    color: rgba(255,255,255,.72);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__hero-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 28px;
+    margin-top: 30px;
+    padding: 0 0 8px;
+    border-bottom: 1px solid rgba(255,255,255,.6);
+    color: #fff;
+    font-size: 12px;
+    text-decoration: none;
+    letter-spacing: .02em;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__hero-link span { font-size: 17px; }
+  #shopify-section-{{ section.id }} .forma-careers__positions {
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__section-heading {
+    padding-bottom: 20px;
+    border-bottom-color: var(--forma-line);
+  }
+  #shopify-section-{{ section.id }} .forma-careers__section-heading h2 {
+    font-size: 32px;
+    letter-spacing: -.045em;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__job-summary { padding: 27px 0; }
+  #shopify-section-{{ section.id }} .forma-careers__job h3 { font-size: 19px; }
+  #shopify-section-{{ section.id }} .forma-careers__application {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 34px;
+    max-width: 1060px;
+    margin: 112px auto 0;
+    padding: 0;
+    border: 0;
+    scroll-margin-top: 40px;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__application-copy {
+    max-width: 720px;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__application-index {
+    margin-bottom: 26px;
+    color: #8a8a82;
+    font-size: 10px;
+    letter-spacing: .16em;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__application-index span { padding: 0 7px; color: #c5c5bd; }
+  #shopify-section-{{ section.id }} .forma-careers__application-copy .forma-careers__eyebrow {
+    margin: 0 0 12px;
+    font-size: 10px;
+    letter-spacing: .17em;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__application h2 {
+    max-width: 700px;
+    margin: 0;
+    font-size: clamp(36px, 4vw, 52px);
+    line-height: 1.04;
+    letter-spacing: -.052em;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__application-text {
+    max-width: 620px;
+    margin: 15px 0 0;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__form {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    padding: 34px;
+    background: #f7f7f4;
+    border: 1px solid #ecece6;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__application-form { gap: 22px; }
+  #shopify-section-{{ section.id }} .forma-careers__field-grid { gap: 20px 22px; }
+  #shopify-section-{{ section.id }} .forma-careers__field { gap: 9px; }
+  #shopify-section-{{ section.id }} .forma-careers__field label { font-size: 11px; letter-spacing: .035em; }
+  #shopify-section-{{ section.id }} .forma-careers__field input:not([type="file"]),
+  #shopify-section-{{ section.id }} .forma-careers__field select,
+  #shopify-section-{{ section.id }} .forma-careers__field textarea {
+    min-height: 50px;
+    padding: 13px 14px;
+    border-color: #deded8;
+    background: #fff;
+    font-size: 13px;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__field textarea { min-height: 138px; }
+  #shopify-section-{{ section.id }} .forma-careers__field input[type="file"] {
+    min-height: 52px;
+    padding: 9px;
+    border: 1px solid #deded8;
+    background: #fff;
+    font-size: 11px;
+  }
+  #shopify-section-{{ section.id }} .forma-careers__privacy { padding-top: 2px; }
+  #shopify-section-{{ section.id }} .forma-careers__privacy label { font-size: 11px; }
+  #shopify-section-{{ section.id }} .forma-careers__submit { min-height: 56px; padding: 16px 18px; font-size: 13px; }
+  #shopify-section-{{ section.id }} .forma-careers__required-note { margin-top: -12px; }
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .forma-careers { padding: 0 18px 64px; }
+    #shopify-section-{{ section.id }} .forma-careers__header {
+      min-height: 360px;
+      margin-bottom: 64px;
+      padding: 58px 22px;
+    }
+    #shopify-section-{{ section.id }} .forma-careers__header::after {
+      right: -4%; top: auto; bottom: 0; transform: none; font-size: 300px;
+    }
+    #shopify-section-{{ section.id }} .forma-careers__title { font-size: clamp(46px, 13vw, 64px); }
+    #shopify-section-{{ section.id }} .forma-careers__intro { max-width: 340px; font-size: 14px; }
+    #shopify-section-{{ section.id }} .forma-careers__application { margin-top: 76px; gap: 26px; }
+    #shopify-section-{{ section.id }} .forma-careers__application h2 { font-size: clamp(34px, 10vw, 46px); }
+    #shopify-section-{{ section.id }} .forma-careers__form { padding: 22px 17px; }
+    #shopify-section-{{ section.id }} .forma-careers__field-grid { grid-template-columns: 1fr; gap: 18px; }
   }
 
 </style>
