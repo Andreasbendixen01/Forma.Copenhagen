@@ -10,17 +10,26 @@
 <section id="FormaCareers-{{ section.id }}" class="forma-careers">
   <div class="forma-careers__inner">
 
-    <!-- INTRO -->
+    <!-- EDITORIAL HERO -->
     <header class="forma-careers__header">
-      {% if section.settings.eyebrow != blank %}
-        <p class="forma-careers__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-      {% endif %}
-
-      <h1 class="forma-careers__title">{{ section.settings.heading | escape }}</h1>
-
-      {% if section.settings.intro != blank %}
-        <div class="forma-careers__intro">{{ section.settings.intro }}</div>
-      {% endif %}
+      <div class="forma-careers__hero-inner">
+        {% if section.settings.eyebrow != blank %}
+          <p class="forma-careers__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {% endif %}
+        <div class="forma-careers__hero-layout">
+          <div class="forma-careers__hero-title-wrap">
+            <h1 class="forma-careers__title">{{ section.settings.heading | escape }}</h1>
+            <span class="forma-careers__hero-note">PEOPLE MAKE THE DIFFERENCE</span>
+          </div>
+          {% if section.settings.intro != blank %}
+            <div class="forma-careers__hero-aside">
+              <span class="forma-careers__hero-rule" aria-hidden="true"></span>
+              <div class="forma-careers__intro">{{ section.settings.intro }}</div>
+              <p class="forma-careers__hero-signoff">A NEW CHAPTER STARTS WITH A CONVERSATION.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
     </header>
 
     <!-- OPEN POSITIONS -->
@@ -103,7 +112,7 @@
 
                   <a class="forma-careers__apply-button" href="#FormaCareers-Application">
                     {{ block.settings.apply_label | escape }}
-                    <span aria-hidden="true">‚Äö√Ñ√∂</span>
+                    <span aria-hidden="true">‚Üó</span>
                   </a>
                 </div>
               </details>
@@ -207,7 +216,7 @@
 
             <button class="forma-careers__submit" type="submit">
               <span>Submit application</span>
-              <span aria-hidden="true">‚Äö√ú√≥</span>
+              <span aria-hidden="true">‚Üó</span>
             </button>
             <p class="forma-careers__required-note">* Required fields</p>
           </form>
@@ -218,6 +227,22 @@
             title="Application submission"
             tabindex="-1"
           ></iframe>
+          <div class="forma-careers__success" id="FormaCareersSuccess-{{ section.id }}" aria-hidden="true">
+            <button class="forma-careers__success-backdrop" type="button" data-forma-success-close aria-label="Close thank you message"></button>
+            <div class="forma-careers__success-panel" role="dialog" aria-modal="true" aria-labelledby="FormaCareersSuccessTitle-{{ section.id }}" aria-describedby="FormaCareersSuccessText-{{ section.id }}" tabindex="-1">
+              <button class="forma-careers__success-close" type="button" data-forma-success-close aria-label="Close">√ó</button>
+              <p class="forma-careers__success-eyebrow">FORMA COPENHAGEN ¬∑ CAREERS</p>
+              <span class="forma-careers__success-line" aria-hidden="true"></span>
+              <h3 id="FormaCareersSuccessTitle-{{ section.id }}">Thank you for saying hello.</h3>
+              <div id="FormaCareersSuccessText-{{ section.id }}" class="forma-careers__success-copy">
+                <p>Your application is on its way to us. And before anything else, we want to say thank you.</p>
+                <p>It means something that you can see yourself being part of what we are building. We‚Äôll take the time to get to know your introduction, your ideas and what you could bring to Forma.</p>
+                <p>Whatever happens next, we‚Äôre glad our paths crossed.</p>
+              </div>
+              <p class="forma-careers__success-signoff">WARM regards, THE FORMA TEAM</p>
+              <button class="forma-careers__success-done" type="button" data-forma-success-close>Back to Forma <span aria-hidden="true">‚Üó</span></button>
+            </div>
+          </div>
         {% else %}
           <div class="forma-careers__form-placeholder">
             <p>Add your Make.com webhook URL in the Forma Careers section settings to activate the application form.</p>
@@ -235,341 +260,171 @@
     --forma-muted: #777771;
     --forma-line: #deded8;
     --forma-paper: #f5f5f1;
+    position: relative;
+    overflow-x: clip;
+    padding: 0 0 112px;
     background: #fff;
     color: var(--forma-ink);
-    padding: 0 0 96px;
   }
+  #shopify-section-{{ section.id }} .forma-careers__inner { width: 100%; max-width: 1600px; margin: 0 auto; }
 
-  #shopify-section-{{ section.id }} .forma-careers__inner {
-    width: 100%;
-    max-width: 1440px;
-    margin: 0 auto;
-  }
-
-  /* HERO ‚Äî editorial split layout in Forma's existing neutral palette */
+  /* HERO ‚Äî full-bleed editorial introduction */
   #shopify-section-{{ section.id }} .forma-careers__header {
-    /* Full-bleed background: extend beyond the centered 1440px content wrapper */
+    position: relative;
     width: 100vw;
-    max-width: none;
     margin-left: calc(50% - 50vw);
     box-sizing: border-box;
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
-    column-gap: clamp(40px, 7vw, 112px);
-    align-items: end;
-    min-height: 420px;
-    margin: 0 auto;
-    padding: 76px clamp(40px, 6.5vw, 100px) 92px;
-    box-sizing: border-box;
+    padding: clamp(64px, 7vw, 112px) max(5vw, calc((100vw - 1440px) / 2)) clamp(66px, 7vw, 106px);
     background: var(--forma-paper);
     border-top: 1px solid #eeeee9;
     border-bottom: 1px solid #e9e9e3;
-    text-align: left;
   }
-  #shopify-section-{{ section.id }} .forma-careers__header .forma-careers__eyebrow {
-    grid-column: 1 / -1;
-    margin: 0 0 48px;
+  #shopify-section-{{ section.id }} .forma-careers__hero-inner { max-width: 1440px; margin: 0 auto; }
+  #shopify-section-{{ section.id }} .forma-careers__eyebrow {
+    margin: 0;
     color: var(--forma-muted);
     font-size: 10px;
+    font-weight: 500;
     letter-spacing: .2em;
+    line-height: 1.5;
+    text-transform: uppercase;
   }
+  #shopify-section-{{ section.id }} .forma-careers__hero-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, .65fr);
+    align-items: end;
+    gap: clamp(48px, 8vw, 140px);
+    margin-top: clamp(54px, 7vw, 100px);
+  }
+  #shopify-section-{{ section.id }} .forma-careers__hero-title-wrap { min-width: 0; }
   #shopify-section-{{ section.id }} .forma-careers__title {
-    grid-column: 1;
-    max-width: 100%;
+    max-width: 900px;
     margin: 0;
     color: var(--forma-ink);
-    font-size: clamp(76px, 8.2vw, 124px);
+    font-size: clamp(76px, 10.2vw, 150px);
     font-weight: 400;
-    letter-spacing: -.078em;
-    line-height: .88;
+    letter-spacing: -.085em;
+    line-height: .82;
     text-wrap: balance;
   }
-  #shopify-section-{{ section.id }} .forma-careers__intro {
-    grid-column: 2;
-    align-self: end;
-    max-width: 430px;
-    margin: 0 0 8px;
-    padding-top: 24px;
-    border-top: 1px solid #cfcfc7;
-    color: var(--forma-muted);
-    font-size: 15px;
-    line-height: 1.9;
+  #shopify-section-{{ section.id }} .forma-careers__hero-note {
+    display: block;
+    margin-top: 34px;
+    color: #999991;
+    font-size: 9px;
+    letter-spacing: .2em;
   }
+  #shopify-section-{{ section.id }} .forma-careers__hero-aside { max-width: 460px; padding-bottom: 2px; }
+  #shopify-section-{{ section.id }} .forma-careers__hero-rule { display: block; width: 100%; height: 1px; margin-bottom: 25px; background: #d8d8d1; }
+  #shopify-section-{{ section.id }} .forma-careers__intro { max-width: 440px; color: var(--forma-muted); font-size: 15px; line-height: 1.9; }
+  #shopify-section-{{ section.id }} .forma-careers__intro p { margin: 0; }
+  #shopify-section-{{ section.id }} .forma-careers__hero-signoff { margin: 30px 0 0; color: #999991; font-size: 9px; letter-spacing: .16em; line-height: 1.7; }
 
   /* OPEN POSITIONS */
-  #shopify-section-{{ section.id }} .forma-careers__positions {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 104px 32px 0;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__section-heading {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 24px;
-    padding-bottom: 22px;
-    border-bottom: 1px solid var(--forma-line);
-  }
-  #shopify-section-{{ section.id }} .forma-careers__section-heading h2 {
-    margin: 0;
-    font-size: clamp(30px, 4vw, 46px);
-    font-weight: 400;
-    letter-spacing: -.055em;
-    line-height: 1;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__section-heading > span {
-    color: var(--forma-muted);
-    font-size: 11px;
-    white-space: nowrap;
-  }
+  #shopify-section-{{ section.id }} .forma-careers__positions { max-width: 1280px; margin: 0 auto; padding: clamp(82px, 9vw, 132px) 40px 0; }
+  #shopify-section-{{ section.id }} .forma-careers__section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--forma-line); }
+  #shopify-section-{{ section.id }} .forma-careers__section-heading h2 { margin: 0; font-size: clamp(34px, 4vw, 52px); font-weight: 400; letter-spacing: -.065em; line-height: 1; }
+  #shopify-section-{{ section.id }} .forma-careers__section-heading > span { color: var(--forma-muted); font-size: 11px; white-space: nowrap; }
   #shopify-section-{{ section.id }} .forma-careers__job { border-bottom: 1px solid var(--forma-line); }
-  #shopify-section-{{ section.id }} .forma-careers__job-summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 32px;
-    padding: 30px 0;
-    cursor: pointer;
-    list-style: none;
-  }
+  #shopify-section-{{ section.id }} .forma-careers__job-summary { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 32px 0; cursor: pointer; list-style: none; }
   #shopify-section-{{ section.id }} .forma-careers__job-summary::-webkit-details-marker { display: none; }
   #shopify-section-{{ section.id }} .forma-careers__job-summary::marker { content: ""; }
   #shopify-section-{{ section.id }} .forma-careers__job-main { flex: 1; min-width: 0; }
-  #shopify-section-{{ section.id }} .forma-careers__job h3 {
-    margin: 0 0 10px;
-    font-size: 20px;
-    font-weight: 500;
-    letter-spacing: -.025em;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__job-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 18px;
-    color: var(--forma-muted);
-    font-size: 11px;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__job-short-description {
-    max-width: 680px;
-    margin-top: 14px;
-    color: var(--forma-muted);
-    font-size: 13px;
-    line-height: 1.8;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__job-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    flex-shrink: 0;
-    padding-bottom: 5px;
-    border-bottom: 1px solid currentColor;
-    color: var(--forma-ink);
-    font-size: 12px;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__job-toggle-icon {
-    display: inline-block;
-    font-size: 18px;
-    line-height: 1;
-    transition: transform .2s ease;
-  }
+  #shopify-section-{{ section.id }} .forma-careers__job h3 { margin: 0 0 11px; font-size: 21px; font-weight: 500; letter-spacing: -.03em; }
+  #shopify-section-{{ section.id }} .forma-careers__job-meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--forma-muted); font-size: 11px; }
+  #shopify-section-{{ section.id }} .forma-careers__job-short-description { max-width: 720px; margin-top: 14px; color: var(--forma-muted); font-size: 13px; line-height: 1.8; }
+  #shopify-section-{{ section.id }} .forma-careers__job-toggle { display: inline-flex; align-items: center; gap: 14px; flex-shrink: 0; padding-bottom: 6px; border-bottom: 1px solid currentColor; color: var(--forma-ink); font-size: 12px; }
+  #shopify-section-{{ section.id }} .forma-careers__job-toggle-icon { display: inline-block; font-size: 18px; line-height: 1; transition: transform .2s ease; }
   #shopify-section-{{ section.id }} .forma-careers__job-details[open] .forma-careers__job-toggle-icon { transform: rotate(45deg); }
   #shopify-section-{{ section.id }} .forma-careers__job-details[open] .forma-careers__job-toggle-text { font-size: 0; }
   #shopify-section-{{ section.id }} .forma-careers__job-details[open] .forma-careers__job-toggle-text::after { content: "Close"; font-size: 12px; }
-  #shopify-section-{{ section.id }} .forma-careers__job-expanded {
-    max-width: 760px;
-    padding: 0 0 34px;
-    animation: forma-careers-reveal .25s ease;
-  }
-  @keyframes forma-careers-reveal { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-  #shopify-section-{{ section.id }} .forma-careers__job-introduction {
-    margin: 0 0 26px;
-    color: var(--forma-muted);
-    font-size: 14px;
-    line-height: 1.85;
-  }
+  #shopify-section-{{ section.id }} .forma-careers__job-expanded { max-width: 780px; padding: 0 0 38px; animation: forma-careers-reveal .25s ease; }
+  @keyframes forma-careers-reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  #shopify-section-{{ section.id }} .forma-careers__job-introduction { margin: 0 0 26px; color: var(--forma-muted); font-size: 14px; line-height: 1.9; }
   #shopify-section-{{ section.id }} .forma-careers__job-detail-block { margin-top: 24px; }
   #shopify-section-{{ section.id }} .forma-careers__job-detail-block h4 { margin: 0 0 10px; font-size: 16px; font-weight: 500; }
-  #shopify-section-{{ section.id }} .forma-careers__job-detail-block > div { color: var(--forma-muted); font-size: 13px; line-height: 1.85; }
+  #shopify-section-{{ section.id }} .forma-careers__job-detail-block > div { color: var(--forma-muted); font-size: 13px; line-height: 1.9; }
   #shopify-section-{{ section.id }} .forma-careers__job-detail-block ul { padding-left: 20px; }
-  #shopify-section-{{ section.id }} .forma-careers__apply-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 28px;
-    padding: 0 0 7px;
-    border-bottom: 1px solid currentColor;
-    color: var(--forma-ink);
-    font-size: 12px;
-    text-decoration: none;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__empty { padding: 30px 0; }
-  #shopify-section-{{ section.id }} .forma-careers__empty h3 { margin: 0 0 10px; font-size: 17px; font-weight: 500; }
+  #shopify-section-{{ section.id }} .forma-careers__apply-button { display: inline-flex; align-items: center; gap: 14px; margin-top: 28px; padding: 0 0 7px; border-bottom: 1px solid currentColor; color: var(--forma-ink); font-size: 12px; text-decoration: none; }
+  #shopify-section-{{ section.id }} .forma-careers__empty { padding: 32px 0; }
+  #shopify-section-{{ section.id }} .forma-careers__empty h3 { margin: 0 0 10px; font-size: 18px; font-weight: 500; }
   #shopify-section-{{ section.id }} .forma-careers__empty p { margin: 0; color: var(--forma-muted); font-size: 13px; line-height: 1.8; }
 
-  /* APPLICATION ‚Äö√Ñ√Æ familiar split layout, refined spacing and quiet contrast */
-  #shopify-section-{{ section.id }} .forma-careers__application {
-    display: grid;
-    grid-template-columns: minmax(0, .68fr) minmax(0, 1.32fr);
-    gap: clamp(38px, 5vw, 72px);
-    align-items: start;
-    width: 100%;
-    max-width: 1440px;
-    margin: 108px auto 0;
-    padding: 0 40px;
-    box-sizing: border-box;
-    scroll-margin-top: 40px;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__application-copy {
-    display: block;
-    max-width: 390px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    text-align: left;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__application-index {
-    margin: 0 0 20px;
-    color: var(--forma-muted);
-    font-size: 10px;
-    letter-spacing: .17em;
-  }
+  /* APPLICATION ‚Äî generous split layout */
+  #shopify-section-{{ section.id }} .forma-careers__application { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: clamp(44px, 6vw, 92px); align-items: start; width: 100%; max-width: 1440px; margin: clamp(104px, 12vw, 168px) auto 0; padding: 0 48px; box-sizing: border-box; scroll-margin-top: 40px; }
+  #shopify-section-{{ section.id }} .forma-careers__application-copy { max-width: 500px; margin: 0; padding: 0; text-align: left; }
+  #shopify-section-{{ section.id }} .forma-careers__application-index { margin: 0 0 26px; color: var(--forma-muted); font-size: 10px; letter-spacing: .18em; }
   #shopify-section-{{ section.id }} .forma-careers__application-index span { padding: 0 7px; color: #c5c5bd; }
-  #shopify-section-{{ section.id }} .forma-careers__application-copy .forma-careers__eyebrow {
-    margin: 0 0 16px;
-    font-size: 10px;
-    letter-spacing: .18em;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__application h2 {
-    margin: 0;
-    font-size: clamp(32px, 3.4vw, 44px);
-    font-weight: 400;
-    letter-spacing: -.055em;
-    line-height: 1.04;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__application-text {
-    max-width: 360px;
-    margin: 18px 0 0;
-    color: var(--forma-muted);
-    font-size: 13px;
-    line-height: 1.85;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__form {
-    width: 100%;
-    max-width: none;
-    box-sizing: border-box;
-    padding: clamp(24px, 3vw, 38px);
-    background: var(--forma-paper);
-    border: 1px solid #ecece6;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__application-form { display: flex; flex-direction: column; gap: 22px; width: 100%; }
-  #shopify-section-{{ section.id }} .forma-careers__field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 24px; }
+  #shopify-section-{{ section.id }} .forma-careers__application-copy .forma-careers__eyebrow { margin: 0 0 17px; }
+  #shopify-section-{{ section.id }} .forma-careers__application h2 { max-width: 480px; margin: 0; font-size: clamp(40px, 4.4vw, 60px); font-weight: 400; letter-spacing: -.07em; line-height: .98; }
+  #shopify-section-{{ section.id }} .forma-careers__application-text { max-width: 420px; margin: 23px 0 0; color: var(--forma-muted); font-size: 14px; line-height: 1.9; }
+  #shopify-section-{{ section.id }} .forma-careers__form { width: 100%; max-width: none; box-sizing: border-box; padding: clamp(26px, 3.3vw, 48px); background: var(--forma-paper); border: 1px solid #ecece6; }
+  #shopify-section-{{ section.id }} .forma-careers__application-form { display: flex; flex-direction: column; gap: 23px; width: 100%; }
+  #shopify-section-{{ section.id }} .forma-careers__field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 26px; }
   #shopify-section-{{ section.id }} .forma-careers__field { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
   #shopify-section-{{ section.id }} .forma-careers__field label { color: var(--forma-ink); font-size: 11px; font-weight: 500; letter-spacing: .025em; }
-  #shopify-section-{{ section.id }} .forma-careers__field label span,
-  #shopify-section-{{ section.id }} .forma-careers__privacy label span span { color: #777771; }
-  #shopify-section-{{ section.id }} .forma-careers__field input:not([type="file"]),
-  #shopify-section-{{ section.id }} .forma-careers__field select,
-  #shopify-section-{{ section.id }} .forma-careers__field textarea {
-    width: 100%;
-    max-width: 100%;
-    min-height: 50px;
-    box-sizing: border-box;
-    padding: 13px 14px;
-    border: 1px solid #deded8;
-    border-radius: 0;
-    background: #fff;
-    color: var(--forma-ink);
-    font: inherit;
-    font-size: 13px;
-    box-shadow: none;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__field input:focus,
-  #shopify-section-{{ section.id }} .forma-careers__field select:focus,
-  #shopify-section-{{ section.id }} .forma-careers__field textarea:focus { outline: none; border-color: #777771; }
-  #shopify-section-{{ section.id }} .forma-careers__field textarea { min-height: 150px; resize: vertical; line-height: 1.7; }
-  #shopify-section-{{ section.id }} .forma-careers__field input[type="file"] {
-    width: 100%;
-    min-height: 52px;
-    box-sizing: border-box;
-    padding: 9px;
-    border: 1px solid #deded8;
-    background: #fff;
-    color: var(--forma-ink);
-    font-size: 11px;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__field input[type="file"]::file-selector-button {
-    margin-right: 12px;
-    padding: 10px 13px;
-    border: 0;
-    background: #efefeb;
-    color: var(--forma-ink);
-    font: inherit;
-    cursor: pointer;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__field small,
-  #shopify-section-{{ section.id }} .forma-careers__required-note { color: var(--forma-muted); font-size: 10px; line-height: 1.65; }
+  #shopify-section-{{ section.id }} .forma-careers__field label span, #shopify-section-{{ section.id }} .forma-careers__privacy label span span { color: #777771; }
+  #shopify-section-{{ section.id }} .forma-careers__field input:not([type="file"]), #shopify-section-{{ section.id }} .forma-careers__field select, #shopify-section-{{ section.id }} .forma-careers__field textarea { width: 100%; max-width: 100%; min-height: 52px; box-sizing: border-box; padding: 14px 15px; border: 1px solid #deded8; border-radius: 0; background: #fff; color: var(--forma-ink); font: inherit; font-size: 13px; box-shadow: none; }
+  #shopify-section-{{ section.id }} .forma-careers__field input:focus, #shopify-section-{{ section.id }} .forma-careers__field select:focus, #shopify-section-{{ section.id }} .forma-careers__field textarea:focus { outline: none; border-color: #777771; }
+  #shopify-section-{{ section.id }} .forma-careers__field textarea { min-height: 160px; resize: vertical; line-height: 1.75; }
+  #shopify-section-{{ section.id }} .forma-careers__field input[type="file"] { width: 100%; min-height: 54px; box-sizing: border-box; padding: 9px; border: 1px solid #deded8; background: #fff; color: var(--forma-ink); font-size: 11px; }
+  #shopify-section-{{ section.id }} .forma-careers__field input[type="file"]::file-selector-button { margin-right: 12px; padding: 11px 14px; border: 0; background: #efefeb; color: var(--forma-ink); font: inherit; cursor: pointer; }
+  #shopify-section-{{ section.id }} .forma-careers__field small, #shopify-section-{{ section.id }} .forma-careers__required-note { color: var(--forma-muted); font-size: 10px; line-height: 1.7; }
   #shopify-section-{{ section.id }} .forma-careers__privacy { padding-top: 2px; }
-  #shopify-section-{{ section.id }} .forma-careers__privacy label { display: flex; align-items: flex-start; gap: 10px; color: var(--forma-muted); font-size: 11px; line-height: 1.7; }
+  #shopify-section-{{ section.id }} .forma-careers__privacy label { display: flex; align-items: flex-start; gap: 10px; color: var(--forma-muted); font-size: 11px; line-height: 1.75; }
   #shopify-section-{{ section.id }} .forma-careers__privacy input { flex: 0 0 auto; margin-top: 3px; }
-  #shopify-section-{{ section.id }} .forma-careers__submit {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    min-height: 58px;
-    padding: 17px 19px;
-    border: 1px solid var(--forma-ink);
-    border-radius: 0;
-    background: var(--forma-ink);
-    color: #fff;
-    font: inherit;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background .2s ease, color .2s ease;
-  }
+  #shopify-section-{{ section.id }} .forma-careers__submit { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 62px; padding: 18px 21px; border: 1px solid var(--forma-ink); border-radius: 0; background: var(--forma-ink); color: #fff; font: inherit; font-size: 13px; cursor: pointer; transition: background .25s ease, color .25s ease; }
   #shopify-section-{{ section.id }} .forma-careers__submit:hover { background: transparent; color: var(--forma-ink); }
-  #shopify-section-{{ section.id }} .forma-careers__submit:disabled { opacity: .55; cursor: wait; }
+  #shopify-section-{{ section.id }} .forma-careers__submit:disabled { opacity: .6; cursor: wait; }
   #shopify-section-{{ section.id }} .forma-careers__form-message { margin: 0; font-size: 12px; line-height: 1.6; }
-  #shopify-section-{{ section.id }} .forma-careers__form-message.is-error { color: #6f4038; }
-  #shopify-section-{{ section.id }} .forma-careers__form-message.is-success { color: #4f6250; }
-  #shopify-section-{{ section.id }} .forma-careers__submit-frame,
-  #shopify-section-{{ section.id }} .forma-careers__honeypot { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; }
+  #shopify-section-{{ section.id }} .forma-careers__form-message.is-error { color: #754b43; }
+  #shopify-section-{{ section.id }} .forma-careers__form-message.is-success { color: #52634f; }
+  #shopify-section-{{ section.id }} .forma-careers__submit-frame, #shopify-section-{{ section.id }} .forma-careers__honeypot { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; }
   #shopify-section-{{ section.id }} .forma-careers__required-note { margin: -12px 0 0; }
-  #shopify-section-{{ section.id }} .forma-careers__application:target { scroll-margin-top: 40px; }
 
-  @media screen and (max-width: 900px) {
-    #shopify-section-{{ section.id }} .forma-careers__header {
-      grid-template-columns: minmax(0, 1.1fr) minmax(240px, .9fr);
-      min-height: 370px;
-      padding: 64px 36px 72px;
-      column-gap: 36px;
-    }
-    #shopify-section-{{ section.id }} .forma-careers__title { font-size: clamp(68px, 8vw, 92px); }
-    #shopify-section-{{ section.id }} .forma-careers__application { grid-template-columns: 1fr; gap: 28px; }
-    #shopify-section-{{ section.id }} .forma-careers__application-copy { max-width: 620px; }
+  /* THANK-YOU MODAL */
+  #shopify-section-{{ section.id }} .forma-careers__success { position: fixed; z-index: 999999; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .3s ease, visibility .3s ease; }
+  #shopify-section-{{ section.id }} .forma-careers__success.is-open { opacity: 1; visibility: visible; pointer-events: auto; }
+  #shopify-section-{{ section.id }} .forma-careers__success-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: rgba(27, 27, 25, .58); cursor: default; }
+  #shopify-section-{{ section.id }} .forma-careers__success-panel { position: relative; z-index: 1; width: min(100%, 620px); max-height: min(90vh, 820px); overflow-y: auto; box-sizing: border-box; padding: clamp(34px, 6vw, 68px); background: var(--forma-paper); color: var(--forma-ink); box-shadow: 0 24px 90px rgba(0,0,0,.16); transform: translateY(18px); transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+  #shopify-section-{{ section.id }} .forma-careers__success.is-open .forma-careers__success-panel { transform: translateY(0); }
+  #shopify-section-{{ section.id }} .forma-careers__success-close { position: absolute; top: 20px; right: 22px; width: 34px; height: 34px; border: 1px solid #d8d8d1; border-radius: 50%; background: transparent; color: var(--forma-ink); font-size: 22px; line-height: 1; cursor: pointer; }
+  #shopify-section-{{ section.id }} .forma-careers__success-eyebrow { margin: 0; color: var(--forma-muted); font-size: 9px; letter-spacing: .2em; }
+  #shopify-section-{{ section.id }} .forma-careers__success-line { display: block; width: 46px; height: 1px; margin: 34px 0 27px; background: #a9a99f; }
+  #shopify-section-{{ section.id }} .forma-careers__success-panel h3 { max-width: 490px; margin: 0; font-size: clamp(38px, 6vw, 58px); font-weight: 400; letter-spacing: -.07em; line-height: .98; }
+  #shopify-section-{{ section.id }} .forma-careers__success-copy { max-width: 460px; margin-top: 26px; color: var(--forma-muted); font-size: 14px; line-height: 1.9; }
+  #shopify-section-{{ section.id }} .forma-careers__success-copy p { margin: 0 0 14px; }
+  #shopify-section-{{ section.id }} .forma-careers__success-signoff { margin: 28px 0 34px; color: #999991; font-size: 9px; letter-spacing: .17em; }
+  #shopify-section-{{ section.id }} .forma-careers__success-done { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 54px; padding: 15px 18px; border: 1px solid var(--forma-ink); background: var(--forma-ink); color: #fff; font: inherit; font-size: 12px; cursor: pointer; transition: background .2s ease, color .2s ease; }
+  #shopify-section-{{ section.id }} .forma-careers__success-done:hover { background: transparent; color: var(--forma-ink); }
+
+  @media screen and (max-width: 1000px) {
+    #shopify-section-{{ section.id }} .forma-careers__hero-layout { grid-template-columns: minmax(0, 1fr) minmax(260px, .7fr); gap: 48px; }
+    #shopify-section-{{ section.id }} .forma-careers__application { grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr); gap: 38px; padding: 0 32px; }
   }
-
   @media screen and (max-width: 749px) {
-    #shopify-section-{{ section.id }} .forma-careers { padding-bottom: 64px; }
-    #shopify-section-{{ section.id }} .forma-careers__header {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      min-height: 0;
-      padding: 58px 22px 56px;
-      text-align: left;
-    }
-    #shopify-section-{{ section.id }} .forma-careers__header .forma-careers__eyebrow { margin-bottom: 34px; }
-    #shopify-section-{{ section.id }} .forma-careers__title { font-size: clamp(56px, 12vw, 76px); }
-    #shopify-section-{{ section.id }} .forma-careers__intro { max-width: 430px; margin: 26px 0 0; padding-top: 18px; font-size: 13px; }
-    #shopify-section-{{ section.id }} .forma-careers__positions { padding: 68px 20px 0; }
-    #shopify-section-{{ section.id }} .forma-careers__section-heading h2 { font-size: 32px; }
-    #shopify-section-{{ section.id }} .forma-careers__job-summary { align-items: flex-start; flex-direction: column; gap: 16px; padding: 24px 0; }
-    #shopify-section-{{ section.id }} .forma-careers__application { margin-top: 76px; padding: 0 20px; gap: 26px; }
-    #shopify-section-{{ section.id }} .forma-careers__application h2 { font-size: clamp(36px, 10vw, 48px); }
-    #shopify-section-{{ section.id }} .forma-careers__form { padding: 22px 17px; }
+    #shopify-section-{{ section.id }} .forma-careers { padding-bottom: 68px; }
+    #shopify-section-{{ section.id }} .forma-careers__header { padding: 58px 22px 62px; }
+    #shopify-section-{{ section.id }} .forma-careers__hero-layout { grid-template-columns: 1fr; gap: 42px; margin-top: 58px; }
+    #shopify-section-{{ section.id }} .forma-careers__title { font-size: clamp(64px, 16vw, 96px); letter-spacing: -.08em; }
+    #shopify-section-{{ section.id }} .forma-careers__hero-note { margin-top: 24px; }
+    #shopify-section-{{ section.id }} .forma-careers__hero-aside { max-width: 520px; }
+    #shopify-section-{{ section.id }} .forma-careers__intro { font-size: 14px; }
+    #shopify-section-{{ section.id }} .forma-careers__hero-signoff { margin-top: 22px; }
+    #shopify-section-{{ section.id }} .forma-careers__positions { padding: 70px 22px 0; }
+    #shopify-section-{{ section.id }} .forma-careers__section-heading h2 { font-size: 34px; }
+    #shopify-section-{{ section.id }} .forma-careers__job-summary { align-items: flex-start; flex-direction: column; gap: 17px; padding: 25px 0; }
+    #shopify-section-{{ section.id }} .forma-careers__application { grid-template-columns: 1fr; gap: 30px; margin-top: 84px; padding: 0 22px; }
+    #shopify-section-{{ section.id }} .forma-careers__application h2 { font-size: clamp(42px, 11vw, 56px); }
+    #shopify-section-{{ section.id }} .forma-careers__form { padding: 24px 18px; }
     #shopify-section-{{ section.id }} .forma-careers__field-grid { grid-template-columns: 1fr; gap: 18px; }
-    #shopify-section-{{ section.id }} .forma-careers__application-form { gap: 19px; }
+    #shopify-section-{{ section.id }} .forma-careers__application-form { gap: 20px; }
+    #shopify-section-{{ section.id }} .forma-careers__success { padding: 14px; }
+    #shopify-section-{{ section.id }} .forma-careers__success-panel { padding: 42px 26px 30px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .forma-careers__success, #shopify-section-{{ section.id }} .forma-careers__success-panel, #shopify-section-{{ section.id }} .forma-careers__submit { transition: none; }
+    #shopify-section-{{ section.id }} .forma-careers__job-expanded { animation: none; }
   }
 </style>
 
@@ -585,13 +440,38 @@
 
     const message = form.querySelector('.forma-careers__form-message');
     const submit = form.querySelector('button[type="submit"]');
+    const success = section.querySelector('#FormaCareersSuccess-{{ section.id }}');
+    const successPanel = success ? success.querySelector('.forma-careers__success-panel') : null;
+    const closeButtons = success ? success.querySelectorAll('[data-forma-success-close]') : [];
     const maxCombinedBytes = 4 * 1024 * 1024;
     let waitingForResponse = false;
+    let previousFocus = null;
 
     const showMessage = (text, type) => {
       message.textContent = text;
-      message.className = 'forma-careers__form-message ' + type;
+      message.className = 'forma-careers__form-message' + (type ? ' ' + type : '');
     };
+    const openSuccess = () => {
+      if (!success) return;
+      previousFocus = document.activeElement;
+      success.classList.add('is-open');
+      success.setAttribute('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+      const close = success.querySelector('.forma-careers__success-close');
+      if (close) close.focus();
+    };
+    const closeSuccess = () => {
+      if (!success) return;
+      success.classList.remove('is-open');
+      success.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+      if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
+    };
+
+    closeButtons.forEach((button) => button.addEventListener('click', closeSuccess));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && success && success.classList.contains('is-open')) closeSuccess();
+    });
 
     frame.addEventListener('load', () => {
       if (!waitingForResponse) return;
@@ -599,7 +479,8 @@
       submit.disabled = false;
       submit.querySelector('span').textContent = 'Submit application';
       form.reset();
-      showMessage('Thank you for your application. Your details have been submitted.', 'is-success');
+      showMessage('', '');
+      openSuccess();
     });
 
     form.addEventListener('submit', (event) => {
@@ -607,25 +488,28 @@
       showMessage('', '');
 
       if (!form.reportValidity()) return;
-
       const honeypot = form.querySelector('[name="website"]');
       if (honeypot && honeypot.value.trim() !== '') return;
 
-      const files = [
-        form.querySelector('[name="cv"]').files[0],
-        form.querySelector('[name="portfolio"]').files[0]
-      ].filter(Boolean);
+      const cvInput = form.querySelector('[name="cv"]');
+      const portfolioInput = form.querySelector('[name="portfolio"]');
+      const files = [cvInput.files[0], portfolioInput.files[0]].filter(Boolean);
       const totalBytes = files.reduce((total, file) => total + file.size, 0);
-
       if (totalBytes > maxCombinedBytes) {
         showMessage('The combined file size must be 4 MB or less. Please choose smaller files.', 'is-error');
+        return;
+      }
+
+      const endpoint = form.getAttribute('action');
+      if (!endpoint || endpoint.trim() === '') {
+        showMessage('The application form is not connected yet. Please try again later.', 'is-error');
         return;
       }
 
       form.querySelector('[name="submitted_at"]').value = new Date().toISOString();
       waitingForResponse = true;
       submit.disabled = true;
-      submit.querySelector('span').textContent = 'Submitting...';
+      submit.querySelector('span').textContent = 'Sending your application‚Ä¶';
       form.submit();
     });
 
@@ -634,22 +518,17 @@
         const job = button.closest('.forma-careers__job');
         const title = job ? job.querySelector('.forma-careers__job-main h3') : null;
         const position = form.querySelector('[name="position"]');
-        if (title && position) {
-          const jobTitle = title.textContent.trim();
-          const matchingOption = Array.from(position.options).find((option) => option.value === jobTitle);
-          if (matchingOption) position.value = jobTitle;
-          else {
-            let customOption = position.querySelector('option[data-job-option="true"]');
-            if (!customOption) {
-              customOption = document.createElement('option');
-              customOption.dataset.jobOption = 'true';
-              position.appendChild(customOption);
-            }
-            customOption.value = jobTitle;
-            customOption.textContent = jobTitle;
-            position.value = jobTitle;
-          }
+        if (!title || !position) return;
+        const jobTitle = title.textContent.trim();
+        let option = Array.from(position.options).find((item) => item.value === jobTitle);
+        if (!option) {
+          option = document.createElement('option');
+          option.value = jobTitle;
+          option.textContent = jobTitle;
+          option.dataset.jobOption = 'true';
+          position.appendChild(option);
         }
+        position.value = jobTitle;
       });
     });
   })();
@@ -671,7 +550,7 @@
       "type": "text",
       "id": "heading",
       "label": "Main heading",
-      "default": "Be part of what‚Äö√Ñ√¥s next."
+      "default": "Join Forma."
     },
     {
       "type": "richtext",
@@ -718,8 +597,8 @@
     {
       "type": "text",
       "id": "webhook_url",
-      "label": "Make.com webhook URL",
-      "default": "https://or3de4aoa38biorfo9zvjldtz79qavrt@hook.eu1.make.com"
+      "label": "Make.com Custom Webhook URL",
+      "default": ""
     }
   ],
   "blocks": [
