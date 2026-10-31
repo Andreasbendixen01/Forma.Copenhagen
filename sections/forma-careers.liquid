@@ -103,7 +103,7 @@
 
                   <a class="forma-careers__apply-button" href="#FormaCareers-Application">
                     {{ block.settings.apply_label | escape }}
-                    <span aria-hidden="true">‚Äö</span>
+                    <span aria-hidden="true">‚Äö√Ñ√∂</span>
                   </a>
                 </div>
               </details>
@@ -207,7 +207,7 @@
 
             <button class="forma-careers__submit" type="submit">
               <span>Submit application</span>
-              <span aria-hidden="true">‚Üó</span>
+              <span aria-hidden="true">‚Äö√ú√≥</span>
             </button>
             <p class="forma-careers__required-note">* Required fields</p>
           </form>
@@ -246,7 +246,7 @@
     margin: 0 auto;
   }
 
-  /* HERO ‚Äî original Forma simplicity with a more considered editorial finish */
+  /* HERO ‚Äö√Ñ√Æ original Forma simplicity with a more considered editorial finish */
   #shopify-section-{{ section.id }} .forma-careers__header {
     display: flex;
     flex-direction: column;
@@ -393,11 +393,11 @@
   #shopify-section-{{ section.id }} .forma-careers__empty h3 { margin: 0 0 10px; font-size: 17px; font-weight: 500; }
   #shopify-section-{{ section.id }} .forma-careers__empty p { margin: 0; color: var(--forma-muted); font-size: 13px; line-height: 1.8; }
 
-  /* APPLICATION ‚Äî familiar split layout, refined spacing and quiet contrast */
+  /* APPLICATION ‚Äö√Ñ√Æ familiar split layout, refined spacing and quiet contrast */
   #shopify-section-{{ section.id }} .forma-careers__application {
     display: grid;
-    grid-template-columns: minmax(0, .68fr) minmax(0, 1.32fr);
-    gap: clamp(38px, 5vw, 72px);
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: clamp(36px, 4vw, 60px);
     align-items: start;
     width: 100%;
     max-width: 1440px;
@@ -408,7 +408,8 @@
   }
   #shopify-section-{{ section.id }} .forma-careers__application-copy {
     display: block;
-    max-width: 390px;
+    max-width: none;
+    width: 100%;
     margin: 0;
     padding: 0;
     border: 0;
@@ -434,7 +435,7 @@
     line-height: 1.04;
   }
   #shopify-section-{{ section.id }} .forma-careers__application-text {
-    max-width: 360px;
+    max-width: 480px;
     margin: 18px 0 0;
     color: var(--forma-muted);
     font-size: 13px;
@@ -644,7 +645,7 @@
       "type": "text",
       "id": "heading",
       "label": "Main heading",
-      "default": "Be part of what‚Äôs next."
+      "default": "Be part of what‚Äö√Ñ√¥s next."
     },
     {
       "type": "richtext",
@@ -792,5 +793,6 @@
   ]
 }
 {% endschema %}
+
 
 
