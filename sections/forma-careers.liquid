@@ -248,6 +248,11 @@
 
   /* HERO ‚Äî editorial split layout in Forma's existing neutral palette */
   #shopify-section-{{ section.id }} .forma-careers__header {
+    /* Full-bleed background: extend beyond the centered 1440px content wrapper */
+    width: 100vw;
+    max-width: none;
+    margin-left: calc(50% - 50vw);
+    box-sizing: border-box;
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
     column-gap: clamp(40px, 7vw, 112px);
