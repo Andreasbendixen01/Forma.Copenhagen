@@ -139,7 +139,7 @@
       </div>
 
       <div class="forma-careers__form">
-        {% if section.settings.webhook_url != blank %}
+        {% if section.settings.webhook_url != blank and section.settings.webhook_url != 'NOT_CONFIGURED' %}
           <form
             id="FormaCareersForm-{{ section.id }}"
             class="forma-careers__application-form"
@@ -598,7 +598,7 @@
       "type": "text",
       "id": "webhook_url",
       "label": "Make.com Custom Webhook URL",
-      "default": ""
+      "default": "NOT_CONFIGURED"
     }
   ],
   "blocks": [
