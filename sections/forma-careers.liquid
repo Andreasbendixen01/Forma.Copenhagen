@@ -1,583 +1,326 @@
 {% comment %}
-  FORMA CAREERS
-  Complete careers section:
-  - Editable open positions
-  - Expandable job descriptions
-  - Apply buttons linking to the application form
-  - Custom application form connected to a Make.com Custom Webhook with file uploads
+  FORMA CAREERS ‚Äî PREMIUM EDITORIAL EXPERIENCE
+  Full-width white page, editorial hero, open roles, culture principles,
+  compact application form, Make.com webhook and custom thank-you modal.
 {% endcomment %}
 
-<section id="FormaCareers-{{ section.id }}" class="forma-careers">
-  <div class="forma-careers__inner">
-
-    <!-- EDITORIAL HERO -->
-    <header class="forma-careers__header">
-      <div class="forma-careers__hero-inner">
-        {% if section.settings.eyebrow != blank %}
-          <p class="forma-careers__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-        {% endif %}
-        <div class="forma-careers__hero-layout">
-          <div class="forma-careers__hero-title-wrap">
-            <h1 class="forma-careers__title">{{ section.settings.heading | escape }}</h1>
-            <span class="forma-careers__hero-note">PEOPLE MAKE THE DIFFERENCE</span>
-          </div>
-          {% if section.settings.intro != blank %}
-            <div class="forma-careers__hero-aside">
-              <span class="forma-careers__hero-rule" aria-hidden="true"></span>
-              <div class="forma-careers__intro">{{ section.settings.intro }}</div>
-              <p class="forma-careers__hero-signoff">A NEW CHAPTER STARTS WITH A CONVERSATION.</p>
-            </div>
-          {% endif %}
-        </div>
+<section id="FormaCareers-{{ section.id }}" class="fc-page">
+  <div class="fc-hero">
+    <div class="fc-hero__top">
+      <span>{{ section.settings.eyebrow | escape }}</span>
+      <span class="fc-hero__index">01 ‚Äî PEOPLE MAKE THE DIFFERENCE</span>
+    </div>
+    <div class="fc-hero__main">
+      <div class="fc-hero__title-wrap">
+        <h1>{{ section.settings.heading | escape }}</h1>
+        <p class="fc-hero__subline">{{ section.settings.hero_subline | escape }}</p>
       </div>
-    </header>
+      <div class="fc-hero__aside">
+        <span class="fc-rule"></span>
+        <div>{{ section.settings.intro }}</div>
+        <a href="#FormaCareers-Positions-{{ section.id }}" class="fc-text-link">Explore opportunities <span>‚Üò</span></a>
+      </div>
+    </div>
+    <div class="fc-hero__bottom">
+      <span>INDEPENDENT THINKING. SHARED AMBITION.</span>
+      <span>COPENHAGEN ¬∑ DENMARK</span>
+    </div>
+    <div class="fc-hero__scroll" aria-hidden="true"><span></span></div>
+  </div>
 
-    <!-- OPEN POSITIONS -->
-    <div class="forma-careers__positions">
-      {% assign job_count = 0 %}
-      {% for block in section.blocks %}
-        {% if block.type == 'job' %}
-          {% assign job_count = job_count | plus: 1 %}
-        {% endif %}
-      {% endfor %}
-
-      <div class="forma-careers__section-heading">
+  <section class="fc-positions" id="FormaCareers-Positions-{{ section.id }}">
+    <div class="fc-section-top">
+      <div>
+        <p class="fc-kicker">01 / OPPORTUNITIES</p>
         <h2>{{ section.settings.positions_heading | escape }}</h2>
-        <span>
-          {{ job_count }}
-          {% if job_count == 1 %}position{% else %}positions{% endif %}
-        </span>
       </div>
+      {% assign job_count = 0 %}
+      {% for block in section.blocks %}{% if block.type == 'job' %}{% assign job_count = job_count | plus: 1 %}{% endif %}{% endfor %}
+      <span class="fc-count">{{ job_count | prepend: '0' | slice: -2, 2 }} <small>{% if job_count == 1 %}OPEN ROLE{% else %}OPEN ROLES{% endif %}</small></span>
+    </div>
 
-      {% if job_count > 0 %}
+    {% if job_count > 0 %}
+      <div class="fc-job-list">
         {% for block in section.blocks %}
           {% if block.type == 'job' %}
-            <article class="forma-careers__job" {{ block.shopify_attributes }}>
-              <details class="forma-careers__job-details">
-                <summary class="forma-careers__job-summary">
-                  <div class="forma-careers__job-main">
-                    <h3>{{ block.settings.title | escape }}</h3>
-
-                    <div class="forma-careers__job-meta">
-                      {% if block.settings.location != blank %}
-                        <span>{{ block.settings.location | escape }}</span>
-                      {% endif %}
-                      {% if block.settings.employment_type != blank %}
-                        <span>{{ block.settings.employment_type | escape }}</span>
-                      {% endif %}
-                    </div>
-
-                    {% if block.settings.short_description != blank %}
-                      <div class="forma-careers__job-short-description">
-                        {{ block.settings.short_description }}
-                      </div>
-                    {% endif %}
-                  </div>
-
-                  <span class="forma-careers__job-toggle">
-                    <span class="forma-careers__job-toggle-text">
-                      {{ block.settings.button_label | escape }}
-                    </span>
-                    <span class="forma-careers__job-toggle-icon" aria-hidden="true">+</span>
+            <article class="fc-job" {{ block.shopify_attributes }}>
+              <details class="fc-job__details">
+                <summary class="fc-job__summary">
+                  <span class="fc-job__number">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                  <span class="fc-job__main">
+                    <span class="fc-job__title">{{ block.settings.title | escape }}</span>
+                    <span class="fc-job__meta">{% if block.settings.location != blank %}<span>{{ block.settings.location | escape }}</span>{% endif %}{% if block.settings.employment_type != blank %}<span>{{ block.settings.employment_type | escape }}</span>{% endif %}</span>
+                    {% if block.settings.short_description != blank %}<span class="fc-job__short">{{ block.settings.short_description }}</span>{% endif %}
                   </span>
+                  <span class="fc-job__action"><span class="fc-job__action-label">{{ block.settings.button_label | escape }}</span><span class="fc-job__plus" aria-hidden="true"></span></span>
                 </summary>
-
-                <div class="forma-careers__job-expanded">
-                  {% if block.settings.introduction != blank %}
-                    <div class="forma-careers__job-introduction">
-                      {{ block.settings.introduction }}
-                    </div>
-                  {% endif %}
-
-                  {% if block.settings.responsibilities != blank %}
-                    <div class="forma-careers__job-detail-block">
-                      <h4>{{ block.settings.responsibilities_heading | escape }}</h4>
-                      <div>{{ block.settings.responsibilities }}</div>
-                    </div>
-                  {% endif %}
-
-                  {% if block.settings.qualifications != blank %}
-                    <div class="forma-careers__job-detail-block">
-                      <h4>{{ block.settings.qualifications_heading | escape }}</h4>
-                      <div>{{ block.settings.qualifications }}</div>
-                    </div>
-                  {% endif %}
-
-                  {% if block.settings.offer != blank %}
-                    <div class="forma-careers__job-detail-block">
-                      <h4>{{ block.settings.offer_heading | escape }}</h4>
-                      <div>{{ block.settings.offer }}</div>
-                    </div>
-                  {% endif %}
-
-                  <a class="forma-careers__apply-button" href="#FormaCareers-Application">
-                    {{ block.settings.apply_label | escape }}
-                    <span aria-hidden="true"></span>
-                  </a>
+                <div class="fc-job__body">
+                  {% if block.settings.introduction != blank %}<div class="fc-job__intro">{{ block.settings.introduction }}</div>{% endif %}
+                  <div class="fc-job__columns">
+                    {% if block.settings.responsibilities != blank %}<div><h4>{{ block.settings.responsibilities_heading | escape }}</h4>{{ block.settings.responsibilities }}</div>{% endif %}
+                    {% if block.settings.qualifications != blank %}<div><h4>{{ block.settings.qualifications_heading | escape }}</h4>{{ block.settings.qualifications }}</div>{% endif %}
+                    {% if block.settings.offer != blank %}<div><h4>{{ block.settings.offer_heading | escape }}</h4>{{ block.settings.offer }}</div>{% endif %}
+                  </div>
+                  <a class="fc-button fc-button--dark fc-job__apply" href="#FormaCareers-Application-{{ section.id }}" data-job-title="{{ block.settings.title | escape }}">{{ block.settings.apply_label | escape }} <span>‚Üó</span></a>
                 </div>
               </details>
             </article>
           {% endif %}
         {% endfor %}
-      {% else %}
-        <div class="forma-careers__empty">
-          <h3>{{ section.settings.empty_heading | escape }}</h3>
-          <p>{{ section.settings.empty_text | escape }}</p>
+      </div>
+    {% else %}
+      <div class="fc-no-roles"><p class="fc-kicker">GOOD PEOPLE ARE ALWAYS WELCOME</p><h3>{{ section.settings.empty_heading | escape }}</h3><p>{{ section.settings.empty_text | escape }}</p><a href="#FormaCareers-Application-{{ section.id }}" class="fc-text-link">Introduce yourself <span>‚Üò</span></a></div>
+    {% endif %}
+  </section>
+
+  <section class="fc-manifesto">
+    <div class="fc-manifesto__head"><p class="fc-kicker">02 / THE WAY WE SEE IT</p><p class="fc-manifesto__side">A DIFFERENT KIND OF PLATFORM.<br>A DIFFERENT KIND OF TEAM.</p></div>
+    <h2>{{ section.settings.manifesto_heading | escape }}</h2>
+    <div class="fc-manifesto__grid">
+      <article><span>01</span><h3>Stay curious.</h3><p>Good ideas rarely come from standing still. We stay open, ask questions and look beyond the obvious.</p></article>
+      <article><span>02</span><h3>Take ownership.</h3><p>We believe in people who care about the details, take initiative and make things happen.</p></article>
+      <article><span>03</span><h3>Make it matter.</h3><p>We bring thoughtful people together to create work with purpose, perspective and lasting value.</p></article>
+    </div>
+  </section>
+
+  <section class="fc-application" id="FormaCareers-Application-{{ section.id }}">
+    <div class="fc-application__intro">
+      <p class="fc-kicker">03 / YOUR NEXT CHAPTER</p>
+      <p class="fc-application__eyebrow">{{ section.settings.application_eyebrow | escape }}</p>
+      <h2>{{ section.settings.application_heading | escape }}</h2>
+      <div class="fc-application__description">{{ section.settings.application_text }}</div>
+      <div class="fc-application__note"><span class="fc-note-mark">F.</span><p>We are interested in people, not just r√©sum√©s. Tell us what makes you, you.</p></div>
+    </div>
+
+    <div class="fc-form-wrap">
+      {% if section.settings.webhook_url != blank and section.settings.webhook_url contains 'hook.eu1.make.com/' and section.settings.webhook_url != 'PASTE_CUSTOM_WEBHOOK_URL_HERE' %}
+        <form id="FormaCareersForm-{{ section.id }}" class="fc-form" action="{{ section.settings.webhook_url | escape }}" method="post" enctype="multipart/form-data" target="FormaCareersFrame-{{ section.id }}" novalidate>
+          <input type="hidden" name="form_name" value="Forma Copenhagen Careers">
+          <input type="hidden" name="source_page" value="{{ request.origin }}{{ request.path }}">
+          <input type="hidden" name="submitted_at" value="">
+          <div class="fc-honeypot" aria-hidden="true"><label for="FCWebsite-{{ section.id }}">Leave this field empty</label><input id="FCWebsite-{{ section.id }}" type="text" name="website" tabindex="-1" autocomplete="off"></div>
+          <div class="fc-form__top"><span>LET'S GET TO KNOW YOU</span><span>* REQUIRED FIELDS</span></div>
+          <div class="fc-form__grid">
+            <div class="fc-field"><label for="FCName-{{ section.id }}">Full name <b>*</b></label><input id="FCName-{{ section.id }}" name="full_name" type="text" autocomplete="name" placeholder="Your name" required></div>
+            <div class="fc-field"><label for="FCEmail-{{ section.id }}">Email address <b>*</b></label><input id="FCEmail-{{ section.id }}" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></div>
+            <div class="fc-field"><label for="FCPhone-{{ section.id }}">Phone number</label><input id="FCPhone-{{ section.id }}" name="phone" type="tel" autocomplete="tel" placeholder="Your phone number"></div>
+            <div class="fc-field"><label for="FCPosition-{{ section.id }}">Position / area of interest <b>*</b></label><select id="FCPosition-{{ section.id }}" name="position" required><option value="">Select an area</option><option value="Open position">Open position</option><option value="Brand Partnerships">Brand Partnerships</option><option value="Marketing">Marketing</option><option value="Content & Editorial">Content & Editorial</option><option value="Creative & Design">Creative & Design</option><option value="Technology">Technology</option><option value="Operations">Operations</option><option value="Internship">Internship</option><option value="Other">Other</option></select></div>
+          </div>
+          <div class="fc-field fc-field--full"><label for="FCIntro-{{ section.id }}">Tell us about yourself <b>*</b></label><textarea id="FCIntro-{{ section.id }}" name="introduction" rows="5" required placeholder="A little about you, your experience and why you'd like to join Forma..."></textarea></div>
+          <div class="fc-form__files">
+            <div class="fc-field"><label for="FCCV-{{ section.id }}">CV <b>*</b></label><input id="FCCV-{{ section.id }}" name="cv" type="file" accept=".pdf,.doc,.docx" required><small>PDF, DOC or DOCX. Max. 4 MB combined.</small></div>
+            <div class="fc-field"><label for="FCPortfolio-{{ section.id }}">Application / portfolio</label><input id="FCPortfolio-{{ section.id }}" name="portfolio" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"><small>Optional. PDF, DOC, DOCX, PNG or JPG.</small></div>
+          </div>
+          <div class="fc-consent"><label for="FCPrivacy-{{ section.id }}"><input id="FCPrivacy-{{ section.id }}" name="privacy_consent" type="checkbox" value="Yes" required><span>I have read Forma's <a href="/policies/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> and agree that my information may be processed in connection with this application. <b>*</b></span></label></div>
+          <p class="fc-message" role="status" aria-live="polite"></p>
+          <button class="fc-button fc-button--dark fc-submit" type="submit"><span>Send your application</span><span class="fc-submit__arrow">‚Üó</span></button>
+          <p class="fc-form__foot">THANK YOU FOR CONSIDERING FORMA. WE LOOK FORWARD TO MEETING YOU.</p>
+        </form>
+        <iframe name="FormaCareersFrame-{{ section.id }}" id="FormaCareersFrame-{{ section.id }}" class="fc-frame" title="Application submission" tabindex="-1"></iframe>
+        <div class="fc-success" id="FormaCareersSuccess-{{ section.id }}" aria-hidden="true">
+          <button class="fc-success__backdrop" type="button" data-fc-close aria-label="Close thank you message"></button>
+          <div class="fc-success__panel" role="dialog" aria-modal="true" aria-labelledby="FCSuccessTitle-{{ section.id }}" aria-describedby="FCSuccessCopy-{{ section.id }}" tabindex="-1">
+            <p class="fc-success__eyebrow">FORMA COPENHAGEN <span> / </span> CAREERS</p>
+            <span class="fc-success__rule"></span>
+            <h3 id="FCSuccessTitle-{{ section.id }}">Thank you for saying hello.</h3>
+            <div id="FCSuccessCopy-{{ section.id }}" class="fc-success__copy"><p>Your application is on its way to us. And before anything else, we want to say thank you.</p><p>It means something that you can see yourself being part of what we are building. We'll take the time to get to know your introduction, your ideas and what you could bring to Forma.</p><p>Whatever happens next, we're glad our paths crossed.</p></div>
+            <p class="fc-success__signoff">WARM REGARDS, THE FORMA TEAM</p>
+            <button class="fc-button fc-button--dark fc-success__done" type="button" data-fc-close><span>Back to Forma</span><span>‚Üó</span></button>
+          </div>
         </div>
+      {% else %}
+        <div class="fc-form-placeholder">The application form is not connected. Add your Make.com Custom Webhook URL in the Forma Careers section settings.</div>
       {% endif %}
     </div>
+  </section>
 
-    <!-- UNSOLICITED APPLICATIONS / APPLICATION FORM -->
-    <section id="FormaCareers-Application" class="forma-careers__application">
-      <div class="forma-careers__application-heading">
-        <div class="forma-careers__application-index">01 <span>/</span> YOUR NEXT CHAPTER</div>
-        {% if section.settings.application_eyebrow != blank %}
-          <p class="forma-careers__eyebrow">{{ section.settings.application_eyebrow | escape }}</p>
-        {% endif %}
-        <h2>{{ section.settings.application_heading | escape }}</h2>
-        <div class="forma-careers__application-text">{{ section.settings.application_text }}</div>
-      </div>
-
-      <div class="forma-careers__form">
-        {% if section.settings.webhook_url != blank and section.settings.webhook_url != 'PASTE_CUSTOM_WEBHOOK_URL_HERE' and section.settings.webhook_url contains 'hook.eu1.make.com/' %}
-          <form
-            id="FormaCareersForm-{{ section.id }}"
-            class="forma-careers__application-form"
-            action="{{ section.settings.webhook_url | escape }}"
-            method="post"
-            enctype="multipart/form-data"
-            target="FormaCareersFrame-{{ section.id }}"
-            novalidate
-          >
-            <input type="hidden" name="form_name" value="Forma Copenhagen Careers">
-            <input type="hidden" name="source_page" value="{{ request.origin }}{{ request.path }}">
-            <input type="hidden" name="submitted_at" value="">
-            <div class="forma-careers__honeypot" aria-hidden="true">
-              <label for="FormaCareersWebsite-{{ section.id }}">Leave this field empty</label>
-              <input id="FormaCareersWebsite-{{ section.id }}" type="text" name="website" tabindex="-1" autocomplete="off">
-            </div>
-
-            <div class="forma-careers__field-grid">
-              <div class="forma-careers__field">
-                <label for="FormaCareersName-{{ section.id }}">Full name <span>*</span></label>
-                <input id="FormaCareersName-{{ section.id }}" name="full_name" type="text" autocomplete="name" required>
-              </div>
-              <div class="forma-careers__field">
-                <label for="FormaCareersEmail-{{ section.id }}">Email address <span>*</span></label>
-                <input id="FormaCareersEmail-{{ section.id }}" name="email" type="email" autocomplete="email" required>
-              </div>
-              <div class="forma-careers__field">
-                <label for="FormaCareersPhone-{{ section.id }}">Phone number</label>
-                <input id="FormaCareersPhone-{{ section.id }}" name="phone" type="tel" autocomplete="tel">
-              </div>
-              <div class="forma-careers__field">
-                <label for="FormaCareersPosition-{{ section.id }}">Position / area of interest <span>*</span></label>
-                <select id="FormaCareersPosition-{{ section.id }}" name="position" required>
-                  <option value="">Select an area</option>
-                  <option value="Open position">Open position</option>
-                  <option value="Brand Partnerships">Brand Partnerships</option>
-                  <option value="Marketing">Marketing</option>
-                  <option value="Content & Editorial">Content & Editorial</option>
-                  <option value="Creative & Design">Creative & Design</option>
-                  <option value="Technology">Technology</option>
-                  <option value="Operations">Operations</option>
-                  <option value="Internship">Internship</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="forma-careers__field forma-careers__field--full">
-              <label for="FormaCareersIntroduction-{{ section.id }}">Tell us about yourself <span>*</span></label>
-              <textarea id="FormaCareersIntroduction-{{ section.id }}" name="introduction" rows="6" required placeholder="A little about you, your experience and why you'd like to join Forma..."></textarea>
-            </div>
-
-            <div class="forma-careers__field-grid forma-careers__uploads">
-              <div class="forma-careers__field">
-                <label for="FormaCareersCV-{{ section.id }}">CV <span>*</span></label>
-                <input id="FormaCareersCV-{{ section.id }}" name="cv" type="file" accept=".pdf,.doc,.docx" required>
-                <small>PDF, DOC or DOCX. Max. 4 MB combined for all files.</small>
-              </div>
-              <div class="forma-careers__field">
-                <label for="FormaCareersPortfolio-{{ section.id }}">Application / portfolio</label>
-                <input id="FormaCareersPortfolio-{{ section.id }}" name="portfolio" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
-                <small>Optional. PDF, DOC, DOCX, PNG or JPG.</small>
-              </div>
-            </div>
-
-            <div class="forma-careers__privacy">
-              <label for="FormaCareersPrivacy-{{ section.id }}">
-                <input id="FormaCareersPrivacy-{{ section.id }}" name="privacy_consent" type="checkbox" value="Yes" required>
-                <span>I have read Forma's <a href="/policies/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> and agree that my information may be processed in connection with this application. <span>*</span></span>
-              </label>
-            </div>
-
-            <p class="forma-careers__form-message" role="status" aria-live="polite"></p>
-
-            <button class="forma-careers__submit" type="submit">
-              <span>Submit application</span>
-              <span aria-hidden="true"></span>
-            </button>
-            <p class="forma-careers__required-note">* Required fields</p>
-          </form>
-          <iframe
-            name="FormaCareersFrame-{{ section.id }}"
-            id="FormaCareersFrame-{{ section.id }}"
-            class="forma-careers__submit-frame"
-            title="Application submission"
-            tabindex="-1"
-          ></iframe>
-          <div class="forma-careers__success" id="FormaCareersSuccess-{{ section.id }}" aria-hidden="true">
-            <button class="forma-careers__success-backdrop" type="button" data-forma-success-close aria-label="Close thank you message"></button>
-            <div class="forma-careers__success-panel" role="dialog" aria-modal="true" aria-labelledby="FormaCareersSuccessTitle-{{ section.id }}" aria-describedby="FormaCareersSuccessText-{{ section.id }}" tabindex="-1">
-              <button class="forma-careers__success-close" type="button" data-forma-success-close aria-label="Close">√ó</button>
-              <p class="forma-careers__success-eyebrow">FORMA COPENHAGEN ¬∑ CAREERS</p>
-              <span class="forma-careers__success-line" aria-hidden="true"></span>
-              <h3 id="FormaCareersSuccessTitle-{{ section.id }}">Thank you for saying hello.</h3>
-              <div id="FormaCareersSuccessText-{{ section.id }}" class="forma-careers__success-copy">
-                <p>Your application is on its way to us. And before anything else, we want to say thank you.</p>
-                <p>It means something that you can see yourself being part of what we are building. We‚Äôll take the time to get to know your introduction, your ideas and what you could bring to Forma.</p>
-                <p>Whatever happens next, we‚Äôre glad our paths crossed.</p>
-              </div>
-              <p class="forma-careers__success-signoff">WARM regards, THE FORMA TEAM</p>
-              <button class="forma-careers__success-done" type="button" data-forma-success-close>Back to Forma <span aria-hidden="true"></span></button>
-            </div>
-          </div>
-        {% else %}
-          <div class="forma-careers__form-placeholder">
-            <p>Connect your application form by adding the Custom Webhook URL from Make.com in the Forma Careers section settings.</p>
-          </div>
-        {% endif %}
-      </div>
-    </div>
-
-  </div>
+  <footer class="fc-endmark"><span>FORMA</span><p>GOOD THINGS BEGIN WITH GOOD PEOPLE.</p></footer>
 </section>
 
 <style>
-  #shopify-section-{{ section.id }} .forma-careers {
-    --forma-ink: #20201e;
-    --forma-muted: #777771;
-    --forma-line: #deded8;
-    --forma-paper: #f5f5f1;
-    position: relative;
-    overflow-x: clip;
-    padding: 0 0 112px;
-    background: #fff;
-    color: var(--forma-ink);
-  }
-  #shopify-section-{{ section.id }} .forma-careers__inner { width: 100%; max-width: 1600px; margin: 0 auto; }
-
-  /* HERO ‚Äî full-bleed editorial introduction */
-  #shopify-section-{{ section.id }} .forma-careers__header {
-    position: relative;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    box-sizing: border-box;
-    padding: clamp(64px, 7vw, 112px) max(5vw, calc((100vw - 1440px) / 2)) clamp(66px, 7vw, 106px);
-    background: #fff;
-    border-top: 1px solid #fff;
-    border-bottom: 1px solid #eeeeea;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__hero-inner { max-width: 1440px; margin: 0 auto; }
-  #shopify-section-{{ section.id }} .forma-careers__eyebrow {
-    margin: 0;
-    color: var(--forma-muted);
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: .2em;
-    line-height: 1.5;
-    text-transform: uppercase;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__hero-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(300px, .65fr);
-    align-items: end;
-    gap: clamp(48px, 8vw, 140px);
-    margin-top: clamp(54px, 7vw, 100px);
-  }
-  #shopify-section-{{ section.id }} .forma-careers__hero-title-wrap { min-width: 0; }
-  #shopify-section-{{ section.id }} .forma-careers__title {
-    max-width: 900px;
-    margin: 0;
-    color: var(--forma-ink);
-    font-size: clamp(76px, 10.2vw, 150px);
-    font-weight: 400;
-    letter-spacing: -.085em;
-    line-height: .82;
-    text-wrap: balance;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__hero-note {
-    display: block;
-    margin-top: 34px;
-    color: #999991;
-    font-size: 9px;
-    letter-spacing: .2em;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__hero-aside { max-width: 460px; padding-bottom: 2px; }
-  #shopify-section-{{ section.id }} .forma-careers__hero-rule { display: block; width: 100%; height: 1px; margin-bottom: 25px; background: #d8d8d1; }
-  #shopify-section-{{ section.id }} .forma-careers__intro { max-width: 440px; color: var(--forma-muted); font-size: 15px; line-height: 1.9; }
-  #shopify-section-{{ section.id }} .forma-careers__intro p { margin: 0; }
-  #shopify-section-{{ section.id }} .forma-careers__hero-signoff { margin: 30px 0 0; color: #999991; font-size: 9px; letter-spacing: .16em; line-height: 1.7; }
-
-  /* OPEN POSITIONS */
-  #shopify-section-{{ section.id }} .forma-careers__positions { width: min(100% - 96px, 1360px); max-width: 1360px; margin: 0 auto; padding: clamp(78px, 8vw, 116px) 0 0; box-sizing: border-box; }
-  #shopify-section-{{ section.id }} .forma-careers__section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--forma-line); }
-  #shopify-section-{{ section.id }} .forma-careers__section-heading h2 { margin: 0; font-size: clamp(34px, 4vw, 52px); font-weight: 400; letter-spacing: -.065em; line-height: 1; }
-  #shopify-section-{{ section.id }} .forma-careers__section-heading > span { color: var(--forma-muted); font-size: 11px; white-space: nowrap; }
-  #shopify-section-{{ section.id }} .forma-careers__job { border-bottom: 1px solid var(--forma-line); }
-  #shopify-section-{{ section.id }} .forma-careers__job-summary { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 32px 0; cursor: pointer; list-style: none; }
-  #shopify-section-{{ section.id }} .forma-careers__job-summary::-webkit-details-marker { display: none; }
-  #shopify-section-{{ section.id }} .forma-careers__job-summary::marker { content: ""; }
-  #shopify-section-{{ section.id }} .forma-careers__job-main { flex: 1; min-width: 0; }
-  #shopify-section-{{ section.id }} .forma-careers__job h3 { margin: 0 0 11px; font-size: 21px; font-weight: 500; letter-spacing: -.03em; }
-  #shopify-section-{{ section.id }} .forma-careers__job-meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--forma-muted); font-size: 11px; }
-  #shopify-section-{{ section.id }} .forma-careers__job-short-description { max-width: 720px; margin-top: 14px; color: var(--forma-muted); font-size: 13px; line-height: 1.8; }
-  #shopify-section-{{ section.id }} .forma-careers__job-toggle { display: inline-flex; align-items: center; gap: 14px; flex-shrink: 0; padding-bottom: 6px; border-bottom: 1px solid currentColor; color: var(--forma-ink); font-size: 12px; }
-  #shopify-section-{{ section.id }} .forma-careers__job-toggle-icon { display: inline-block; font-size: 18px; line-height: 1; transition: transform .2s ease; }
-  #shopify-section-{{ section.id }} .forma-careers__job-details[open] .forma-careers__job-toggle-icon { transform: rotate(45deg); }
-  #shopify-section-{{ section.id }} .forma-careers__job-details[open] .forma-careers__job-toggle-text { font-size: 0; }
-  #shopify-section-{{ section.id }} .forma-careers__job-details[open] .forma-careers__job-toggle-text::after { content: "Close"; font-size: 12px; }
-  #shopify-section-{{ section.id }} .forma-careers__job-expanded { max-width: 780px; padding: 0 0 38px; animation: forma-careers-reveal .25s ease; }
-  @keyframes forma-careers-reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  #shopify-section-{{ section.id }} .forma-careers__job-introduction { margin: 0 0 26px; color: var(--forma-muted); font-size: 14px; line-height: 1.9; }
-  #shopify-section-{{ section.id }} .forma-careers__job-detail-block { margin-top: 24px; }
-  #shopify-section-{{ section.id }} .forma-careers__job-detail-block h4 { margin: 0 0 10px; font-size: 16px; font-weight: 500; }
-  #shopify-section-{{ section.id }} .forma-careers__job-detail-block > div { color: var(--forma-muted); font-size: 13px; line-height: 1.9; }
-  #shopify-section-{{ section.id }} .forma-careers__job-detail-block ul { padding-left: 20px; }
-  #shopify-section-{{ section.id }} .forma-careers__apply-button { display: inline-flex; align-items: center; gap: 14px; margin-top: 28px; padding: 0 0 7px; border-bottom: 1px solid currentColor; color: var(--forma-ink); font-size: 12px; text-decoration: none; }
-  #shopify-section-{{ section.id }} .forma-careers__empty { padding: 32px 0; }
-  #shopify-section-{{ section.id }} .forma-careers__empty h3 { margin: 0 0 10px; font-size: 18px; font-weight: 500; }
-  #shopify-section-{{ section.id }} .forma-careers__empty p { margin: 0; color: var(--forma-muted); font-size: 13px; line-height: 1.8; }
-
-  /* APPLICATION ‚Äî editorial heading above a balanced, centred form */
-  #shopify-section-{{ section.id }} .forma-careers__application {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: clamp(34px, 4vw, 52px);
-    width: min(calc(100% - 64px), 1240px);
-    max-width: 1240px;
-    margin: clamp(100px, 11vw, 156px) auto 0;
-    padding: 0;
-    box-sizing: border-box;
-    scroll-margin-top: 40px;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__application-heading {
-    width: 100%;
-    max-width: 820px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__application-index {
-    margin: 0 0 22px;
-    color: var(--forma-muted);
-    font-size: 10px;
-    letter-spacing: .18em;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__application-index span { padding: 0 7px; color: #c5c5bd; }
-  #shopify-section-{{ section.id }} .forma-careers__application-heading .forma-careers__eyebrow { margin: 0 0 15px; }
-  #shopify-section-{{ section.id }} .forma-careers__application h2 {
-    max-width: 820px;
-    margin: 0 auto;
-    font-size: clamp(42px, 5vw, 68px);
-    font-weight: 400;
-    letter-spacing: -.07em;
-    line-height: .98;
-    text-wrap: balance;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__application-text {
-    max-width: 620px;
-    margin: 20px auto 0;
-    color: var(--forma-muted);
-    font-size: 14px;
-    line-height: 1.9;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__form {
-    width: 100%;
-    max-width: 1080px;
-    min-width: 0;
-    box-sizing: border-box;
-    padding: clamp(28px, 3vw, 42px);
-    background: var(--forma-paper);
-    border: 1px solid #ecece6;
-  }
-  #shopify-section-{{ section.id }} .forma-careers__application-form { display: flex; flex-direction: column; gap: 23px; width: 100%; }
-  #shopify-section-{{ section.id }} .forma-careers__field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 26px; }
-  #shopify-section-{{ section.id }} .forma-careers__field { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
-  #shopify-section-{{ section.id }} .forma-careers__field label { color: var(--forma-ink); font-size: 11px; font-weight: 500; letter-spacing: .025em; }
-  #shopify-section-{{ section.id }} .forma-careers__field label span, #shopify-section-{{ section.id }} .forma-careers__privacy label span span { color: #777771; }
-  #shopify-section-{{ section.id }} .forma-careers__field input:not([type="file"]), #shopify-section-{{ section.id }} .forma-careers__field select, #shopify-section-{{ section.id }} .forma-careers__field textarea { width: 100%; max-width: 100%; min-height: 52px; box-sizing: border-box; padding: 14px 15px; border: 1px solid #deded8; border-radius: 0; background: #fff; color: var(--forma-ink); font: inherit; font-size: 13px; box-shadow: none; }
-  #shopify-section-{{ section.id }} .forma-careers__field input:focus, #shopify-section-{{ section.id }} .forma-careers__field select:focus, #shopify-section-{{ section.id }} .forma-careers__field textarea:focus { outline: none; border-color: #777771; }
-  #shopify-section-{{ section.id }} .forma-careers__field textarea { min-height: 160px; resize: vertical; line-height: 1.75; }
-  #shopify-section-{{ section.id }} .forma-careers__field input[type="file"] { width: 100%; min-height: 54px; box-sizing: border-box; padding: 9px; border: 1px solid #deded8; background: #fff; color: var(--forma-ink); font-size: 11px; }
-  #shopify-section-{{ section.id }} .forma-careers__field input[type="file"]::file-selector-button { margin-right: 12px; padding: 11px 14px; border: 0; background: #efefeb; color: var(--forma-ink); font: inherit; cursor: pointer; }
-  #shopify-section-{{ section.id }} .forma-careers__field small, #shopify-section-{{ section.id }} .forma-careers__required-note { color: var(--forma-muted); font-size: 10px; line-height: 1.7; }
-  #shopify-section-{{ section.id }} .forma-careers__privacy { padding-top: 2px; }
-  #shopify-section-{{ section.id }} .forma-careers__privacy label { display: flex; align-items: flex-start; gap: 10px; color: var(--forma-muted); font-size: 11px; line-height: 1.75; }
-  #shopify-section-{{ section.id }} .forma-careers__privacy input { flex: 0 0 auto; margin-top: 3px; }
-  #shopify-section-{{ section.id }} .forma-careers__submit { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 62px; padding: 18px 21px; border: 1px solid var(--forma-ink); border-radius: 0; background: var(--forma-ink); color: #fff; font: inherit; font-size: 13px; cursor: pointer; transition: background .25s ease, color .25s ease; }
-  #shopify-section-{{ section.id }} .forma-careers__submit:hover { background: transparent; color: var(--forma-ink); }
-  #shopify-section-{{ section.id }} .forma-careers__submit:disabled { opacity: .6; cursor: wait; }
-  #shopify-section-{{ section.id }} .forma-careers__form-message { margin: 0; font-size: 12px; line-height: 1.6; }
-  #shopify-section-{{ section.id }} .forma-careers__form-message.is-error { color: #754b43; }
-  #shopify-section-{{ section.id }} .forma-careers__form-message.is-success { color: #52634f; }
-  #shopify-section-{{ section.id }} .forma-careers__submit-frame, #shopify-section-{{ section.id }} .forma-careers__honeypot { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; }
-  #shopify-section-{{ section.id }} .forma-careers__required-note { margin: -12px 0 0; }
-
-  /* THANK-YOU MODAL */
-  #shopify-section-{{ section.id }} .forma-careers__success { position: fixed; z-index: 999999; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .3s ease, visibility .3s ease; }
-  #shopify-section-{{ section.id }} .forma-careers__success.is-open { opacity: 1; visibility: visible; pointer-events: auto; }
-  #shopify-section-{{ section.id }} .forma-careers__success-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: rgba(27, 27, 25, .58); cursor: default; }
-  #shopify-section-{{ section.id }} .forma-careers__success-panel { position: relative; z-index: 1; width: min(100%, 620px); max-height: min(90vh, 820px); overflow-y: auto; box-sizing: border-box; padding: clamp(34px, 6vw, 68px); background: var(--forma-paper); color: var(--forma-ink); box-shadow: 0 24px 90px rgba(0,0,0,.16); transform: translateY(18px); transition: transform .35s cubic-bezier(.2,.7,.2,1); }
-  #shopify-section-{{ section.id }} .forma-careers__success.is-open .forma-careers__success-panel { transform: translateY(0); }
-  #shopify-section-{{ section.id }} .forma-careers__success-close { position: absolute; top: 20px; right: 22px; width: 34px; height: 34px; border: 1px solid #d8d8d1; border-radius: 50%; background: transparent; color: var(--forma-ink); font-size: 22px; line-height: 1; cursor: pointer; }
-  #shopify-section-{{ section.id }} .forma-careers__success-eyebrow { margin: 0; color: var(--forma-muted); font-size: 9px; letter-spacing: .2em; }
-  #shopify-section-{{ section.id }} .forma-careers__success-line { display: block; width: 46px; height: 1px; margin: 34px 0 27px; background: #a9a99f; }
-  #shopify-section-{{ section.id }} .forma-careers__success-panel h3 { max-width: 490px; margin: 0; font-size: clamp(38px, 6vw, 58px); font-weight: 400; letter-spacing: -.07em; line-height: .98; }
-  #shopify-section-{{ section.id }} .forma-careers__success-copy { max-width: 460px; margin-top: 26px; color: var(--forma-muted); font-size: 14px; line-height: 1.9; }
-  #shopify-section-{{ section.id }} .forma-careers__success-copy p { margin: 0 0 14px; }
-  #shopify-section-{{ section.id }} .forma-careers__success-signoff { margin: 28px 0 34px; color: #999991; font-size: 9px; letter-spacing: .17em; }
-  #shopify-section-{{ section.id }} .forma-careers__success-done { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 54px; padding: 15px 18px; border: 1px solid var(--forma-ink); background: var(--forma-ink); color: #fff; font: inherit; font-size: 12px; cursor: pointer; transition: background .2s ease, color .2s ease; }
-  #shopify-section-{{ section.id }} .forma-careers__success-done:hover { background: transparent; color: var(--forma-ink); }
-
-  @media screen and (max-width: 1000px) {
-    #shopify-section-{{ section.id }} .forma-careers__hero-layout { grid-template-columns: minmax(0, 1fr) minmax(260px, .7fr); gap: 48px; }
-    #shopify-section-{{ section.id }} .forma-careers__application { width: calc(100% - 64px); margin-top: 104px; }
-    #shopify-section-{{ section.id }} .forma-careers__form { max-width: 100%; }
-  }
-  @media screen and (max-width: 749px) {
-    #shopify-section-{{ section.id }} .forma-careers { padding-bottom: 68px; }
-    #shopify-section-{{ section.id }} .forma-careers__header { padding: 58px 22px 62px; }
-    #shopify-section-{{ section.id }} .forma-careers__hero-layout { grid-template-columns: 1fr; gap: 42px; margin-top: 58px; }
-    #shopify-section-{{ section.id }} .forma-careers__title { font-size: clamp(64px, 16vw, 96px); letter-spacing: -.08em; }
-    #shopify-section-{{ section.id }} .forma-careers__hero-note { margin-top: 24px; }
-    #shopify-section-{{ section.id }} .forma-careers__hero-aside { max-width: 520px; }
-    #shopify-section-{{ section.id }} .forma-careers__intro { font-size: 14px; }
-    #shopify-section-{{ section.id }} .forma-careers__hero-signoff { margin-top: 22px; }
-    #shopify-section-{{ section.id }} .forma-careers__positions { width: calc(100% - 44px); padding: 70px 0 0; }
-    #shopify-section-{{ section.id }} .forma-careers__section-heading h2 { font-size: 34px; }
-    #shopify-section-{{ section.id }} .forma-careers__job-summary { align-items: flex-start; flex-direction: column; gap: 17px; padding: 25px 0; }
-    #shopify-section-{{ section.id }} .forma-careers__application { width: calc(100% - 36px); gap: 28px; margin-top: 82px; padding: 0; }
-    #shopify-section-{{ section.id }} .forma-careers__application-heading { text-align: left; }
-    #shopify-section-{{ section.id }} .forma-careers__application h2 { font-size: clamp(42px, 11vw, 56px); }
-    #shopify-section-{{ section.id }} .forma-careers__application-text { margin-left: 0; margin-right: 0; }
-    #shopify-section-{{ section.id }} .forma-careers__form { padding: 24px 18px; }
-    #shopify-section-{{ section.id }} .forma-careers__field-grid { grid-template-columns: 1fr; gap: 18px; }
-    #shopify-section-{{ section.id }} .forma-careers__application-form { gap: 20px; }
-    #shopify-section-{{ section.id }} .forma-careers__success { padding: 14px; }
-    #shopify-section-{{ section.id }} .forma-careers__success-panel { padding: 42px 26px 30px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    #shopify-section-{{ section.id }} .forma-careers__success, #shopify-section-{{ section.id }} .forma-careers__success-panel, #shopify-section-{{ section.id }} .forma-careers__submit { transition: none; }
-    #shopify-section-{{ section.id }} .forma-careers__job-expanded { animation: none; }
-  }
+  #shopify-section-{{ section.id }} { --fc-ink:#20201e; --fc-muted:#777771; --fc-line:#deded8; --fc-paper:#f5f5f1; --fc-white:#fff; }
+  #shopify-section-{{ section.id }} .fc-page { width:100%; overflow:hidden; background:#fff; color:var(--fc-ink); font-family:inherit; }
+  #shopify-section-{{ section.id }} .fc-page * { box-sizing:border-box; }
+  #shopify-section-{{ section.id }} .fc-hero { position:relative; min-height:660px; padding:54px clamp(28px,5.2vw,88px) 32px; display:flex; flex-direction:column; justify-content:space-between; background:#fff; }
+  #shopify-section-{{ section.id }} .fc-hero__top,#shopify-section-{{ section.id }} .fc-hero__bottom { display:flex; justify-content:space-between; gap:20px; color:#999991; font-size:9px; font-weight:600; letter-spacing:.19em; text-transform:uppercase; }
+  #shopify-section-{{ section.id }} .fc-hero__main { width:100%; max-width:1600px; margin:auto; padding:100px 0 105px; display:grid; grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr); align-items:end; gap:8vw; }
+  #shopify-section-{{ section.id }} .fc-hero h1 { margin:0; font-size:clamp(90px,13.1vw,204px); line-height:.79; font-weight:400; letter-spacing:-.095em; }
+  #shopify-section-{{ section.id }} .fc-hero__subline { margin:35px 0 0 8px; color:#999991; font-size:10px; letter-spacing:.2em; text-transform:uppercase; }
+  #shopify-section-{{ section.id }} .fc-hero__aside { max-width:430px; margin:0 0 10px auto; font-size:16px; line-height:1.85; color:var(--fc-muted); }
+  #shopify-section-{{ section.id }} .fc-rule { display:block; width:100%; height:1px; margin-bottom:27px; background:var(--fc-line); }
+  #shopify-section-{{ section.id }} .fc-text-link { display:inline-flex; align-items:center; gap:24px; margin-top:30px; padding-bottom:8px; border-bottom:1px solid var(--fc-ink); color:var(--fc-ink); text-decoration:none; font-size:12px; transition:gap .25s ease, opacity .25s ease; }
+  #shopify-section-{{ section.id }} .fc-text-link:hover { gap:34px; opacity:.65; }
+  #shopify-section-{{ section.id }} .fc-hero__scroll { position:absolute; left:50%; bottom:0; width:1px; height:38px; background:var(--fc-line); overflow:hidden; }
+  #shopify-section-{{ section.id }} .fc-hero__scroll span { display:block; width:1px; height:18px; background:var(--fc-ink); animation:fc-scroll 1.8s ease-in-out infinite; }
+  @keyframes fc-scroll { 0%{transform:translateY(-20px)} 100%{transform:translateY(42px)} }
+  #shopify-section-{{ section.id }} .fc-positions { max-width:1500px; width:calc(100% - 2*clamp(28px,10.3vw,160px)); margin:0 auto; padding:145px 0 150px; }
+  #shopify-section-{{ section.id }} .fc-section-top { display:flex; justify-content:space-between; align-items:flex-end; padding-bottom:28px; border-bottom:1px solid var(--fc-line); }
+  #shopify-section-{{ section.id }} .fc-kicker { margin:0 0 24px; color:#999991; font-size:9px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; }
+  #shopify-section-{{ section.id }} .fc-section-top h2 { margin:0; font-size:clamp(44px,5vw,72px); line-height:1; font-weight:400; letter-spacing:-.075em; }
+  #shopify-section-{{ section.id }} .fc-count { display:flex; align-items:baseline; gap:10px; padding-bottom:7px; font-size:18px; }
+  #shopify-section-{{ section.id }} .fc-count small { color:#999991; font-size:9px; letter-spacing:.15em; }
+  #shopify-section-{{ section.id }} .fc-job { border-bottom:1px solid var(--fc-line); }
+  #shopify-section-{{ section.id }} .fc-job__details summary { list-style:none; cursor:pointer; }
+  #shopify-section-{{ section.id }} .fc-job__details summary::-webkit-details-marker { display:none; }
+  #shopify-section-{{ section.id }} .fc-job__summary { display:grid; grid-template-columns:70px minmax(0,1fr) 180px; gap:20px; align-items:center; padding:34px 0; }
+  #shopify-section-{{ section.id }} .fc-job__number { align-self:start; padding-top:8px; color:#aaa9a2; font-size:10px; letter-spacing:.14em; }
+  #shopify-section-{{ section.id }} .fc-job__main { display:flex; flex-direction:column; gap:12px; }
+  #shopify-section-{{ section.id }} .fc-job__title { font-size:clamp(22px,2.2vw,30px); letter-spacing:-.045em; }
+  #shopify-section-{{ section.id }} .fc-job__meta { display:flex; flex-wrap:wrap; gap:20px; color:#999991; font-size:10px; }
+  #shopify-section-{{ section.id }} .fc-job__short { max-width:700px; color:var(--fc-muted); font-size:13px; line-height:1.7; }
+  #shopify-section-{{ section.id }} .fc-job__short p { margin:0; }
+  #shopify-section-{{ section.id }} .fc-job__action { display:flex; justify-content:flex-end; align-items:center; gap:22px; font-size:11px; }
+  #shopify-section-{{ section.id }} .fc-job__plus { position:relative; width:22px; height:22px; border:1px solid var(--fc-line); border-radius:50%; transition:transform .3s ease,background .3s ease; }
+  #shopify-section-{{ section.id }} .fc-job__plus:before,#shopify-section-{{ section.id }} .fc-job__plus:after { content:""; position:absolute; top:10px; left:6px; width:8px; height:1px; background:var(--fc-ink); }
+  #shopify-section-{{ section.id }} .fc-job__plus:after { transform:rotate(90deg); }
+  #shopify-section-{{ section.id }} .fc-job__details[open] .fc-job__plus { transform:rotate(45deg); background:var(--fc-paper); }
+  #shopify-section-{{ section.id }} .fc-job__body { padding:4px 0 48px 90px; animation:fc-reveal .35s ease both; }
+  @keyframes fc-reveal { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  #shopify-section-{{ section.id }} .fc-job__intro { max-width:760px; margin-bottom:34px; font-size:17px; line-height:1.7; }
+  #shopify-section-{{ section.id }} .fc-job__columns { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:38px; }
+  #shopify-section-{{ section.id }} .fc-job__columns h4 { margin:0 0 15px; font-size:11px; font-weight:600; }
+  #shopify-section-{{ section.id }} .fc-job__columns div { color:var(--fc-muted); font-size:12px; line-height:1.8; }
+  #shopify-section-{{ section.id }} .fc-job__columns ul { margin:0; padding-left:17px; }
+  #shopify-section-{{ section.id }} .fc-button { display:flex; align-items:center; justify-content:space-between; gap:30px; min-height:56px; padding:0 20px; border:1px solid var(--fc-ink); text-decoration:none; font:inherit; font-size:12px; cursor:pointer; transition:background .25s ease,color .25s ease,border-color .25s ease; }
+  #shopify-section-{{ section.id }} .fc-button--dark { background:var(--fc-ink); color:#fff; }
+  #shopify-section-{{ section.id }} .fc-button--dark:hover { background:#fff; color:var(--fc-ink); }
+  #shopify-section-{{ section.id }} .fc-job__apply { width:min(100%,310px); margin-top:35px; }
+  #shopify-section-{{ section.id }} .fc-no-roles { padding:60px 0; max-width:650px; }
+  #shopify-section-{{ section.id }} .fc-no-roles h3 { margin:0 0 15px; font-size:32px; font-weight:400; letter-spacing:-.05em; }
+  #shopify-section-{{ section.id }} .fc-no-roles p:not(.fc-kicker) { color:var(--fc-muted); font-size:14px; line-height:1.8; }
+  #shopify-section-{{ section.id }} .fc-manifesto { padding:100px clamp(28px,10.3vw,160px) 120px; background:var(--fc-paper); }
+  #shopify-section-{{ section.id }} .fc-manifesto__head { display:flex; justify-content:space-between; gap:30px; }
+  #shopify-section-{{ section.id }} .fc-manifesto__side { margin:0; color:#999991; text-align:right; font-size:9px; line-height:1.8; letter-spacing:.16em; }
+  #shopify-section-{{ section.id }} .fc-manifesto h2 { max-width:1000px; margin:75px 0 90px; font-size:clamp(55px,8.5vw,124px); line-height:.94; font-weight:400; letter-spacing:-.085em; }
+  #shopify-section-{{ section.id }} .fc-manifesto__grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8%; }
+  #shopify-section-{{ section.id }} .fc-manifesto__grid article { border-top:1px solid #d6d6cf; padding-top:20px; }
+  #shopify-section-{{ section.id }} .fc-manifesto__grid article span { color:#999991; font-size:10px; letter-spacing:.14em; }
+  #shopify-section-{{ section.id }} .fc-manifesto__grid h3 { margin:35px 0 12px; font-size:25px; font-weight:400; letter-spacing:-.05em; }
+  #shopify-section-{{ section.id }} .fc-manifesto__grid p { max-width:310px; margin:0; color:var(--fc-muted); font-size:13px; line-height:1.8; }
+  #shopify-section-{{ section.id }} .fc-application { max-width:1450px; width:calc(100% - 2*clamp(28px,8vw,120px)); margin:0 auto; padding:155px 0 145px; display:grid; grid-template-columns:minmax(250px,.78fr) minmax(0,1.22fr); gap:clamp(50px,9vw,150px); align-items:start; }
+  #shopify-section-{{ section.id }} .fc-application__intro { position:sticky; top:50px; }
+  #shopify-section-{{ section.id }} .fc-application__eyebrow { margin:54px 0 17px; color:#999991; font-size:9px; font-weight:600; letter-spacing:.19em; }
+  #shopify-section-{{ section.id }} .fc-application h2 { max-width:480px; margin:0; font-size:clamp(48px,5.5vw,78px); line-height:.98; font-weight:400; letter-spacing:-.08em; }
+  #shopify-section-{{ section.id }} .fc-application__description { max-width:390px; margin-top:28px; color:var(--fc-muted); font-size:14px; line-height:1.85; }
+  #shopify-section-{{ section.id }} .fc-application__description p { margin:0 0 12px; }
+  #shopify-section-{{ section.id }} .fc-application__note { display:flex; gap:15px; align-items:center; max-width:360px; margin-top:55px; padding-top:20px; border-top:1px solid var(--fc-line); }
+  #shopify-section-{{ section.id }} .fc-note-mark { display:grid; place-items:center; flex:0 0 34px; height:34px; border:1px solid var(--fc-line); border-radius:50%; font-family:Georgia,serif; font-size:15px; }
+  #shopify-section-{{ section.id }} .fc-application__note p { margin:0; color:#999991; font-size:11px; line-height:1.6; }
+  #shopify-section-{{ section.id }} .fc-form-wrap { min-width:0; padding:34px 38px 30px; background:var(--fc-paper); }
+  #shopify-section-{{ section.id }} .fc-form { display:flex; flex-direction:column; gap:25px; }
+  #shopify-section-{{ section.id }} .fc-form__top { display:flex; justify-content:space-between; gap:15px; padding-bottom:19px; border-bottom:1px solid var(--fc-line); color:#999991; font-size:9px; letter-spacing:.16em; }
+  #shopify-section-{{ section.id }} .fc-form__grid,#shopify-section-{{ section.id }} .fc-form__files { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:23px 20px; }
+  #shopify-section-{{ section.id }} .fc-field { min-width:0; display:flex; flex-direction:column; gap:9px; }
+  #shopify-section-{{ section.id }} .fc-field label { font-size:11px; color:#454540; }
+  #shopify-section-{{ section.id }} .fc-field label b,#shopify-section-{{ section.id }} .fc-consent b { color:#999991; font-weight:400; }
+  #shopify-section-{{ section.id }} .fc-field input:not([type=file]),#shopify-section-{{ section.id }} .fc-field select,#shopify-section-{{ section.id }} .fc-field textarea { width:100%; min-height:49px; padding:13px 14px; border:1px solid #deded8; border-radius:0; background:#fff; color:var(--fc-ink); font:inherit; font-size:12px; outline:none; transition:border-color .2s ease,box-shadow .2s ease; }
+  #shopify-section-{{ section.id }} .fc-field textarea { min-height:140px; resize:vertical; line-height:1.6; }
+  #shopify-section-{{ section.id }} .fc-field input:focus,#shopify-section-{{ section.id }} .fc-field select:focus,#shopify-section-{{ section.id }} .fc-field textarea:focus { border-color:#777771; box-shadow:0 0 0 2px rgba(32,32,30,.06); }
+  #shopify-section-{{ section.id }} .fc-field input[type=file] { width:100%; min-height:49px; padding:10px; border:1px solid #deded8; background:#fff; font:inherit; font-size:10px; }
+  #shopify-section-{{ section.id }} .fc-field input[type=file]::file-selector-button { margin-right:10px; padding:8px 11px; border:0; background:var(--fc-paper); color:var(--fc-ink); font:inherit; cursor:pointer; }
+  #shopify-section-{{ section.id }} .fc-field small { color:#999991; font-size:9px; line-height:1.5; }
+  #shopify-section-{{ section.id }} .fc-consent label { display:flex; gap:10px; align-items:flex-start; color:var(--fc-muted); font-size:10px; line-height:1.65; }
+  #shopify-section-{{ section.id }} .fc-consent input { flex:0 0 auto; margin:2px 0 0; accent-color:var(--fc-ink); }
+  #shopify-section-{{ section.id }} .fc-consent a { color:var(--fc-ink); text-underline-offset:3px; }
+  #shopify-section-{{ section.id }} .fc-submit { width:100%; min-height:58px; }
+  #shopify-section-{{ section.id }} .fc-submit:disabled { opacity:.55; cursor:wait; }
+  #shopify-section-{{ section.id }} .fc-form__foot { margin:0; color:#999991; font-size:8px; letter-spacing:.12em; line-height:1.7; }
+  #shopify-section-{{ section.id }} .fc-message { display:none; margin:0; color:#9b3e35; font-size:11px; line-height:1.5; }
+  #shopify-section-{{ section.id }} .fc-message.is-error { display:block; }
+  #shopify-section-{{ section.id }} .fc-honeypot,#shopify-section-{{ section.id }} .fc-frame { position:absolute!important; width:1px!important; height:1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; }
+  #shopify-section-{{ section.id }} .fc-form-placeholder { padding:35px; background:var(--fc-paper); color:var(--fc-muted); font-size:13px; line-height:1.7; }
+  #shopify-section-{{ section.id }} .fc-success { position:fixed; z-index:99999; inset:0; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(22,22,20,.56); opacity:0; visibility:hidden; transition:opacity .35s ease,visibility .35s ease; }
+  #shopify-section-{{ section.id }} .fc-success.is-open { opacity:1; visibility:visible; }
+  #shopify-section-{{ section.id }} .fc-success__backdrop { position:absolute; inset:0; width:100%; height:100%; border:0; background:transparent; cursor:default; }
+  #shopify-section-{{ section.id }} .fc-success__panel { position:relative; z-index:1; width:min(100%,650px); max-height:calc(100vh - 48px); overflow:auto; padding:clamp(34px,5vw,68px); background:#f7f7f3; transform:translateY(18px); transition:transform .4s cubic-bezier(.2,.7,.2,1); outline:none; }
+  #shopify-section-{{ section.id }} .fc-success.is-open .fc-success__panel { transform:translateY(0); }
+  #shopify-section-{{ section.id }} .fc-success__eyebrow { margin:0; color:#999991; font-size:9px; letter-spacing:.18em; }
+  #shopify-section-{{ section.id }} .fc-success__eyebrow span { padding:0 7px; }
+  #shopify-section-{{ section.id }} .fc-success__rule { display:block; width:46px; height:1px; margin:42px 0 26px; background:#c9c9c1; }
+  #shopify-section-{{ section.id }} .fc-success__panel h3 { max-width:540px; margin:0 0 25px; font-size:clamp(43px,6vw,62px); line-height:.98; font-weight:400; letter-spacing:-.075em; }
+  #shopify-section-{{ section.id }} .fc-success__copy { color:var(--fc-muted); font-size:13px; line-height:1.85; }
+  #shopify-section-{{ section.id }} .fc-success__copy p { margin:0 0 15px; }
+  #shopify-section-{{ section.id }} .fc-success__signoff { margin:32px 0 28px; color:#999991; font-size:9px; letter-spacing:.16em; }
+  #shopify-section-{{ section.id }} .fc-success__done { width:100%; }
+  #shopify-section-{{ section.id }} .fc-endmark { display:flex; justify-content:space-between; align-items:flex-end; gap:25px; padding:45px clamp(28px,5.2vw,88px) 38px; background:var(--fc-paper); }
+  #shopify-section-{{ section.id }} .fc-endmark span { font-size:clamp(70px,14vw,190px); line-height:.72; letter-spacing:-.095em; }
+  #shopify-section-{{ section.id }} .fc-endmark p { margin:0 0 5px; color:#999991; font-size:9px; letter-spacing:.16em; text-align:right; }
+  @media(max-width:900px) { #shopify-section-{{ section.id }} .fc-hero { min-height:570px; } #shopify-section-{{ section.id }} .fc-hero__main { grid-template-columns:1fr; gap:55px; padding:95px 0 80px; } #shopify-section-{{ section.id }} .fc-hero__aside { margin:0 0 0 auto; width:min(100%,480px); } #shopify-section-{{ section.id }} .fc-job__columns { grid-template-columns:1fr 1fr; } #shopify-section-{{ section.id }} .fc-application { grid-template-columns:1fr; gap:55px; } #shopify-section-{{ section.id }} .fc-application__intro { position:static; } #shopify-section-{{ section.id }} .fc-application__note { margin-top:32px; } }
+  @media(max-width:600px) { #shopify-section-{{ section.id }} .fc-hero { min-height:590px; padding:32px 22px 25px; } #shopify-section-{{ section.id }} .fc-hero__top,#shopify-section-{{ section.id }} .fc-hero__bottom { font-size:8px; letter-spacing:.12em; } #shopify-section-{{ section.id }} .fc-hero__index { text-align:right; } #shopify-section-{{ section.id }} .fc-hero__main { padding:100px 0 75px; gap:45px; } #shopify-section-{{ section.id }} .fc-hero h1 { font-size:clamp(76px,18vw,112px); } #shopify-section-{{ section.id }} .fc-hero__subline { margin:24px 0 0 3px; font-size:8px; } #shopify-section-{{ section.id }} .fc-hero__aside { font-size:14px; } #shopify-section-{{ section.id }} .fc-positions { width:calc(100% - 44px); padding:90px 0 95px; } #shopify-section-{{ section.id }} .fc-section-top { align-items:flex-end; } #shopify-section-{{ section.id }} .fc-section-top h2 { font-size:43px; } #shopify-section-{{ section.id }} .fc-count { flex-direction:column; gap:3px; font-size:16px; } #shopify-section-{{ section.id }} .fc-count small { font-size:7px; } #shopify-section-{{ section.id }} .fc-job__summary { grid-template-columns:30px minmax(0,1fr); gap:12px; padding:27px 0; } #shopify-section-{{ section.id }} .fc-job__number { padding-top:5px; } #shopify-section-{{ section.id }} .fc-job__action { grid-column:2; justify-content:flex-start; margin-top:5px; } #shopify-section-{{ section.id }} .fc-job__body { padding:0 0 35px 42px; } #shopify-section-{{ section.id }} .fc-job__columns { grid-template-columns:1fr; gap:25px; } #shopify-section-{{ section.id }} .fc-manifesto { padding:75px 22px 85px; } #shopify-section-{{ section.id }} .fc-manifesto__side { font-size:7px; } #shopify-section-{{ section.id }} .fc-manifesto h2 { margin:55px 0 60px; font-size:clamp(52px,12vw,75px); } #shopify-section-{{ section.id }} .fc-manifesto__grid { grid-template-columns:1fr; gap:35px; } #shopify-section-{{ section.id }} .fc-manifesto__grid h3 { margin:20px 0 8px; } #shopify-section-{{ section.id }} .fc-application { width:calc(100% - 44px); padding:90px 0; gap:40px; } #shopify-section-{{ section.id }} .fc-application__eyebrow { margin-top:38px; } #shopify-section-{{ section.id }} .fc-form-wrap { padding:24px 18px; } #shopify-section-{{ section.id }} .fc-form__grid,#shopify-section-{{ section.id }} .fc-form__files { grid-template-columns:1fr; gap:18px; } #shopify-section-{{ section.id }} .fc-form__top { font-size:7px; } #shopify-section-{{ section.id }} .fc-endmark { padding:35px 22px 28px; } #shopify-section-{{ section.id }} .fc-endmark span { font-size:76px; } #shopify-section-{{ section.id }} .fc-endmark p { max-width:125px; font-size:7px; line-height:1.6; } #shopify-section-{{ section.id }} .fc-success { padding:14px; } #shopify-section-{{ section.id }} .fc-success__panel { padding:38px 25px 28px; } #shopify-section-{{ section.id }} .fc-success__rule { margin-top:32px; } }
+  @media(prefers-reduced-motion:reduce) { #shopify-section-{{ section.id }} .fc-hero__scroll span { animation:none; } #shopify-section-{{ section.id }} .fc-job__body { animation:none; } #shopify-section-{{ section.id }} .fc-success,#shopify-section-{{ section.id }} .fc-success__panel { transition:none; } }
 </style>
 
 <script>
-  (() => {
-    const section = document.getElementById('FormaCareers-{{ section.id }}');
-    if (!section || section.dataset.formInitialized === 'true') return;
-    section.dataset.formInitialized = 'true';
-
-    const form = section.querySelector('#FormaCareersForm-{{ section.id }}');
-    const frame = section.querySelector('#FormaCareersFrame-{{ section.id }}');
-    if (!form || !frame) return;
-
-    const message = form.querySelector('.forma-careers__form-message');
-    const submit = form.querySelector('button[type="submit"]');
-    const success = section.querySelector('#FormaCareersSuccess-{{ section.id }}');
-    const successPanel = success ? success.querySelector('.forma-careers__success-panel') : null;
-    const closeButtons = success ? success.querySelectorAll('[data-forma-success-close]') : [];
-    const maxCombinedBytes = 4 * 1024 * 1024;
-    let waitingForResponse = false;
-    let previousFocus = null;
-
-    const showMessage = (text, type) => {
-      message.textContent = text;
-      message.className = 'forma-careers__form-message' + (type ? ' ' + type : '');
-    };
-    const openSuccess = () => {
-      if (!success) return;
-      previousFocus = document.activeElement;
-      success.classList.add('is-open');
-      success.setAttribute('aria-hidden', 'false');
-      document.documentElement.style.overflow = 'hidden';
-      const close = success.querySelector('.forma-careers__success-close');
-      if (close) close.focus();
-    };
-    const closeSuccess = () => {
-      if (!success) return;
-      success.classList.remove('is-open');
-      success.setAttribute('aria-hidden', 'true');
-      document.documentElement.style.overflow = '';
-      if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
-    };
-
-    closeButtons.forEach((button) => button.addEventListener('click', closeSuccess));
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && success && success.classList.contains('is-open')) closeSuccess();
-    });
-
-    frame.addEventListener('load', () => {
-      if (!waitingForResponse) return;
-      waitingForResponse = false;
-      submit.disabled = false;
-      submit.querySelector('span').textContent = 'Submit application';
-      form.reset();
-      showMessage('', '');
-      openSuccess();
-    });
-
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      showMessage('', '');
-
-      if (!form.reportValidity()) return;
-      const honeypot = form.querySelector('[name="website"]');
-      if (honeypot && honeypot.value.trim() !== '') return;
-
-      const cvInput = form.querySelector('[name="cv"]');
-      const portfolioInput = form.querySelector('[name="portfolio"]');
-      const files = [cvInput.files[0], portfolioInput.files[0]].filter(Boolean);
-      const totalBytes = files.reduce((total, file) => total + file.size, 0);
-      if (totalBytes > maxCombinedBytes) {
-        showMessage('The combined file size must be 4 MB or less. Please choose smaller files.', 'is-error');
-        return;
-      }
-
-      const endpoint = form.getAttribute('action');
-      if (!endpoint || endpoint.trim() === '') {
-        showMessage('The application form is not connected yet. Please try again later.', 'is-error');
-        return;
-      }
-
-      form.querySelector('[name="submitted_at"]').value = new Date().toISOString();
-      waitingForResponse = true;
-      submit.disabled = true;
-      submit.querySelector('span').textContent = 'Sending your application‚Ä¶';
-      form.submit();
-    });
-
-    section.querySelectorAll('.forma-careers__apply-button').forEach((button) => {
-      button.addEventListener('click', () => {
-        const job = button.closest('.forma-careers__job');
-        const title = job ? job.querySelector('.forma-careers__job-main h3') : null;
-        const position = form.querySelector('[name="position"]');
-        if (!title || !position) return;
-        const jobTitle = title.textContent.trim();
-        let option = Array.from(position.options).find((item) => item.value === jobTitle);
-        if (!option) {
-          option = document.createElement('option');
-          option.value = jobTitle;
-          option.textContent = jobTitle;
-          option.dataset.jobOption = 'true';
-          position.appendChild(option);
-        }
-        position.value = jobTitle;
-      });
-    });
-  })();
+(() => {
+  const section = document.getElementById('FormaCareers-{{ section.id }}');
+  if (!section || section.dataset.fcReady === 'true') return;
+  section.dataset.fcReady = 'true';
+  const form = section.querySelector('#FormaCareersForm-{{ section.id }}');
+  const frame = section.querySelector('#FormaCareersFrame-{{ section.id }}');
+  if (!form || !frame) return;
+  const submit = form.querySelector('.fc-submit');
+  const message = form.querySelector('.fc-message');
+  const success = section.querySelector('#FormaCareersSuccess-{{ section.id }}');
+  const panel = success && success.querySelector('.fc-success__panel');
+  let waiting = false;
+  let previousFocus = null;
+  const showError = (text) => { message.textContent = text; message.classList.add('is-error'); };
+  const openSuccess = () => {
+    if (!success) return;
+    previousFocus = document.activeElement;
+    success.classList.add('is-open');
+    success.setAttribute('aria-hidden','false');
+    document.documentElement.style.overflow = 'hidden';
+    if (panel) panel.focus();
+  };
+  const closeSuccess = () => {
+    if (!success) return;
+    success.classList.remove('is-open');
+    success.setAttribute('aria-hidden','true');
+    document.documentElement.style.overflow = '';
+    if (previousFocus && previousFocus.focus) previousFocus.focus();
+  };
+  success.querySelectorAll('[data-fc-close]').forEach((el) => el.addEventListener('click', closeSuccess));
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && success.classList.contains('is-open')) closeSuccess(); });
+  frame.addEventListener('load', () => {
+    if (!waiting) return;
+    waiting = false;
+    submit.disabled = false;
+    submit.querySelector('span').textContent = 'Send your application';
+    form.reset();
+    message.textContent = '';
+    message.classList.remove('is-error');
+    openSuccess();
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    message.textContent = '';
+    message.classList.remove('is-error');
+    if (!form.reportValidity()) return;
+    const honeypot = form.querySelector('[name="website"]');
+    if (honeypot && honeypot.value.trim()) return;
+    const cv = form.querySelector('[name="cv"]');
+    const portfolio = form.querySelector('[name="portfolio"]');
+    const files = [cv.files[0], portfolio.files[0]].filter(Boolean);
+    const total = files.reduce((sum,file) => sum + file.size,0);
+    if (total > 4 * 1024 * 1024) { showError('The combined file size must be 4 MB or less. Please choose smaller files.'); return; }
+    const endpoint = form.getAttribute('action');
+    if (!endpoint) { showError('The application form is not connected yet. Please try again later.'); return; }
+    form.querySelector('[name="submitted_at"]').value = new Date().toISOString();
+    waiting = true;
+    submit.disabled = true;
+    submit.querySelector('span').textContent = 'Sending your application‚Ä¶';
+    form.submit();
+  });
+  section.querySelectorAll('.fc-job__apply').forEach((link) => link.addEventListener('click', () => {
+    const title = link.dataset.jobTitle;
+    const select = form.querySelector('[name="position"]');
+    if (!title || !select) return;
+    let option = Array.from(select.options).find((item) => item.value === title);
+    if (!option) { option = new Option(title,title); select.add(option); }
+    select.value = title;
+  }));
+})();
 </script>
 
 {% schema %}
@@ -586,164 +329,42 @@
   "tag": "section",
   "class": "section-forma-careers",
   "settings": [
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Intro label",
-      "default": "FORMA COPENHAGEN / CAREERS"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Main heading",
-      "default": "Join Forma."
-    },
-    {
-      "type": "richtext",
-      "id": "intro",
-      "label": "Introduction",
-      "default": "<p>We're always interested in meeting talented people who share our passion for brands, creativity and building something meaningful.</p>"
-    },
-    {
-      "type": "text",
-      "id": "positions_heading",
-      "label": "Positions heading",
-      "default": "Open Positions"
-    },
-    {
-      "type": "text",
-      "id": "empty_heading",
-      "label": "No positions heading",
-      "default": "No open positions at the moment"
-    },
-    {
-      "type": "textarea",
-      "id": "empty_text",
-      "label": "No positions message",
-      "default": "We don't have any open positions right now, but you're welcome to send us an unsolicited application below."
-    },
-    {
-      "type": "text",
-      "id": "application_eyebrow",
-      "label": "Application label",
-      "default": "MAKE YOUR INTRODUCTION"
-    },
-    {
-      "type": "text",
-      "id": "application_heading",
-      "label": "Application heading",
-      "default": "Make your next move."
-    },
-    {
-      "type": "richtext",
-      "id": "application_text",
-      "label": "Application description",
-      "default": "<p>Don't see a role that fits? Tell us a little about yourself, your experience and how you could contribute to Forma.</p><p>We look forward to hearing from you.</p>"
-    },
-    {
-      "type": "text",
-      "id": "webhook_url",
-      "label": "Make.com Custom Webhook URL",
-      "default": "PASTE_CUSTOM_WEBHOOK_URL_HERE"
-    }
+    { "type": "text", "id": "eyebrow", "label": "Top label", "default": "FORMA COPENHAGEN / CAREERS" },
+    { "type": "text", "id": "heading", "label": "Main heading", "default": "Join Forma." },
+    { "type": "text", "id": "hero_subline", "label": "Hero subline", "default": "PEOPLE MAKE THE DIFFERENCE" },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>We're always interested in meeting talented people who share our passion for brands, creativity and building something meaningful.</p>" },
+    { "type": "text", "id": "positions_heading", "label": "Positions heading", "default": "Open Positions" },
+    { "type": "text", "id": "empty_heading", "label": "No positions heading", "default": "No open positions at the moment" },
+    { "type": "textarea", "id": "empty_text", "label": "No positions message", "default": "We don't have any open positions right now, but you're welcome to send us an unsolicited application below." },
+    { "type": "text", "id": "manifesto_heading", "label": "Culture statement", "default": "We believe the right people can change the shape of what comes next." },
+    { "type": "text", "id": "application_eyebrow", "label": "Application label", "default": "MAKE YOUR INTRODUCTION" },
+    { "type": "text", "id": "application_heading", "label": "Application heading", "default": "Make your next move." },
+    { "type": "richtext", "id": "application_text", "label": "Application description", "default": "<p>Don't see a role that fits? Tell us a little about yourself, your experience and how you could contribute to Forma.</p><p>We look forward to hearing from you.</p>" },
+    { "type": "text", "id": "webhook_url", "label": "Make.com Webhook URL", "default": "PASTE_CUSTOM_WEBHOOK_URL_HERE" }
   ],
   "blocks": [
     {
       "type": "job",
       "name": "Job listing",
       "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Job title",
-          "default": "Brand Partnerships Manager"
-        },
-        {
-          "type": "text",
-          "id": "location",
-          "label": "Location",
-          "default": "Copenhagen, Denmark"
-        },
-        {
-          "type": "text",
-          "id": "employment_type",
-          "label": "Employment type",
-          "default": "Full-time"
-        },
-        {
-          "type": "richtext",
-          "id": "short_description",
-          "label": "Short description",
-          "default": "<p>Help us build meaningful relationships with the brands shaping the future of Scandinavian lifestyle.</p>"
-        },
-        {
-          "type": "text",
-          "id": "button_label",
-          "label": "Expand button label",
-          "default": "View position"
-        },
-        {
-          "type": "richtext",
-          "id": "introduction",
-          "label": "Full job introduction",
-          "default": "<p>We are looking for a talented person to join Forma Copenhagen and help us grow our platform and brand partnerships.</p>"
-        },
-        {
-          "type": "text",
-          "id": "responsibilities_heading",
-          "label": "Responsibilities heading",
-          "default": "The role"
-        },
-        {
-          "type": "richtext",
-          "id": "responsibilities",
-          "label": "Responsibilities",
-          "default": "<ul><li>Build and maintain relationships with partner brands.</li><li>Identify new opportunities and support Forma's growth.</li><li>Work closely with the team on partnerships and initiatives.</li></ul>"
-        },
-        {
-          "type": "text",
-          "id": "qualifications_heading",
-          "label": "Qualifications heading",
-          "default": "What we're looking for"
-        },
-        {
-          "type": "richtext",
-          "id": "qualifications",
-          "label": "Qualifications",
-          "default": "<ul><li>Strong communication and relationship-building skills.</li><li>A proactive and structured approach to work.</li><li>An interest in fashion, design and lifestyle brands.</li></ul>"
-        },
-        {
-          "type": "text",
-          "id": "offer_heading",
-          "label": "What we offer heading",
-          "default": "What we offer"
-        },
-        {
-          "type": "richtext",
-          "id": "offer",
-          "label": "What we offer",
-          "default": "<p>The opportunity to help shape an ambitious platform, take ownership and make a meaningful impact as Forma grows.</p>"
-        },
-        {
-          "type": "text",
-          "id": "apply_label",
-          "label": "Apply button label",
-          "default": "Apply for this position"
-        }
+        { "type": "text", "id": "title", "label": "Job title", "default": "Brand Partnerships Manager" },
+        { "type": "text", "id": "location", "label": "Location", "default": "Copenhagen, Denmark" },
+        { "type": "text", "id": "employment_type", "label": "Employment type", "default": "Full-time" },
+        { "type": "richtext", "id": "short_description", "label": "Short description", "default": "<p>Help us build meaningful relationships with the brands shaping the future of Scandinavian lifestyle.</p>" },
+        { "type": "text", "id": "button_label", "label": "Expand button label", "default": "View position" },
+        { "type": "richtext", "id": "introduction", "label": "Full job introduction", "default": "<p>We are looking for a talented person to join Forma Copenhagen and help us grow our platform and brand partnerships.</p>" },
+        { "type": "text", "id": "responsibilities_heading", "label": "Responsibilities heading", "default": "The role" },
+        { "type": "richtext", "id": "responsibilities", "label": "Responsibilities", "default": "<ul><li>Build and maintain relationships with partner brands.</li><li>Identify new opportunities and support Forma's growth.</li><li>Work closely with the team on partnerships and initiatives.</li></ul>" },
+        { "type": "text", "id": "qualifications_heading", "label": "Qualifications heading", "default": "What we're looking for" },
+        { "type": "richtext", "id": "qualifications", "label": "Qualifications", "default": "<ul><li>Strong communication and relationship-building skills.</li><li>A proactive and structured approach to work.</li><li>An interest in fashion, design and lifestyle brands.</li></ul>" },
+        { "type": "text", "id": "offer_heading", "label": "What we offer heading", "default": "What we offer" },
+        { "type": "richtext", "id": "offer", "label": "What we offer", "default": "<p>The opportunity to help shape an ambitious platform, take ownership and make a meaningful impact as Forma grows.</p>" },
+        { "type": "text", "id": "apply_label", "label": "Apply button label", "default": "Apply for this position" }
       ]
-    },
-    {
-      "type": "@app"
     }
   ],
   "max_blocks": 16,
-  "presets": [
-    {
-      "name": "Forma Careers"
-    }
-  ]
+  "presets": [{ "name": "Forma Careers ‚Äî Editorial" }]
 }
 {% endschema %}
-
-
 
