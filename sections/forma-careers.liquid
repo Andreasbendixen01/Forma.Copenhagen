@@ -8,7 +8,7 @@
   <div class="fc-hero">
     <div class="fc-hero__top">
       <span>{{ section.settings.eyebrow | escape }}</span>
-      <span class="fc-hero__index">01 ‚Äî PEOPLE MAKE THE DIFFERENCE</span>
+      <span class="fc-hero__index">01 / PEOPLE MAKE THE DIFFERENCE</span>
     </div>
     <div class="fc-hero__main">
       <div class="fc-hero__title-wrap">
@@ -18,12 +18,12 @@
       <div class="fc-hero__aside">
         <span class="fc-rule"></span>
         <div>{{ section.settings.intro }}</div>
-        <a href="#FormaCareers-Positions-{{ section.id }}" class="fc-text-link">Explore opportunities <span>‚Üò</span></a>
+        <a href="#FormaCareers-Positions-{{ section.id }}" class="fc-text-link">Explore opportunities <span class="fc-arrow" aria-hidden="true"></span></a>
       </div>
     </div>
     <div class="fc-hero__bottom">
       <span>INDEPENDENT THINKING. SHARED AMBITION.</span>
-      <span>COPENHAGEN ¬∑ DENMARK</span>
+      <span>COPENHAGEN / DENMARK</span>
     </div>
     <div class="fc-hero__scroll" aria-hidden="true"><span></span></div>
   </div>
@@ -61,7 +61,7 @@
                     {% if block.settings.qualifications != blank %}<div><h4>{{ block.settings.qualifications_heading | escape }}</h4>{{ block.settings.qualifications }}</div>{% endif %}
                     {% if block.settings.offer != blank %}<div><h4>{{ block.settings.offer_heading | escape }}</h4>{{ block.settings.offer }}</div>{% endif %}
                   </div>
-                  <a class="fc-button fc-button--dark fc-job__apply" href="#FormaCareers-Application-{{ section.id }}" data-job-title="{{ block.settings.title | escape }}">{{ block.settings.apply_label | escape }} <span>‚Üó</span></a>
+                  <a class="fc-button fc-button--dark fc-job__apply" href="#FormaCareers-Application-{{ section.id }}" data-job-title="{{ block.settings.title | escape }}">{{ block.settings.apply_label | escape }} <span></span></a>
                 </div>
               </details>
             </article>
@@ -69,7 +69,7 @@
         {% endfor %}
       </div>
     {% else %}
-      <div class="fc-no-roles"><p class="fc-kicker">GOOD PEOPLE ARE ALWAYS WELCOME</p><h3>{{ section.settings.empty_heading | escape }}</h3><p>{{ section.settings.empty_text | escape }}</p><a href="#FormaCareers-Application-{{ section.id }}" class="fc-text-link">Introduce yourself <span>‚Üò</span></a></div>
+      <div class="fc-no-roles"><p class="fc-kicker">GOOD PEOPLE ARE ALWAYS WELCOME</p><h3>{{ section.settings.empty_heading | escape }}</h3><p>{{ section.settings.empty_text | escape }}</p><a href="#FormaCareers-Application-{{ section.id }}" class="fc-text-link">Introduce yourself <span class="fc-arrow" aria-hidden="true"></span></a></div>
     {% endif %}
   </section>
 
@@ -89,7 +89,7 @@
       <p class="fc-application__eyebrow">{{ section.settings.application_eyebrow | escape }}</p>
       <h2>{{ section.settings.application_heading | escape }}</h2>
       <div class="fc-application__description">{{ section.settings.application_text }}</div>
-      <div class="fc-application__note"><span class="fc-note-mark">F.</span><p>We are interested in people, not just r√©sum√©s. Tell us what makes you, you.</p></div>
+      <div class="fc-application__note"><span class="fc-note-mark">F.</span><p>We are interested in people, not just CVs. Tell us what makes you, you.</p></div>
     </div>
 
     <div class="fc-form-wrap">
@@ -113,7 +113,7 @@
           </div>
           <div class="fc-consent"><label for="FCPrivacy-{{ section.id }}"><input id="FCPrivacy-{{ section.id }}" name="privacy_consent" type="checkbox" value="Yes" required><span>I have read Forma's <a href="/policies/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> and agree that my information may be processed in connection with this application. <b>*</b></span></label></div>
           <p class="fc-message" role="status" aria-live="polite"></p>
-          <button class="fc-button fc-button--dark fc-submit" type="submit"><span>Send your application</span><span class="fc-submit__arrow">‚Üó</span></button>
+          <button class="fc-button fc-button--dark fc-submit" type="submit"><span>Send your application</span><span class="fc-submit__arrow"></span></button>
           <p class="fc-form__foot">THANK YOU FOR CONSIDERING FORMA. WE LOOK FORWARD TO MEETING YOU.</p>
         </form>
         <iframe name="FormaCareersFrame-{{ section.id }}" id="FormaCareersFrame-{{ section.id }}" class="fc-frame" title="Application submission" tabindex="-1"></iframe>
@@ -125,7 +125,7 @@
             <h3 id="FCSuccessTitle-{{ section.id }}">Thank you for saying hello.</h3>
             <div id="FCSuccessCopy-{{ section.id }}" class="fc-success__copy"><p>Your application is on its way to us. And before anything else, we want to say thank you.</p><p>It means something that you can see yourself being part of what we are building. We'll take the time to get to know your introduction, your ideas and what you could bring to Forma.</p><p>Whatever happens next, we're glad our paths crossed.</p></div>
             <p class="fc-success__signoff">WARM REGARDS, THE FORMA TEAM</p>
-            <button class="fc-button fc-button--dark fc-success__done" type="button" data-fc-close><span>Back to Forma</span><span>‚Üó</span></button>
+            <button class="fc-button fc-button--dark fc-success__done" type="button" data-fc-close><span>Back to Forma</span><span></span></button>
           </div>
         </div>
       {% else %}
@@ -134,7 +134,7 @@
     </div>
   </section>
 
-  <footer class="fc-endmark"><span>FORMA</span><p>GOOD THINGS BEGIN WITH GOOD PEOPLE.</p></footer>
+  
 </section>
 
 <style>
@@ -150,6 +150,9 @@
   #shopify-section-{{ section.id }} .fc-rule { display:block; width:100%; height:1px; margin-bottom:27px; background:var(--fc-line); }
   #shopify-section-{{ section.id }} .fc-text-link { display:inline-flex; align-items:center; gap:24px; margin-top:30px; padding-bottom:8px; border-bottom:1px solid var(--fc-ink); color:var(--fc-ink); text-decoration:none; font-size:12px; transition:gap .25s ease, opacity .25s ease; }
   #shopify-section-{{ section.id }} .fc-text-link:hover { gap:34px; opacity:.65; }
+  #shopify-section-{{ section.id }} .fc-arrow { position:relative; display:inline-block; width:18px; height:1px; background:currentColor; transition:width .25s ease; }
+  #shopify-section-{{ section.id }} .fc-arrow:after { content:""; position:absolute; right:1px; top:-3px; width:6px; height:6px; border-top:1px solid currentColor; border-right:1px solid currentColor; transform:rotate(45deg); }
+  #shopify-section-{{ section.id }} .fc-text-link:hover .fc-arrow { width:25px; }
   #shopify-section-{{ section.id }} .fc-hero__scroll { position:absolute; left:50%; bottom:0; width:1px; height:38px; background:var(--fc-line); overflow:hidden; }
   #shopify-section-{{ section.id }} .fc-hero__scroll span { display:block; width:1px; height:18px; background:var(--fc-ink); animation:fc-scroll 1.8s ease-in-out infinite; }
   @keyframes fc-scroll { 0%{transform:translateY(-20px)} 100%{transform:translateY(42px)} }
@@ -185,6 +188,8 @@
   #shopify-section-{{ section.id }} .fc-button--dark { background:var(--fc-ink); color:#fff; }
   #shopify-section-{{ section.id }} .fc-button--dark:hover { background:#fff; color:var(--fc-ink); }
   #shopify-section-{{ section.id }} .fc-job__apply { width:min(100%,310px); margin-top:35px; }
+  #shopify-section-{{ section.id }} .fc-job__apply > span, #shopify-section-{{ section.id }} .fc-submit__arrow, #shopify-section-{{ section.id }} .fc-success__done > span:last-child { position:relative; display:block; width:18px; height:1px; flex:0 0 18px; background:currentColor; }
+  #shopify-section-{{ section.id }} .fc-job__apply > span:after, #shopify-section-{{ section.id }} .fc-submit__arrow:after, #shopify-section-{{ section.id }} .fc-success__done > span:last-child:after { content:""; position:absolute; right:1px; top:-3px; width:6px; height:6px; border-top:1px solid currentColor; border-right:1px solid currentColor; transform:rotate(45deg); }
   #shopify-section-{{ section.id }} .fc-no-roles { padding:60px 0; max-width:650px; }
   #shopify-section-{{ section.id }} .fc-no-roles h3 { margin:0 0 15px; font-size:32px; font-weight:400; letter-spacing:-.05em; }
   #shopify-section-{{ section.id }} .fc-no-roles p:not(.fc-kicker) { color:var(--fc-muted); font-size:14px; line-height:1.8; }
@@ -242,11 +247,8 @@
   #shopify-section-{{ section.id }} .fc-success__copy p { margin:0 0 15px; }
   #shopify-section-{{ section.id }} .fc-success__signoff { margin:32px 0 28px; color:#999991; font-size:9px; letter-spacing:.16em; }
   #shopify-section-{{ section.id }} .fc-success__done { width:100%; }
-  #shopify-section-{{ section.id }} .fc-endmark { display:flex; justify-content:space-between; align-items:flex-end; gap:25px; padding:45px clamp(28px,5.2vw,88px) 38px; background:var(--fc-paper); }
-  #shopify-section-{{ section.id }} .fc-endmark span { font-size:clamp(70px,14vw,190px); line-height:.72; letter-spacing:-.095em; }
-  #shopify-section-{{ section.id }} .fc-endmark p { margin:0 0 5px; color:#999991; font-size:9px; letter-spacing:.16em; text-align:right; }
   @media(max-width:900px) { #shopify-section-{{ section.id }} .fc-hero { min-height:570px; } #shopify-section-{{ section.id }} .fc-hero__main { grid-template-columns:1fr; gap:55px; padding:95px 0 80px; } #shopify-section-{{ section.id }} .fc-hero__aside { margin:0 0 0 auto; width:min(100%,480px); } #shopify-section-{{ section.id }} .fc-job__columns { grid-template-columns:1fr 1fr; } #shopify-section-{{ section.id }} .fc-application { grid-template-columns:1fr; gap:55px; } #shopify-section-{{ section.id }} .fc-application__intro { position:static; } #shopify-section-{{ section.id }} .fc-application__note { margin-top:32px; } }
-  @media(max-width:600px) { #shopify-section-{{ section.id }} .fc-hero { min-height:590px; padding:32px 22px 25px; } #shopify-section-{{ section.id }} .fc-hero__top,#shopify-section-{{ section.id }} .fc-hero__bottom { font-size:8px; letter-spacing:.12em; } #shopify-section-{{ section.id }} .fc-hero__index { text-align:right; } #shopify-section-{{ section.id }} .fc-hero__main { padding:100px 0 75px; gap:45px; } #shopify-section-{{ section.id }} .fc-hero h1 { font-size:clamp(76px,18vw,112px); } #shopify-section-{{ section.id }} .fc-hero__subline { margin:24px 0 0 3px; font-size:8px; } #shopify-section-{{ section.id }} .fc-hero__aside { font-size:14px; } #shopify-section-{{ section.id }} .fc-positions { width:calc(100% - 44px); padding:90px 0 95px; } #shopify-section-{{ section.id }} .fc-section-top { align-items:flex-end; } #shopify-section-{{ section.id }} .fc-section-top h2 { font-size:43px; } #shopify-section-{{ section.id }} .fc-count { flex-direction:column; gap:3px; font-size:16px; } #shopify-section-{{ section.id }} .fc-count small { font-size:7px; } #shopify-section-{{ section.id }} .fc-job__summary { grid-template-columns:30px minmax(0,1fr); gap:12px; padding:27px 0; } #shopify-section-{{ section.id }} .fc-job__number { padding-top:5px; } #shopify-section-{{ section.id }} .fc-job__action { grid-column:2; justify-content:flex-start; margin-top:5px; } #shopify-section-{{ section.id }} .fc-job__body { padding:0 0 35px 42px; } #shopify-section-{{ section.id }} .fc-job__columns { grid-template-columns:1fr; gap:25px; } #shopify-section-{{ section.id }} .fc-manifesto { padding:75px 22px 85px; } #shopify-section-{{ section.id }} .fc-manifesto__side { font-size:7px; } #shopify-section-{{ section.id }} .fc-manifesto h2 { margin:55px 0 60px; font-size:clamp(52px,12vw,75px); } #shopify-section-{{ section.id }} .fc-manifesto__grid { grid-template-columns:1fr; gap:35px; } #shopify-section-{{ section.id }} .fc-manifesto__grid h3 { margin:20px 0 8px; } #shopify-section-{{ section.id }} .fc-application { width:calc(100% - 44px); padding:90px 0; gap:40px; } #shopify-section-{{ section.id }} .fc-application__eyebrow { margin-top:38px; } #shopify-section-{{ section.id }} .fc-form-wrap { padding:24px 18px; } #shopify-section-{{ section.id }} .fc-form__grid,#shopify-section-{{ section.id }} .fc-form__files { grid-template-columns:1fr; gap:18px; } #shopify-section-{{ section.id }} .fc-form__top { font-size:7px; } #shopify-section-{{ section.id }} .fc-endmark { padding:35px 22px 28px; } #shopify-section-{{ section.id }} .fc-endmark span { font-size:76px; } #shopify-section-{{ section.id }} .fc-endmark p { max-width:125px; font-size:7px; line-height:1.6; } #shopify-section-{{ section.id }} .fc-success { padding:14px; } #shopify-section-{{ section.id }} .fc-success__panel { padding:38px 25px 28px; } #shopify-section-{{ section.id }} .fc-success__rule { margin-top:32px; } }
+  @media(max-width:600px) { #shopify-section-{{ section.id }} .fc-hero { min-height:590px; padding:32px 22px 25px; } #shopify-section-{{ section.id }} .fc-hero__top,#shopify-section-{{ section.id }} .fc-hero__bottom { font-size:8px; letter-spacing:.12em; } #shopify-section-{{ section.id }} .fc-hero__index { text-align:right; } #shopify-section-{{ section.id }} .fc-hero__main { padding:100px 0 75px; gap:45px; } #shopify-section-{{ section.id }} .fc-hero h1 { font-size:clamp(76px,18vw,112px); } #shopify-section-{{ section.id }} .fc-hero__subline { margin:24px 0 0 3px; font-size:8px; } #shopify-section-{{ section.id }} .fc-hero__aside { font-size:14px; } #shopify-section-{{ section.id }} .fc-positions { width:calc(100% - 44px); padding:90px 0 95px; } #shopify-section-{{ section.id }} .fc-section-top { align-items:flex-end; } #shopify-section-{{ section.id }} .fc-section-top h2 { font-size:43px; } #shopify-section-{{ section.id }} .fc-count { flex-direction:column; gap:3px; font-size:16px; } #shopify-section-{{ section.id }} .fc-count small { font-size:7px; } #shopify-section-{{ section.id }} .fc-job__summary { grid-template-columns:30px minmax(0,1fr); gap:12px; padding:27px 0; } #shopify-section-{{ section.id }} .fc-job__number { padding-top:5px; } #shopify-section-{{ section.id }} .fc-job__action { grid-column:2; justify-content:flex-start; margin-top:5px; } #shopify-section-{{ section.id }} .fc-job__body { padding:0 0 35px 42px; } #shopify-section-{{ section.id }} .fc-job__columns { grid-template-columns:1fr; gap:25px; } #shopify-section-{{ section.id }} .fc-manifesto { padding:75px 22px 85px; } #shopify-section-{{ section.id }} .fc-manifesto__side { font-size:7px; } #shopify-section-{{ section.id }} .fc-manifesto h2 { margin:55px 0 60px; font-size:clamp(52px,12vw,75px); } #shopify-section-{{ section.id }} .fc-manifesto__grid { grid-template-columns:1fr; gap:35px; } #shopify-section-{{ section.id }} .fc-manifesto__grid h3 { margin:20px 0 8px; } #shopify-section-{{ section.id }} .fc-application { width:calc(100% - 44px); padding:90px 0; gap:40px; } #shopify-section-{{ section.id }} .fc-application__eyebrow { margin-top:38px; } #shopify-section-{{ section.id }} .fc-form-wrap { padding:24px 18px; } #shopify-section-{{ section.id }} .fc-form__grid,#shopify-section-{{ section.id }} .fc-form__files { grid-template-columns:1fr; gap:18px; } #shopify-section-{{ section.id }} .fc-form__top { font-size:7px; } #shopify-section-{{ section.id }} .fc-success { padding:14px; } #shopify-section-{{ section.id }} .fc-success__panel { padding:38px 25px 28px; } #shopify-section-{{ section.id }} .fc-success__rule { margin-top:32px; } }
   @media(prefers-reduced-motion:reduce) { #shopify-section-{{ section.id }} .fc-hero__scroll span { animation:none; } #shopify-section-{{ section.id }} .fc-job__body { animation:none; } #shopify-section-{{ section.id }} .fc-success,#shopify-section-{{ section.id }} .fc-success__panel { transition:none; } }
 </style>
 
@@ -309,7 +311,7 @@
     form.querySelector('[name="submitted_at"]').value = new Date().toISOString();
     waiting = true;
     submit.disabled = true;
-    submit.querySelector('span').textContent = 'Sending your application‚Ä¶';
+    submit.querySelector('span').textContent = 'Sending your application...';
     form.submit();
   });
   section.querySelectorAll('.fc-job__apply').forEach((link) => link.addEventListener('click', () => {
@@ -367,4 +369,5 @@
   "presets": [{ "name": "Forma Careers ‚Äî Editorial" }]
 }
 {% endschema %}
+
 
