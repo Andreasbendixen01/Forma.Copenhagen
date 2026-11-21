@@ -1,0 +1,590 @@
+
+{% liquid
+  assign brands = shop.metaobjects.forma_brand.values
+%}
+
+<section class="forma-brand-directory" id="forma-brand-directory-{{ section.id }}">
+  <div class="forma-brand-directory__container">
+
+    <header class="forma-brand-directory__header">
+      <h1>{{ section.settings.heading }}</h1>
+      {% if section.settings.subheading != blank %}
+        <p>{{ section.settings.subheading }}</p>
+      {% endif %}
+    </header>
+
+    <div class="forma-brand-directory__controls">
+
+      <div class="forma-brand-directory__search">
+        <input
+          type="search"
+          id="forma-brand-search-{{ section.id }}"
+          placeholder="Search brands..."
+          aria-label="Search brands"
+        >
+        <span class="forma-brand-directory__search-icon">⌕</span>
+      </div>
+
+      <div class="forma-brand-directory__filters" id="forma-brand-filters-{{ section.id }}">
+        <button class="forma-brand-directory__filter is-active" data-category="all">
+          All
+        </button>
+      </div>
+
+    </div>
+
+    <nav class="forma-brand-directory__alphabet" id="forma-brand-alphabet-{{ section.id }}" aria-label="Alphabetical brand navigation">
+    </nav>
+
+    <div class="forma-brand-directory__grid" id="forma-brand-grid-{{ section.id }}">
+
+      {% for brand in brands %}
+        {% assign brand_name = brand.brand_name.value %}
+        {% assign brand_logo = brand.logo.value %}
+        {% assign brand_category = brand.category.value %}
+        {% assign brand_website = brand.website.value %}
+        {% assign brand_forma_url = brand.forma_url.value %}
+        {% assign brand_sort = brand.sort_order.value %}
+
+        {% if brand_name != blank %}
+          {% assign brand_target = brand_forma_url %}
+          {% if brand_target == blank %}
+            {% assign brand_target = brand_website %}
+          {% endif %}
+
+          <article
+            class="forma-brand-directory__card"
+            data-brand="{{ brand_name | escape }}"
+            data-category="{{ brand_category | escape }}"
+            data-sort="{{ brand_sort | default: 9999 }}"
+          >
+
+            {% if brand_target != blank %}
+              <a
+                class="forma-brand-directory__link"
+                href="{{ brand_target }}"
+                {% if brand_forma_url == blank %}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                {% endif %}
+              >
+            {% else %}
+              <div class="forma-brand-directory__link forma-brand-directory__link--inactive">
+            {% endif %}
+
+                <div class="forma-brand-directory__logo">
+                  {% if brand_logo != blank %}
+                    <img
+                      src="{{ brand_logo | image_url: width: 600 }}"
+                      alt="{{ brand_name | escape }}"
+                      loading="lazy"
+                    >
+                  {% else %}
+                    <span class="forma-brand-directory__text-logo">
+                      {{ brand_name }}
+                    </span>
+                  {% endif %}
+                </div>
+
+                <div class="forma-brand-directory__name">
+                  {{ brand_name }}
+                </div>
+
+            {% if brand_target != blank %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+
+          </article>
+        {% endif %}
+      {% endfor %}
+
+    </div>
+
+    <div class="forma-brand-directory__empty" id="forma-brand-empty-{{ section.id }}" style="display:none;">
+      No brands found.
+    </div>
+
+  </div>
+</section>
+
+<style>
+  #forma-brand-directory-{{ section.id }} {
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  #forma-brand-directory-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding: 0 30px;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__header {
+    text-align: center;
+    margin-bottom: 55px;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__header h1 {
+    margin: 0;
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__header p {
+    margin: 15px auto 0;
+    max-width: 600px;
+    font-size: 14px;
+    line-height: 1.6;
+    opacity: .7;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__controls {
+    max-width: 700px;
+    margin: 0 auto 35px;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__search {
+    position: relative;
+    margin-bottom: 25px;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__search input {
+    width: 100%;
+    height: 52px;
+    border: 1px solid rgba(0,0,0,.18);
+    border-radius: 0;
+    padding: 0 45px 0 18px;
+    background: transparent;
+    color: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .2s;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__search input:focus {
+    border-color: rgba(0,0,0,.7);
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__search-icon {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 23px;
+    pointer-events: none;
+    opacity: .6;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__filter {
+    appearance: none;
+    border: 1px solid rgba(0,0,0,.2);
+    background: transparent;
+    color: inherit;
+    padding: 10px 18px;
+    font-size: 12px;
+    letter-spacing: .04em;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__filter:hover,
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__filter.is-active {
+    background: {{ section.settings.text_color }};
+    color: {{ section.settings.background_color }};
+    border-color: {{ section.settings.text_color }};
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__alphabet {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin: 0 auto 45px;
+    max-width: 900px;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__letter {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: inherit;
+    padding: 5px;
+    font-size: 12px;
+    opacity: .6;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__letter:hover,
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__letter.is-active {
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__letter:disabled {
+    opacity: .15;
+    cursor: default;
+    text-decoration: none;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 30px 25px;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__card {
+    min-width: 0;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__link--inactive {
+    cursor: default;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__logo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 35px;
+    background: {{ section.settings.logo_background }};
+    transition: background .25s ease;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__card:hover .forma-brand-directory__logo {
+    background: {{ section.settings.logo_hover_background }};
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__text-logo {
+    font-size: 20px;
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: .02em;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__name {
+    text-align: center;
+    padding-top: 14px;
+    font-size: 13px;
+    letter-spacing: .02em;
+  }
+
+  #forma-brand-directory-{{ section.id }} .forma-brand-directory__empty {
+    text-align: center;
+    padding: 50px 0;
+    font-size: 14px;
+    opacity: .6;
+  }
+
+  @media screen and (max-width: 990px) {
+    #forma-brand-directory-{{ section.id }} .forma-brand-directory__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 25px 20px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #forma-brand-directory-{{ section.id }} .forma-brand-directory__container {
+      padding: 0 15px;
+    }
+
+    #forma-brand-directory-{{ section.id }} .forma-brand-directory__header {
+      margin-bottom: 35px;
+    }
+
+    #forma-brand-directory-{{ section.id }} .forma-brand-directory__header h1 {
+      font-size: {{ section.settings.mobile_heading_size }}px;
+    }
+
+    #forma-brand-directory-{{ section.id }} .forma-brand-directory__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 25px 12px;
+    }
+
+    #forma-brand-directory-{{ section.id }} .forma-brand-directory__logo {
+      padding: 22px;
+    }
+
+    #forma-brand-directory-{{ section.id }} .forma-brand-directory__name {
+      font-size: 12px;
+      padding-top: 11px;
+    }
+
+    #forma-brand-directory-{{ section.id }} .forma-brand-directory__alphabet {
+      gap: 6px;
+      margin-bottom: 30px;
+    }
+
+    #forma-brand-directory-{{ section.id }} .forma-brand-directory__letter {
+      padding: 4px;
+    }
+
+    #forma-brand-directory-{{ section.id }} .forma-brand-directory__filter {
+      padding: 9px 13px;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const root = document.getElementById('forma-brand-directory-{{ section.id }}');
+  if (!root || root.dataset.initialized === 'true') return;
+  root.dataset.initialized = 'true';
+
+  const grid = root.querySelector('#forma-brand-grid-{{ section.id }}');
+  const search = root.querySelector('#forma-brand-search-{{ section.id }}');
+  const filtersContainer = root.querySelector('#forma-brand-filters-{{ section.id }}');
+  const alphabetContainer = root.querySelector('#forma-brand-alphabet-{{ section.id }}');
+  const emptyMessage = root.querySelector('#forma-brand-empty-{{ section.id }}');
+
+  if (!grid || !search || !filtersContainer || !alphabetContainer) return;
+
+  const cards = Array.from(grid.querySelectorAll('.forma-brand-directory__card'));
+
+  const normalize = value => (value || '').toLowerCase().trim();
+
+  cards.sort((a, b) => {
+    const sortA = Number(a.dataset.sort || 9999);
+    const sortB = Number(b.dataset.sort || 9999);
+
+    if (sortA !== sortB && sortA !== 9999 && sortB !== 9999) {
+      return sortA - sortB;
+    }
+
+    return a.dataset.brand.localeCompare(b.dataset.brand, undefined, {
+      sensitivity: 'base'
+    });
+  });
+
+  cards.forEach(card => grid.appendChild(card));
+
+  const categories = [...new Set(
+    cards.map(card => card.dataset.category.trim()).filter(Boolean)
+  )].sort((a, b) => a.localeCompare(b));
+
+  categories.forEach(category => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'forma-brand-directory__filter';
+    button.dataset.category = category;
+    button.textContent = category;
+    filtersContainer.appendChild(button);
+  });
+
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+  letters.forEach(letter => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'forma-brand-directory__letter';
+    button.textContent = letter;
+    button.dataset.letter = letter;
+    alphabetContainer.appendChild(button);
+  });
+
+  let selectedCategory = 'all';
+  let selectedLetter = '';
+  let searchTerm = '';
+
+  function update() {
+    let visibleCount = 0;
+    const visibleLetters = new Set();
+
+    cards.forEach(card => {
+      const name = card.dataset.brand || '';
+      const category = card.dataset.category || '';
+      const firstLetter = name.trim().charAt(0).toUpperCase();
+
+      const matchesCategory =
+        selectedCategory === 'all' ||
+        normalize(category) === normalize(selectedCategory);
+
+      const matchesSearch = normalize(name).includes(normalize(searchTerm));
+
+      const matchesLetter =
+        !selectedLetter ||
+        firstLetter === selectedLetter;
+
+      const visible = matchesCategory && matchesSearch && matchesLetter;
+
+      card.style.display = visible ? '' : 'none';
+
+      if (visible) {
+        visibleCount++;
+        visibleLetters.add(firstLetter);
+      }
+    });
+
+    alphabetContainer.querySelectorAll('.forma-brand-directory__letter').forEach(button => {
+      const letter = button.dataset.letter;
+      button.disabled = !visibleLetters.has(letter);
+      button.classList.toggle('is-active', selectedLetter === letter);
+    });
+
+    filtersContainer.querySelectorAll('.forma-brand-directory__filter').forEach(button => {
+      button.classList.toggle(
+        'is-active',
+        normalize(button.dataset.category) === normalize(selectedCategory)
+      );
+    });
+
+    emptyMessage.style.display = visibleCount ? 'none' : 'block';
+  }
+
+  filtersContainer.addEventListener('click', function(event) {
+    const button = event.target.closest('.forma-brand-directory__filter');
+    if (!button) return;
+
+    selectedCategory = button.dataset.category;
+    selectedLetter = '';
+    update();
+  });
+
+  alphabetContainer.addEventListener('click', function(event) {
+    const button = event.target.closest('.forma-brand-directory__letter');
+    if (!button || button.disabled) return;
+
+    selectedLetter = selectedLetter === button.dataset.letter
+      ? ''
+      : button.dataset.letter;
+
+    update();
+  });
+
+  search.addEventListener('input', function() {
+    searchTerm = search.value;
+    selectedLetter = '';
+    update();
+  });
+
+  update();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Forma Brand Directory",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Brands"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover the brands curated by Forma."
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 30,
+      "max": 90,
+      "step": 2,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum content width",
+      "min": 900,
+      "max": 1800,
+      "step": 100,
+      "default": 1400
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "logo_background",
+      "label": "Logo background",
+      "default": "#F7F7F7"
+    },
+    {
+      "type": "color",
+      "id": "logo_hover_background",
+      "label": "Logo hover background",
+      "default": "#EFEFEF"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Forma Brand Directory"
+    }
+  ]
+}
+{% endschema %}
