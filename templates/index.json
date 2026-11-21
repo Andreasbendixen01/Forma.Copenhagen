@@ -384,6 +384,7 @@
         "category_AbKNeh": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/Skaermbillede_2026-10-07_kl._18.28.26.png",
             "eyebrow": "",
             "title": "The Form",
             "subtitle": "Ideas that shape culture.",
@@ -403,6 +404,7 @@
         "category_yM8tdN": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/Skaermbillede_2026-10-05_kl._10.01.50.png",
             "eyebrow": "",
             "title": "Journal",
             "subtitle": "Stories by Forma.",
