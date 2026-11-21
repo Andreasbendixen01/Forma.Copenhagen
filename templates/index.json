@@ -303,9 +303,10 @@
         "brand_rdYdLJ": {
           "type": "brand",
           "settings": {
+            "image": "shopify://shop_images/Ikke-navngivet-1-Gendannet_c1651206-6b7e-4aea-b634-6157fd196102.png",
             "recommend": "FORMA RECOMMENDS",
             "location": "Copenhagen",
-            "title": "Jacquemus",
+            "title": "Forét",
             "description": "",
             "link": ""
           }
