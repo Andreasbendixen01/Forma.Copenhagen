@@ -281,9 +281,10 @@
         "brand_TT3zYV": {
           "type": "brand",
           "settings": {
+            "image": "shopify://shop_images/Ikke-navngivet-1-Gendannet.png",
             "recommend": "FORMA RECOMMENDS",
             "location": "Copenhagen",
-            "title": "Another Aspect",
+            "title": "HAY",
             "description": "",
             "link": ""
           }
