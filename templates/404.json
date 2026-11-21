@@ -11,10 +11,32 @@
   "sections": {
     "main": {
       "type": "main-not-found",
-      "settings": {}
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "link": ""
+      }
+    },
+    "forma_brand_directory_iQ889C": {
+      "type": "forma-brand-directory",
+      "name": "Forma Brand Directory",
+      "settings": {
+        "heading": "Brands",
+        "subheading": "Discover the brands curated by Forma.",
+        "heading_size": 50,
+        "mobile_heading_size": 36,
+        "max_width": 1400,
+        "background_color": "#FFFFFF",
+        "text_color": "#111111",
+        "logo_background": "#F7F7F7",
+        "logo_hover_background": "#EFEFEF",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "forma_brand_directory_iQ889C"
   ]
 }
