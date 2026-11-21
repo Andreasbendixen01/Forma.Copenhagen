@@ -53,88 +53,6 @@
 
     </header>
 
-    <!-- FEATURED BRANDS -->
-    {% if section.settings.show_featured %}
-      <div class="fbi-featured-section">
-
-        <div class="fbi-section-heading">
-          <span class="fbi-section-label">SELECTED BY FORMA</span>
-          <span class="fbi-section-caption">A closer look</span>
-        </div>
-
-        <div class="fbi-featured-grid">
-
-          {% for brand in brands %}
-            {% if brand.featured.value == true and brand.brand_name.value != blank %}
-
-              {% assign f_name = brand.brand_name.value %}
-              {% assign f_logo = brand.logo.value %}
-              {% assign f_description = brand.description.value %}
-              {% assign f_website = brand.website.value %}
-              {% assign f_forma_url = brand.forma_url.value %}
-              {% assign f_category = brand.category.value %}
-
-              {% assign f_target = f_forma_url %}
-              {% if f_target == blank %}
-                {% assign f_target = f_website %}
-              {% endif %}
-
-              <article class="fbi-featured-card">
-
-                {% if f_target != blank %}
-                  <a href="{{ f_target }}" class="fbi-featured-link"
-                    {% if f_forma_url == blank %}target="_blank" rel="noopener noreferrer"{% endif %}>
-                {% else %}
-                  <div class="fbi-featured-link fbi-featured-link--static">
-                {% endif %}
-
-                  <div class="fbi-featured-image">
-
-                    {% if f_logo != blank %}
-                      <img
-                        src="{{ f_logo | image_url: width: 1000 }}"
-                        alt="{{ f_name | escape }}"
-                        loading="lazy"
-                      >
-                    {% else %}
-                      <span class="fbi-featured-fallback">{{ f_name }}</span>
-                    {% endif %}
-
-                    <div class="fbi-featured-overlay">
-                      <span class="fbi-featured-overlay-label">DISCOVER BRAND</span>
-                      <span class="fbi-featured-arrow">‚Üó</span>
-                    </div>
-
-                  </div>
-
-                  <div class="fbi-featured-meta">
-                    <div>
-                      <h2>{{ f_name }}</h2>
-                      {% if f_category != blank %}
-                        <span class="fbi-featured-category">{{ f_category }}</span>
-                      {% endif %}
-                    </div>
-
-                    {% if f_description != blank %}
-                      <p>{{ f_description | strip_html | truncate: 120 }}</p>
-                    {% endif %}
-                  </div>
-
-                {% if f_target != blank %}
-                  </a>
-                {% else %}
-                  </div>
-                {% endif %}
-
-              </article>
-
-            {% endif %}
-          {% endfor %}
-
-        </div>
-      </div>
-    {% endif %}
-
     <!-- DIRECTORY -->
     <div class="fbi-directory">
 
@@ -209,73 +127,32 @@
             {% assign b_logo = brand.logo.value %}
             {% assign b_category = brand.category.value %}
             {% assign b_description = brand.description.value %}
-            {% assign b_website = brand.website.value %}
-            {% assign b_forma_url = brand.forma_url.value %}
+            {% assign b_website = brand.website.value.url %}
+            {% assign b_forma_url = brand.forma_url.value.url %}
             {% assign b_featured = brand.featured.value %}
             {% assign b_sort = brand.sort_order.value %}
-
-            {% assign b_target = b_forma_url %}
-            {% if b_target == blank %}
-              {% assign b_target = b_website %}
-            {% endif %}
 
             <article
               class="fbi-card"
               data-name="{{ b_name | escape }}"
               data-category="{{ b_category | escape }}"
               data-sort="{{ b_sort | default: 9999 }}"
-              data-featured="{{ b_featured }}"
             >
-
-              {% if b_target != blank %}
-                <a
-                  class="fbi-card-link"
-                  href="{{ b_target }}"
-                  {% if b_forma_url == blank %}target="_blank" rel="noopener noreferrer"{% endif %}
-                >
-              {% else %}
-                <div class="fbi-card-link fbi-card-link--static">
-              {% endif %}
-
-                  <div class="fbi-card-visual">
-
-                    {% if b_logo != blank %}
-                      <img
-                        src="{{ b_logo | image_url: width: 800 }}"
-                        alt="{{ b_name | escape }}"
-                        loading="lazy"
-                      >
-                    {% else %}
-                      <span class="fbi-card-fallback">{{ b_name }}</span>
-                    {% endif %}
-
-                    {% if b_featured == true %}
-                      <span class="fbi-card-featured-tag">FORMA SELECT</span>
-                    {% endif %}
-
-                    <span class="fbi-card-arrow">‚Üó</span>
-
-                  </div>
-
-                  <div class="fbi-card-information">
-                    <div class="fbi-card-title-row">
-                      <h3>{{ b_name }}</h3>
-                      {% if b_category != blank %}
-                        <span class="fbi-card-category">{{ b_category }}</span>
-                      {% endif %}
-                    </div>
-
-                    {% if b_description != blank %}
-                      <p>{{ b_description | strip_html | truncate: 90 }}</p>
-                    {% endif %}
-                  </div>
-
-              {% if b_target != blank %}
-                </a>
-              {% else %}
+              <div class="fbi-card-visual">
+                {% if b_logo != blank %}
+                  <img src="{{ b_logo | image_url: width: 600 }}" alt="{{ b_name | escape }}" loading="lazy">
+                {% else %}
+                  <span class="fbi-card-fallback">{{ b_name }}</span>
+                {% endif %}
+                <div class="fbi-card-overlay">
+                  {% if b_forma_url != blank %}<a href="{{ b_forma_url }}" class="fbi-overlay-link">Explore on Forma <span>‚Üó</span></a>{% endif %}
+                  {% if b_website != blank %}<a href="{{ b_website }}" class="fbi-overlay-link fbi-overlay-link--secondary" target="_blank" rel="noopener noreferrer">Visit brand <span>‚Üó</span></a>{% endif %}
                 </div>
-              {% endif %}
-
+              </div>
+              <div class="fbi-card-information">
+                <div class="fbi-card-title-row"><h3>{{ b_name }}</h3>{% if b_category != blank %}<span class="fbi-card-category">{{ b_category }}</span>{% endif %}</div>
+                {% if b_description != blank %}<p>{{ b_description | strip_html | truncate: 90 }}</p>{% endif %}
+              </div>
             </article>
 
           {% endif %}
@@ -292,804 +169,66 @@
 
     </div>
 
-    <!-- BOTTOM -->
-    {% if section.settings.show_bottom %}
-      <div class="fbi-bottom">
-
-        <div class="fbi-bottom-copy">
-          <span class="fbi-section-label">THE FORMA PERSPECTIVE</span>
-          <p>{{ section.settings.bottom_text }}</p>
-        </div>
-
-        {% if section.settings.bottom_link != blank %}
-          <a class="fbi-bottom-link" href="{{ section.settings.bottom_link }}">
-            <span>{{ section.settings.bottom_link_label }}</span>
-            <span>‚Üó</span>
-          </a>
-        {% endif %}
-
-      </div>
-    {% endif %}
-
   </div>
 
 </section>
 
 <style>
-#forma-brand-index-{{ section.id }} {
-  --fbi-bg: {{ section.settings.background }};
-  --fbi-text: {{ section.settings.text }};
-  --fbi-muted: {{ section.settings.muted }};
-  --fbi-line: {{ section.settings.line }};
-  --fbi-card-bg: {{ section.settings.card_background }};
-  --fbi-shell: {{ section.settings.max_width }}px;
-
-  background: var(--fbi-bg);
-  color: var(--fbi-text);
-  width: 100%;
-  overflow: hidden;
-}
-
-#forma-brand-index-{{ section.id }} *,
-#forma-brand-index-{{ section.id }} *::before,
-#forma-brand-index-{{ section.id }} *::after {
-  box-sizing: border-box;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-shell {
-  width: 100%;
-  max-width: var(--fbi-shell);
-  margin: 0 auto;
-  padding: {{ section.settings.padding_top }}px 45px {{ section.settings.padding_bottom }}px;
-}
-
-/* INTRO */
-
-#forma-brand-index-{{ section.id }} .fbi-intro {
-  padding-bottom: 45px;
-  border-bottom: 1px solid var(--fbi-line);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-kicker {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  opacity: .65;
-  margin-bottom: 60px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-heading-wrap {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(200px, .6fr);
-  align-items: end;
-  gap: 40px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-heading {
-  font-size: clamp(60px, 8vw, {{ section.settings.heading_size }}px);
-  line-height: .88;
-  letter-spacing: -.075em;
-  font-weight: 400;
-  margin: 0;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-heading span {
-  display: block;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-heading-second {
-  font-style: italic;
-  font-family: Georgia, "Times New Roman", serif;
-  font-weight: 400;
-  letter-spacing: -.065em;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-intro-copy {
-  max-width: 350px;
-  font-size: 15px;
-  line-height: 1.75;
-  color: var(--fbi-muted);
-  padding-bottom: 8px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-intro-copy p {
-  margin: 0;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-intro-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 65px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-intro-note {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: .12em;
-  color: var(--fbi-muted);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-note-line {
-  width: 35px;
-  height: 1px;
-  background: var(--fbi-text);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-total {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-total-number {
-  font-size: 25px;
-  letter-spacing: -.05em;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-total-label {
-  font-size: 10px;
-  letter-spacing: .12em;
-  opacity: .65;
-}
-
-/* FEATURED */
-
-#forma-brand-index-{{ section.id }} .fbi-featured-section {
-  padding: 75px 0 90px;
-  border-bottom: 1px solid var(--fbi-line);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-section-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 28px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-section-label {
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-section-caption {
-  font-size: 12px;
-  color: var(--fbi-muted);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 25px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-card {
-  min-width: 0;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-image {
-  position: relative;
-  background: var(--fbi-card-bg);
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12%;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: transform .65s cubic-bezier(.2,.7,.2,1);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-card:hover img {
-  transform: scale(1.045);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-fallback {
-  font-size: 32px;
-  text-align: center;
-  letter-spacing: -.04em;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-overlay {
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255,255,255,.9);
-  color: #111;
-  padding: 12px 14px;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity .25s, transform .25s;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-card:hover .fbi-featured-overlay {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-overlay-label {
-  font-size: 10px;
-  letter-spacing: .12em;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-arrow {
-  font-size: 18px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 25px;
-  padding-top: 20px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-meta h2 {
-  margin: 0;
-  font-size: 19px;
-  font-weight: 400;
-  letter-spacing: -.03em;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-category {
-  display: block;
-  margin-top: 7px;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: .12em;
-  color: var(--fbi-muted);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-featured-meta p {
-  max-width: 280px;
-  font-size: 12px;
-  line-height: 1.7;
-  color: var(--fbi-muted);
-  margin: 0;
-}
-
-/* DIRECTORY */
-
-#forma-brand-index-{{ section.id }} .fbi-directory {
-  padding-top: 85px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-directory-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 40px;
-  margin-bottom: 45px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-directory-title h2 {
-  font-size: 34px;
-  line-height: 1;
-  letter-spacing: -.055em;
-  font-weight: 400;
-  margin: 15px 0 0;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-search-wrap {
-  position: relative;
-  width: min(100%, 360px);
-  border-bottom: 1px solid var(--fbi-line);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-search-wrap input {
-  width: 100%;
-  height: 48px;
-  border: 0;
-  background: transparent;
-  color: var(--fbi-text);
-  padding: 0 80px 0 0;
-  font-size: 14px;
-  outline: none;
-  border-radius: 0;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-search-wrap input::placeholder {
-  color: var(--fbi-muted);
-  opacity: 1;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-search-icon {
-  position: absolute;
-  right: 55px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 25px;
-  opacity: .7;
-  pointer-events: none;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-search-shortcut {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 9px;
-  letter-spacing: .1em;
-  opacity: .5;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-filter-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 25px;
-  padding-bottom: 25px;
-  border-bottom: 1px solid var(--fbi-line);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-category-filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-category-button {
-  border: 1px solid var(--fbi-line);
-  background: transparent;
-  color: var(--fbi-text);
-  padding: 10px 15px;
-  font-size: 11px;
-  letter-spacing: .02em;
-  cursor: pointer;
-  transition: background .2s, color .2s, border-color .2s;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-category-button:hover,
-#forma-brand-index-{{ section.id }} .fbi-category-button.is-active {
-  background: var(--fbi-text);
-  color: var(--fbi-bg);
-  border-color: var(--fbi-text);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-result-count {
-  display: flex;
-  gap: 7px;
-  align-items: baseline;
-  font-size: 10px;
-  letter-spacing: .1em;
-  white-space: nowrap;
-  color: var(--fbi-muted);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-result-count span:first-child {
-  font-size: 16px;
-  color: var(--fbi-text);
-  letter-spacing: -.04em;
-}
-
-/* ALPHABET */
-
-#forma-brand-index-{{ section.id }} .fbi-alphabet-wrap {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-  padding: 23px 0 35px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-alphabet-label {
-  font-size: 10px;
-  letter-spacing: .12em;
-  color: var(--fbi-muted);
-  flex-shrink: 0;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-alphabet {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 5px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-letter {
-  border: 0;
-  background: transparent;
-  color: var(--fbi-text);
-  cursor: pointer;
-  padding: 5px 7px;
-  font-size: 11px;
-  opacity: .55;
-  transition: opacity .2s, background .2s;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-letter:hover,
-#forma-brand-index-{{ section.id }} .fbi-letter.is-active {
-  opacity: 1;
-  background: var(--fbi-text);
-  color: var(--fbi-bg);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-letter:disabled {
-  opacity: .15;
-  cursor: default;
-  background: transparent;
-  color: var(--fbi-text);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-letter-reset {
-  letter-spacing: .08em;
-}
-
-/* GRID */
-
-#forma-brand-index-{{ section.id }} .fbi-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 45px 20px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card {
-  min-width: 0;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card-link {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card-visual {
-  position: relative;
-  background: var(--fbi-card-bg);
-  aspect-ratio: 1 / 1;
-  padding: 27%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  transition: background .25s;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card:hover .fbi-card-visual {
-  background: color-mix(in srgb, var(--fbi-card-bg) 85%, var(--fbi-text) 15%);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card-visual img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: transform .5s cubic-bezier(.2,.7,.2,1);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card:hover .fbi-card-visual img {
-  transform: scale(1.07);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card-fallback {
-  text-align: center;
-  font-size: 19px;
-  letter-spacing: -.03em;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card-arrow {
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  font-size: 16px;
-  opacity: 0;
-  transform: translate(-4px, 4px);
-  transition: opacity .25s, transform .25s;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card:hover .fbi-card-arrow {
-  opacity: 1;
-  transform: translate(0, 0);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card-featured-tag {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  font-size: 8px;
-  letter-spacing: .1em;
-  padding: 7px 9px;
-  background: var(--fbi-bg);
-  color: var(--fbi-text);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card-information {
-  padding-top: 16px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card-title-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 10px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card-title-row h3 {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.3;
-  font-weight: 400;
-  letter-spacing: -.02em;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card-category {
-  font-size: 9px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--fbi-muted);
-  text-align: right;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-card-information p {
-  margin: 9px 0 0;
-  font-size: 11px;
-  line-height: 1.6;
-  color: var(--fbi-muted);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-empty {
-  text-align: center;
-  padding: 90px 20px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-empty-title {
-  display: block;
-  font-size: 35px;
-  letter-spacing: -.05em;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-empty p {
-  color: var(--fbi-muted);
-  font-size: 13px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-empty button {
-  margin-top: 25px;
-  border: 1px solid var(--fbi-text);
-  color: var(--fbi-text);
-  background: transparent;
-  padding: 13px 20px;
-  font-size: 10px;
-  letter-spacing: .1em;
-  cursor: pointer;
-}
-
-/* BOTTOM */
-
-#forma-brand-index-{{ section.id }} .fbi-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 40px;
-  margin-top: 100px;
-  padding-top: 40px;
-  border-top: 1px solid var(--fbi-line);
-}
-
-#forma-brand-index-{{ section.id }} .fbi-bottom-copy {
-  max-width: 520px;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-bottom-copy p {
-  font-size: 20px;
-  line-height: 1.5;
-  letter-spacing: -.035em;
-  margin: 18px 0 0;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-bottom-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 20px;
-  color: var(--fbi-text);
-  text-decoration: none;
-  border-bottom: 1px solid var(--fbi-text);
-  padding-bottom: 10px;
-  font-size: 11px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-bottom-link span:last-child {
-  font-size: 17px;
-  transition: transform .2s;
-}
-
-#forma-brand-index-{{ section.id }} .fbi-bottom-link:hover span:last-child {
-  transform: translate(3px, -3px);
-}
-
-/* RESPONSIVE */
-
-@media screen and (max-width: 1100px) {
-  #forma-brand-index-{{ section.id }} .fbi-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-heading {
-    font-size: clamp(55px, 8vw, 110px);
-  }
-}
-
-@media screen and (max-width: 749px) {
-  #forma-brand-index-{{ section.id }} .fbi-shell {
-    padding: {{ section.settings.mobile_padding_top }}px 18px {{ section.settings.mobile_padding_bottom }}px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-kicker {
-    margin-bottom: 40px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-heading-wrap {
-    display: block;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-heading {
-    font-size: {{ section.settings.mobile_heading_size }}px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-intro-copy {
-    margin-top: 30px;
-    font-size: 14px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-intro-bottom {
-    margin-top: 45px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-intro-note {
-    font-size: 8px;
-    letter-spacing: .1em;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-note-line {
-    width: 20px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-featured-section {
-    padding: 50px 0 60px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-featured-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-featured-image {
-    aspect-ratio: 4 / 3;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-featured-overlay {
-    opacity: 1;
-    transform: none;
-    padding: 10px 12px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-featured-meta {
-    display: block;
-    padding-top: 15px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-featured-meta p {
-    margin-top: 12px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-directory {
-    padding-top: 60px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-directory-top {
-    display: block;
-    margin-bottom: 30px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-directory-title h2 {
-    font-size: 28px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-search-wrap {
-    margin-top: 30px;
-    width: 100%;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-filter-row {
-    display: block;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-category-filters {
-    gap: 6px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-category-button {
-    padding: 9px 12px;
-    font-size: 10px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-result-count {
-    margin-top: 20px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-alphabet-wrap {
-    display: block;
-    padding: 20px 0 25px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-alphabet-label {
-    display: block;
-    margin-bottom: 13px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-alphabet {
-    gap: 3px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-letter {
-    padding: 5px 6px;
-    font-size: 10px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 30px 12px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-card-visual {
-    padding: 24%;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-card-title-row {
-    display: block;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-card-title-row h3 {
-    font-size: 13px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-card-category {
-    display: block;
-    text-align: left;
-    margin-top: 5px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-card-information p {
-    font-size: 10px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-bottom {
-    display: block;
-    margin-top: 60px;
-    padding-top: 30px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-bottom-copy p {
-    font-size: 18px;
-  }
-
-  #forma-brand-index-{{ section.id }} .fbi-bottom-link {
-    margin-top: 30px;
-  }
-}
+#forma-brand-index-{{ section.id }}{--fbi-bg:{{section.settings.background}};--fbi-text:{{section.settings.text}};--fbi-muted:{{section.settings.muted}};--fbi-line:{{section.settings.line}};--fbi-card-bg:{{section.settings.card_background}};background:var(--fbi-bg);color:var(--fbi-text);width:100%;overflow:hidden}
+#forma-brand-index-{{section.id}} *{box-sizing:border-box}
+#forma-brand-index-{{section.id}} .fbi-shell{max-width:{{section.settings.max_width}}px;margin:0 auto;padding:{{section.settings.padding_top}}px 45px {{section.settings.padding_bottom}}px}
+#forma-brand-index-{{section.id}} .fbi-intro{padding-bottom:42px;border-bottom:1px solid var(--fbi-line)}
+#forma-brand-index-{{section.id}} .fbi-kicker{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;margin-bottom:40px}
+#forma-brand-index-{{section.id}} .fbi-heading-wrap{display:grid;grid-template-columns:1.5fr .6fr;align-items:end;gap:36px}
+#forma-brand-index-{{section.id}} .fbi-heading{font-size:clamp(56px,7vw,{{section.settings.heading_size}}px);line-height:.9;letter-spacing:-.065em;font-weight:400;margin:0}
+#forma-brand-index-{{section.id}} .fbi-heading span{display:block}
+#forma-brand-index-{{section.id}} .fbi-heading-second{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;letter-spacing:-.06em}
+#forma-brand-index-{{section.id}} .fbi-intro-copy{max-width:330px;font-size:14px;line-height:1.7;color:var(--fbi-muted);padding-bottom:5px}
+#forma-brand-index-{{section.id}} .fbi-intro-copy p{margin:0}
+#forma-brand-index-{{section.id}} .fbi-intro-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:40px}
+#forma-brand-index-{{section.id}} .fbi-intro-note{display:flex;align-items:center;gap:12px;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--fbi-muted)}
+#forma-brand-index-{{section.id}} .fbi-note-line{width:30px;height:1px;background:var(--fbi-text)}
+#forma-brand-index-{{section.id}} .fbi-total{display:flex;align-items:baseline;gap:8px}.fbi-total-number{font-size:22px;letter-spacing:-.04em}.fbi-total-label{font-size:10px;letter-spacing:.12em;opacity:.6}
+#forma-brand-index-{{section.id}} .fbi-directory{padding-top:40px}
+#forma-brand-index-{{section.id}} .fbi-directory-top{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:28px}
+#forma-brand-index-{{section.id}} .fbi-section-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--fbi-muted)}
+#forma-brand-index-{{section.id}} .fbi-directory-title h2{font-size:30px;line-height:1;letter-spacing:-.05em;font-weight:400;margin:10px 0 0}
+#forma-brand-index-{{section.id}} .fbi-search-wrap{position:relative;width:min(100%,340px);border-bottom:1px solid var(--fbi-line)}
+#forma-brand-index-{{section.id}} .fbi-search-wrap input{width:100%;height:44px;border:0;background:transparent;color:var(--fbi-text);padding:0 70px 0 0;font-size:14px;outline:none}
+#forma-brand-index-{{section.id}} .fbi-search-wrap input::placeholder{color:var(--fbi-muted)}
+#forma-brand-index-{{section.id}} .fbi-search-icon{position:absolute;right:45px;top:50%;transform:translateY(-50%);font-size:22px;opacity:.6;pointer-events:none}
+#forma-brand-index-{{section.id}} .fbi-search-shortcut{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:9px;letter-spacing:.1em;opacity:.5}
+#forma-brand-index-{{section.id}} .fbi-filter-row{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-bottom:20px;border-bottom:1px solid var(--fbi-line)}
+#forma-brand-index-{{section.id}} .fbi-category-filters{display:flex;gap:7px;flex-wrap:wrap}
+#forma-brand-index-{{section.id}} .fbi-category-button{border:1px solid var(--fbi-line);background:transparent;color:var(--fbi-text);padding:9px 13px;font-size:11px;cursor:pointer;transition:.2s}
+#forma-brand-index-{{section.id}} .fbi-category-button:hover,#forma-brand-index-{{section.id}} .fbi-category-button.is-active{background:var(--fbi-text);color:var(--fbi-bg);border-color:var(--fbi-text)}
+#forma-brand-index-{{section.id}} .fbi-result-count{display:flex;gap:7px;align-items:baseline;font-size:10px;letter-spacing:.1em;white-space:nowrap;color:var(--fbi-muted)}
+#forma-brand-index-{{section.id}} .fbi-result-count span:first-child{font-size:15px;color:var(--fbi-text)}
+#forma-brand-index-{{section.id}} .fbi-alphabet-wrap{display:flex;align-items:center;gap:18px;padding:18px 0 28px}
+#forma-brand-index-{{section.id}} .fbi-alphabet-label{font-size:10px;letter-spacing:.12em;color:var(--fbi-muted);flex-shrink:0}
+#forma-brand-index-{{section.id}} .fbi-alphabet{display:flex;flex-wrap:wrap;align-items:center;gap:3px}
+#forma-brand-index-{{section.id}} .fbi-letter{border:0;background:transparent;color:var(--fbi-text);cursor:pointer;padding:4px 6px;font-size:10px;opacity:.5;transition:.2s}
+#forma-brand-index-{{section.id}} .fbi-letter:hover,#forma-brand-index-{{section.id}} .fbi-letter.is-active{opacity:1;background:var(--fbi-text);color:var(--fbi-bg)}
+#forma-brand-index-{{section.id}} .fbi-letter:disabled{opacity:.12;cursor:default;background:transparent;color:var(--fbi-text)}
+#forma-brand-index-{{section.id}} .fbi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px 18px}
+#forma-brand-index-{{section.id}} .fbi-card{min-width:0}
+#forma-brand-index-{{section.id}} .fbi-card-visual{position:relative;background:var(--fbi-card-bg);aspect-ratio:1/1;padding:20%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#forma-brand-index-{{section.id}} .fbi-card-visual img{width:100%;height:100%;object-fit:contain;transition:transform .45s}
+#forma-brand-index-{{section.id}} .fbi-card:hover .fbi-card-visual img{transform:scale(1.04)}
+#forma-brand-index-{{section.id}} .fbi-card-fallback{font-size:20px;text-align:center}
+#forma-brand-index-{{section.id}} .fbi-card-overlay{position:absolute;inset:0;background:rgba(18,18,18,.78);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:18px;opacity:0;transition:opacity .25s}
+#forma-brand-index-{{section.id}} .fbi-card:hover .fbi-card-overlay{opacity:1}
+#forma-brand-index-{{section.id}} .fbi-overlay-link{width:100%;max-width:210px;display:flex;justify-content:space-between;align-items:center;background:#fff;color:#111;text-decoration:none;padding:13px 14px;font-size:11px;letter-spacing:.03em;transition:background .2s}
+#forma-brand-index-{{section.id}} .fbi-overlay-link:hover{background:#e9e9e9}
+#forma-brand-index-{{section.id}} .fbi-overlay-link--secondary{background:transparent;border:1px solid rgba(255,255,255,.8);color:#fff}
+#forma-brand-index-{{section.id}} .fbi-card-information{padding-top:12px}
+#forma-brand-index-{{section.id}} .fbi-card-title-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+#forma-brand-index-{{section.id}} .fbi-card-title-row h3{margin:0;font-size:14px;line-height:1.3;font-weight:400;letter-spacing:-.02em}
+#forma-brand-index-{{section.id}} .fbi-card-category{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--fbi-muted);text-align:right}
+#forma-brand-index-{{section.id}} .fbi-card-information p{margin:7px 0 0;font-size:11px;line-height:1.5;color:var(--fbi-muted)}
+#forma-brand-index-{{section.id}} .fbi-empty{text-align:center;padding:60px 20px}#forma-brand-index-{{section.id}} .fbi-empty-title{display:block;font-size:30px}#forma-brand-index-{{section.id}} .fbi-empty p{color:var(--fbi-muted);font-size:13px}
+@media(max-width:1100px){#forma-brand-index-{{section.id}} .fbi-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+@media(max-width:749px){#forma-brand-index-{{section.id}} .fbi-shell{padding:{{section.settings.mobile_padding_top}}px 18px {{section.settings.mobile_padding_bottom}}px}#forma-brand-index-{{section.id}} .fbi-kicker{margin-bottom:30px}#forma-brand-index-{{section.id}} .fbi-heading-wrap{display:block}#forma-brand-index-{{section.id}} .fbi-heading{font-size:{{section.settings.mobile_heading_size}}px}#forma-brand-index-{{section.id}} .fbi-intro-copy{margin-top:25px;font-size:13px}#forma-brand-index-{{section.id}} .fbi-intro-bottom{margin-top:35px}#forma-brand-index-{{section.id}} .fbi-intro-note{font-size:8px}#forma-brand-index-{{section.id}} .fbi-directory{padding-top:30px}#forma-brand-index-{{section.id}} .fbi-directory-top{display:block}#forma-brand-index-{{section.id}} .fbi-search-wrap{margin-top:22px;width:100%}#forma-brand-index-{{section.id}} .fbi-filter-row{display:block}#forma-brand-index-{{section.id}} .fbi-result-count{margin-top:15px}#forma-brand-index-{{section.id}} .fbi-alphabet-wrap{display:block;padding:18px 0 22px}#forma-brand-index-{{section.id}} .fbi-alphabet-label{display:block;margin-bottom:10px}#forma-brand-index-{{section.id}} .fbi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:25px 12px}#forma-brand-index-{{section.id}} .fbi-card-visual{padding:18%}#forma-brand-index-{{section.id}} .fbi-card-overlay{opacity:1;background:transparent;inset:auto 0 0;padding:8px;gap:5px}#forma-brand-index-{{section.id}} .fbi-overlay-link{font-size:9px;padding:8px 9px;max-width:none}#forma-brand-index-{{section.id}} .fbi-overlay-link--secondary{background:rgba(255,255,255,.9);color:#111;border:0}#forma-brand-index-{{section.id}} .fbi-card-title-row{display:block}#forma-brand-index-{{section.id}} .fbi-card-category{display:block;text-align:left;margin-top:4px}}
 </style>
 
 <script>
@@ -1272,35 +411,6 @@
       "id": "bottom_note",
       "label": "Intro bottom note",
       "default": "A curated world. One destination."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_featured",
-      "label": "Show featured brands",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_bottom",
-      "label": "Show bottom editorial section",
-      "default": true
-    },
-    {
-      "type": "textarea",
-      "id": "bottom_text",
-      "label": "Bottom editorial text",
-      "default": "Forma brings together brands, places and perspectives worth discovering."
-    },
-    {
-      "type": "text",
-      "id": "bottom_link_label",
-      "label": "Bottom link label",
-      "default": "Explore Forma"
-    },
-    {
-      "type": "url",
-      "id": "bottom_link",
-      "label": "Bottom link"
     },
     {
       "type": "range",
