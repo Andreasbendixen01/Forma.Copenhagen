@@ -1,423 +1,1156 @@
 
 {% liquid
   assign brands = shop.metaobjects.forma_brand.values
+  assign total_brands = 0
+  assign featured_count = 0
+
+  for brand in brands
+    if brand.brand_name.value != blank
+      assign total_brands = total_brands | plus: 1
+      if brand.featured.value == true
+        assign featured_count = featured_count | plus: 1
+      endif
+    endif
+  endfor
 %}
 
-<section class="forma-brand-directory" id="forma-brand-directory-{{ section.id }}">
-  <div class="forma-brand-directory__container">
+<section id="forma-brand-index-{{ section.id }}" class="forma-brand-index">
 
-    <header class="forma-brand-directory__header">
-      <h1>{{ section.settings.heading }}</h1>
-      {% if section.settings.subheading != blank %}
-        <p>{{ section.settings.subheading }}</p>
-      {% endif %}
+  <div class="fbi-shell">
+
+    <!-- EDITORIAL HEADER -->
+    <header class="fbi-intro">
+
+      <div class="fbi-kicker">
+        <span>FORMA</span>
+        <span>BRAND INDEX</span>
+      </div>
+
+      <div class="fbi-heading-wrap">
+        <h1 class="fbi-heading">
+          <span>{{ section.settings.heading_line_1 }}</span>
+          <span class="fbi-heading-second">{{ section.settings.heading_line_2 }}</span>
+        </h1>
+
+        {% if section.settings.intro != blank %}
+          <div class="fbi-intro-copy">
+            {{ section.settings.intro }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="fbi-intro-bottom">
+        <div class="fbi-intro-note">
+          <span class="fbi-note-line"></span>
+          <span>{{ section.settings.bottom_note }}</span>
+        </div>
+
+        <div class="fbi-total">
+          <span class="fbi-total-number" id="fbi-total-{{ section.id }}">{{ total_brands }}</span>
+          <span class="fbi-total-label">BRANDS</span>
+        </div>
+      </div>
+
     </header>
 
-    <div class="forma-brand-directory__controls">
+    <!-- FEATURED BRANDS -->
+    {% if section.settings.show_featured %}
+      <div class="fbi-featured-section">
 
-      <div class="forma-brand-directory__search">
-        <input
-          type="search"
-          id="forma-brand-search-{{ section.id }}"
-          placeholder="Search brands..."
-          aria-label="Search brands"
-        >
-        <span class="forma-brand-directory__search-icon">⌕</span>
-      </div>
+        <div class="fbi-section-heading">
+          <span class="fbi-section-label">SELECTED BY FORMA</span>
+          <span class="fbi-section-caption">A closer look</span>
+        </div>
 
-      <div class="forma-brand-directory__filters" id="forma-brand-filters-{{ section.id }}">
-        <button class="forma-brand-directory__filter is-active" data-category="all">
-          All
-        </button>
-      </div>
+        <div class="fbi-featured-grid">
 
-    </div>
+          {% for brand in brands %}
+            {% if brand.featured.value == true and brand.brand_name.value != blank %}
 
-    <nav class="forma-brand-directory__alphabet" id="forma-brand-alphabet-{{ section.id }}" aria-label="Alphabetical brand navigation">
-    </nav>
+              {% assign f_name = brand.brand_name.value %}
+              {% assign f_logo = brand.logo.value %}
+              {% assign f_description = brand.description.value %}
+              {% assign f_website = brand.website.value %}
+              {% assign f_forma_url = brand.forma_url.value %}
+              {% assign f_category = brand.category.value %}
 
-    <div class="forma-brand-directory__grid" id="forma-brand-grid-{{ section.id }}">
+              {% assign f_target = f_forma_url %}
+              {% if f_target == blank %}
+                {% assign f_target = f_website %}
+              {% endif %}
 
-      {% for brand in brands %}
-        {% assign brand_name = brand.brand_name.value %}
-        {% assign brand_logo = brand.logo.value %}
-        {% assign brand_category = brand.category.value %}
-        {% assign brand_website = brand.website.value %}
-        {% assign brand_forma_url = brand.forma_url.value %}
-        {% assign brand_sort = brand.sort_order.value %}
+              <article class="fbi-featured-card">
 
-        {% if brand_name != blank %}
-          {% assign brand_target = brand_forma_url %}
-          {% if brand_target == blank %}
-            {% assign brand_target = brand_website %}
-          {% endif %}
-
-          <article
-            class="forma-brand-directory__card"
-            data-brand="{{ brand_name | escape }}"
-            data-category="{{ brand_category | escape }}"
-            data-sort="{{ brand_sort | default: 9999 }}"
-          >
-
-            {% if brand_target != blank %}
-              <a
-                class="forma-brand-directory__link"
-                href="{{ brand_target }}"
-                {% if brand_forma_url == blank %}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                {% if f_target != blank %}
+                  <a href="{{ f_target }}" class="fbi-featured-link"
+                    {% if f_forma_url == blank %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                {% else %}
+                  <div class="fbi-featured-link fbi-featured-link--static">
                 {% endif %}
-              >
-            {% else %}
-              <div class="forma-brand-directory__link forma-brand-directory__link--inactive">
+
+                  <div class="fbi-featured-image">
+
+                    {% if f_logo != blank %}
+                      <img
+                        src="{{ f_logo | image_url: width: 1000 }}"
+                        alt="{{ f_name | escape }}"
+                        loading="lazy"
+                      >
+                    {% else %}
+                      <span class="fbi-featured-fallback">{{ f_name }}</span>
+                    {% endif %}
+
+                    <div class="fbi-featured-overlay">
+                      <span class="fbi-featured-overlay-label">DISCOVER BRAND</span>
+                      <span class="fbi-featured-arrow">↗</span>
+                    </div>
+
+                  </div>
+
+                  <div class="fbi-featured-meta">
+                    <div>
+                      <h2>{{ f_name }}</h2>
+                      {% if f_category != blank %}
+                        <span class="fbi-featured-category">{{ f_category }}</span>
+                      {% endif %}
+                    </div>
+
+                    {% if f_description != blank %}
+                      <p>{{ f_description | strip_html | truncate: 120 }}</p>
+                    {% endif %}
+                  </div>
+
+                {% if f_target != blank %}
+                  </a>
+                {% else %}
+                  </div>
+                {% endif %}
+
+              </article>
+
+            {% endif %}
+          {% endfor %}
+
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- DIRECTORY -->
+    <div class="fbi-directory">
+
+      <div class="fbi-directory-top">
+
+        <div class="fbi-directory-title">
+          <span class="fbi-section-label">THE DIRECTORY</span>
+          <h2>Explore all brands</h2>
+        </div>
+
+        <div class="fbi-search-wrap">
+          <input
+            type="search"
+            id="fbi-search-{{ section.id }}"
+            placeholder="Find a brand"
+            aria-label="Search brands"
+            autocomplete="off"
+          >
+          <span class="fbi-search-icon">⌕</span>
+          <span class="fbi-search-shortcut">SEARCH</span>
+        </div>
+
+      </div>
+
+      <!-- CATEGORY FILTERS -->
+      <div class="fbi-filter-row">
+
+        <div class="fbi-category-filters" id="fbi-categories-{{ section.id }}">
+          <button class="fbi-category-button is-active" data-category="all" type="button">
+            All brands
+          </button>
+        </div>
+
+        <div class="fbi-result-count">
+          <span id="fbi-result-count-{{ section.id }}">{{ total_brands }}</span>
+          <span>RESULTS</span>
+        </div>
+
+      </div>
+
+      <!-- ALPHABET -->
+      <div class="fbi-alphabet-wrap">
+
+        <span class="fbi-alphabet-label">INDEX</span>
+
+        <div class="fbi-alphabet" id="fbi-alphabet-{{ section.id }}">
+          {% assign alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" | split: "" %}
+          {% for letter in alphabet %}
+            <button
+              class="fbi-letter"
+              type="button"
+              data-letter="{{ letter }}"
+              aria-label="Filter brands starting with {{ letter }}"
+            >
+              {{ letter }}
+            </button>
+          {% endfor %}
+          <button class="fbi-letter fbi-letter-reset" type="button" data-letter="all" aria-label="Show all letters">
+            ALL
+          </button>
+        </div>
+
+      </div>
+
+      <!-- BRAND GRID -->
+      <div class="fbi-grid" id="fbi-grid-{{ section.id }}">
+
+        {% for brand in brands %}
+          {% if brand.brand_name.value != blank %}
+
+            {% assign b_name = brand.brand_name.value %}
+            {% assign b_logo = brand.logo.value %}
+            {% assign b_category = brand.category.value %}
+            {% assign b_description = brand.description.value %}
+            {% assign b_website = brand.website.value %}
+            {% assign b_forma_url = brand.forma_url.value %}
+            {% assign b_featured = brand.featured.value %}
+            {% assign b_sort = brand.sort_order.value %}
+
+            {% assign b_target = b_forma_url %}
+            {% if b_target == blank %}
+              {% assign b_target = b_website %}
             {% endif %}
 
-                <div class="forma-brand-directory__logo">
-                  {% if brand_logo != blank %}
-                    <img
-                      src="{{ brand_logo | image_url: width: 600 }}"
-                      alt="{{ brand_name | escape }}"
-                      loading="lazy"
-                    >
-                  {% else %}
-                    <span class="forma-brand-directory__text-logo">
-                      {{ brand_name }}
-                    </span>
-                  {% endif %}
+            <article
+              class="fbi-card"
+              data-name="{{ b_name | escape }}"
+              data-category="{{ b_category | escape }}"
+              data-sort="{{ b_sort | default: 9999 }}"
+              data-featured="{{ b_featured }}"
+            >
+
+              {% if b_target != blank %}
+                <a
+                  class="fbi-card-link"
+                  href="{{ b_target }}"
+                  {% if b_forma_url == blank %}target="_blank" rel="noopener noreferrer"{% endif %}
+                >
+              {% else %}
+                <div class="fbi-card-link fbi-card-link--static">
+              {% endif %}
+
+                  <div class="fbi-card-visual">
+
+                    {% if b_logo != blank %}
+                      <img
+                        src="{{ b_logo | image_url: width: 800 }}"
+                        alt="{{ b_name | escape }}"
+                        loading="lazy"
+                      >
+                    {% else %}
+                      <span class="fbi-card-fallback">{{ b_name }}</span>
+                    {% endif %}
+
+                    {% if b_featured == true %}
+                      <span class="fbi-card-featured-tag">FORMA SELECT</span>
+                    {% endif %}
+
+                    <span class="fbi-card-arrow">↗</span>
+
+                  </div>
+
+                  <div class="fbi-card-information">
+                    <div class="fbi-card-title-row">
+                      <h3>{{ b_name }}</h3>
+                      {% if b_category != blank %}
+                        <span class="fbi-card-category">{{ b_category }}</span>
+                      {% endif %}
+                    </div>
+
+                    {% if b_description != blank %}
+                      <p>{{ b_description | strip_html | truncate: 90 }}</p>
+                    {% endif %}
+                  </div>
+
+              {% if b_target != blank %}
+                </a>
+              {% else %}
                 </div>
+              {% endif %}
 
-                <div class="forma-brand-directory__name">
-                  {{ brand_name }}
-                </div>
+            </article>
 
-            {% if brand_target != blank %}
-              </a>
-            {% else %}
-              </div>
-            {% endif %}
+          {% endif %}
+        {% endfor %}
 
-          </article>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div class="fbi-empty" id="fbi-empty-{{ section.id }}" hidden>
+        <span class="fbi-empty-title">Nothing found.</span>
+        <p>Try another search or explore a different category.</p>
+        <button type="button" id="fbi-reset-{{ section.id }}">RESET FILTERS</button>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+    {% if section.settings.show_bottom %}
+      <div class="fbi-bottom">
+
+        <div class="fbi-bottom-copy">
+          <span class="fbi-section-label">THE FORMA PERSPECTIVE</span>
+          <p>{{ section.settings.bottom_text }}</p>
+        </div>
+
+        {% if section.settings.bottom_link != blank %}
+          <a class="fbi-bottom-link" href="{{ section.settings.bottom_link }}">
+            <span>{{ section.settings.bottom_link_label }}</span>
+            <span>↗</span>
+          </a>
         {% endif %}
-      {% endfor %}
 
-    </div>
-
-    <div class="forma-brand-directory__empty" id="forma-brand-empty-{{ section.id }}" style="display:none;">
-      No brands found.
-    </div>
+      </div>
+    {% endif %}
 
   </div>
+
 </section>
 
 <style>
-  #forma-brand-directory-{{ section.id }} {
-    background: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
+#forma-brand-index-{{ section.id }} {
+  --fbi-bg: {{ section.settings.background }};
+  --fbi-text: {{ section.settings.text }};
+  --fbi-muted: {{ section.settings.muted }};
+  --fbi-line: {{ section.settings.line }};
+  --fbi-card-bg: {{ section.settings.card_background }};
+  --fbi-shell: {{ section.settings.max_width }}px;
+
+  background: var(--fbi-bg);
+  color: var(--fbi-text);
+  width: 100%;
+  overflow: hidden;
+}
+
+#forma-brand-index-{{ section.id }} *,
+#forma-brand-index-{{ section.id }} *::before,
+#forma-brand-index-{{ section.id }} *::after {
+  box-sizing: border-box;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-shell {
+  width: 100%;
+  max-width: var(--fbi-shell);
+  margin: 0 auto;
+  padding: {{ section.settings.padding_top }}px 45px {{ section.settings.padding_bottom }}px;
+}
+
+/* INTRO */
+
+#forma-brand-index-{{ section.id }} .fbi-intro {
+  padding-bottom: 45px;
+  border-bottom: 1px solid var(--fbi-line);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-kicker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  opacity: .65;
+  margin-bottom: 60px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-heading-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(200px, .6fr);
+  align-items: end;
+  gap: 40px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-heading {
+  font-size: clamp(60px, 8vw, {{ section.settings.heading_size }}px);
+  line-height: .88;
+  letter-spacing: -.075em;
+  font-weight: 400;
+  margin: 0;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-heading span {
+  display: block;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-heading-second {
+  font-style: italic;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -.065em;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-intro-copy {
+  max-width: 350px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--fbi-muted);
+  padding-bottom: 8px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-intro-copy p {
+  margin: 0;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-intro-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 65px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-intro-note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--fbi-muted);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-note-line {
+  width: 35px;
+  height: 1px;
+  background: var(--fbi-text);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-total {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-total-number {
+  font-size: 25px;
+  letter-spacing: -.05em;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-total-label {
+  font-size: 10px;
+  letter-spacing: .12em;
+  opacity: .65;
+}
+
+/* FEATURED */
+
+#forma-brand-index-{{ section.id }} .fbi-featured-section {
+  padding: 75px 0 90px;
+  border-bottom: 1px solid var(--fbi-line);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-section-label {
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-section-caption {
+  font-size: 12px;
+  color: var(--fbi-muted);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 25px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-card {
+  min-width: 0;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-image {
+  position: relative;
+  background: var(--fbi-card-bg);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12%;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform .65s cubic-bezier(.2,.7,.2,1);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-card:hover img {
+  transform: scale(1.045);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-fallback {
+  font-size: 32px;
+  text-align: center;
+  letter-spacing: -.04em;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-overlay {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,.9);
+  color: #111;
+  padding: 12px 14px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .25s, transform .25s;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-card:hover .fbi-featured-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-overlay-label {
+  font-size: 10px;
+  letter-spacing: .12em;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-arrow {
+  font-size: 18px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 25px;
+  padding-top: 20px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-meta h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: -.03em;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-category {
+  display: block;
+  margin-top: 7px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--fbi-muted);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-featured-meta p {
+  max-width: 280px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--fbi-muted);
+  margin: 0;
+}
+
+/* DIRECTORY */
+
+#forma-brand-index-{{ section.id }} .fbi-directory {
+  padding-top: 85px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-directory-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  margin-bottom: 45px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-directory-title h2 {
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -.055em;
+  font-weight: 400;
+  margin: 15px 0 0;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-search-wrap {
+  position: relative;
+  width: min(100%, 360px);
+  border-bottom: 1px solid var(--fbi-line);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-search-wrap input {
+  width: 100%;
+  height: 48px;
+  border: 0;
+  background: transparent;
+  color: var(--fbi-text);
+  padding: 0 80px 0 0;
+  font-size: 14px;
+  outline: none;
+  border-radius: 0;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-search-wrap input::placeholder {
+  color: var(--fbi-muted);
+  opacity: 1;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-search-icon {
+  position: absolute;
+  right: 55px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 25px;
+  opacity: .7;
+  pointer-events: none;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-search-shortcut {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 9px;
+  letter-spacing: .1em;
+  opacity: .5;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-filter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid var(--fbi-line);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-category-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-category-button {
+  border: 1px solid var(--fbi-line);
+  background: transparent;
+  color: var(--fbi-text);
+  padding: 10px 15px;
+  font-size: 11px;
+  letter-spacing: .02em;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-category-button:hover,
+#forma-brand-index-{{ section.id }} .fbi-category-button.is-active {
+  background: var(--fbi-text);
+  color: var(--fbi-bg);
+  border-color: var(--fbi-text);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-result-count {
+  display: flex;
+  gap: 7px;
+  align-items: baseline;
+  font-size: 10px;
+  letter-spacing: .1em;
+  white-space: nowrap;
+  color: var(--fbi-muted);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-result-count span:first-child {
+  font-size: 16px;
+  color: var(--fbi-text);
+  letter-spacing: -.04em;
+}
+
+/* ALPHABET */
+
+#forma-brand-index-{{ section.id }} .fbi-alphabet-wrap {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  padding: 23px 0 35px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-alphabet-label {
+  font-size: 10px;
+  letter-spacing: .12em;
+  color: var(--fbi-muted);
+  flex-shrink: 0;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-alphabet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-letter {
+  border: 0;
+  background: transparent;
+  color: var(--fbi-text);
+  cursor: pointer;
+  padding: 5px 7px;
+  font-size: 11px;
+  opacity: .55;
+  transition: opacity .2s, background .2s;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-letter:hover,
+#forma-brand-index-{{ section.id }} .fbi-letter.is-active {
+  opacity: 1;
+  background: var(--fbi-text);
+  color: var(--fbi-bg);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-letter:disabled {
+  opacity: .15;
+  cursor: default;
+  background: transparent;
+  color: var(--fbi-text);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-letter-reset {
+  letter-spacing: .08em;
+}
+
+/* GRID */
+
+#forma-brand-index-{{ section.id }} .fbi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 45px 20px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card {
+  min-width: 0;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-visual {
+  position: relative;
+  background: var(--fbi-card-bg);
+  aspect-ratio: 1 / 1;
+  padding: 27%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: background .25s;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card:hover .fbi-card-visual {
+  background: color-mix(in srgb, var(--fbi-card-bg) 85%, var(--fbi-text) 15%);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform .5s cubic-bezier(.2,.7,.2,1);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card:hover .fbi-card-visual img {
+  transform: scale(1.07);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-fallback {
+  text-align: center;
+  font-size: 19px;
+  letter-spacing: -.03em;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-arrow {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 16px;
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: opacity .25s, transform .25s;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card:hover .fbi-card-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-featured-tag {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  font-size: 8px;
+  letter-spacing: .1em;
+  padding: 7px 9px;
+  background: var(--fbi-bg);
+  color: var(--fbi-text);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-information {
+  padding-top: 16px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-title-row h3 {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.3;
+  font-weight: 400;
+  letter-spacing: -.02em;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-category {
+  font-size: 9px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--fbi-muted);
+  text-align: right;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-information p {
+  margin: 9px 0 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--fbi-muted);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-empty {
+  text-align: center;
+  padding: 90px 20px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-empty-title {
+  display: block;
+  font-size: 35px;
+  letter-spacing: -.05em;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-empty p {
+  color: var(--fbi-muted);
+  font-size: 13px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-empty button {
+  margin-top: 25px;
+  border: 1px solid var(--fbi-text);
+  color: var(--fbi-text);
+  background: transparent;
+  padding: 13px 20px;
+  font-size: 10px;
+  letter-spacing: .1em;
+  cursor: pointer;
+}
+
+/* BOTTOM */
+
+#forma-brand-index-{{ section.id }} .fbi-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  margin-top: 100px;
+  padding-top: 40px;
+  border-top: 1px solid var(--fbi-line);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-bottom-copy {
+  max-width: 520px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-bottom-copy p {
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: -.035em;
+  margin: 18px 0 0;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-bottom-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  color: var(--fbi-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--fbi-text);
+  padding-bottom: 10px;
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-bottom-link span:last-child {
+  font-size: 17px;
+  transition: transform .2s;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-bottom-link:hover span:last-child {
+  transform: translate(3px, -3px);
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 1100px) {
+  #forma-brand-index-{{ section.id }} .fbi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  #forma-brand-directory-{{ section.id }} * {
-    box-sizing: border-box;
+  #forma-brand-index-{{ section.id }} .fbi-heading {
+    font-size: clamp(55px, 8vw, 110px);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  #forma-brand-index-{{ section.id }} .fbi-shell {
+    padding: {{ section.settings.mobile_padding_top }}px 18px {{ section.settings.mobile_padding_bottom }}px;
   }
 
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__container {
-    max-width: {{ section.settings.max_width }}px;
-    margin: 0 auto;
-    padding: 0 30px;
+  #forma-brand-index-{{ section.id }} .fbi-kicker {
+    margin-bottom: 40px;
   }
 
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__header {
-    text-align: center;
-    margin-bottom: 55px;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__header h1 {
-    margin: 0;
-    font-size: {{ section.settings.heading_size }}px;
-    font-weight: 400;
-    letter-spacing: -0.04em;
-    line-height: 1.1;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__header p {
-    margin: 15px auto 0;
-    max-width: 600px;
-    font-size: 14px;
-    line-height: 1.6;
-    opacity: .7;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__controls {
-    max-width: 700px;
-    margin: 0 auto 35px;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__search {
-    position: relative;
-    margin-bottom: 25px;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__search input {
-    width: 100%;
-    height: 52px;
-    border: 1px solid rgba(0,0,0,.18);
-    border-radius: 0;
-    padding: 0 45px 0 18px;
-    background: transparent;
-    color: inherit;
-    font-size: 14px;
-    outline: none;
-    transition: border-color .2s;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__search input:focus {
-    border-color: rgba(0,0,0,.7);
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__search-icon {
-    position: absolute;
-    right: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 23px;
-    pointer-events: none;
-    opacity: .6;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__filters {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__filter {
-    appearance: none;
-    border: 1px solid rgba(0,0,0,.2);
-    background: transparent;
-    color: inherit;
-    padding: 10px 18px;
-    font-size: 12px;
-    letter-spacing: .04em;
-    cursor: pointer;
-    transition: all .2s ease;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__filter:hover,
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__filter.is-active {
-    background: {{ section.settings.text_color }};
-    color: {{ section.settings.background_color }};
-    border-color: {{ section.settings.text_color }};
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__alphabet {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 9px;
-    margin: 0 auto 45px;
-    max-width: 900px;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__letter {
-    appearance: none;
-    border: none;
-    background: transparent;
-    color: inherit;
-    padding: 5px;
-    font-size: 12px;
-    opacity: .6;
-    cursor: pointer;
-    transition: opacity .2s;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__letter:hover,
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__letter.is-active {
-    opacity: 1;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__letter:disabled {
-    opacity: .15;
-    cursor: default;
-    text-decoration: none;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 30px 25px;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__card {
-    min-width: 0;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__link {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    color: inherit;
-    height: 100%;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__link--inactive {
-    cursor: default;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__logo {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 35px;
-    background: {{ section.settings.logo_background }};
-    transition: background .25s ease;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__card:hover .forma-brand-directory__logo {
-    background: {{ section.settings.logo_hover_background }};
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+  #forma-brand-index-{{ section.id }} .fbi-heading-wrap {
     display: block;
   }
 
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__text-logo {
-    font-size: 20px;
-    text-align: center;
-    font-weight: 400;
-    letter-spacing: .02em;
+  #forma-brand-index-{{ section.id }} .fbi-heading {
+    font-size: {{ section.settings.mobile_heading_size }}px;
   }
 
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__name {
-    text-align: center;
-    padding-top: 14px;
-    font-size: 13px;
-    letter-spacing: .02em;
-  }
-
-  #forma-brand-directory-{{ section.id }} .forma-brand-directory__empty {
-    text-align: center;
-    padding: 50px 0;
+  #forma-brand-index-{{ section.id }} .fbi-intro-copy {
+    margin-top: 30px;
     font-size: 14px;
-    opacity: .6;
   }
 
-  @media screen and (max-width: 990px) {
-    #forma-brand-directory-{{ section.id }} .forma-brand-directory__grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 25px 20px;
-    }
+  #forma-brand-index-{{ section.id }} .fbi-intro-bottom {
+    margin-top: 45px;
   }
 
-  @media screen and (max-width: 749px) {
-    #forma-brand-directory-{{ section.id }} .forma-brand-directory__container {
-      padding: 0 15px;
-    }
-
-    #forma-brand-directory-{{ section.id }} .forma-brand-directory__header {
-      margin-bottom: 35px;
-    }
-
-    #forma-brand-directory-{{ section.id }} .forma-brand-directory__header h1 {
-      font-size: {{ section.settings.mobile_heading_size }}px;
-    }
-
-    #forma-brand-directory-{{ section.id }} .forma-brand-directory__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 25px 12px;
-    }
-
-    #forma-brand-directory-{{ section.id }} .forma-brand-directory__logo {
-      padding: 22px;
-    }
-
-    #forma-brand-directory-{{ section.id }} .forma-brand-directory__name {
-      font-size: 12px;
-      padding-top: 11px;
-    }
-
-    #forma-brand-directory-{{ section.id }} .forma-brand-directory__alphabet {
-      gap: 6px;
-      margin-bottom: 30px;
-    }
-
-    #forma-brand-directory-{{ section.id }} .forma-brand-directory__letter {
-      padding: 4px;
-    }
-
-    #forma-brand-directory-{{ section.id }} .forma-brand-directory__filter {
-      padding: 9px 13px;
-    }
+  #forma-brand-index-{{ section.id }} .fbi-intro-note {
+    font-size: 8px;
+    letter-spacing: .1em;
   }
+
+  #forma-brand-index-{{ section.id }} .fbi-note-line {
+    width: 20px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-featured-section {
+    padding: 50px 0 60px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-featured-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-featured-image {
+    aspect-ratio: 4 / 3;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-featured-overlay {
+    opacity: 1;
+    transform: none;
+    padding: 10px 12px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-featured-meta {
+    display: block;
+    padding-top: 15px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-featured-meta p {
+    margin-top: 12px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-directory {
+    padding-top: 60px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-directory-top {
+    display: block;
+    margin-bottom: 30px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-directory-title h2 {
+    font-size: 28px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-search-wrap {
+    margin-top: 30px;
+    width: 100%;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-filter-row {
+    display: block;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-category-filters {
+    gap: 6px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-category-button {
+    padding: 9px 12px;
+    font-size: 10px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-result-count {
+    margin-top: 20px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-alphabet-wrap {
+    display: block;
+    padding: 20px 0 25px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-alphabet-label {
+    display: block;
+    margin-bottom: 13px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-alphabet {
+    gap: 3px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-letter {
+    padding: 5px 6px;
+    font-size: 10px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px 12px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-card-visual {
+    padding: 24%;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-card-title-row {
+    display: block;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-card-title-row h3 {
+    font-size: 13px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-card-category {
+    display: block;
+    text-align: left;
+    margin-top: 5px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-card-information p {
+    font-size: 10px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-bottom {
+    display: block;
+    margin-top: 60px;
+    padding-top: 30px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-bottom-copy p {
+    font-size: 18px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-bottom-link {
+    margin-top: 30px;
+  }
+}
 </style>
 
 <script>
 (function() {
-  const root = document.getElementById('forma-brand-directory-{{ section.id }}');
+  const root = document.getElementById('forma-brand-index-{{ section.id }}');
   if (!root || root.dataset.initialized === 'true') return;
   root.dataset.initialized = 'true';
 
-  const grid = root.querySelector('#forma-brand-grid-{{ section.id }}');
-  const search = root.querySelector('#forma-brand-search-{{ section.id }}');
-  const filtersContainer = root.querySelector('#forma-brand-filters-{{ section.id }}');
-  const alphabetContainer = root.querySelector('#forma-brand-alphabet-{{ section.id }}');
-  const emptyMessage = root.querySelector('#forma-brand-empty-{{ section.id }}');
+  const grid = root.querySelector('#fbi-grid-{{ section.id }}');
+  const search = root.querySelector('#fbi-search-{{ section.id }}');
+  const categoriesEl = root.querySelector('#fbi-categories-{{ section.id }}');
+  const alphabetEl = root.querySelector('#fbi-alphabet-{{ section.id }}');
+  const emptyEl = root.querySelector('#fbi-empty-{{ section.id }}');
+  const resetButton = root.querySelector('#fbi-reset-{{ section.id }}');
+  const resultCountEl = root.querySelector('#fbi-result-count-{{ section.id }}');
+  const totalEl = root.querySelector('#fbi-total-{{ section.id }}');
 
-  if (!grid || !search || !filtersContainer || !alphabetContainer) return;
+  if (!grid || !search || !categoriesEl || !alphabetEl) return;
 
-  const cards = Array.from(grid.querySelectorAll('.forma-brand-directory__card'));
+  const cards = Array.from(grid.querySelectorAll('.fbi-card'));
 
-  const normalize = value => (value || '').toLowerCase().trim();
+  const normalize = value => (value || '')
+    .toLowerCase()
+    .trim()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
 
   cards.sort((a, b) => {
-    const sortA = Number(a.dataset.sort || 9999);
-    const sortB = Number(b.dataset.sort || 9999);
+    const aSort = Number(a.dataset.sort || 9999);
+    const bSort = Number(b.dataset.sort || 9999);
 
-    if (sortA !== sortB && sortA !== 9999 && sortB !== 9999) {
-      return sortA - sortB;
+    if (aSort !== bSort && aSort !== 9999 && bSort !== 9999) {
+      return aSort - bSort;
     }
 
-    return a.dataset.brand.localeCompare(b.dataset.brand, undefined, {
+    return a.dataset.name.localeCompare(b.dataset.name, undefined, {
       sensitivity: 'base'
     });
   });
 
   cards.forEach(card => grid.appendChild(card));
 
-  const categories = [...new Set(
+  const categoryNames = [...new Set(
     cards.map(card => card.dataset.category.trim()).filter(Boolean)
-  )].sort((a, b) => a.localeCompare(b));
+  )].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
 
-  categories.forEach(category => {
+  categoryNames.forEach(category => {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = 'forma-brand-directory__filter';
+    button.className = 'fbi-category-button';
     button.dataset.category = category;
     button.textContent = category;
-    filtersContainer.appendChild(button);
+    categoriesEl.appendChild(button);
   });
 
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-
-  letters.forEach(letter => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'forma-brand-directory__letter';
-    button.textContent = letter;
-    button.dataset.letter = letter;
-    alphabetContainer.appendChild(button);
-  });
+  const letterButtons = Array.from(
+    alphabetEl.querySelectorAll('.fbi-letter')
+  );
 
   let selectedCategory = 'all';
-  let selectedLetter = '';
+  let selectedLetter = 'all';
   let searchTerm = '';
 
   function update() {
@@ -425,7 +1158,7 @@
     const visibleLetters = new Set();
 
     cards.forEach(card => {
-      const name = card.dataset.brand || '';
+      const name = card.dataset.name || '';
       const category = card.dataset.category || '';
       const firstLetter = name.trim().charAt(0).toUpperCase();
 
@@ -433,10 +1166,11 @@
         selectedCategory === 'all' ||
         normalize(category) === normalize(selectedCategory);
 
-      const matchesSearch = normalize(name).includes(normalize(searchTerm));
+      const matchesSearch =
+        normalize(name).includes(normalize(searchTerm));
 
       const matchesLetter =
-        !selectedLetter ||
+        selectedLetter === 'all' ||
         firstLetter === selectedLetter;
 
       const visible = matchesCategory && matchesSearch && matchesLetter;
@@ -449,47 +1183,63 @@
       }
     });
 
-    alphabetContainer.querySelectorAll('.forma-brand-directory__letter').forEach(button => {
-      const letter = button.dataset.letter;
-      button.disabled = !visibleLetters.has(letter);
-      button.classList.toggle('is-active', selectedLetter === letter);
-    });
-
-    filtersContainer.querySelectorAll('.forma-brand-directory__filter').forEach(button => {
+    categoriesEl.querySelectorAll('.fbi-category-button').forEach(button => {
       button.classList.toggle(
         'is-active',
         normalize(button.dataset.category) === normalize(selectedCategory)
       );
     });
 
-    emptyMessage.style.display = visibleCount ? 'none' : 'block';
+    letterButtons.forEach(button => {
+      const letter = button.dataset.letter;
+      const isReset = letter === 'all';
+
+      button.disabled = !isReset && !visibleLetters.has(letter);
+
+      button.classList.toggle(
+        'is-active',
+        isReset ? selectedLetter === 'all' : selectedLetter === letter
+      );
+    });
+
+    if (resultCountEl) resultCountEl.textContent = visibleCount;
+    if (totalEl) totalEl.textContent = cards.length;
+
+    if (emptyEl) emptyEl.hidden = visibleCount > 0;
   }
 
-  filtersContainer.addEventListener('click', function(event) {
-    const button = event.target.closest('.forma-brand-directory__filter');
+  categoriesEl.addEventListener('click', function(event) {
+    const button = event.target.closest('.fbi-category-button');
     if (!button) return;
 
     selectedCategory = button.dataset.category;
-    selectedLetter = '';
+    selectedLetter = 'all';
     update();
   });
 
-  alphabetContainer.addEventListener('click', function(event) {
-    const button = event.target.closest('.forma-brand-directory__letter');
+  alphabetEl.addEventListener('click', function(event) {
+    const button = event.target.closest('.fbi-letter');
     if (!button || button.disabled) return;
 
-    selectedLetter = selectedLetter === button.dataset.letter
-      ? ''
-      : button.dataset.letter;
-
+    selectedLetter = button.dataset.letter;
     update();
   });
 
   search.addEventListener('input', function() {
     searchTerm = search.value;
-    selectedLetter = '';
+    selectedLetter = 'all';
     update();
   });
+
+  if (resetButton) {
+    resetButton.addEventListener('click', function() {
+      search.value = '';
+      searchTerm = '';
+      selectedCategory = 'all';
+      selectedLetter = 'all';
+      update();
+    });
+  }
 
   update();
 })();
@@ -497,93 +1247,158 @@
 
 {% schema %}
 {
-  "name": "Forma Brand Directory",
+  "name": "Forma Brand Index",
   "settings": [
     {
       "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Brands"
+      "id": "heading_line_1",
+      "label": "Heading line 1",
+      "default": "Discover"
     },
     {
       "type": "text",
-      "id": "subheading",
-      "label": "Subheading",
-      "default": "Discover the brands curated by Forma."
+      "id": "heading_line_2",
+      "label": "Heading line 2",
+      "default": "the brands."
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Introduction",
+      "default": "<p>A considered selection of brands shaping the way we dress, live and experience the world.</p>"
+    },
+    {
+      "type": "text",
+      "id": "bottom_note",
+      "label": "Intro bottom note",
+      "default": "A curated world. One destination."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_featured",
+      "label": "Show featured brands",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom",
+      "label": "Show bottom editorial section",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "bottom_text",
+      "label": "Bottom editorial text",
+      "default": "Forma brings together brands, places and perspectives worth discovering."
+    },
+    {
+      "type": "text",
+      "id": "bottom_link_label",
+      "label": "Bottom link label",
+      "default": "Explore Forma"
+    },
+    {
+      "type": "url",
+      "id": "bottom_link",
+      "label": "Bottom link"
     },
     {
       "type": "range",
       "id": "heading_size",
-      "label": "Heading size",
-      "min": 30,
-      "max": 90,
-      "step": 2,
-      "default": 50
+      "label": "Desktop heading size",
+      "min": 70,
+      "max": 160,
+      "step": 5,
+      "default": 125
     },
     {
       "type": "range",
       "id": "mobile_heading_size",
       "label": "Mobile heading size",
-      "min": 24,
-      "max": 60,
+      "min": 40,
+      "max": 90,
       "step": 2,
-      "default": 36
+      "default": 65
     },
     {
       "type": "range",
       "id": "max_width",
-      "label": "Maximum content width",
-      "min": 900,
-      "max": 1800,
+      "label": "Maximum width",
+      "min": 1000,
+      "max": 2000,
       "step": 100,
-      "default": 1400
+      "default": 1600
     },
     {
       "type": "color",
-      "id": "background_color",
-      "label": "Background color",
+      "id": "background",
+      "label": "Background",
       "default": "#FFFFFF"
     },
     {
       "type": "color",
-      "id": "text_color",
-      "label": "Text color",
+      "id": "text",
+      "label": "Text",
       "default": "#111111"
     },
     {
       "type": "color",
-      "id": "logo_background",
-      "label": "Logo background",
-      "default": "#F7F7F7"
+      "id": "muted",
+      "label": "Muted text",
+      "default": "#777777"
     },
     {
       "type": "color",
-      "id": "logo_hover_background",
-      "label": "Logo hover background",
-      "default": "#EFEFEF"
+      "id": "line",
+      "label": "Border",
+      "default": "#DCDCDC"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Brand image background",
+      "default": "#F4F3F0"
     },
     {
       "type": "range",
       "id": "padding_top",
-      "label": "Padding top",
-      "min": 0,
+      "label": "Desktop top padding",
+      "min": 30,
       "max": 150,
       "step": 10,
-      "default": 60
+      "default": 90
     },
     {
       "type": "range",
       "id": "padding_bottom",
-      "label": "Padding bottom",
-      "min": 0,
+      "label": "Desktop bottom padding",
+      "min": 30,
       "max": 150,
       "step": 10,
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Mobile top padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Mobile bottom padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
       "default": 60
     }
   ],
   "presets": [
     {
-      "name": "Forma Brand Directory"
+      "name": "Forma Brand Index"
     }
   ]
 }
