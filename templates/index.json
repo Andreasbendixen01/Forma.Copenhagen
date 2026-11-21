@@ -278,17 +278,6 @@
             "link": ""
           }
         },
-        "brand_TT3zYV": {
-          "type": "brand",
-          "settings": {
-            "image": "shopify://shop_images/Ikke-navngivet-1-Gendannet.png",
-            "recommend": "FORMA RECOMMENDS",
-            "location": "Copenhagen",
-            "title": "HAY",
-            "description": "",
-            "link": ""
-          }
-        },
         "brand_pfWcUA": {
           "type": "brand",
           "settings": {
@@ -296,6 +285,17 @@
             "recommend": "FORMA RECOMMENDS",
             "location": "Copenhagen",
             "title": "NN07",
+            "description": "",
+            "link": ""
+          }
+        },
+        "brand_TT3zYV": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/Ikke-navngivet-1-Gendannet.png",
+            "recommend": "FORMA RECOMMENDS",
+            "location": "Copenhagen",
+            "title": "HAY",
             "description": "",
             "link": ""
           }
@@ -314,8 +314,8 @@
       "block_order": [
         "brand_xW7wYT",
         "brand_BRMhAU",
-        "brand_TT3zYV",
         "brand_pfWcUA",
+        "brand_TT3zYV",
         "brand_rdYdLJ"
       ],
       "name": "FORMA Brands",
