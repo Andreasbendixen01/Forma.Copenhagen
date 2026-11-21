@@ -256,6 +256,17 @@
     "forma_brands_jUVW6W": {
       "type": "forma-brands",
       "blocks": {
+        "brand_j9zxcV": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/Ikke-navngivet-1-Gendannet_9da163b8-7e63-435a-b7f1-b841393b84ea.png",
+            "recommend": "FORMA RECOMMENDS",
+            "location": "Copenhagen",
+            "title": "SOHO House",
+            "description": "",
+            "link": ""
+          }
+        },
         "brand_xW7wYT": {
           "type": "brand",
           "settings": {
@@ -313,6 +324,7 @@
         }
       },
       "block_order": [
+        "brand_j9zxcV",
         "brand_xW7wYT",
         "brand_BRMhAU",
         "brand_pfWcUA",
