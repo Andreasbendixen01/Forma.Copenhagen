@@ -18,48 +18,12 @@
 
   <div class="fbi-shell">
 
-    <!-- EDITORIAL HEADER -->
-    <header class="fbi-intro">
-
-      <div class="fbi-kicker">
-        <span>FORMA</span>
-        <span>BRAND INDEX</span>
-      </div>
-
-      <div class="fbi-heading-wrap">
-        <h1 class="fbi-heading">
-          <span>{{ section.settings.heading_line_1 }}</span>
-          <span class="fbi-heading-second">{{ section.settings.heading_line_2 }}</span>
-        </h1>
-
-        {% if section.settings.intro != blank %}
-          <div class="fbi-intro-copy">
-            {{ section.settings.intro }}
-          </div>
-        {% endif %}
-      </div>
-
-      <div class="fbi-intro-bottom">
-        <div class="fbi-intro-note">
-          <span class="fbi-note-line"></span>
-          <span>{{ section.settings.bottom_note }}</span>
-        </div>
-
-        <div class="fbi-total">
-          <span class="fbi-total-number" id="fbi-total-{{ section.id }}">{{ total_brands }}</span>
-          <span class="fbi-total-label">BRANDS</span>
-        </div>
-      </div>
-
-    </header>
-
     <!-- DIRECTORY -->
     <div class="fbi-directory">
 
       <div class="fbi-directory-top">
 
         <div class="fbi-directory-title">
-          <span class="fbi-section-label">THE DIRECTORY</span>
           <h2>Explore all brands</h2>
         </div>
 
@@ -144,10 +108,12 @@
                 {% else %}
                   <span class="fbi-card-fallback">{{ b_name }}</span>
                 {% endif %}
-                <div class="fbi-card-overlay">
-                  {% if b_forma_url != blank %}<a href="{{ b_forma_url }}" class="fbi-overlay-link">Explore on Forma <span>‚Üó</span></a>{% endif %}
-                  {% if b_website != blank %}<a href="{{ b_website }}" class="fbi-overlay-link fbi-overlay-link--secondary" target="_blank" rel="noopener noreferrer">Visit brand <span>‚Üó</span></a>{% endif %}
-                </div>
+                {% if b_forma_url != blank or b_website != blank %}
+                  <div class="fbi-card-actions">
+                    {% if b_forma_url != blank %}<a href="{{ b_forma_url }}" class="fbi-action fbi-action--forma">Explore on Forma <span>‚Üó</span></a>{% endif %}
+                    {% if b_website != blank %}<a href="{{ b_website }}" class="fbi-action" target="_blank" rel="noopener noreferrer">Visit website <span>‚Üó</span></a>{% endif %}
+                  </div>
+                {% endif %}
               </div>
               <div class="fbi-card-information">
                 <div class="fbi-card-title-row"><h3>{{ b_name }}</h3>{% if b_category != blank %}<span class="fbi-card-category">{{ b_category }}</span>{% endif %}</div>
@@ -176,59 +142,48 @@
 <style>
 #forma-brand-index-{{ section.id }}{--fbi-bg:{{section.settings.background}};--fbi-text:{{section.settings.text}};--fbi-muted:{{section.settings.muted}};--fbi-line:{{section.settings.line}};--fbi-card-bg:{{section.settings.card_background}};background:var(--fbi-bg);color:var(--fbi-text);width:100%;overflow:hidden}
 #forma-brand-index-{{section.id}} *{box-sizing:border-box}
-#forma-brand-index-{{section.id}} .fbi-shell{max-width:{{section.settings.max_width}}px;margin:0 auto;padding:{{section.settings.padding_top}}px 45px {{section.settings.padding_bottom}}px}
-#forma-brand-index-{{section.id}} .fbi-intro{padding-bottom:42px;border-bottom:1px solid var(--fbi-line)}
-#forma-brand-index-{{section.id}} .fbi-kicker{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;margin-bottom:40px}
-#forma-brand-index-{{section.id}} .fbi-heading-wrap{display:grid;grid-template-columns:1.5fr .6fr;align-items:end;gap:36px}
-#forma-brand-index-{{section.id}} .fbi-heading{font-size:clamp(56px,7vw,{{section.settings.heading_size}}px);line-height:.9;letter-spacing:-.065em;font-weight:400;margin:0}
-#forma-brand-index-{{section.id}} .fbi-heading span{display:block}
-#forma-brand-index-{{section.id}} .fbi-heading-second{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;letter-spacing:-.06em}
-#forma-brand-index-{{section.id}} .fbi-intro-copy{max-width:330px;font-size:14px;line-height:1.7;color:var(--fbi-muted);padding-bottom:5px}
-#forma-brand-index-{{section.id}} .fbi-intro-copy p{margin:0}
-#forma-brand-index-{{section.id}} .fbi-intro-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:40px}
-#forma-brand-index-{{section.id}} .fbi-intro-note{display:flex;align-items:center;gap:12px;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--fbi-muted)}
-#forma-brand-index-{{section.id}} .fbi-note-line{width:30px;height:1px;background:var(--fbi-text)}
-#forma-brand-index-{{section.id}} .fbi-total{display:flex;align-items:baseline;gap:8px}.fbi-total-number{font-size:22px;letter-spacing:-.04em}.fbi-total-label{font-size:10px;letter-spacing:.12em;opacity:.6}
-#forma-brand-index-{{section.id}} .fbi-directory{padding-top:40px}
-#forma-brand-index-{{section.id}} .fbi-directory-top{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:28px}
-#forma-brand-index-{{section.id}} .fbi-section-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--fbi-muted)}
-#forma-brand-index-{{section.id}} .fbi-directory-title h2{font-size:30px;line-height:1;letter-spacing:-.05em;font-weight:400;margin:10px 0 0}
-#forma-brand-index-{{section.id}} .fbi-search-wrap{position:relative;width:min(100%,340px);border-bottom:1px solid var(--fbi-line)}
-#forma-brand-index-{{section.id}} .fbi-search-wrap input{width:100%;height:44px;border:0;background:transparent;color:var(--fbi-text);padding:0 70px 0 0;font-size:14px;outline:none}
-#forma-brand-index-{{section.id}} .fbi-search-wrap input::placeholder{color:var(--fbi-muted)}
-#forma-brand-index-{{section.id}} .fbi-search-icon{position:absolute;right:45px;top:50%;transform:translateY(-50%);font-size:22px;opacity:.6;pointer-events:none}
-#forma-brand-index-{{section.id}} .fbi-search-shortcut{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:9px;letter-spacing:.1em;opacity:.5}
-#forma-brand-index-{{section.id}} .fbi-filter-row{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-bottom:20px;border-bottom:1px solid var(--fbi-line)}
-#forma-brand-index-{{section.id}} .fbi-category-filters{display:flex;gap:7px;flex-wrap:wrap}
-#forma-brand-index-{{section.id}} .fbi-category-button{border:1px solid var(--fbi-line);background:transparent;color:var(--fbi-text);padding:9px 13px;font-size:11px;cursor:pointer;transition:.2s}
+#forma-brand-index-{{section.id}} .fbi-shell{max-width:{{section.settings.max_width}}px;margin:0 auto;padding:24px 45px 55px}
+#forma-brand-index-{{section.id}} .fbi-directory{padding-top:0}
+#forma-brand-index-{{section.id}} .fbi-directory-top{display:flex;justify-content:space-between;align-items:center;gap:25px;margin-bottom:24px}
+#forma-brand-index-{{section.id}} .fbi-directory-title h2{font-size:clamp(22px,2.5vw,34px);line-height:1;letter-spacing:-.055em;font-weight:400;margin:0}
+#forma-brand-index-{{section.id}} .fbi-search-wrap{position:relative;width:min(100%,340px);border-bottom:1px solid #bdbdbd}
+#forma-brand-index-{{section.id}} .fbi-search-wrap input{width:100%;height:44px;border:0;background:transparent;color:var(--fbi-text);padding:0 65px 0 0;font-size:14px;outline:none}
+#forma-brand-index-{{section.id}} .fbi-search-wrap input::placeholder{color:#888}
+#forma-brand-index-{{section.id}} .fbi-search-icon{position:absolute;right:40px;top:50%;transform:translateY(-50%);font-size:20px;opacity:.6;pointer-events:none}
+#forma-brand-index-{{section.id}} .fbi-search-shortcut{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:9px;letter-spacing:.1em;opacity:.45}
+#forma-brand-index-{{section.id}} .fbi-filter-row{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:0 0 17px;border:0}
+#forma-brand-index-{{section.id}} .fbi-category-filters{display:flex;gap:9px;flex-wrap:wrap}
+#forma-brand-index-{{section.id}} .fbi-category-button{border:1px solid #dedede;border-radius:999px;background:transparent;color:var(--fbi-text);padding:11px 20px;font-size:12px;cursor:pointer;transition:all .22s ease}
 #forma-brand-index-{{section.id}} .fbi-category-button:hover,#forma-brand-index-{{section.id}} .fbi-category-button.is-active{background:var(--fbi-text);color:var(--fbi-bg);border-color:var(--fbi-text)}
 #forma-brand-index-{{section.id}} .fbi-result-count{display:flex;gap:7px;align-items:baseline;font-size:10px;letter-spacing:.1em;white-space:nowrap;color:var(--fbi-muted)}
 #forma-brand-index-{{section.id}} .fbi-result-count span:first-child{font-size:15px;color:var(--fbi-text)}
-#forma-brand-index-{{section.id}} .fbi-alphabet-wrap{display:flex;align-items:center;gap:18px;padding:18px 0 28px}
-#forma-brand-index-{{section.id}} .fbi-alphabet-label{font-size:10px;letter-spacing:.12em;color:var(--fbi-muted);flex-shrink:0}
-#forma-brand-index-{{section.id}} .fbi-alphabet{display:flex;flex-wrap:wrap;align-items:center;gap:3px}
-#forma-brand-index-{{section.id}} .fbi-letter{border:0;background:transparent;color:var(--fbi-text);cursor:pointer;padding:4px 6px;font-size:10px;opacity:.5;transition:.2s}
+#forma-brand-index-{{section.id}} .fbi-alphabet-wrap{display:flex;align-items:center;gap:14px;padding:12px 0 24px;border:0}
+#forma-brand-index-{{section.id}} .fbi-alphabet-label{font-size:9px;letter-spacing:.1em;color:#999;flex-shrink:0}
+#forma-brand-index-{{section.id}} .fbi-alphabet{display:flex;flex-wrap:wrap;align-items:center;gap:2px}
+#forma-brand-index-{{section.id}} .fbi-letter{border:0;border-radius:999px;background:transparent;color:var(--fbi-text);cursor:pointer;padding:5px 7px;font-size:10px;opacity:.45;transition:.2s}
 #forma-brand-index-{{section.id}} .fbi-letter:hover,#forma-brand-index-{{section.id}} .fbi-letter.is-active{opacity:1;background:var(--fbi-text);color:var(--fbi-bg)}
 #forma-brand-index-{{section.id}} .fbi-letter:disabled{opacity:.12;cursor:default;background:transparent;color:var(--fbi-text)}
-#forma-brand-index-{{section.id}} .fbi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px 18px}
+#forma-brand-index-{{section.id}} .fbi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 20px}
 #forma-brand-index-{{section.id}} .fbi-card{min-width:0}
-#forma-brand-index-{{section.id}} .fbi-card-visual{position:relative;background:var(--fbi-card-bg);aspect-ratio:1/1;padding:20%;display:flex;align-items:center;justify-content:center;overflow:hidden}
-#forma-brand-index-{{section.id}} .fbi-card-visual img{width:100%;height:100%;object-fit:contain;transition:transform .45s}
-#forma-brand-index-{{section.id}} .fbi-card:hover .fbi-card-visual img{transform:scale(1.04)}
+#forma-brand-index-{{section.id}} .fbi-card-visual{position:relative;background:var(--fbi-card-bg);aspect-ratio:1/1;padding:22%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#forma-brand-index-{{section.id}} .fbi-card-visual img{width:100%;height:100%;object-fit:contain;transition:transform .45s ease}
+#forma-brand-index-{{section.id}} .fbi-card:hover .fbi-card-visual img{transform:scale(1.035)}
 #forma-brand-index-{{section.id}} .fbi-card-fallback{font-size:20px;text-align:center}
-#forma-brand-index-{{section.id}} .fbi-card-overlay{position:absolute;inset:0;background:rgba(18,18,18,.78);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:18px;opacity:0;transition:opacity .25s}
-#forma-brand-index-{{section.id}} .fbi-card:hover .fbi-card-overlay{opacity:1}
-#forma-brand-index-{{section.id}} .fbi-overlay-link{width:100%;max-width:210px;display:flex;justify-content:space-between;align-items:center;background:#fff;color:#111;text-decoration:none;padding:13px 14px;font-size:11px;letter-spacing:.03em;transition:background .2s}
-#forma-brand-index-{{section.id}} .fbi-overlay-link:hover{background:#e9e9e9}
-#forma-brand-index-{{section.id}} .fbi-overlay-link--secondary{background:transparent;border:1px solid rgba(255,255,255,.8);color:#fff}
-#forma-brand-index-{{section.id}} .fbi-card-information{padding-top:12px}
+/* Refined hover: discreet bottom action dock, never obscures the logo */
+#forma-brand-index-{{section.id}} .fbi-card-actions{position:absolute;left:50%;bottom:14px;transform:translate(-50%,12px);width:max-content;max-width:calc(100% - 24px);display:flex;flex-wrap:wrap;justify-content:center;gap:7px;padding:7px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:999px;box-shadow:0 5px 20px rgba(0,0,0,.08);opacity:0;transition:opacity .25s ease,transform .25s ease}
+#forma-brand-index-{{section.id}} .fbi-card:hover .fbi-card-actions,#forma-brand-index-{{section.id}} .fbi-card:focus-within .fbi-card-actions{opacity:1;transform:translate(-50%,0)}
+#forma-brand-index-{{section.id}} .fbi-action{display:inline-flex;align-items:center;gap:12px;border-radius:999px;padding:11px 15px;background:#fff;color:#111;text-decoration:none;font-size:11px;white-space:nowrap;transition:background .2s,color .2s}
+#forma-brand-index-{{section.id}} .fbi-action:hover{background:#111;color:#fff}
+#forma-brand-index-{{section.id}} .fbi-action--forma{background:#111;color:#fff}
+#forma-brand-index-{{section.id}} .fbi-action--forma:hover{background:#444}
+#forma-brand-index-{{section.id}} .fbi-card-information{padding-top:13px}
 #forma-brand-index-{{section.id}} .fbi-card-title-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-#forma-brand-index-{{section.id}} .fbi-card-title-row h3{margin:0;font-size:14px;line-height:1.3;font-weight:400;letter-spacing:-.02em}
+#forma-brand-index-{{section.id}} .fbi-card-title-row h3{margin:0;font-size:15px;line-height:1.3;font-weight:400;letter-spacing:-.02em}
 #forma-brand-index-{{section.id}} .fbi-card-category{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--fbi-muted);text-align:right}
-#forma-brand-index-{{section.id}} .fbi-card-information p{margin:7px 0 0;font-size:11px;line-height:1.5;color:var(--fbi-muted)}
-#forma-brand-index-{{section.id}} .fbi-empty{text-align:center;padding:60px 20px}#forma-brand-index-{{section.id}} .fbi-empty-title{display:block;font-size:30px}#forma-brand-index-{{section.id}} .fbi-empty p{color:var(--fbi-muted);font-size:13px}
-@media(max-width:1100px){#forma-brand-index-{{section.id}} .fbi-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
-@media(max-width:749px){#forma-brand-index-{{section.id}} .fbi-shell{padding:{{section.settings.mobile_padding_top}}px 18px {{section.settings.mobile_padding_bottom}}px}#forma-brand-index-{{section.id}} .fbi-kicker{margin-bottom:30px}#forma-brand-index-{{section.id}} .fbi-heading-wrap{display:block}#forma-brand-index-{{section.id}} .fbi-heading{font-size:{{section.settings.mobile_heading_size}}px}#forma-brand-index-{{section.id}} .fbi-intro-copy{margin-top:25px;font-size:13px}#forma-brand-index-{{section.id}} .fbi-intro-bottom{margin-top:35px}#forma-brand-index-{{section.id}} .fbi-intro-note{font-size:8px}#forma-brand-index-{{section.id}} .fbi-directory{padding-top:30px}#forma-brand-index-{{section.id}} .fbi-directory-top{display:block}#forma-brand-index-{{section.id}} .fbi-search-wrap{margin-top:22px;width:100%}#forma-brand-index-{{section.id}} .fbi-filter-row{display:block}#forma-brand-index-{{section.id}} .fbi-result-count{margin-top:15px}#forma-brand-index-{{section.id}} .fbi-alphabet-wrap{display:block;padding:18px 0 22px}#forma-brand-index-{{section.id}} .fbi-alphabet-label{display:block;margin-bottom:10px}#forma-brand-index-{{section.id}} .fbi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:25px 12px}#forma-brand-index-{{section.id}} .fbi-card-visual{padding:18%}#forma-brand-index-{{section.id}} .fbi-card-overlay{opacity:1;background:transparent;inset:auto 0 0;padding:8px;gap:5px}#forma-brand-index-{{section.id}} .fbi-overlay-link{font-size:9px;padding:8px 9px;max-width:none}#forma-brand-index-{{section.id}} .fbi-overlay-link--secondary{background:rgba(255,255,255,.9);color:#111;border:0}#forma-brand-index-{{section.id}} .fbi-card-title-row{display:block}#forma-brand-index-{{section.id}} .fbi-card-category{display:block;text-align:left;margin-top:4px}}
+#forma-brand-index-{{section.id}} .fbi-card-information p{margin:6px 0 0;font-size:12px;line-height:1.5;color:var(--fbi-muted);max-width:360px}
+#forma-brand-index-{{section.id}} .fbi-empty{text-align:center;padding:50px 20px}#forma-brand-index-{{section.id}} .fbi-empty-title{display:block;font-size:28px}#forma-brand-index-{{section.id}} .fbi-empty p{color:var(--fbi-muted);font-size:13px}
+@media(max-width:1100px){#forma-brand-index-{{section.id}} .fbi-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:749px){#forma-brand-index-{{section.id}} .fbi-shell{padding:20px 18px 40px}#forma-brand-index-{{section.id}} .fbi-directory-top{display:block}#forma-brand-index-{{section.id}} .fbi-search-wrap{margin-top:20px;width:100%}#forma-brand-index-{{section.id}} .fbi-filter-row{display:block}#forma-brand-index-{{section.id}} .fbi-result-count{margin-top:15px}#forma-brand-index-{{section.id}} .fbi-alphabet-wrap{display:block;padding:16px 0 20px}#forma-brand-index-{{section.id}} .fbi-alphabet-label{display:block;margin-bottom:8px}#forma-brand-index-{{section.id}} .fbi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 12px}#forma-brand-index-{{section.id}} .fbi-card-visual{padding:17%}#forma-brand-index-{{section.id}} .fbi-card-actions{opacity:1;transform:translate(-50%,0);bottom:8px;max-width:calc(100% - 12px);padding:4px;gap:4px}#forma-brand-index-{{section.id}} .fbi-action{font-size:9px;padding:8px 10px;gap:5px}#forma-brand-index-{{section.id}} .fbi-card-title-row{display:block}#forma-brand-index-{{section.id}} .fbi-card-category{display:block;text-align:left;margin-top:4px}}
 </style>
 
 <script>
@@ -388,48 +343,8 @@
 {
   "name": "Forma Brand Index",
   "settings": [
-    {
-      "type": "text",
-      "id": "heading_line_1",
-      "label": "Heading line 1",
-      "default": "Discover"
-    },
-    {
-      "type": "text",
-      "id": "heading_line_2",
-      "label": "Heading line 2",
-      "default": "the brands."
-    },
-    {
-      "type": "richtext",
-      "id": "intro",
-      "label": "Introduction",
-      "default": "<p>A considered selection of brands shaping the way we dress, live and experience the world.</p>"
-    },
-    {
-      "type": "text",
-      "id": "bottom_note",
-      "label": "Intro bottom note",
-      "default": "A curated world. One destination."
-    },
-    {
-      "type": "range",
-      "id": "heading_size",
-      "label": "Desktop heading size",
-      "min": 70,
-      "max": 160,
-      "step": 5,
-      "default": 125
-    },
-    {
-      "type": "range",
-      "id": "mobile_heading_size",
-      "label": "Mobile heading size",
-      "min": 40,
-      "max": 90,
-      "step": 2,
-      "default": 64
-    },
+        
+    
     {
       "type": "range",
       "id": "max_width",
@@ -468,42 +383,6 @@
       "id": "card_background",
       "label": "Brand image background",
       "default": "#F4F3F0"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Desktop top padding",
-      "min": 30,
-      "max": 150,
-      "step": 10,
-      "default": 90
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Desktop bottom padding",
-      "min": 30,
-      "max": 150,
-      "step": 10,
-      "default": 100
-    },
-    {
-      "type": "range",
-      "id": "mobile_padding_top",
-      "label": "Mobile top padding",
-      "min": 20,
-      "max": 100,
-      "step": 5,
-      "default": 45
-    },
-    {
-      "type": "range",
-      "id": "mobile_padding_bottom",
-      "label": "Mobile bottom padding",
-      "min": 20,
-      "max": 100,
-      "step": 5,
-      "default": 60
     }
   ],
   "presets": [
