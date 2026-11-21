@@ -49,11 +49,29 @@
         "title": "🍪 Cookie policy",
         "content": "<p>We use cookies and similar technologies to provide the best experience on our website. Refer to our Privacy Policy for more information.</p>"
       }
+    },
+    "forma_brand_directory_rXtqPw": {
+      "type": "forma-brand-directory",
+      "name": "Forma Brand Directory",
+      "settings": {
+        "heading": "Brands",
+        "subheading": "Discover the brands curated by Forma.",
+        "heading_size": 50,
+        "mobile_heading_size": 36,
+        "max_width": 1400,
+        "background_color": "#FFFFFF",
+        "text_color": "#111111",
+        "logo_background": "#F7F7F7",
+        "logo_hover_background": "#EFEFEF",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
     }
   },
   "order": [
     "cart-drawer",
     "newsletter-popup",
-    "privacy-banner"
+    "privacy-banner",
+    "forma_brand_directory_rXtqPw"
   ]
 }
