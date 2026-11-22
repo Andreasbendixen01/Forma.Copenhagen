@@ -1,34 +1,40 @@
-{%- assign has_content_below_gallery = false -%}
-{%- assign allow_transparent_header = section.settings.allow_transparent_header -%}
-{%- assign desktop_media_layout = section.settings.desktop_media_layout -%}
-{%- assign product_info_size = section.settings.product_info_size -%}
+{%- liquid
+  assign has_content_below_gallery = false
+  assign allow_transparent_header = section.settings.allow_transparent_header
+  assign desktop_media_layout = section.settings.desktop_media_layout
+  assign product_info_size = section.settings.product_info_size
 
-{%- for block in section.blocks -%}
-  {%- if block.type == 'complementary_products' -%}
-    {%- assign has_content_below_gallery = true -%}
-    {%- break -%}
-  {%- endif -%}
+  for block in section.blocks
+    if block.type == 'complementary_products'
+      assign has_content_below_gallery = true
+      break
+    endif
 
-  {%- unless block.settings.show_below_gallery -%}
-    {%- continue -%}
-  {%- endunless -%}
+    unless block.settings.show_below_gallery
+      continue
+    endunless
 
-  {%- if block.type == 'accordion' and block.settings.title != blank and block.settings.content != blank or block.settings.liquid != blank or block.settings.page.content != blank -%}
-    {%- assign has_content_below_gallery = true -%}
-    {%- break -%}
-  {%- elsif block.type == 'description' and product.description != blank -%}
-    {%- assign has_content_below_gallery = true -%}
-    {%- break -%}
-  {%- endif -%}
-{%- endfor -%}
+    if block.type == 'accordion' and block.settings.title != blank and block.settings.content != blank or block.settings.liquid != blank or block.settings.page.content != blank
+      assign has_content_below_gallery = true
+      break
+    elsif block.type == 'description' and product.description != blank
+      assign has_content_below_gallery = true
+      break
+    endif
+  endfor
 
-{%- if allow_transparent_header -%}
-  {%- assign desktop_media_layout = 'grid_2x_highlighted' -%}
-  {%- assign product_info_size = 50 -%}
-{%- endif -%}
+  if allow_transparent_header
+    assign desktop_media_layout = 'grid_2x_highlighted'
+    assign product_info_size = 50
+  endif
+-%}
 
 <style>
   {%- if section.settings.allow_transparent_header and section.settings.transparent_header_use_primary_colors -%}
+    {%- comment -%}
+    When this setting is enabled, we use the transparent header, but we force the header to use the primary colors and primary logo.
+    {%- endcomment -%}
+
     .header {
       --header-show-transparent-logo: 0 !important;
       --header-transparent-header-text-color: initial;
@@ -37,23 +43,189 @@
 
   #shopify-section-{{ section.id }} {
     --product-grid: "product-gallery" "product-info" {% if has_content_below_gallery %}"product-content"{% endif %} / minmax(0, 1fr);
+
     {%- if allow_transparent_header -%}
-      --product-gallery-zoom-button-inset-block-start: calc(var(--sticky-area-height, 0px) + 1.25rem);
+      --product-gallery-zoom-button-inset-block-start: calc(var(--sticky-area-height, 0px) + 1.25rem); /* 1.25rem is the default block padding, we want the zoom button to be at least 1.25rem away from the sticky header */
     {%- endif -%}
   }
 
-  /* FORMA: Gallery remains untouched; product information flows below */
-  #shopify-section-{{ section.id }} .product {
-    display: block !important;
-    width: 100% !important;
+  
+/* ============================================================
+   FORMA PRODUCT PAGE ‚Äî EDITORIAL INFORMATION LAYOUT
+   Gallery stays intact. Product information sits below it.
+   ============================================================ */
+
+#shopify-section-{{ section.id }} .product {
+  display: block !important;
+  width: 100% !important;
+}
+
+#shopify-section-{{ section.id }} .product-gallery {
+  position: relative !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+#shopify-section-{{ section.id }} .product-info {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #fff !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overflow: visible !important;
+}
+
+#shopify-section-{{ section.id }} .product-info__block-list {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 0 !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+#shopify-section-{{ section.id }} .product-info__block-item {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 30px 32px !important;
+  box-sizing: border-box !important;
+  border-top: 1px solid #e5e5e5 !important;
+}
+
+/* Column 1 ‚Äî product identity and editorial description */
+#shopify-section-{{ section.id }} [data-block-type="vendor"],
+#shopify-section-{{ section.id }} [data-block-type="title"],
+#shopify-section-{{ section.id }} [data-block-type="price"],
+#shopify-section-{{ section.id }} [data-block-type="description"],
+#shopify-section-{{ section.id }} [data-block-type="separator"] {
+  grid-column: 1 !important;
+}
+
+/* Column 2 ‚Äî product details and supplementary information */
+#shopify-section-{{ section.id }} [data-block-type="accordion"],
+#shopify-section-{{ section.id }} [data-block-type="feature-with-icon"],
+#shopify-section-{{ section.id }} [data-block-type="sku"],
+#shopify-section-{{ section.id }} [data-block-type="inventory"],
+#shopify-section-{{ section.id }} [data-block-type="rating"],
+#shopify-section-{{ section.id }} [data-block-type="text"],
+#shopify-section-{{ section.id }} [data-block-type="liquid"],
+#shopify-section-{{ section.id }} [data-block-type="image"],
+#shopify-section-{{ section.id }} [data-block-type="button"],
+#shopify-section-{{ section.id }} [data-block-type="share-buttons"] {
+  grid-column: 2 !important;
+  border-left: 1px solid #e5e5e5 !important;
+}
+
+/* Column 3 ‚Äî Forma features, housed in the existing buy-buttons block */
+#shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
+  grid-column: 3 !important;
+  border-left: 1px solid #e5e5e5 !important;
+}
+
+#shopify-section-{{ section.id }} .product-info .product-title {
+  margin: 0 !important;
+  line-height: 1.15 !important;
+}
+
+#shopify-section-{{ section.id }} .product-info .prose {
+  color: #202020 !important;
+  font-size: 13px !important;
+  line-height: 1.65 !important;
+}
+
+#shopify-section-{{ section.id }} .product-info .prose p {
+  margin-block: 0 10px !important;
+}
+
+#shopify-section-{{ section.id }} .product-info .prose ul,
+#shopify-section-{{ section.id }} .product-info .prose ol {
+  margin-block: 8px !important;
+  padding-inline-start: 18px !important;
+}
+
+#shopify-section-{{ section.id }} .product-info .prose li {
+  margin-block: 5px !important;
+}
+
+#shopify-section-{{ section.id }} .product-info .buy-buttons,
+#shopify-section-{{ section.id }} .product-info .shopify-payment-button {
+  margin-block: 0 !important;
+}
+
+#shopify-section-{{ section.id }} .product-info .shopify-payment-button__button {
+  min-height: 44px !important;
+}
+
+@media screen and (max-width: 999px) {
+  #shopify-section-{{ section.id }} .product-info__block-list {
+    grid-template-columns: minmax(0, 1fr) !important;
   }
 
+  #shopify-section-{{ section.id }} .product-info__block-item,
+  #shopify-section-{{ section.id }} [data-block-type="accordion"],
+  #shopify-section-{{ section.id }} [data-block-type="feature-with-icon"],
+  #shopify-section-{{ section.id }} [data-block-type="sku"],
+  #shopify-section-{{ section.id }} [data-block-type="inventory"],
+  #shopify-section-{{ section.id }} [data-block-type="rating"],
+  #shopify-section-{{ section.id }} [data-block-type="text"],
+  #shopify-section-{{ section.id }} [data-block-type="liquid"],
+  #shopify-section-{{ section.id }} [data-block-type="image"],
+  #shopify-section-{{ section.id }} [data-block-type="button"],
+  #shopify-section-{{ section.id }} [data-block-type="share-buttons"],
+  #shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
+    grid-column: 1 !important;
+    border-left: 0 !important;
+    padding: 24px 18px !important;
+  }
+}
+
+/* FORMA ‚Äö√Ñ√Æ reduce the visible space between product gallery slides.
+   Keep the existing slide dimensions and image sizing unchanged. */
+@media screen and (min-width: 750px) {
   #shopify-section-{{ section.id }} .product-gallery {
-    display: block !important;
-    width: 100% !important;
-    max-width: none !important;
+    --product-gallery-gap: 4px !important;
+    --media-gallery-gap: 4px !important;
+    --carousel-gap: 4px !important;
   }
 
+  #shopify-section-{{ section.id }} .product-gallery__media-list {
+    gap: 4px !important;
+    column-gap: 4px !important;
+    grid-column-gap: 4px !important;
+    padding-inline: 0 !important;
+    scroll-padding-inline: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-gallery__media-list > *,
+  #shopify-section-{{ section.id }} .product-gallery__media {
+    margin-inline: 0 !important;
+    scroll-margin-inline: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-gallery__media {
+    padding-inline: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-gallery__media-list[style*="gap"],
+  #shopify-section-{{ section.id }} .product-gallery__media-list[style*="column-gap"] {
+    column-gap: 4px !important;
+    gap: 4px !important;
+  }
+}
+
+@media screen and (max-width: 999px) {
   #shopify-section-{{ section.id }} .product-info {
     position: relative !important;
     inset: auto !important;
@@ -61,66 +233,25 @@
     height: auto !important;
     min-height: 0 !important;
     max-height: none !important;
-    margin: 0 !important;
-    padding: clamp(30px, 5vw, 72px) 0 !important;
     overflow: visible !important;
-    background: #fff !important;
-    background-image: none !important;
-    border: 0 !important;
-    box-shadow: none !important;
+    padding: 22px 18px !important;
+    background: transparent !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
 
   #shopify-section-{{ section.id }} .product-info__block-list {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 18px !important;
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
-    width: 100% !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info__block-item {
-    margin: 0 !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .product-title {
-    margin-block: 0 8px !important;
-    line-height: 1.12 !important;
+    gap: 14px !important;
   }
 
   #shopify-section-{{ section.id }} .product-info .prose {
-    color: #202020 !important;
     font-size: 14px !important;
     line-height: 1.7 !important;
   }
-
-  #shopify-section-{{ section.id }} .product-info .prose p {
-    margin-block: 0 10px !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .prose ul,
-  #shopify-section-{{ section.id }} .product-info .prose ol {
-    margin-block: 8px !important;
-    padding-inline-start: 18px !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .prose li {
-    margin-block: 4px !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .buy-buttons,
-  #shopify-section-{{ section.id }} .product-info .shopify-payment-button {
-    margin-block: 0 !important;
-  }
-
-  @media screen and (max-width: 749px) {
-    #shopify-section-{{ section.id }} .product-info {
-      padding: 28px 18px !important;
-    }
-  }
+}
 
 /* FORMA WHY MODAL ‚Äö√Ñ√∂‚àö√ë‚àö‚àÇ‚Äö√†√∂‚àö√´‚Äö√†√∂‚àö√ú the modal is moved to <body> by the script below,
    so it is not clipped by the product info panel or its glass effect. */
