@@ -458,6 +458,90 @@
 
 
 
+
+/* =============================================
+   FORMA LAYOUT PATCH ‚Äî gallery + info alignment
+   ============================================= */
+@media screen and (min-width: 1000px) {
+  #shopify-section-{{ section.id }} .product-gallery {
+    height: min(68vh, 640px) !important;
+    min-height: 0 !important;
+    max-height: 640px !important;
+    overflow: hidden !important;
+  }
+  #shopify-section-{{ section.id }} .product-gallery__media-list {
+    height: 100% !important;
+    max-height: 640px !important;
+  }
+  #shopify-section-{{ section.id }} .product-gallery__media,
+  #shopify-section-{{ section.id }} .product-gallery__media-list > * {
+    height: 100% !important;
+    max-height: 640px !important;
+  }
+  #shopify-section-{{ section.id }} .product-gallery img,
+  #shopify-section-{{ section.id }} .product-gallery video {
+    max-height: 640px !important;
+    object-fit: contain !important;
+  }
+}
+
+#shopify-section-{{ section.id }} .product-info__block-list {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-auto-flow: row !important;
+  align-items: start !important;
+  gap: 0 !important;
+}
+#shopify-section-{{ section.id }} .product-info__block-item {
+  min-width: 0 !important;
+  padding: 28px 30px !important;
+  border-top: 1px solid #dedede !important;
+}
+#shopify-section-{{ section.id }} [data-block-type="vendor"],
+#shopify-section-{{ section.id }} [data-block-type="title"],
+#shopify-section-{{ section.id }} [data-block-type="price"],
+#shopify-section-{{ section.id }} [data-block-type="description"] {
+  grid-column: 1 !important;
+}
+#shopify-section-{{ section.id }} [data-block-type="accordion"],
+#shopify-section-{{ section.id }} [data-block-type="feature-with-icon"],
+#shopify-section-{{ section.id }} [data-block-type="sku"],
+#shopify-section-{{ section.id }} [data-block-type="inventory"],
+#shopify-section-{{ section.id }} [data-block-type="rating"],
+#shopify-section-{{ section.id }} [data-block-type="text"],
+#shopify-section-{{ section.id }} [data-block-type="liquid"],
+#shopify-section-{{ section.id }} [data-block-type="image"],
+#shopify-section-{{ section.id }} [data-block-type="button"],
+#shopify-section-{{ section.id }} [data-block-type="share-buttons"] {
+  grid-column: 2 !important;
+  border-left: 1px solid #dedede !important;
+}
+#shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
+  grid-column: 3 !important;
+  border-left: 1px solid #dedede !important;
+}
+@media screen and (max-width: 999px) {
+  #shopify-section-{{ section.id }} .product-info__block-list { grid-template-columns: 1fr !important; }
+  #shopify-section-{{ section.id }} .product-gallery { height: auto !important; min-height: 0 !important; max-height: none !important; }
+  #shopify-section-{{ section.id }} .product-gallery__media-list,
+  #shopify-section-{{ section.id }} .product-gallery__media,
+  #shopify-section-{{ section.id }} .product-gallery__media-list > * { height: auto !important; max-height: none !important; }
+  #shopify-section-{{ section.id }} .product-info__block-item,
+  #shopify-section-{{ section.id }} [data-block-type="accordion"],
+  #shopify-section-{{ section.id }} [data-block-type="feature-with-icon"],
+  #shopify-section-{{ section.id }} [data-block-type="sku"],
+  #shopify-section-{{ section.id }} [data-block-type="inventory"],
+  #shopify-section-{{ section.id }} [data-block-type="rating"],
+  #shopify-section-{{ section.id }} [data-block-type="text"],
+  #shopify-section-{{ section.id }} [data-block-type="liquid"],
+  #shopify-section-{{ section.id }} [data-block-type="image"],
+  #shopify-section-{{ section.id }} [data-block-type="button"],
+  #shopify-section-{{ section.id }} [data-block-type="share-buttons"],
+  #shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
+    grid-column: 1 !important; border-left: 0 !important; padding: 22px 18px !important;
+  }
+}
+
 </style>
 
 {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
