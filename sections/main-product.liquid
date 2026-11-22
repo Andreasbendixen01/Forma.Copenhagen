@@ -30,6 +30,25 @@
 -%}
 
 <style>
+
+/* ==========================================
+   FORMA – PRODUCT INFO LAYOUT
+   ========================================== */
+
+.shopify-section--main-product .product-info__block-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  width: 100%;
+  margin-top: 0;
+}
+
+/* Reset standard spacing from the theme */
+.shopify-section--main-product .product-info__block-list > * {
+  margin-block: 0 !important;
+}
+
+
   {%- if section.settings.allow_transparent_header and section.settings.transparent_header_use_primary_colors -%}
     {%- comment -%}
     When this setting is enabled, we use the transparent header, but we force the header to use the primary colors and primary logo.
