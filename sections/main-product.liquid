@@ -542,6 +542,15 @@
   }
 }
 
+
+/* FORMA ‚Äî hide gallery playback/navigation controls without changing gallery behavior */
+#shopify-section-{{ section.id }} .product-gallery__carousel-with-arrows,
+#shopify-section-{{ section.id }} .product-gallery__controls,
+#shopify-section-{{ section.id }} .product-gallery__navigation,
+#shopify-section-{{ section.id }} .product-gallery__carousel-controls {
+  display: none !important;
+}
+
 </style>
 
 {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
