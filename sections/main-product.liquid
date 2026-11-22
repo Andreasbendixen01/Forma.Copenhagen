@@ -49,12 +49,16 @@
     {%- endif -%}
   }
 
-  
+
 /* ============================================================
-   FORMA PRODUCT PAGE ‚Äî EDITORIAL INFORMATION LAYOUT
-   Gallery stays intact. Product information sits below it.
+   FORMA PRODUCT PAGE - CONSOLIDATED LAYOUT
+   Gallery on top. Product information below in three columns:
+   col 1 = brand, title, price, description text
+   col 2 = bullet list (moved out of the description by the script)
+   col 3 = Save to Forma + Forma Match (buy-buttons block)
    ============================================================ */
 
+/* ---------- Base structure ---------- */
 #shopify-section-{{ section.id }} .product {
   display: block !important;
   width: 100% !important;
@@ -67,9 +71,10 @@
 }
 
 #shopify-section-{{ section.id }} .product-info {
-  position: relative !important;
+  position: static !important;
   inset: auto !important;
   width: 100% !important;
+  max-width: none !important;
   height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
@@ -85,114 +90,7 @@
   overflow: visible !important;
 }
 
-#shopify-section-{{ section.id }} .product-info__block-list {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1fr) !important;
-  align-items: start !important;
-  gap: 0 !important;
-  width: 100% !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  overflow: visible !important;
-}
-
-#shopify-section-{{ section.id }} .product-info__block-item {
-  min-width: 0 !important;
-  margin: 0 !important;
-  padding: 30px 32px !important;
-  box-sizing: border-box !important;
-  border-top: 1px solid #e5e5e5 !important;
-}
-
-/* Column 1 ‚Äî product identity and editorial description */
-#shopify-section-{{ section.id }} [data-block-type="vendor"],
-#shopify-section-{{ section.id }} [data-block-type="title"],
-#shopify-section-{{ section.id }} [data-block-type="price"],
-#shopify-section-{{ section.id }} [data-block-type="description"],
-#shopify-section-{{ section.id }} [data-block-type="separator"] {
-  grid-column: 1 !important;
-}
-
-/* Column 2 ‚Äî product details and supplementary information */
-#shopify-section-{{ section.id }} [data-block-type="accordion"],
-#shopify-section-{{ section.id }} [data-block-type="feature-with-icon"],
-#shopify-section-{{ section.id }} [data-block-type="sku"],
-#shopify-section-{{ section.id }} [data-block-type="inventory"],
-#shopify-section-{{ section.id }} [data-block-type="rating"],
-#shopify-section-{{ section.id }} [data-block-type="text"],
-#shopify-section-{{ section.id }} [data-block-type="liquid"],
-#shopify-section-{{ section.id }} [data-block-type="image"],
-#shopify-section-{{ section.id }} [data-block-type="button"],
-#shopify-section-{{ section.id }} [data-block-type="share-buttons"] {
-  grid-column: 2 !important;
-  border-left: 1px solid #e5e5e5 !important;
-}
-
-/* Column 3 ‚Äî Forma features, housed in the existing buy-buttons block */
-#shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
-  grid-column: 3 !important;
-  border-left: 1px solid #e5e5e5 !important;
-}
-
-#shopify-section-{{ section.id }} .product-info .product-title {
-  margin: 0 !important;
-  line-height: 1.15 !important;
-}
-
-#shopify-section-{{ section.id }} .product-info .prose {
-  color: #202020 !important;
-  font-size: 13px !important;
-  line-height: 1.65 !important;
-}
-
-#shopify-section-{{ section.id }} .product-info .prose p {
-  margin-block: 0 10px !important;
-}
-
-#shopify-section-{{ section.id }} .product-info .prose ul,
-#shopify-section-{{ section.id }} .product-info .prose ol {
-  margin-block: 8px !important;
-  padding-inline-start: 18px !important;
-}
-
-#shopify-section-{{ section.id }} .product-info .prose li {
-  margin-block: 5px !important;
-}
-
-#shopify-section-{{ section.id }} .product-info .buy-buttons,
-#shopify-section-{{ section.id }} .product-info .shopify-payment-button {
-  margin-block: 0 !important;
-}
-
-#shopify-section-{{ section.id }} .product-info .shopify-payment-button__button {
-  min-height: 44px !important;
-}
-
-@media screen and (max-width: 999px) {
-  #shopify-section-{{ section.id }} .product-info__block-list {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info__block-item,
-  #shopify-section-{{ section.id }} [data-block-type="accordion"],
-  #shopify-section-{{ section.id }} [data-block-type="feature-with-icon"],
-  #shopify-section-{{ section.id }} [data-block-type="sku"],
-  #shopify-section-{{ section.id }} [data-block-type="inventory"],
-  #shopify-section-{{ section.id }} [data-block-type="rating"],
-  #shopify-section-{{ section.id }} [data-block-type="text"],
-  #shopify-section-{{ section.id }} [data-block-type="liquid"],
-  #shopify-section-{{ section.id }} [data-block-type="image"],
-  #shopify-section-{{ section.id }} [data-block-type="button"],
-  #shopify-section-{{ section.id }} [data-block-type="share-buttons"],
-  #shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
-    grid-column: 1 !important;
-    border-left: 0 !important;
-    padding: 24px 18px !important;
-  }
-}
-
-/* FORMA ‚Äö√Ñ√Æ reduce the visible space between product gallery slides.
-   Keep the existing slide dimensions and image sizing unchanged. */
+/* ---------- Gallery ---------- */
 @media screen and (min-width: 750px) {
   #shopify-section-{{ section.id }} .product-gallery {
     --product-gallery-gap: 4px !important;
@@ -225,179 +123,188 @@
   }
 }
 
+@media screen and (min-width: 1000px) {
+  #shopify-section-{{ section.id }} .product-gallery {
+    height: min(58vh, 540px) !important;
+    min-height: 420px !important;
+    max-height: 540px !important;
+    overflow: hidden !important;
+  }
+  #shopify-section-{{ section.id }} .product-gallery__media-list,
+  #shopify-section-{{ section.id }} .product-gallery__media-list > *,
+  #shopify-section-{{ section.id }} .product-gallery__media {
+    height: 100% !important;
+    max-height: 540px !important;
+  }
+  #shopify-section-{{ section.id }} .product-gallery img,
+  #shopify-section-{{ section.id }} .product-gallery video {
+    max-height: 540px !important;
+    object-fit: contain !important;
+  }
+}
+
 @media screen and (max-width: 999px) {
-  #shopify-section-{{ section.id }} .product-info {
-    position: relative !important;
-    inset: auto !important;
-    width: 100% !important;
+  #shopify-section-{{ section.id }} .product-gallery {
     height: auto !important;
     min-height: 0 !important;
     max-height: none !important;
-    overflow: visible !important;
-    padding: 22px 18px !important;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
   }
-
-  #shopify-section-{{ section.id }} .product-info__block-list {
+  #shopify-section-{{ section.id }} .product-gallery__media-list,
+  #shopify-section-{{ section.id }} .product-gallery__media-list > *,
+  #shopify-section-{{ section.id }} .product-gallery__media {
     height: auto !important;
     max-height: none !important;
-    overflow: visible !important;
-    gap: 14px !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-info .prose {
-    font-size: 14px !important;
-    line-height: 1.7 !important;
   }
 }
 
-/* FORMA WHY MODAL ‚Äö√Ñ√∂‚àö√ë‚àö‚àÇ‚Äö√†√∂‚àö√´‚Äö√†√∂‚àö√ú the modal is moved to <body> by the script below,
-   so it is not clipped by the product info panel or its glass effect. */
-#forma-why-modal-portal.forma-score-card__details {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 2147483000 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
+/* Hide gallery controls visually (slider/autoplay functionality remains untouched).
+   Delete this block if you want arrows and dots to show. */
+#shopify-section-{{ section.id }} .product-gallery__carousel-with-arrows,
+#shopify-section-{{ section.id }} .product-gallery__controls,
+#shopify-section-{{ section.id }} .product-gallery__navigation,
+#shopify-section-{{ section.id }} .product-gallery__carousel-controls,
+#shopify-section-{{ section.id }} .product-gallery button[aria-label*="Next"],
+#shopify-section-{{ section.id }} .product-gallery button[aria-label*="Previous"],
+#shopify-section-{{ section.id }} .product-gallery button[aria-label*="Pause"],
+#shopify-section-{{ section.id }} .product-gallery button[aria-label*="Play"],
+#shopify-section-{{ section.id }} .product-gallery .slideshow-controls,
+#shopify-section-{{ section.id }} .product-gallery .media-controls,
+#shopify-section-{{ section.id }} .product-gallery .carousel-controls,
+#shopify-section-{{ section.id }} .product-gallery .carousel-navigation,
+#shopify-section-{{ section.id }} .product-gallery .slider-controls,
+#shopify-section-{{ section.id }} .product-gallery .slider-navigation,
+#shopify-section-{{ section.id }} .product-gallery .pagination {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* ---------- Information area: mobile / base (single column) ---------- */
+#shopify-section-{{ section.id }} .product-info__block-list {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-auto-flow: row !important;
+  align-items: start !important;
   gap: 0 !important;
-  width: 100vw !important;
-  max-width: none !important;
-  height: 100vh !important;
-  height: 100dvh !important;
-  max-height: 100dvh !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
   margin: 0 !important;
-  padding: 24px !important;
-  box-sizing: border-box !important;
-  overflow: auto !important;
-  background: rgba(17, 17, 17, .64) !important;
-  backdrop-filter: blur(7px) !important;
-  -webkit-backdrop-filter: blur(7px) !important;
+  padding: 0 !important;
+  overflow: visible !important;
 }
 
-#forma-why-modal-portal.forma-score-card__details[hidden] {
+#shopify-section-{{ section.id }} .product-info__block-item {
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 24px 20px !important;
+  border-top: 1px solid #e2e2e2 !important;
+  border-left: 0 !important;
+}
+
+/* The separator block is not part of the design */
+#shopify-section-{{ section.id }} [data-block-type="separator"] {
   display: none !important;
 }
 
-#forma-why-modal-portal .forma-score-card__details-header,
-#forma-why-modal-portal .forma-score-card__reasons {
-  display: block !important;
-  position: relative !important;
-  flex: 0 0 auto !important;
-  width: min(100%, 600px) !important;
-  max-width: 600px !important;
+/* ---------- Information area: desktop (three columns) ---------- */
+@media screen and (min-width: 1000px) {
+  #shopify-section-{{ section.id }} .product-info__block-list {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.1fr) !important;
+    border-top: 1px solid #e2e2e2 !important; /* one rule across all columns */
+  }
+
+  /* Default: every block sits in column 1 without its own rules */
+  #shopify-section-{{ section.id }} .product-info__block-item {
+    grid-column: 1 !important;
+    padding: 6px 32px !important;
+    border-top: 0 !important;
+    border-left: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} [data-block-type="vendor"] {
+    padding-top: 32px !important;
+  }
+  #shopify-section-{{ section.id }} [data-block-type="description"] {
+    padding-bottom: 32px !important;
+  }
+
+  /* Other supplementary blocks go to column 2 */
+  #shopify-section-{{ section.id }} [data-block-type="accordion"],
+  #shopify-section-{{ section.id }} [data-block-type="feature-with-icon"],
+  #shopify-section-{{ section.id }} [data-block-type="sku"],
+  #shopify-section-{{ section.id }} [data-block-type="inventory"],
+  #shopify-section-{{ section.id }} [data-block-type="rating"],
+  #shopify-section-{{ section.id }} [data-block-type="text"],
+  #shopify-section-{{ section.id }} [data-block-type="liquid"],
+  #shopify-section-{{ section.id }} [data-block-type="image"],
+  #shopify-section-{{ section.id }} [data-block-type="button"],
+  #shopify-section-{{ section.id }} [data-block-type="share-buttons"] {
+    grid-column: 2 !important;
+    padding: 24px 32px !important;
+    border-left: 1px solid #e2e2e2 !important;
+  }
+
+  /* Column 2 (bullet list) and column 3 (Forma cards) run the full height next to column 1 */
+  #shopify-section-{{ section.id }} .forma-details-col,
+  #shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
+    grid-row: 1 / span 5 !important;
+    align-self: stretch !important;
+    padding: 32px !important;
+    border-left: 1px solid #e2e2e2 !important;
+  }
+  #shopify-section-{{ section.id }} .forma-details-col {
+    grid-column: 2 !important;
+  }
+  #shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
+    grid-column: 3 !important;
+  }
+}
+
+/* ---------- Typography inside the information area ---------- */
+#shopify-section-{{ section.id }} .product-info .product-title {
   margin: 0 !important;
-  padding: 25px 32px !important;
-  box-sizing: border-box !important;
-  background: #fff !important;
-  color: #171717 !important;
-  text-align: left !important;
-  box-shadow: none !important;
+  line-height: 1.15 !important;
 }
 
-#forma-why-modal-portal .forma-score-card__details-header {
-  border: 0 !important;
-  border-radius: 16px 16px 0 0 !important;
-  padding-top: 34px !important;
-  padding-bottom: 14px !important;
-  border-bottom: 1px solid #eeeae4 !important;
-}
-
-#forma-why-modal-portal .forma-score-card__details-title {
-  margin: 0 42px 10px 0 !important;
-  color: #171717 !important;
-  font-family: inherit !important;
-  font-size: 25px !important;
-  letter-spacing: -.035em !important;
-  line-height: 1.2 !important;
-  font-weight: 500 !important;
-}
-
-#forma-why-modal-portal .forma-score-card__details-description {
-  margin: 0 !important;
-  color: #555 !important;
-  font-family: inherit !important;
-  font-size: 15px !important;
-  line-height: 1.75 !important;
-}
-
-#forma-why-modal-portal .forma-score-card__reasons {
-  border: 0 !important;
-  border-radius: 0 0 16px 16px !important;
-  padding-top: 15px !important;
-  padding-bottom: 28px !important;
-  color: #252525 !important;
-  font-family: inherit !important;
+#shopify-section-{{ section.id }} .product-info .prose,
+#shopify-section-{{ section.id }} .forma-details-col .prose {
+  color: #222 !important;
   font-size: 14px !important;
   line-height: 1.75 !important;
-  box-shadow: 0 24px 80px rgba(0,0,0,.18) !important;
-  list-style: none !important;
 }
 
-#forma-why-modal-portal .forma-score-card__reasons li {
-  position: relative !important;
-  margin: 0 0 14px !important;
-  padding-left: 22px !important;
+#shopify-section-{{ section.id }} .product-info .prose p,
+#shopify-section-{{ section.id }} .forma-details-col .prose p {
+  margin: 0 0 12px !important;
 }
 
-#forma-why-modal-portal .forma-score-card__reasons li::before {
-  content: "‚Äö√Ñ√∂‚àö√ë‚àö‚àÇ‚Äö√†√∂‚àö√´¬¨¬®¬¨¬¢" !important;
-  position: absolute !important;
-  left: 2px !important;
-  top: 0 !important;
-  color: #171717 !important;
+#shopify-section-{{ section.id }} .product-info .prose ul,
+#shopify-section-{{ section.id }} .product-info .prose ol {
+  margin-block: 8px !important;
+  padding-inline-start: 18px !important;
 }
 
-#forma-why-modal-portal .forma-score-card__details-close {
-  position: absolute !important;
-  top: 15px !important;
-  right: 18px !important;
-  z-index: 5 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 34px !important;
-  height: 34px !important;
-  border: 1px solid #dedbd5 !important;
-  border-radius: 50% !important;
-  background: #fff !important;
-  color: #171717 !important;
-  font-size: 0 !important;
-  line-height: 1 !important;
-  cursor: pointer !important;
-}
-#forma-why-modal-portal .forma-score-card__details-close::before {
-  content: "‚Äö√Ñ√∂‚àö‚Ä†‚àö‚àÇ‚Äö√†√∂‚Äö√¢‚Ä¢" !important;
-  font-family: Arial, sans-serif !important;
-  font-size: 24px !important;
-  font-weight: 300 !important;
-  line-height: 1 !important;
+#shopify-section-{{ section.id }} .product-info .prose li {
+  margin-block: 5px !important;
 }
 
+#shopify-section-{{ section.id }} .product-info .buy-buttons,
+#shopify-section-{{ section.id }} .product-info .shopify-payment-button {
+  margin-block: 0 !important;
+}
+
+#shopify-section-{{ section.id }} .product-info .shopify-payment-button__button {
+  min-height: 44px !important;
+}
+
+/* ---------- FORMA MATCH: "Why?" modal ---------- */
 #shopify-section-{{ section.id }} .forma-score-card__toggle {
   cursor: pointer !important;
   text-underline-offset: 3px !important;
 }
 
-@media screen and (max-width: 600px) {
-  #forma-why-modal-portal.forma-score-card__details {
-    padding: 16px !important;
-  }
-
-  #forma-why-modal-portal .forma-score-card__details-header,
-  #forma-why-modal-portal .forma-score-card__reasons {
-    padding-left: 22px !important;
-    padding-right: 22px !important;
-  }
-
-  #forma-why-modal-portal .forma-score-card__details-title {
-    font-size: 22px !important;
-  }
-}
-/* FORMA MATCH ‚Äö√Ñ√∂‚àö√ë‚àö‚àÇ‚Äö√†√∂‚àö√´‚Äö√†√∂‚àö√ú independent full-screen explanation modal */
 .forma-why-overlay {
   position: fixed !important;
   inset: 0 !important;
@@ -454,210 +361,6 @@
   .forma-why-dialog__description { padding: 0 23px 22px !important; font-size: 14px !important; }
   .forma-why-dialog__reasons { padding: 6px 23px !important; }
   .forma-why-dialog__footer { align-items: flex-start !important; flex-direction: column !important; padding: 18px 23px 23px !important; }
-}
-
-
-
-
-/* =============================================
-   FORMA LAYOUT PATCH ‚Äî gallery + info alignment
-   ============================================= */
-@media screen and (min-width: 1000px) {
-  #shopify-section-{{ section.id }} .product-gallery {
-    height: min(68vh, 640px) !important;
-    min-height: 0 !important;
-    max-height: 640px !important;
-    overflow: hidden !important;
-  }
-  #shopify-section-{{ section.id }} .product-gallery__media-list {
-    height: 100% !important;
-    max-height: 640px !important;
-  }
-  #shopify-section-{{ section.id }} .product-gallery__media,
-  #shopify-section-{{ section.id }} .product-gallery__media-list > * {
-    height: 100% !important;
-    max-height: 640px !important;
-  }
-  #shopify-section-{{ section.id }} .product-gallery img,
-  #shopify-section-{{ section.id }} .product-gallery video {
-    max-height: 640px !important;
-    object-fit: contain !important;
-  }
-}
-
-#shopify-section-{{ section.id }} .product-info__block-list {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  grid-auto-flow: row !important;
-  align-items: start !important;
-  gap: 0 !important;
-}
-#shopify-section-{{ section.id }} .product-info__block-item {
-  min-width: 0 !important;
-  padding: 28px 30px !important;
-  border-top: 1px solid #dedede !important;
-}
-#shopify-section-{{ section.id }} [data-block-type="vendor"],
-#shopify-section-{{ section.id }} [data-block-type="title"],
-#shopify-section-{{ section.id }} [data-block-type="price"],
-#shopify-section-{{ section.id }} [data-block-type="description"] {
-  grid-column: 1 !important;
-}
-#shopify-section-{{ section.id }} [data-block-type="accordion"],
-#shopify-section-{{ section.id }} [data-block-type="feature-with-icon"],
-#shopify-section-{{ section.id }} [data-block-type="sku"],
-#shopify-section-{{ section.id }} [data-block-type="inventory"],
-#shopify-section-{{ section.id }} [data-block-type="rating"],
-#shopify-section-{{ section.id }} [data-block-type="text"],
-#shopify-section-{{ section.id }} [data-block-type="liquid"],
-#shopify-section-{{ section.id }} [data-block-type="image"],
-#shopify-section-{{ section.id }} [data-block-type="button"],
-#shopify-section-{{ section.id }} [data-block-type="share-buttons"] {
-  grid-column: 2 !important;
-  border-left: 1px solid #dedede !important;
-}
-#shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
-  grid-column: 3 !important;
-  border-left: 1px solid #dedede !important;
-}
-@media screen and (max-width: 999px) {
-  #shopify-section-{{ section.id }} .product-info__block-list { grid-template-columns: 1fr !important; }
-  #shopify-section-{{ section.id }} .product-gallery { height: auto !important; min-height: 0 !important; max-height: none !important; }
-  #shopify-section-{{ section.id }} .product-gallery__media-list,
-  #shopify-section-{{ section.id }} .product-gallery__media,
-  #shopify-section-{{ section.id }} .product-gallery__media-list > * { height: auto !important; max-height: none !important; }
-  #shopify-section-{{ section.id }} .product-info__block-item,
-  #shopify-section-{{ section.id }} [data-block-type="accordion"],
-  #shopify-section-{{ section.id }} [data-block-type="feature-with-icon"],
-  #shopify-section-{{ section.id }} [data-block-type="sku"],
-  #shopify-section-{{ section.id }} [data-block-type="inventory"],
-  #shopify-section-{{ section.id }} [data-block-type="rating"],
-  #shopify-section-{{ section.id }} [data-block-type="text"],
-  #shopify-section-{{ section.id }} [data-block-type="liquid"],
-  #shopify-section-{{ section.id }} [data-block-type="image"],
-  #shopify-section-{{ section.id }} [data-block-type="button"],
-  #shopify-section-{{ section.id }} [data-block-type="share-buttons"],
-  #shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
-    grid-column: 1 !important; border-left: 0 !important; padding: 22px 18px !important;
-  }
-}
-
-
-/* FORMA ‚Äî hide gallery playback/navigation controls without changing gallery behavior */
-#shopify-section-{{ section.id }} .product-gallery__carousel-with-arrows,
-#shopify-section-{{ section.id }} .product-gallery__controls,
-#shopify-section-{{ section.id }} .product-gallery__navigation,
-#shopify-section-{{ section.id }} .product-gallery__carousel-controls {
-  display: none !important;
-}
-
-
-/* ============================================================
-   FORMA FINAL OVERRIDE ‚Äî compact gallery + stable information
-   ============================================================ */
-@media screen and (min-width: 1000px) {
-  #shopify-section-{{ section.id }} .product-gallery {
-    height: min(58vh, 540px) !important;
-    min-height: 420px !important; max-height: 540px !important;
-    overflow: hidden !important;
-  }
-  #shopify-section-{{ section.id }} .product-gallery__media-list,
-  #shopify-section-{{ section.id }} .product-gallery__media-list > *,
-  #shopify-section-{{ section.id }} .product-gallery__media {
-    height: 100% !important; max-height: 540px !important;
-  }
-  #shopify-section-{{ section.id }} .product-gallery img,
-  #shopify-section-{{ section.id }} .product-gallery video {
-    max-height: 540px !important; object-fit: contain !important;
-  }
-}
-
-/* Hide gallery controls visually (slider/autoplay functionality remains untouched) */
-#shopify-section-{{ section.id }} .product-gallery button[aria-label*="Next"],
-#shopify-section-{{ section.id }} .product-gallery button[aria-label*="Previous"],
-#shopify-section-{{ section.id }} .product-gallery button[aria-label*="Pause"],
-#shopify-section-{{ section.id }} .product-gallery button[aria-label*="Play"],
-#shopify-section-{{ section.id }} .product-gallery .slideshow-controls,
-#shopify-section-{{ section.id }} .product-gallery .media-controls,
-#shopify-section-{{ section.id }} .product-gallery .carousel-controls,
-#shopify-section-{{ section.id }} .product-gallery .carousel-navigation,
-#shopify-section-{{ section.id }} .product-gallery .slider-controls,
-#shopify-section-{{ section.id }} .product-gallery .slider-navigation,
-#shopify-section-{{ section.id }} .product-gallery .pagination {
-  display: none !important; visibility: hidden !important; opacity: 0 !important;
-}
-
-/* Stable three-column information layout below gallery */
-#shopify-section-{{ section.id }} .product-info {
-  width: 100% !important; max-width: none !important;
-  position: static !important; inset: auto !important;
-  margin: 0 !important; padding: 0 !important;
-  background: #fff !important; border: 0 !important;
-  box-shadow: none !important; backdrop-filter: none !important;
-}
-#shopify-section-{{ section.id }} .product-info__block-list {
-  display: grid !important; grid-template-columns: repeat(3,minmax(0,1fr)) !important;
-  grid-auto-flow: row !important; align-items: start !important;
-  gap: 0 !important; width: 100% !important;
-  margin: 0 !important; padding: 0 !important;
-}
-#shopify-section-{{ section.id }} .product-info__block-item {
-  min-width: 0 !important; box-sizing: border-box !important;
-  padding: 32px 34px !important; margin: 0 !important;
-  border-top: 1px solid #e2e2e2 !important;
-}
-#shopify-section-{{ section.id }} [data-block-type="vendor"],
-#shopify-section-{{ section.id }} [data-block-type="title"],
-#shopify-section-{{ section.id }} [data-block-type="price"],
-#shopify-section-{{ section.id }} [data-block-type="description"] {
-  grid-column: 1 !important; border-left: 0 !important;
-}
-#shopify-section-{{ section.id }} [data-block-type="accordion"],
-#shopify-section-{{ section.id }} [data-block-type="feature-with-icon"],
-#shopify-section-{{ section.id }} [data-block-type="sku"],
-#shopify-section-{{ section.id }} [data-block-type="inventory"],
-#shopify-section-{{ section.id }} [data-block-type="rating"],
-#shopify-section-{{ section.id }} [data-block-type="text"],
-#shopify-section-{{ section.id }} [data-block-type="liquid"],
-#shopify-section-{{ section.id }} [data-block-type="image"],
-#shopify-section-{{ section.id }} [data-block-type="button"],
-#shopify-section-{{ section.id }} [data-block-type="share-buttons"] {
-  grid-column: 2 !important; border-left: 1px solid #e2e2e2 !important;
-}
-#shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
-  grid-column: 3 !important; border-left: 1px solid #e2e2e2 !important;
-}
-#shopify-section-{{ section.id }} .product-info .prose {
-  font-size: 14px !important; line-height: 1.75 !important; color: #222 !important;
-}
-#shopify-section-{{ section.id }} .product-info .prose p { margin: 0 0 12px !important; }
-@media screen and (max-width: 999px) {
-  #shopify-section-{{ section.id }} .product-gallery {
-    height: auto !important; min-height: 0 !important; max-height: none !important;
-  }
-  #shopify-section-{{ section.id }} .product-gallery__media-list,
-  #shopify-section-{{ section.id }} .product-gallery__media-list > *,
-  #shopify-section-{{ section.id }} .product-gallery__media {
-    height: auto !important; max-height: none !important;
-  }
-  #shopify-section-{{ section.id }} .product-info__block-list {
-    grid-template-columns: 1fr !important;
-  }
-  #shopify-section-{{ section.id }} .product-info__block-item,
-  #shopify-section-{{ section.id }} [data-block-type="accordion"],
-  #shopify-section-{{ section.id }} [data-block-type="feature-with-icon"],
-  #shopify-section-{{ section.id }} [data-block-type="sku"],
-  #shopify-section-{{ section.id }} [data-block-type="inventory"],
-  #shopify-section-{{ section.id }} [data-block-type="rating"],
-  #shopify-section-{{ section.id }} [data-block-type="text"],
-  #shopify-section-{{ section.id }} [data-block-type="liquid"],
-  #shopify-section-{{ section.id }} [data-block-type="image"],
-  #shopify-section-{{ section.id }} [data-block-type="button"],
-  #shopify-section-{{ section.id }} [data-block-type="share-buttons"],
-  #shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
-    grid-column: 1 !important; border-left: 0 !important;
-    padding: 24px 20px !important;
-  }
 }
 </style>
 
@@ -862,10 +565,82 @@ window.formaProduct = {
 };
 </script>
 
+<script>
+/* FORMA - move the bullet list out of the description and into column 2 */
+(function () {
+  var sectionId = {{ section.id | json }};
+  var scheduled = false;
 
+  function split() {
+    scheduled = false;
+
+    var section = document.getElementById('shopify-section-' + sectionId);
+    if (!section) return;
+
+    var prose =
+      section.querySelector('[data-block-type="description"] .prose') ||
+      section.querySelector('.product-info .prose');
+    if (!prose || prose.dataset.formaSplit) return;
+
+    var block =
+      prose.closest('.product-info__block-item') ||
+      prose.closest('[data-block-type]');
+    if (!block || !block.parentNode) return;
+
+    // Remove an old column if the theme re-rendered the description
+    Array.prototype.forEach.call(
+      section.querySelectorAll('.forma-details-col'),
+      function (node) { node.remove(); }
+    );
+
+    prose.dataset.formaSplit = '1';
+
+    var html = prose.innerHTML;
+
+    // Find where the list starts: <ul>/<ol>, or a paragraph/line break that starts with "- " or a bullet
+    var re = /<(?:ul|ol)[\s>]|(?:<p[^>]*>|(?:<br\s*\/?>\s*)+)\s*(?:<[^>]+>\s*)*[-\u2013\u2014\u2022]\s/i;
+    var match = re.exec(html);
+    if (!match) return;
+
+    var head = html.slice(0, match.index).replace(/(?:<br\s*\/?>\s*)+$/i, '');
+    var tail = html.slice(match.index).replace(/^(?:<br\s*\/?>\s*)+/i, '');
+
+    // If there is no body text before the list, leave the description alone
+    if (!head.replace(/<[^>]*>|\s|&nbsp;/g, '')) return;
+
+    prose.innerHTML = head;
+
+    var col = document.createElement('div');
+    col.className = 'product-info__block-item forma-details-col';
+
+    var inner = document.createElement('div');
+    inner.className = 'prose';
+    inner.innerHTML = tail;
+
+    col.appendChild(inner);
+    block.parentNode.insertBefore(col, block.nextSibling);
+  }
+
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(split);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', schedule);
+  } else {
+    schedule();
+  }
+
+  // The theme editor and variant changes can re-render the section
+  document.addEventListener('shopify:section:load', schedule);
+  new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
 
 <script>
-/* FORMA WHY ‚Äö√Ñ√∂‚àö√ë‚àö‚àÇ‚Äö√†√∂‚àö√´‚Äö√†√∂‚àö√ú build a clean, independent modal. The gallery and slider are untouched. */
+/* FORMA WHY - build a clean, independent modal. The gallery and slider are untouched. */
 (function () {
   if (window.__formaWhyModalV3) return;
   window.__formaWhyModalV3 = true;
@@ -1009,7 +784,8 @@ window.formaProduct = {
       }
     }
   });
-})();</script>
+})();
+</script>
 
 {% schema %}
 {
@@ -1611,10 +1387,6 @@ window.formaProduct = {
         }
       ]
     },
-      
-
-
-
     {
       "type": "buy_buttons",
       "name": "t:sections.main_product.blocks.buy_buttons.name",
@@ -2691,3 +2463,4 @@ window.formaProduct = {
   ]
 }
 {% endschema %}
+
