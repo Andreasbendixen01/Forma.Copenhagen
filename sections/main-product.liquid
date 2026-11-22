@@ -262,6 +262,34 @@
   }
 }
 
+/* ---------- Brand buy button (column 1) ---------- */
+#shopify-section-{{ section.id }} .forma-brand-buy {
+  grid-column: 1 !important;
+  padding: 8px 20px 24px !important;
+  border: 0 !important;
+}
+@media screen and (min-width: 1000px) {
+  #shopify-section-{{ section.id }} .forma-brand-buy {
+    padding: 8px 32px 32px !important;
+  }
+}
+#shopify-section-{{ section.id }} .forma-brand-buy__link {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 18px 24px;
+  background: #111;
+  color: #fff !important;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: opacity 0.2s;
+}
+#shopify-section-{{ section.id }} .forma-brand-buy__link:hover { opacity: 0.85; }
+
 /* ---------- Typography inside the information area ---------- */
 #shopify-section-{{ section.id }} .product-info .product-title {
   margin: 0 !important;
@@ -638,6 +666,64 @@ window.formaProduct = {
   new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
 })();
 </script>
+
+
+<script>
+/* FORMA - brand buy button under the description + remove the "coming soon" text */
+(function () {
+  var sectionId = {{ section.id | json }};
+  var brandUrl = {{ product.metafields.custom.brand_url.value | json }};
+  var vendor = {{ product.vendor | json }};
+  var scheduled = false;
+
+  function run() {
+    scheduled = false;
+    var section = document.getElementById('shopify-section-' + sectionId);
+    if (!section) return;
+
+    // Hide the placeholder text wherever the theme renders it
+    Array.prototype.forEach.call(section.querySelectorAll('p, span, div, small'), function (el) {
+      if (el.children.length === 0 &&
+          /^brand product link coming soon/i.test((el.textContent || '').trim())) {
+        el.style.display = 'none';
+      }
+    });
+
+    // Add the button once, directly after the description block
+    if (!brandUrl || section.querySelector('.forma-brand-buy')) return;
+    var desc = section.querySelector('[data-block-type="description"]');
+    if (!desc || !desc.parentNode) return;
+
+    var wrap = document.createElement('div');
+    wrap.className = 'product-info__block-item forma-brand-buy';
+
+    var link = document.createElement('a');
+    link.className = 'forma-brand-buy__link';
+    link.href = brandUrl;
+    link.target = '_blank';
+    link.rel = 'noopener sponsored';
+    link.textContent = 'Køb hos ' + vendor;
+
+    wrap.appendChild(link);
+    desc.parentNode.insertBefore(wrap, desc.nextSibling);
+  }
+
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(run);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', schedule);
+  } else {
+    schedule();
+  }
+  document.addEventListener('shopify:section:load', schedule);
+  new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
 
 <script>
 /* FORMA WHY - build a clean, independent modal. The gallery and slider are untouched. */
