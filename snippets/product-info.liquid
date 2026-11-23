@@ -738,24 +738,122 @@
   {%- endunless -%}
 
 <style>
-  .forma-save-destination { margin: 0 0 14px; }
-  .forma-save-destination__button { display:flex; align-items:center; gap:13px; width:100%; padding:14px 15px; border:1px solid rgba(30,30,28,.22); background:rgba(255,255,255,.24); color:inherit; text-align:left; cursor:pointer; transition:background .2s ease,border-color .2s ease; }
-  .forma-save-destination__button:hover { background:rgba(255,255,255,.55); border-color:rgba(30,30,28,.5); }
-  .forma-save-destination__icon { display:flex; align-items:center; justify-content:center; width:35px; height:35px; flex:0 0 35px; border:1px solid rgba(30,30,28,.25); border-radius:50%; }
-  .forma-save-destination__icon svg, .forma-save-destination__arrow svg { display:block; flex:0 0 auto; }
-  .forma-save-destination__arrow { display:flex; align-items:center; justify-content:center; width:24px; height:24px; flex:0 0 24px; }
-  .forma-save-destination__copy { display:flex; flex:1; min-width:0; flex-direction:column; gap:3px; }
-  .forma-save-destination__title { font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
-  .forma-save-destination__subtitle { font-size:12px; line-height:1.45; opacity:.72; }
-    .forma-save-destination__button[aria-pressed="true"] .forma-save-destination__icon { background:#22221f; color:#fff; border-color:#22221f; }
-  .forma-save-destination__feedback { margin:7px 0 0; font-size:12px; line-height:1.5; }
-  .forma-score-card { border:1px solid rgba(30,30,28,.2); padding:18px; background:rgba(255,255,255,.34); }
-  .forma-score-card__eyebrow { font-size:11px !important; font-weight:600 !important; letter-spacing:.14em !important; text-transform:uppercase !important; }
-  .forma-score-card__value { font-size:clamp(38px,4vw,54px) !important; font-weight:500 !important; letter-spacing:-.06em !important; line-height:1 !important; }
-  .forma-score-card__main { align-items:center; gap:17px !important; }
-  .forma-score-card__progress { height:4px !important; margin-top:15px !important; background:rgba(0,0,0,.1) !important; }
-  .forma-score-card__progress-bar { background:#25251f !important; }
-  .forma-score-card__details-close { display:flex; align-items:center; justify-content:center; }
+  .forma-save-destination { 
+    margin: 0 0 14px; 
+    }
+
+  .forma-save-destination__button { 
+    display:flex; 
+    align-items:center; 
+    gap:13px; 
+    width:100%; 
+    padding:14px 15px; 
+    border:1px solid rgba(30,30,28,.22); 
+    background:rgba(255,255,255,.24); 
+    color:inherit; text-align:left; 
+    cursor:pointer; transition:background .2s ease,border-color .2s ease; 
+    }
+
+  .forma-save-destination__button:hover { 
+    background:rgba(255,255,255,.55); 
+    border-color:rgba(30,30,28,.5); 
+    }
+
+  .forma-save-destination__icon { 
+    display:flex; 
+    align-items:center; 
+    justify-content:center; 
+    width:35px; height:35px; 
+    flex:0 0 35px; border:1px solid rgba(30,30,28,.25); 
+    border-radius:50%; 
+    }
+
+  .forma-save-destination__icon svg, .forma-save-destination__arrow svg { 
+    display:block; 
+    flex:0 0 auto; 
+    }
+
+  .forma-save-destination__arrow { 
+    display:flex; 
+    align-items:center; 
+    justify-content:center; 
+    width:24px; 
+    height:24px; 
+    flex:0 0 24px; 
+    }
+
+  .forma-save-destination__copy { 
+    display:flex; 
+    flex:1; 
+    min-width:0; 
+    flex-direction:column; 
+    gap:3px; 
+    }
+
+  .forma-save-destination__title { 
+    font-size:12px; 
+    font-weight:400; 
+    letter-spacing:.05em; 
+    text-transform:uppercase;
+     }
+
+  .forma-save-destination__subtitle { 
+    font-size:12px; 
+    line-height:1.45; 
+    opacity:.72; 
+    }
+
+    .forma-save-destination__button[aria-pressed="true"] .forma-save-destination__icon { 
+      background:#22221f; color:#fff; 
+      border-color:#22221f; 
+      }
+
+  .forma-save-destination__feedback { 
+    margin:7px 0 0; 
+    font-size:12px; 
+    line-height:1.5;
+    }
+
+  .forma-score-card { 
+   border:1px solid rgba(30,30,28,.2); 
+   padding:18px; 
+   background:rgba(255,255,255,.34); 
+   }
+
+  .forma-score-card__eyebrow { 
+    font-size:11px !important; 
+    font-weight:400 !important; 
+    letter-spacing:.11em !important; 
+    text-transform:uppercase !important; 
+    }
+
+  .forma-score-card__value { 
+    font-size:clamp(38px,4vw,54px) !important; 
+    font-weight:500 !important; 
+    letter-spacing:-.06em !important; 
+    line-height:1 !important; 
+    }
+
+  .forma-score-card__main { 
+    align-items:center; gap:17px !important;
+    }
+
+  .forma-score-card__progress { 
+    height:3px !important; 
+    margin-top:15px !important; 
+    background:rgba(0,0,0,.1) !important; 
+    border-radius: 999px;
+    }
+
+  .forma-score-card__progress-bar { 
+    background:#25251f !important; 
+    }
+
+  .forma-score-card__details-close { 
+    display:flex; 
+    align-items:center; 
+    justify-content:center; 
+    }
   @media(max-width:699px) { .forma-save-destination__button { padding:13px; } .forma-score-card { padding:15px; } }
 
   /* =========================================================
@@ -775,7 +873,8 @@
     padding: 8px 14px !important;
     font-size: 11px !important;
     line-height: 1 !important;
-    letter-spacing: 0.1em !important;
+    letter-spacing: 1px !important;
+    font-weight: 300; !important;
   }
 
   /* Column 2: details as rows with hairlines */
