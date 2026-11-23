@@ -208,6 +208,11 @@
         url.searchParams.delete('brand');
         if (value !== 'all') url.searchParams.set(kind === 'brand' ? 'brand' : 'topic', value);
         window.history.pushState({}, '', url);
+        var layout = root.querySelector('.fm-layout');
+        if (layout && layout.getBoundingClientRect().top < 0) {
+          var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          layout.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        }
       }
     }
 

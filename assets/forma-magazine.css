@@ -12,7 +12,7 @@
 .fm-hero--article { place-items: end center; }
 .fm-hero--article .fm-hero__content { padding-bottom: clamp(32px, 5vw, 60px); }
 
-.fm-layout { display: grid; grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); gap: clamp(24px, 5vw, 96px); max-width: var(--fm-max, 1920px); margin: 0 auto; padding: clamp(40px, 5vw, 64px) var(--container-gutter, 20px) clamp(64px, 7vw, 120px); }
+.fm-layout { scroll-margin-top: calc(var(--sticky-area-height, 0px) + 16px); display: grid; grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); gap: clamp(24px, 5vw, 96px); max-width: var(--fm-max, 1920px); margin: 0 auto; padding: clamp(40px, 5vw, 64px) var(--container-gutter, 20px) clamp(64px, 7vw, 120px); }
 .fm-layout--article { grid-template-columns: minmax(150px, 220px) minmax(0, 1fr) minmax(260px, 320px); }
 
 .fm-nav { position: sticky; top: calc(var(--sticky-area-height, 0px) + 24px); align-self: start; }
