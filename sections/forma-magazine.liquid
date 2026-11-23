@@ -1,0 +1,273 @@
+{{ 'forma-magazine.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign all_articles = '' | split: ''
+  if section.settings.blog_1 != blank
+    assign all_articles = all_articles | concat: section.settings.blog_1.articles
+  endif
+  if section.settings.blog_2 != blank
+    assign all_articles = all_articles | concat: section.settings.blog_2.articles
+  endif
+  if section.settings.blog_3 != blank
+    assign all_articles = all_articles | concat: section.settings.blog_3.articles
+  endif
+  assign all_articles = all_articles | sort: 'published_at' | reverse
+
+  assign hero_image = section.settings.hero_image
+  if hero_image == blank and all_articles.size > 0
+    assign hero_image = all_articles.first.image
+  endif
+-%}
+<div
+  id="fm-{{ section.id }}"
+  class="fm fm--index"
+  style="--fm-bg: {{ section.settings.background }}; --fm-text: {{ section.settings.text }}; --fm-muted: {{ section.settings.muted }}; --fm-line: {{ section.settings.line }}; --fm-card: {{ section.settings.card_background }}; --fm-max: {{ section.settings.max_width }}px; --fm-cols: {{ section.settings.columns }}; --fm-hero-h: {{ section.settings.hero_height }}vh; --fm-overlay: {{ section.settings.overlay | divided_by: 100.0 }};"
+>
+  <div class="fm-hero">
+    {%- if hero_image != blank -%}
+      <div class="fm-hero__media">
+        {{ hero_image | image_url: width: 2800 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '750, 1100, 1500, 2000, 2800', sizes: '100vw', alt: '' }}
+      </div>
+    {%- endif -%}
+    <div class="fm-hero__content">
+      {%- if section.settings.hero_heading != blank -%}
+        <h1 class="fm-hero__title">{{ section.settings.hero_heading | escape }}</h1>
+      {%- endif -%}
+      {%- if section.settings.hero_text != blank -%}
+        <p class="fm-hero__text">{{ section.settings.hero_text | escape }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="fm-layout">
+    {%- render 'forma-magazine-nav',
+      blocks: section.blocks,
+      all_label: section.settings.all_label,
+      all_description: section.settings.all_description,
+      magazine_url: request.path,
+      active_topic: 'all',
+      active_brand: ''
+    -%}
+
+    <div class="fm-main">
+      <div class="fm-head">
+        <div class="fm-head__logo" data-mag-logo hidden></div>
+        <div>
+          <h2 class="fm-head__title" data-mag-heading>{{ section.settings.all_label | escape }}</h2>
+          <p class="fm-head__text" data-mag-description {% if section.settings.all_description == blank %}hidden{% endif %}>{{ section.settings.all_description | escape }}</p>
+        </div>
+      </div>
+
+      <ul class="fm-grid" role="list">
+        {%- for article in all_articles -%}
+          {%- liquid
+            assign tag_handles = ' '
+            for tag in article.tags
+              assign tag_handle = tag | handleize
+              assign tag_handles = tag_handles | append: tag_handle | append: ' '
+            endfor
+
+            assign badge = ''
+            for block in section.blocks
+              if block.type == 'topic' and badge == ''
+                assign topic_handle = block.settings.tag | default: block.settings.label | handleize
+                assign needle = ' ' | append: topic_handle | append: ' '
+                if tag_handles contains needle
+                  assign badge = block.settings.label
+                endif
+              endif
+            endfor
+            if badge == '' and article.tags.size > 0
+              assign badge = article.tags.first
+            endif
+          -%}
+          <li class="fm-card" data-tags="{{ tag_handles }}">
+            <a class="fm-card__link" href="{{ article.url }}">
+              <span class="fm-card__media">
+                {%- if article.image != blank -%}
+                  {{ article.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000', sizes: '(min-width: 990px) 28vw, (min-width: 750px) 40vw, 100vw', alt: article.image.alt | default: '' }}
+                {%- endif -%}
+              </span>
+              {%- if badge != blank -%}
+                <span class="fm-card__badge">{{ badge | escape }}</span>
+              {%- endif -%}
+              <span class="fm-card__caption">
+                <span class="fm-card__title">{{ article.title | escape }}</span>
+                <span class="fm-card__more">{{ section.settings.read_label | escape }}</span>
+              </span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <p class="fm-empty" data-mag-empty {% if all_articles.size > 0 %}hidden{% endif %}>{{ section.settings.empty_text | escape }}</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('fm-{{ section.id }}');
+    if (!root) return;
+    var links = root.querySelectorAll('[data-mag-topic], [data-mag-brand]');
+    var cards = root.querySelectorAll('.fm-card');
+    var heading = root.querySelector('[data-mag-heading]');
+    var description = root.querySelector('[data-mag-description]');
+    var logo = root.querySelector('[data-mag-logo]');
+    var empty = root.querySelector('[data-mag-empty]');
+    var brandList = root.querySelector('[data-mag-brands]');
+    var brandHandles = Array.prototype.map.call(root.querySelectorAll('[data-mag-brand]'), function (link) {
+      return link.getAttribute('data-mag-brand');
+    });
+
+    function find(attr, value) {
+      if (!value) return null;
+      var safe = window.CSS && CSS.escape ? CSS.escape(value) : value.replace(/[^a-z0-9_-]/gi, '');
+      return root.querySelector('[' + attr + '="' + safe + '"]');
+    }
+
+    function apply(kind, value, push) {
+      var link = kind === 'brand' ? find('data-mag-brand', value) : find('data-mag-topic', value);
+      if (!link) {
+        kind = 'topic';
+        value = 'all';
+        link = find('data-mag-topic', 'all');
+      }
+
+      links.forEach(function (item) {
+        item.classList.remove('is-active');
+        item.removeAttribute('aria-current');
+      });
+      link.classList.add('is-active');
+      link.setAttribute('aria-current', 'page');
+      if (brandList) brandList.hidden = !(kind === 'brand' || value === 'brands');
+
+      var shown = 0;
+      cards.forEach(function (card) {
+        var tags = card.getAttribute('data-tags') || ' ';
+        var match;
+        if (value === 'all') {
+          match = true;
+        } else if (kind === 'topic' && value === 'brands') {
+          match = brandHandles.some(function (handle) { return tags.indexOf(' ' + handle + ' ') > -1; });
+        } else {
+          match = tags.indexOf(' ' + value + ' ') > -1;
+        }
+        card.hidden = !match;
+        if (match) shown += 1;
+      });
+
+      heading.textContent = link.getAttribute('data-title') || link.textContent;
+      var text = link.getAttribute('data-description') || '';
+      description.textContent = text;
+      description.hidden = text === '';
+
+      var logoUrl = kind === 'brand' ? link.getAttribute('data-logo') : null;
+      logo.innerHTML = '';
+      if (logoUrl) {
+        var img = document.createElement('img');
+        img.src = logoUrl;
+        img.alt = '';
+        logo.appendChild(img);
+      }
+      logo.hidden = !logoUrl;
+      empty.hidden = shown > 0;
+
+      if (push) {
+        var url = new URL(window.location.href);
+        url.searchParams.delete('topic');
+        url.searchParams.delete('brand');
+        if (value !== 'all') url.searchParams.set(kind === 'brand' ? 'brand' : 'topic', value);
+        window.history.pushState({}, '', url);
+      }
+    }
+
+    links.forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        var brand = link.getAttribute('data-mag-brand');
+        if (brand) {
+          apply('brand', brand, true);
+        } else {
+          apply('topic', link.getAttribute('data-mag-topic'), true);
+        }
+      });
+    });
+
+    function fromUrl() {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('brand')) {
+        apply('brand', params.get('brand'), false);
+      } else {
+        apply('topic', params.get('topic') || 'all', false);
+      }
+    }
+
+    window.addEventListener('popstate', fromUrl);
+    fromUrl();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Forma Magazine",
+  "tag": "section",
+  "class": "shopify-section--forma-magazine",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "header", "content": "Top image" },
+    { "type": "image_picker", "id": "hero_image", "label": "Image", "info": "Uses the newest article's image if empty" },
+    { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Forma Magazine" },
+    { "type": "text", "id": "hero_text", "label": "Text", "default": "Stories on wardrobe, lifestyle, home and the brands we love" },
+    { "type": "range", "id": "hero_height", "label": "Height", "min": 30, "max": 100, "step": 5, "unit": "vh", "default": 60 },
+    { "type": "range", "id": "overlay", "label": "Image overlay", "min": 0, "max": 70, "step": 5, "unit": "%", "default": 20 },
+    { "type": "header", "content": "Articles" },
+    { "type": "blog", "id": "blog_1", "label": "Blog 1" },
+    { "type": "blog", "id": "blog_2", "label": "Blog 2" },
+    { "type": "blog", "id": "blog_3", "label": "Blog 3" },
+    { "type": "paragraph", "content": "Articles appear under a category when they have its tag. Brand articles need the brand's name as a tag, e.g. Les Deux." },
+    { "type": "text", "id": "all_label", "label": "All articles label", "default": "All articles" },
+    { "type": "textarea", "id": "all_description", "label": "All articles intro", "default": "Everything from Forma, from wardrobe staples and the way we live to the homes and brands behind it, in one place." },
+    { "type": "text", "id": "read_label", "label": "Read link label", "default": "Read the article" },
+    { "type": "text", "id": "empty_text", "label": "No articles text", "default": "No articles here yet. Check back soon." },
+    { "type": "range", "id": "columns", "label": "Columns on desktop", "min": 2, "max": 4, "step": 1, "default": 3 },
+    { "type": "range", "id": "max_width", "label": "Max width", "min": 1200, "max": 2400, "step": 40, "unit": "px", "default": 1920 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#777777" },
+    { "type": "color", "id": "line", "label": "Lines", "default": "#dcdcdc" },
+    { "type": "color", "id": "card_background", "label": "Card background", "default": "#f4f3f0" }
+  ],
+  "blocks": [
+    {
+      "type": "topic",
+      "name": "Category",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Wardrobe" },
+        { "type": "text", "id": "tag", "label": "Article tag", "info": "Articles with this tag show up here. Uses the label if empty." },
+        { "type": "textarea", "id": "description", "label": "Intro" }
+      ]
+    },
+    {
+      "type": "brands",
+      "name": "Brands",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Lists every brand from the Forma Brand entries. Tag an article with a brand's name to show it under that brand." },
+        { "type": "text", "id": "label", "label": "Label", "default": "Brands" },
+        { "type": "textarea", "id": "description", "label": "Intro" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Forma Magazine",
+      "blocks": [
+        { "type": "topic", "settings": { "label": "Wardrobe", "tag": "Wardrobe" } },
+        { "type": "topic", "settings": { "label": "The Lifestyle", "tag": "The Lifestyle" } },
+        { "type": "topic", "settings": { "label": "The Home", "tag": "The Home" } },
+        { "type": "brands", "settings": { "label": "Brands" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

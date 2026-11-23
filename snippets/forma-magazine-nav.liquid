@@ -1,0 +1,79 @@
+{%- doc -%}
+  Left-hand category navigation for the Forma Magazine page and magazine articles.
+
+  @param {array} blocks - The section's blocks (types: topic, brands)
+  @param {string} all_label - Label for the "all articles" link
+  @param {string} [all_description] - Intro text shown with all articles
+  @param {string} magazine_url - URL of the magazine page
+  @param {string} [active_topic] - Handle of the active topic ('all', a topic handle or 'brands')
+  @param {string} [active_brand] - Handle of the active brand
+{%- enddoc -%}
+{%- liquid
+  assign brands = shop.metaobjects.forma_brand.values
+  assign show_brands = false
+  if active_topic == 'brands' or active_brand != blank
+    assign show_brands = true
+  endif
+-%}
+<nav class="fm-nav" aria-label="{{ all_label | escape }}">
+  <ul class="fm-nav__list" role="list">
+    <li>
+      <a
+        class="fm-nav__link{% if active_topic == 'all' %} is-active{% endif %}"
+        href="{{ magazine_url }}"
+        data-mag-topic="all"
+        data-title="{{ all_label | escape }}"
+        data-description="{{ all_description | escape }}"
+        {% if active_topic == 'all' %}aria-current="page"{% endif %}
+      >{{ all_label | escape }}</a>
+    </li>
+    {%- for block in blocks -%}
+      {%- case block.type -%}
+        {%- when 'topic' -%}
+          {%- assign topic_handle = block.settings.tag | default: block.settings.label | handleize -%}
+          {%- if topic_handle != blank -%}
+            <li {{ block.shopify_attributes }}>
+              <a
+                class="fm-nav__link{% if active_topic == topic_handle %} is-active{% endif %}"
+                href="{{ magazine_url }}?topic={{ topic_handle }}"
+                data-mag-topic="{{ topic_handle }}"
+                data-title="{{ block.settings.label | escape }}"
+                data-description="{{ block.settings.description | escape }}"
+                {% if active_topic == topic_handle %}aria-current="page"{% endif %}
+              >{{ block.settings.label | escape }}</a>
+            </li>
+          {%- endif -%}
+        {%- when 'brands' -%}
+          <li class="fm-nav__item--brands" {{ block.shopify_attributes }}>
+            <a
+              class="fm-nav__link{% if active_topic == 'brands' %} is-active{% endif %}"
+              href="{{ magazine_url }}?topic=brands"
+              data-mag-topic="brands"
+              data-title="{{ block.settings.label | escape }}"
+              data-description="{{ block.settings.description | escape }}"
+              {% if active_topic == 'brands' %}aria-current="page"{% endif %}
+            >{{ block.settings.label | escape }}</a>
+            <ul class="fm-nav__brands" role="list" data-mag-brands {% unless show_brands %}hidden{% endunless %}>
+              {%- for brand in brands -%}
+                {%- assign brand_name = brand.brand_name.value -%}
+                {%- if brand_name != blank -%}
+                  {%- assign brand_handle = brand_name | handleize -%}
+                  <li>
+                    <a
+                      class="fm-nav__link{% if active_brand == brand_handle %} is-active{% endif %}"
+                      href="{{ magazine_url }}?brand={{ brand_handle }}"
+                      data-mag-brand="{{ brand_handle }}"
+                      data-title="{{ brand_name | escape }}"
+                      data-description="{{ brand.description.value | escape }}"
+                      {% if brand.logo.value != blank %}data-logo="{{ brand.logo.value | image_url: width: 200 }}"{% endif %}
+                      {% if active_brand == brand_handle %}aria-current="page"{% endif %}
+                    >{{ brand_name | escape }}</a>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </li>
+      {%- endcase -%}
+    {%- endfor -%}
+  </ul>
+</nav>

@@ -1,0 +1,40 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "forma-magazine-article",
+      "blocks": {
+        "wardrobe": { "type": "topic", "settings": { "label": "Wardrobe", "tag": "Wardrobe" } },
+        "lifestyle": { "type": "topic", "settings": { "label": "The Lifestyle", "tag": "The Lifestyle" } },
+        "home": { "type": "topic", "settings": { "label": "The Home", "tag": "The Home" } },
+        "brands": { "type": "brands", "settings": { "label": "Brands" } }
+      },
+      "block_order": ["wardrobe", "lifestyle", "home", "brands"],
+      "settings": {
+        "magazine_page": "magazine",
+        "hero_height": 60,
+        "overlay": 25,
+        "all_label": "All articles",
+        "show_author": true,
+        "author_prefix": "By",
+        "show_date": false,
+        "read_time_label": "min read",
+        "products_heading": "Featured products",
+        "products": ["sport-t-shirt-1", "west-side-t-shirt-1", "core-t-shirt-2", "sport-t-shirt", "west-side-t-shirt", "core-t-shirt-1"],
+        "products_limit": 6,
+        "collections_heading": "Featured collections",
+        "collections": ["mens-t-shirt", "03-the-city", "mens-knitwear", "mens-shirt", "mens-jeans", "mens-jackets-coats"],
+        "max_width": 1920
+      }
+    }
+  },
+  "order": ["main"]
+}

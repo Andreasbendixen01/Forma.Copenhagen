@@ -9,20 +9,28 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "disabled": true,
+    "magazine": {
+      "type": "forma-magazine",
+      "blocks": {
+        "wardrobe": { "type": "topic", "settings": { "label": "Wardrobe", "tag": "Wardrobe", "description": "Wardrobe staples, new arrivals and how to wear them." } },
+        "lifestyle": { "type": "topic", "settings": { "label": "The Lifestyle", "tag": "The Lifestyle", "description": "Skincare, grooming, fragrance and the small rituals of everyday life." } },
+        "home": { "type": "topic", "settings": { "label": "The Home", "tag": "The Home", "description": "Furniture, lighting and objects for a home with form." } },
+        "brands": { "type": "brands", "settings": { "label": "Brands", "description": "Stories from the brands we carry. Pick a brand to read more about it." } }
+      },
+      "block_order": ["wardrobe", "lifestyle", "home", "brands"],
       "settings": {
-        "color_scheme": "",
-        "show_title": true,
-        "page_width": "xs"
-      }
-    },
-    "forma_brand_directory_7TRRVK": {
-      "type": "forma-brand-directory",
-      "name": "Forma Brand Index",
-      "settings": {
-        "max_width": 1600,
+        "hero_heading": "Forma Magazine",
+        "hero_text": "Stories on wardrobe, lifestyle, home and the brands we love",
+        "hero_height": 60,
+        "overlay": 20,
+        "blog_1": "forma-journal",
+        "blog_2": "forma-places",
+        "all_label": "All articles",
+        "all_description": "Everything from Forma, from wardrobe staples and the way we live to the homes and brands behind it, in one place.",
+        "read_label": "Read the article",
+        "empty_text": "No articles here yet. Check back soon.",
+        "columns": 3,
+        "max_width": 1920,
         "background": "#ffffff",
         "text": "#111111",
         "muted": "#777777",
@@ -31,8 +39,5 @@
       }
     }
   },
-  "order": [
-    "main",
-    "forma_brand_directory_7TRRVK"
-  ]
+  "order": ["magazine"]
 }

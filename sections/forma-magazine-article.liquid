@@ -1,0 +1,208 @@
+{{ 'forma-magazine.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign magazine_url = '/pages/magazine'
+  if section.settings.magazine_page != blank
+    assign magazine_url = section.settings.magazine_page.url
+  endif
+
+  assign tag_handles = ' '
+  for tag in article.tags
+    assign tag_handle = tag | handleize
+    assign tag_handles = tag_handles | append: tag_handle | append: ' '
+  endfor
+
+  assign active_topic = ''
+  assign topic_label = ''
+  for block in section.blocks
+    if block.type == 'topic' and active_topic == ''
+      assign topic_handle = block.settings.tag | default: block.settings.label | handleize
+      assign needle = ' ' | append: topic_handle | append: ' '
+      if tag_handles contains needle
+        assign active_topic = topic_handle
+        assign topic_label = block.settings.label
+      endif
+    endif
+  endfor
+
+  assign active_brand = ''
+  for brand in shop.metaobjects.forma_brand.values
+    if active_brand == '' and brand.brand_name.value != blank
+      assign brand_handle = brand.brand_name.value | handleize
+      assign needle = ' ' | append: brand_handle | append: ' '
+      if tag_handles contains needle
+        assign active_brand = brand_handle
+        if topic_label == ''
+          assign topic_label = brand.brand_name.value
+        endif
+      endif
+    endif
+  endfor
+  if topic_label == '' and article.tags.size > 0
+    assign topic_label = article.tags.first
+  endif
+
+  assign word_count = article.content | strip_html | split: ' ' | size
+  assign read_minutes = word_count | divided_by: 200 | at_least: 1
+
+  assign featured_products = article.metafields.custom.featured_products.value
+  if featured_products == blank
+    assign featured_products = section.settings.products
+  endif
+  assign featured_collections = article.metafields.custom.featured_collections.value
+  if featured_collections == blank
+    assign featured_collections = section.settings.collections
+  endif
+-%}
+<div
+  id="fm-{{ section.id }}"
+  class="fm fm--article"
+  style="--fm-bg: {{ section.settings.background }}; --fm-text: {{ section.settings.text }}; --fm-muted: {{ section.settings.muted }}; --fm-line: {{ section.settings.line }}; --fm-card: {{ section.settings.card_background }}; --fm-max: {{ section.settings.max_width }}px; --fm-hero-h: {{ section.settings.hero_height }}vh; --fm-overlay: {{ section.settings.overlay | divided_by: 100.0 }};"
+>
+  <div class="fm-hero fm-hero--article">
+    {%- if article.image != blank -%}
+      <div class="fm-hero__media">
+        {{ article.image | image_url: width: 2800 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '750, 1100, 1500, 2000, 2800', sizes: '100vw', alt: '' }}
+      </div>
+    {%- endif -%}
+    <div class="fm-hero__content">
+      {%- if topic_label != blank -%}
+        <span class="fm-hero__eyebrow">{{ topic_label | escape }}</span>
+      {%- endif -%}
+      <h1 class="fm-hero__title">{{ article.title | escape }}</h1>
+    </div>
+  </div>
+
+  <div class="fm-layout fm-layout--article">
+    {%- render 'forma-magazine-nav',
+      blocks: section.blocks,
+      all_label: section.settings.all_label,
+      all_description: '',
+      magazine_url: magazine_url,
+      active_topic: active_topic,
+      active_brand: active_brand
+    -%}
+
+    <article class="fm-article">
+      <p class="fm-meta">
+        {%- if section.settings.show_author and article.author != blank -%}
+          {{ section.settings.author_prefix | escape }} {{ article.author | escape }} &middot;
+        {% endif -%}
+        {%- if section.settings.show_date -%}
+          {{ article.published_at | date: format: 'date' }} &middot;
+        {% endif -%}
+        {{ read_minutes }} {{ section.settings.read_time_label | escape }}
+      </p>
+      <div class="prose">
+        {{- article.content -}}
+      </div>
+    </article>
+
+    {%- if featured_products != blank or featured_collections != blank -%}
+      <aside class="fm-side">
+        {%- if featured_products != blank -%}
+          <div class="fm-products-wrap">
+            {%- if section.settings.products_heading != blank -%}
+              <h2 class="fm-side__title">{{ section.settings.products_heading | escape }}</h2>
+            {%- endif -%}
+            <ul class="fm-products" role="list">
+              {%- for product in featured_products limit: section.settings.products_limit -%}
+                <li>
+                  <a class="fm-product" href="{{ product.url }}">
+                    <span class="fm-product__media">
+                      {%- if product.featured_image != blank -%}
+                        {{ product.featured_image | image_url: width: 400 | image_tag: loading: 'lazy', widths: '200, 300, 400', sizes: '110px', alt: '' }}
+                      {%- endif -%}
+                    </span>
+                    <span class="fm-product__title">{{ product.title | escape }}</span>
+                    <span class="fm-product__price">{{ product.price | money }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        {%- if featured_collections != blank -%}
+          <div class="fm-collections">
+            {%- if section.settings.collections_heading != blank -%}
+              <h2 class="fm-side__title">{{ section.settings.collections_heading | escape }}</h2>
+            {%- endif -%}
+            <ul class="fm-collection-list" role="list">
+              {%- for collection in featured_collections limit: 8 -%}
+                {%- liquid
+                  assign collection_image = collection.image
+                  if collection_image == blank
+                    assign collection_image = collection.products.first.featured_image
+                  endif
+                -%}
+                <li>
+                  <a class="fm-collection" href="{{ collection.url }}">
+                    <span class="fm-collection__media">
+                      {%- if collection_image != blank -%}
+                        {{ collection_image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100, 200', sizes: '64px', alt: '' }}
+                      {%- endif -%}
+                    </span>
+                    <span>{{ collection.title | escape }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </aside>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Forma Magazine article",
+  "tag": "section",
+  "class": "shopify-section--forma-magazine-article",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "page", "id": "magazine_page", "label": "Magazine page" },
+    { "type": "range", "id": "hero_height", "label": "Top image height", "min": 30, "max": 100, "step": 5, "unit": "vh", "default": 60 },
+    { "type": "range", "id": "overlay", "label": "Image overlay", "min": 0, "max": 70, "step": 5, "unit": "%", "default": 25 },
+    { "type": "text", "id": "all_label", "label": "All articles label", "default": "All articles" },
+    { "type": "header", "content": "Article details" },
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": true },
+    { "type": "text", "id": "author_prefix", "label": "Author prefix", "default": "By" },
+    { "type": "checkbox", "id": "show_date", "label": "Show date", "default": false },
+    { "type": "text", "id": "read_time_label", "label": "Reading time label", "default": "min read" },
+    { "type": "header", "content": "Sidebar" },
+    { "type": "paragraph", "content": "Shown on every article. An article can use its own with the metafields custom.featured_products and custom.featured_collections." },
+    { "type": "text", "id": "products_heading", "label": "Products heading", "default": "Featured products" },
+    { "type": "product_list", "id": "products", "label": "Featured products", "limit": 12 },
+    { "type": "range", "id": "products_limit", "label": "Products to show", "min": 3, "max": 12, "step": 3, "default": 6 },
+    { "type": "text", "id": "collections_heading", "label": "Collections heading", "default": "Featured collections" },
+    { "type": "collection_list", "id": "collections", "label": "Featured collections", "limit": 8 },
+    { "type": "range", "id": "max_width", "label": "Max width", "min": 1200, "max": 2400, "step": 40, "unit": "px", "default": 1920 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#777777" },
+    { "type": "color", "id": "line", "label": "Lines", "default": "#dcdcdc" },
+    { "type": "color", "id": "card_background", "label": "Card background", "default": "#f4f3f0" }
+  ],
+  "blocks": [
+    {
+      "type": "topic",
+      "name": "Category",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Wardrobe" },
+        { "type": "text", "id": "tag", "label": "Article tag", "info": "Uses the label if empty. Match the category on the magazine page." }
+      ]
+    },
+    {
+      "type": "brands",
+      "name": "Brands",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Brands" }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["article"] }
+}
+{% endschema %}
