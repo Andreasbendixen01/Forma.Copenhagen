@@ -1,9 +1,10 @@
 {%- comment -%}
   ----------------------------------------------------------------------------------------------------------------------
-  PRODUCT GALLERY COMPONENT
+  PRODUCT GALLERY COMPONENT (FORMA)
   ----------------------------------------------------------------------------------------------------------------------
 
-  This component is used to show the product gallery (used in product page and featured product section)
+  Endless, slow-moving image loop with 5px between the images.
+  Works with any number of images: with only two, they are repeated so the row is always full.
 
   ********************************************
   Supported variables
@@ -11,8 +12,8 @@
 
   * product: the product to render (if empty, renders placeholder content)
   * product_form_id: the product form id
-  * desktop_layout: the layout on desktop (can be "carousel_thumbnails_left", "carousel_thumbnails_bottom", "carousel_dots", "grid", "grid_2x" or "grid_2x_highlighted")
-  * mobile_controls: the controls to show on mobile (can be "thumbnails", "dots", "arrows" or "free_scroll")
+  * desktop_layout: the layout on desktop (kept for compatibility with the theme)
+  * mobile_controls: the controls to show on mobile (kept for compatibility with the theme)
   * enable_media_autoplay: if set to true media are autoplayed when switched to
   * enable_video_looping: if set to true videos automatically loop when finished
   * enable_image_zoom: if set to true the gallery allow zoom
@@ -20,535 +21,107 @@
 {%- endcomment -%}
 
 <style>
-
-  /* ============================================================
-   FORMA PRODUCT GALLERY — CONTINUOUS EDITORIAL SLIDER
-   ============================================================ */
-
-.product-gallery--forma-auto {
-  position: relative;
-  width: 100%;
-}
-
-.product-gallery--forma-auto .product-gallery__image-list {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-}
-
-.product-gallery--forma-auto .product-gallery__carousel {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 0;
-  width: 100%;
-  overflow-x: hidden;
-  scroll-behavior: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.product-gallery--forma-auto .product-gallery__carousel::-webkit-scrollbar {
-  display: none;
-}
-
-.product-gallery--forma-auto .product-gallery__media {
-  flex: 0 0 72%;
-  width: 72%;
-  min-width: 72%;
-  scroll-snap-align: none;
-  position: relative;
-}
-
-.product-gallery--forma-auto .product-gallery__media img,
-.product-gallery--forma-auto .product-gallery__media video,
-.product-gallery--forma-auto .product-gallery__media model-viewer {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* ------------------------------------------------------------
-   Forma counter
-   ------------------------------------------------------------ */
-
-.forma-gallery-meta {
-  position: absolute;
-  z-index: 20;
-  left: 2rem;
-  bottom: 2rem;
-
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-
-  color: #111;
-  font-size: 11px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-
-  pointer-events: none;
-}
-
-.forma-gallery-progress {
-  display: block;
-  width: 80px;
-  height: 1px;
-  background: rgba(17,17,17,.2);
-  overflow: hidden;
-}
-
-.forma-gallery-progress__bar {
-  display: block;
-  width: 30%;
-  height: 100%;
-  background: #111;
-}
-
-/* ------------------------------------------------------------
-   Controls
-   ------------------------------------------------------------ */
-
-.forma-gallery-controls {
-  position: absolute;
-  z-index: 20;
-  right: 2rem;
-  bottom: 1.5rem;
-
-  display: flex;
-  align-items: center;
-  gap: .4rem;
-}
-
-.forma-gallery-controls button {
-  width: 44px;
-  height: 44px;
-
-  display: grid;
-  place-items: center;
-
-  border: 1px solid rgba(17,17,17,.18);
-  border-radius: 50%;
-
-  background: rgba(255,255,255,.72);
-
-  color: #111;
-
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  cursor: pointer;
-
-  transition:
-    background .25s ease,
-    color .25s ease,
-    transform .25s ease;
-}
-
-.forma-gallery-controls button:hover {
-  background: #111;
-  color: #fff;
-  transform: scale(1.04);
-}
-
-/* ------------------------------------------------------------
-   Desktop
-   ------------------------------------------------------------ */
-
-@media screen and (min-width: 1000px) {
-
-  .product-gallery--forma-auto .product-gallery__carousel {
-    height: calc(100vh - var(--sticky-area-height, 0px));
-    min-height: 680px;
-    max-height: 900px;
+  /* =========================================================
+     FORMA GALLERY - SETTINGS
+     Change the gap and the heights here.
+     ========================================================= */
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto {
+    --forma-gap: 5px;
+    --forma-h: clamp(320px, 60vh, 520px);
   }
-
-  .product-gallery--forma-auto .product-gallery__media {
-    height: 100%;
-    flex-basis: 62vw;
-    min-width: 62vw;
-  }
-
-}
-
-/* ------------------------------------------------------------
-   Mobile
-   ------------------------------------------------------------ */
-
-@media screen and (max-width: 999px) {
-
-  .product-gallery--forma-auto .product-gallery__carousel {
-    height: auto;
-  }
-
-  .product-gallery--forma-auto .product-gallery__media {
-    flex: 0 0 88vw;
-    width: 88vw;
-    min-width: 88vw;
-  }
-
-  .forma-gallery-meta {
-    left: 1rem;
-    bottom: 1rem;
-  }
-
-  .forma-gallery-controls {
-    right: 1rem;
-    bottom: .75rem;
-  }
-
-  .forma-gallery-controls button {
-    width: 38px;
-    height: 38px;
-  }
-
-}
-
-  {%- if mobile_controls == 'free_scroll' -%}
-    @media screen and (max-width: 999px) {
-      #shopify-section-{{ section.id }} {
-        --product-gallery-carousel-grid: auto / auto-flow min(28rem, 75vw);
-        --product-gallery-carousel-gap: 0.125rem;
-        --product-gallery-carousel-scroll-snap-type: none;
-      }
-    }
-  {%- endif -%}
 
   @media screen and (min-width: 1000px) {
-    #shopify-section-{{ section.id }} {
-      {%- if desktop_layout == 'carousel_thumbnails_left' or desktop_layout == 'grid' -%}
-        /* Thumbnails on the left */
-        --product-gallery-flex-direction: row-reverse;
-        --product-gallery-thumbnail-list-grid-auto-flow: row;
-
-        {%- if desktop_layout == 'carousel_thumbnails_left' -%}
-          --product-gallery-thumbnail-list-max-height: 45rem;
-        {%- endif -%}
-      {%- endif -%}
-
-      {%- if desktop_layout contains 'grid' -%}
-        --product-gallery-carousel-grid: auto-flow dense / {% if desktop_layout == 'grid' %}auto{% else %}repeat(2, minmax(0, 1fr)){% endif %};
-        --product-gallery-carousel-scroll-snap-type: none;
-        --product-gallery-carousel-gap: {{ section.settings.desktop_media_grid_gap }}px;
-      {%- endif -%}
+    #shopify-section-{{ section.id }} .product-gallery--forma-auto {
+      --forma-h: clamp(380px, 58vh, 540px);
     }
-
-    {%- if desktop_layout == 'grid_2x_highlighted' -%}
-      #shopify-section-{{ section.id }} .product-gallery__media:not([hidden]) {
-        grid-column: span 2;
-      }
-
-      #shopify-section-{{ section.id }} .product-gallery__media:not([hidden]) ~ .product-gallery__media {
-        grid-column: span 1;
-      }
-    {%- endif -%}
   }
 
-
-/* =========================================================
-   FORMA — PRODUCT GALLERY REFINEMENT
-   Smooth presentation, responsive sizing and thumbnails
-   ========================================================= */
-
-#shopify-section-{{ section.id }} .product-gallery--forma-auto {
-  position: relative;
-  width: 100%;
-  max-width: none;
-  min-width: 0;
-}
-
-/* Gallery viewport */
-#shopify-section-{{ section.id }} .product-gallery--forma-auto
-.product-gallery__image-list {
-  position: relative;
-  width: 100%;
-  min-width: 0;
-  overflow: hidden;
-}
-
-/* Main horizontal slider */
-#shopify-section-{{ section.id }} .product-gallery--forma-auto
-.product-gallery__carousel {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  gap: 0;
-  width: 100%;
-  min-width: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-behavior: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  overscroll-behavior-x: contain;
-}
-
-#shopify-section-{{ section.id }} .product-gallery--forma-auto
-.product-gallery__carousel::-webkit-scrollbar {
-  display: none;
-}
-
-/* Individual slides */
-#shopify-section-{{ section.id }} .product-gallery--forma-auto
-.product-gallery__media {
-  position: relative;
-  flex: 0 0 62vw;
-  width: 62vw;
-  min-width: 0;
-  max-width: none;
-  height: clamp(520px, 78vh, 900px);
-  overflow: hidden;
-}
-
-/* Images */
-#shopify-section-{{ section.id }} .product-gallery--forma-auto
-.product-gallery__media img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-/* Video and 3D media */
-#shopify-section-{{ section.id }} .product-gallery--forma-auto
-.product-gallery__media video,
-#shopify-section-{{ section.id }} .product-gallery--forma-auto
-.product-gallery__media model-viewer {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Gallery counter */
-#shopify-section-{{ section.id }} .forma-gallery-meta {
-  z-index: 5;
-  pointer-events: none;
-}
-
-/* Slider controls */
-#shopify-section-{{ section.id }} .forma-gallery-controls {
-  z-index: 6;
-}
-
-#shopify-section-{{ section.id }} .forma-gallery-controls button {
-  flex: 0 0 auto;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Thumbnail rail: visible on desktop and mobile */
-#shopify-section-{{ section.id }} .product-gallery__thumbnail-list {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  margin-top: 12px;
-  overflow: hidden;
-}
-
-#shopify-section-{{ section.id }} .product-gallery__thumbnail-scroller {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-#shopify-section-{{ section.id }} .product-gallery__thumbnail-scroller::-webkit-scrollbar {
-  display: none;
-}
-
-#shopify-section-{{ section.id }} .product-gallery__thumbnail {
-  display: block;
-  position: relative;
-  flex: 0 0 64px;
-  width: 64px;
-  min-width: 64px;
-  height: 76px;
-  padding: 0;
-  overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.14);
-  border-radius: 2px;
-  background: transparent;
-  opacity: 0.72;
-  cursor: pointer;
-  transition: opacity 180ms ease, border-color 180ms ease;
-}
-
-#shopify-section-{{ section.id }} .product-gallery__thumbnail[aria-current="true"] {
-  opacity: 1;
-  border-color: #171717;
-}
-
-#shopify-section-{{ section.id }} .product-gallery__thumbnail img,
-#shopify-section-{{ section.id }} .product-gallery__thumbnail svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-#shopify-section-{{ section.id }} .product-gallery__thumbnail:hover {
-  opacity: 1;
-}
-
-/* Respect reduced-motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  #shopify-section-{{ section.id }} .product-gallery__thumbnail {
-    transition: none;
-  }
-}
-
-/* Desktop */
-@media screen and (min-width: 1000px) {
-  #shopify-section-{{ section.id }} .product-gallery--forma-auto
-  .product-gallery__carousel {
-    height: clamp(520px, 78vh, 900px);
-    min-height: 520px;
-    max-height: 900px;
-  }
-}
-
-/* Mobile */
-@media screen and (max-width: 999px) {
-  #shopify-section-{{ section.id }} .product-gallery--forma-auto
-  .product-gallery__carousel {
-    height: min(72vh, 680px);
-    min-height: 420px;
-    max-height: 680px;
-  }
-
-  #shopify-section-{{ section.id }} .product-gallery--forma-auto
-  .product-gallery__media {
-    flex: 0 0 88vw;
-    width: 88vw;
-    height: 100%;
-  }
-
-  #shopify-section-{{ section.id }} .forma-gallery-meta {
-    left: 16px;
-    bottom: 16px;
-  }
-
-  #shopify-section-{{ section.id }} .forma-gallery-controls {
-    right: 12px;
-    bottom: 12px;
-  }
-
-  #shopify-section-{{ section.id }} .forma-gallery-controls button {
-    width: 38px;
-    height: 38px;
-  }
-
-  #shopify-section-{{ section.id }} .product-gallery__thumbnail-list {
-    margin-top: 10px;
-  }
-
-  #shopify-section-{{ section.id }} .product-gallery__thumbnail {
-    flex-basis: 54px;
-    width: 54px;
-    min-width: 54px;
-    height: 64px;
-  }
-}
-
-/* =========================================================
-   FORMA — SLIDER CONTINUES BEHIND GLASS INFO PANEL
-   ========================================================= */
-
-@media screen and (min-width: 1000px) {
-  #shopify-section-{{ section.id }} .product-gallery--forma-auto {
+  /* =========================================================
+     FORMA GALLERY - LAYOUT
+     ========================================================= */
+  #shopify-section-{{ section.id }} product-gallery.product-gallery--forma-auto {
     position: relative !important;
+    display: block !important;
     width: 100% !important;
     max-width: none !important;
-    overflow: visible !important;
-    z-index: 1 !important;
-  }
-
-  #shopify-section-{{ section.id }} .product-gallery--forma-auto
-  .product-gallery__image-list {
-    position: relative !important;
-    width: 100% !important;
+    min-width: 0 !important;
+    height: var(--forma-h) !important;
+    min-height: 0 !important;
+    max-height: none !important;
     overflow: hidden !important;
   }
 
-  #shopify-section-{{ section.id }} .product-gallery--forma-auto
-  .product-gallery__carousel {
-    position: relative !important;
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto .product-gallery__image-list {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto .product-gallery__carousel {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    gap: var(--forma-gap) !important;
+    column-gap: var(--forma-gap) !important;
+    width: 100% !important;
+    height: var(--forma-h) !important;
+    min-height: 0 !important;
+    max-height: none !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
+    scroll-snap-type: none !important;
     scroll-behavior: auto !important;
-    z-index: 1 !important;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
-  #shopify-section-{{ section.id }} .product-gallery--forma-auto
-  .product-gallery__media {
-    position: relative !important;
-    flex-shrink: 0 !important;
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto .product-gallery__carousel::-webkit-scrollbar {
+    display: none;
   }
 
-  /* Keep the image and its media layers moving together */
-  #shopify-section-{{ section.id }} .product-gallery--forma-auto
-  .product-gallery__media img,
-  #shopify-section-{{ section.id }} .product-gallery--forma-auto
-  .product-gallery__media video,
-  #shopify-section-{{ section.id }} .product-gallery--forma-auto
-  .product-gallery__media model-viewer {
+  /* Every slide is exactly as wide as its image, so there are no empty gaps */
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto .product-gallery__media {
+    position: relative;
+    flex: 0 0 auto !important;
+    width: calc(var(--forma-h) * var(--ratio, 0.8)) !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: var(--forma-h) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+    background: #fafafa;
+    scroll-snap-align: none !important;
+  }
+
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto .product-gallery__media img,
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto .product-gallery__media video,
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto .product-gallery__media model-viewer {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    object-position: center;
     transform: none !important;
   }
 
-  /* Keep the glass panel above the moving gallery */
-  #shopify-section-{{ section.id }} .product-info {
-    z-index: 20 !important;
-    background: transparent !important;
-    isolation: isolate !important;
-    pointer-events: auto;
+  /* Hide the theme's thumbnails and dots (the markup stays so the theme's scripts keep working) */
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto .product-gallery__thumbnail-list,
+  #shopify-section-{{ section.id }} .product-gallery--forma-auto .page-dots {
+    display: none !important;
   }
 
-  #shopify-section-{{ section.id }} .product-info::before {
-    z-index: -1 !important;
-    pointer-events: none !important;
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .product-gallery--forma-auto .product-gallery__carousel {
+      scroll-behavior: auto !important;
+    }
   }
-}
-
-
-/* =========================================================
-   FORMA — HIDE GALLERY THUMBNAILS AND COUNTER
-   ========================================================= */
-
-/* Hide thumbnail images below the main gallery */
-#shopify-section-main-product .product-gallery__thumbnail-list,
-.product-gallery .product-gallery__thumbnail-list {
-  display: none !important;
-}
-
-/* Hide the image counter and progress indicator */
-.product-gallery .forma-gallery-meta,
-.product-gallery .forma-gallery-counter,
-.product-gallery .forma-gallery-progress,
-.product-gallery [class*="forma-gallery-meta"],
-.product-gallery [class*="forma-gallery-counter"],
-.product-gallery [class*="forma-gallery-progress"] {
-  display: none !important;
-}
-
-/* FORMA — Hide gallery pagination dots */
-
-.product-gallery .page-dots,
-.product-gallery .slider-dots,
-.product-gallery .slider-pagination,
-.product-gallery .swiper-pagination,
-.product-gallery .flickity-page-dots,
-.product-gallery [class*="pagination"],
-.product-gallery [class*="page-dot"] {
-  display: none !important;
-}
-
 </style>
 
 {%- comment -%}
@@ -605,67 +178,16 @@
   {%- endif -%}
 
   <div class="product-gallery__image-list">
-
-      {%- if product.media.size > 1 -%}
-      <div class="forma-gallery-meta" aria-hidden="true">
-        <span class="forma-gallery-counter">
-          01 / {{ product.media.size }}
-        </span>
-
-        <span class="forma-gallery-progress">
-          <span class="forma-gallery-progress__bar"></span>
-        </span>
-      </div>
-
-      <div class="forma-gallery-controls">
-        <button
-          type="button"
-          class="forma-gallery-prev"
-          aria-label="Previous image"
-        >
-          <span aria-hidden="true">←</span>
-        </button>
-
-        <button
-          type="button"
-          class="forma-gallery-pause"
-          aria-label="Pause image slideshow"
-          aria-pressed="false"
-        >
-          <span aria-hidden="true">Ⅱ</span>
-        </button>
-
-        <button
-          type="button"
-          class="forma-gallery-next"
-          aria-label="Next image"
-        >
-          <span aria-hidden="true">→</span>
-        </button>
-      </div>
-    {%- endif -%}
-
-
     {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------------
       CAROUSEL
       ----------------------------------------------------------------------------------------------------------------------
     {%- endcomment -%}
 
-    <div class="{% if mobile_controls == 'arrows' %}product-gallery__carousel-with-arrows{% else %}contents{% endif %}">
-      {%- if mobile_controls == 'arrows' -%}
-        <carousel-prev-button aria-controls="{{ product_gallery_carousel_id }}" class="contents">
-          <button type="button" class="tap-area sm:hidden">
-            <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
-            {%- render 'icon' with 'arrow-left', direction_aware: true -%}
-          </button>
-        </carousel-prev-button>
-      {%- endif -%}
-
+    <div class="contents">
       <scroll-carousel
-        adaptive-height
         id="{{ product_gallery_carousel_id }}"
-        class="product-gallery__carousel scroll-area {% unless mobile_controls == 'arrows' %}full-bleed md:unbleed{% endunless %}"
+        class="product-gallery__carousel scroll-area full-bleed md:unbleed"
         role="region"
       >
         {%- if product != blank -%}
@@ -696,8 +218,11 @@
           -%}
 
           {%- for media in product.media -%}
+            {%- assign slide_ratio = media.preview_image.aspect_ratio | default: 0.8 -%}
+
             <div
               class="product-gallery__media snap-center {% if media == default_media %}is-initial{% endif %}"
+              style="--ratio: {{ slide_ratio }};"
               data-media-type="{{ media.media_type }}"
               data-media-id="{{ media.id }}"
               role="group"
@@ -735,6 +260,7 @@
 
             <div
               class="product-gallery__media snap-center {% if forloop.first %}is-initial{% endif %}"
+              style="--ratio: 0.8;"
               data-media-type="{{ media.media_type }}"
               data-media-position="{{ media.position }}"
               data-media-id="{{ media.id }}"
@@ -746,15 +272,6 @@
           {%- endfor -%}
         {%- endif -%}
       </scroll-carousel>
-
-      {%- if mobile_controls == 'arrows' -%}
-        <carousel-next-button aria-controls="{{ product_gallery_carousel_id }}" class="contents">
-          <button type="button" class="tap-area sm:hidden">
-            <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
-            {%- render 'icon' with 'arrow-right', direction_aware: true -%}
-          </button>
-        </carousel-next-button>
-      {%- endif -%}
     </div>
 
     {%- comment -%}
@@ -786,7 +303,7 @@
 
   {%- comment -%}
     ----------------------------------------------------------------------------------------------------------------------
-    CONTROLS
+    CONTROLS (hidden with CSS above, kept so the theme's scripts keep working)
     ----------------------------------------------------------------------------------------------------------------------
   {%- endcomment -%}
 
@@ -882,142 +399,101 @@
   {%- endif -%}
 
   <script>
-(() => {
-  const gallery = document.currentScript.closest('product-gallery');
+  (() => {
+    const gallery = document.currentScript.closest('product-gallery');
+    if (!gallery) return;
 
-  if (!gallery) return;
+    const carousel = gallery.querySelector('.product-gallery__carousel');
+    if (!carousel) return;
 
-  const carousel = gallery.querySelector(
-    '.product-gallery__carousel'
-  );
+    /* Speed in pixels per millisecond. Lower = calmer. */
+    const SPEED = Number(gallery.dataset.formaAutoSliderSpeed || 0.18);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (!carousel) return;
+    let setWidth = 0;   /* width of one full set of images, including the gap after it */
+    let pos = 0;
+    let hover = false;
+    let touch = false;
+    let touchTimer;
+    let last = performance.now();
 
-  const slides = [
-    ...carousel.querySelectorAll(
-      '.product-gallery__media:not([hidden])'
-    )
-  ];
+    /* Repeat the images until there is always content ahead, however few images the product has */
+    function build() {
+      carousel.querySelectorAll('.forma-gallery-clone').forEach((node) => node.remove());
+      setWidth = 0;
 
-  if (slides.length < 2) return;
+      const originals = [...carousel.querySelectorAll('.product-gallery__media:not([hidden])')];
+      if (originals.length < 2 || !carousel.clientWidth) return;
 
-  let isPaused = false;
-  let animationFrame;
-  let lastTime = performance.now();
+      const gap = parseFloat(getComputedStyle(carousel).columnGap) || 0;
+      const first = originals[0].getBoundingClientRect();
+      const lastItem = originals[originals.length - 1].getBoundingClientRect();
+      const width = lastItem.right - first.left + gap;
+      if (width < 50) return;
 
-  const speed = Number(
-    gallery.dataset.formaAutoSliderSpeed || 0.18
-  );
-
-  const originalSlides = [...slides];
-
-  originalSlides.forEach(slide => {
-    const clone = slide.cloneNode(true);
-
-    clone.classList.add('forma-gallery-clone');
-    clone.setAttribute('aria-hidden', 'true');
-
-    carousel.appendChild(clone);
-  });
-
-  const originalWidth = originalSlides.reduce(
-    (total, slide) => total + slide.offsetWidth,
-    0
-  );
-
-  const animate = now => {
-    if (!isPaused) {
-      const delta = now - lastTime;
-
-      carousel.scrollLeft += speed * delta;
-
-      if (carousel.scrollLeft >= originalWidth) {
-        carousel.scrollLeft -= originalWidth;
+      let guard = 0;
+      while (carousel.scrollWidth < width + carousel.clientWidth && guard++ < 40) {
+        originals.forEach((slide) => {
+          const clone = slide.cloneNode(true);
+          clone.classList.add('forma-gallery-clone');
+          clone.setAttribute('aria-hidden', 'true');
+          clone.removeAttribute('data-media-id');
+          clone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+          carousel.appendChild(clone);
+        });
       }
+
+      setWidth = width;
+      pos = carousel.scrollLeft % setWidth;
     }
 
-    lastTime = now;
-    animationFrame = requestAnimationFrame(animate);
-  };
+    function tick(now) {
+      const dt = Math.min(now - last, 64);
+      last = now;
 
-  carousel.addEventListener('mouseenter', () => {
-    isPaused = true;
-  });
+      if (setWidth) {
+        /* If the visitor scrolled by hand, continue from there */
+        if (Math.abs(carousel.scrollLeft - pos) > 2) pos = carousel.scrollLeft;
 
-  carousel.addEventListener('mouseleave', () => {
-    isPaused = false;
-    lastTime = performance.now();
-  });
+        const moving = !(hover || touch || reduceMotion);
+        if (moving) pos += SPEED * dt;
 
-  carousel.addEventListener(
-    'touchstart',
-    () => {
-      isPaused = true;
-    },
-    { passive: true }
-  );
+        let wrapped = false;
+        if (pos >= setWidth) {
+          pos -= setWidth;
+          wrapped = true;
+        }
 
-  carousel.addEventListener(
-    'touchend',
-    () => {
-      setTimeout(() => {
-        isPaused = false;
-        lastTime = performance.now();
-      }, 600);
-    },
-    { passive: true }
-  );
+        if (moving || wrapped) carousel.scrollLeft = pos;
+      }
 
-  const nextButton = gallery.querySelector('.forma-gallery-next');
-  const previousButton = gallery.querySelector('.forma-gallery-prev');
-  const pauseButton = gallery.querySelector('.forma-gallery-pause');
+      requestAnimationFrame(tick);
+    }
 
-  nextButton?.addEventListener('click', () => {
-    isPaused = true;
+    carousel.addEventListener('mouseenter', () => { hover = true; });
+    carousel.addEventListener('mouseleave', () => { hover = false; });
+    carousel.addEventListener('focusin', () => { hover = true; });
+    carousel.addEventListener('focusout', () => { hover = false; });
 
-    carousel.scrollBy({
-      left: carousel.clientWidth * 0.55,
-      behavior: 'smooth'
+    carousel.addEventListener('touchstart', () => {
+      clearTimeout(touchTimer);
+      touch = true;
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', () => {
+      touchTimer = setTimeout(() => { touch = false; }, 1500);
+    }, { passive: true });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 150);
     });
+    window.addEventListener('load', build);
 
-    setTimeout(() => {
-      lastTime = performance.now();
-      isPaused = false;
-    }, 1200);
-  });
-
-  previousButton?.addEventListener('click', () => {
-    isPaused = true;
-
-    carousel.scrollBy({
-      left: -(carousel.clientWidth * 0.55),
-      behavior: 'smooth'
-    });
-
-    setTimeout(() => {
-      lastTime = performance.now();
-      isPaused = false;
-    }, 1200);
-  });
-
-  pauseButton?.addEventListener('click', () => {
-    isPaused = !isPaused;
-
-    pauseButton.innerHTML =
-      `<span aria-hidden="true">${isPaused ? '▶' : 'Ⅱ'}</span>`;
-
-    pauseButton.setAttribute(
-      'aria-label',
-      isPaused ? 'Play image slideshow' : 'Pause image slideshow'
-    );
-
-    lastTime = performance.now();
-  });
-
-  lastTime = performance.now();
-  animationFrame = requestAnimationFrame(animate);
-})();
-</script>
-
-  
+    build();
+    requestAnimationFrame(tick);
+  })();
+  </script>
 </product-gallery>
+
