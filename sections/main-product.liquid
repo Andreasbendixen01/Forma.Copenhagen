@@ -316,6 +316,35 @@
   outline-offset: 3px;
 }
 
+/* ---------- Follow brand button: same green as the buy button ---------- */
+#shopify-section-{{ section.id }} [class*="follow" i]:is(button, a),
+#shopify-section-{{ section.id }} button[data-follow],
+#shopify-section-{{ section.id }} button[data-forma-follow] {
+  transition: background-color 0.2s ease-in, color 0.2s ease-in, border-color 0.2s ease-in !important;
+}
+
+/* Hover */
+#shopify-section-{{ section.id }} [class*="follow" i]:is(button, a):hover,
+#shopify-section-{{ section.id }} button[data-follow]:hover,
+#shopify-section-{{ section.id }} button[data-forma-follow]:hover {
+  background: #1e3a34 !important;
+  border-color: #1e3a34 !important;
+  color: #fff !important;
+}
+
+/* Active / "Following" state */
+#shopify-section-{{ section.id }} [class*="follow" i]:is(button, a):active,
+#shopify-section-{{ section.id }} [class*="follow" i]:is(button, a)[aria-pressed="true"],
+#shopify-section-{{ section.id }} [class*="follow" i]:is(button, a).is-following,
+#shopify-section-{{ section.id }} [class*="follow" i]:is(button, a).is-active,
+#shopify-section-{{ section.id }} [class*="follow" i]:is(button, a)[data-following="true"],
+#shopify-section-{{ section.id }} button[data-follow][aria-pressed="true"],
+#shopify-section-{{ section.id }} button[data-forma-follow][aria-pressed="true"] {
+  background: #1e3a34 !important;
+  border-color: #1e3a34 !important;
+  color: #fff !important;
+}
+
 /* ---------- Typography inside the information area ---------- */
 #shopify-section-{{ section.id }} .product-info .product-title {
   margin: 0 !important;
