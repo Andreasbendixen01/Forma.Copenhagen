@@ -117,7 +117,7 @@
 
           {%- when 'vendor' -%}
             {%- if product != blank -%}
-              
+
             <div class="forma-brand-follow">
               <div class="forma-brand-follow__name">
                 {%- render 'vendor' with product.vendor, class: 'h6 link-faded' -%}
@@ -135,12 +135,9 @@
               </button>
             </div>
 
-            
             {%- else -%}
               {%- assign placeholder_vendor = 'general.on_boarding.product_vendor' | t -%}
               {%- render 'vendor' with placeholder_vendor, class: 'h6 link-faded' -%}
-
-              
 
             {%- endif -%}
 
@@ -397,9 +394,6 @@
                 low_threshold: block.settings.low_inventory_threshold
             -%}
 
-            
-            
-
           {%- when 'buy_buttons' -%}
 
           <div class="forma-save-destination" data-forma-save-destination>
@@ -467,7 +461,7 @@
                   class="forma-score-card__value"
                   data-forma-score-value
                 >
-                  ‚Äö√Ñ√Æ
+                  ‚Äì
                 </span>
 
                 <span class="forma-score-card__percentage">
@@ -530,25 +524,6 @@
             ></ul>
           </div>
         </div>
-
-
-            {%- assign external_product_url = product.metafields.custom.external_product_url.value -%}
-            {%- if external_product_url != blank -%}
-              <a
-                class="forma-shop-at-brand"
-                href="{{ external_product_url }}"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Shop {{ product.title | escape }} at {{ product.vendor | escape }}"
-              >
-                <span>SHOP AT BRAND</span>
-                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path d="M7 17 17 7M7.5 7H17v9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-            {%- else -%}
-              <p class="forma-shop-at-brand__notice">Brand product link coming soon.</p>
-            {%- endif -%}
 
           {%- when 'pickup_availability' -%}
             {%- if product != blank -%}
@@ -780,12 +755,95 @@
   .forma-score-card__main { align-items:center; gap:17px !important; }
   .forma-score-card__progress { height:4px !important; margin-top:15px !important; background:rgba(0,0,0,.1) !important; }
   .forma-score-card__progress-bar { background:#25251f !important; }
-  .forma-shop-at-brand { display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; margin-top:14px; padding:16px 18px; border:1px solid rgba(30,30,28,.72); background:#20201d; color:#fff; text-decoration:none; font-size:11px; font-weight:600; letter-spacing:.13em; text-transform:uppercase; transition:background .2s ease,color .2s ease,border-color .2s ease; }
-  .forma-shop-at-brand:hover { background:transparent; color:inherit; border-color:currentColor; }
-  .forma-shop-at-brand svg { flex:0 0 auto; }
-  .forma-shop-at-brand__notice { margin:12px 0 0; font-size:11px; opacity:.65; }
   .forma-score-card__details-close { display:flex; align-items:center; justify-content:center; }
   @media(max-width:699px) { .forma-save-destination__button { padding:13px; } .forma-score-card { padding:15px; } }
+
+  /* =========================================================
+     FORMA - CLEANER PRODUCT INFO
+     ========================================================= */
+
+  /* Column 1: brand row with a smaller follow button */
+  #shopify-section-{{ section.id }} .forma-brand-follow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  #shopify-section-{{ section.id }} .forma-follow-brand {
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 8px 14px !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  /* Column 2: details as rows with hairlines */
+  #shopify-section-{{ section.id }} .forma-details-title {
+    margin: 0 0 12px !important;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6b6b6b;
+  }
+  #shopify-section-{{ section.id }} .forma-details-list {
+    border-top: 1px solid #e2e2e2;
+  }
+  #shopify-section-{{ section.id }} .forma-details-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid #e2e2e2;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #222;
+  }
+  #shopify-section-{{ section.id }} .forma-details-row__label {
+    flex: 0 0 auto;
+    color: #6b6b6b;
+  }
+  #shopify-section-{{ section.id }} .forma-details-row__value {
+    text-align: right;
+  }
+  #shopify-section-{{ section.id }} .forma-details-row.is-single .forma-details-row__value {
+    text-align: left;
+  }
+
+  /* Column 3: Forma Match and Save as one card (Match on top, Save as a slim row below) */
+  #shopify-section-{{ section.id }} [data-block-type="buy-buttons"] {
+    display: flex;
+    flex-direction: column;
+  }
+  #shopify-section-{{ section.id }} .forma-score-card {
+    order: 1;
+    margin: 0 !important;
+    padding: 24px 22px 22px !important;
+    background: transparent !important;
+    border: 1px solid #e2e2e2 !important;
+    border-bottom: 0 !important;
+  }
+  #shopify-section-{{ section.id }} .forma-save-destination {
+    order: 2;
+    margin: 0 !important;
+  }
+  #shopify-section-{{ section.id }} .forma-save-destination__button {
+    padding: 14px 18px !important;
+    background: transparent !important;
+    border: 1px solid #e2e2e2 !important;
+    transition: background-color 0.2s ease;
+  }
+  #shopify-section-{{ section.id }} .forma-save-destination__button:hover {
+    background: #fafafa !important;
+    border-color: #e2e2e2 !important;
+  }
+  #shopify-section-{{ section.id }} .forma-save-destination__button[aria-pressed="true"] .forma-save-destination__subtitle {
+    display: none;
+  }
+  #shopify-section-{{ section.id }} .forma-save-destination__feedback {
+    display: none !important;
+  }
 </style>
 
 <script>
@@ -887,8 +945,90 @@
     });
   })();
 </script>
+
+<script>
+/* FORMA - turn the bullet list in column 2 into clean rows.
+   A line like "Materiale: 100% bomuld" is split into a label and a value.
+   A line without a colon becomes one full-width row. */
+(() => {
+  if (window.formaDetailsRowsInitialized) return;
+  window.formaDetailsRowsInitialized = true;
+
+  const BULLET = /^[\s\-\u2013\u2014\u2022\u00b7*]+/;
+  let scheduled = false;
+
+  function linesFrom(html) {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/(p|li|div|ul|ol)>/gi, '\n');
+
+    return (tmp.textContent || '')
+      .split('\n')
+      .map((line) => line.replace(/\u00a0/g, ' ').replace(BULLET, '').trim())
+      .filter(Boolean);
+  }
+
+  function span(className, text) {
+    const node = document.createElement('span');
+    node.className = className;
+    node.textContent = text;
+    return node;
+  }
+
+  function build(col) {
+    col.dataset.formaRows = '1';
+
+    const prose = col.querySelector('.prose');
+    if (!prose) return;
+
+    const lines = linesFrom(prose.innerHTML);
+    if (!lines.length) return;
+
+    const title = document.createElement('p');
+    title.className = 'forma-details-title';
+    title.textContent = 'Details';
+
+    const list = document.createElement('div');
+    list.className = 'forma-details-list';
+
+    lines.forEach((line) => {
+      const row = document.createElement('div');
+      row.className = 'forma-details-row';
+
+      const colon = line.indexOf(':');
+      const value = colon > 0 ? line.slice(colon + 1).trim() : '';
+
+      if (colon > 0 && colon <= 28 && value) {
+        row.appendChild(span('forma-details-row__label', line.slice(0, colon).trim()));
+        row.appendChild(span('forma-details-row__value', value));
+      } else {
+        row.classList.add('is-single');
+        row.appendChild(span('forma-details-row__value', line));
+      }
+
+      list.appendChild(row);
+    });
+
+    col.replaceChildren(title, list);
+  }
+
+  function run() {
+    scheduled = false;
+    document.querySelectorAll('.forma-details-col:not([data-forma-rows])').forEach(build);
+  }
+
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(run);
+  }
+
+  document.addEventListener('DOMContentLoaded', schedule);
+  document.addEventListener('shopify:section:load', schedule);
+  new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
+  schedule();
+})();
+</script>
 </safe-sticky>
-
-
-
 
