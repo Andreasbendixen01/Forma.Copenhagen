@@ -52,7 +52,7 @@
                     assign brand_url = brand.forma_url.value.url
                   endif
 
-                  assign brand_image = blank
+                  assign brand_image = brand.image.value
                   for article in source_articles
                     if brand_image == blank and article.image != blank
                       for tag in article.tags
@@ -139,7 +139,7 @@
   "tag": "div",
   "class": "shopify-section--forma-brand-marquee",
   "settings": [
-    { "type": "paragraph", "content": "Shows every brand from the Forma Brand entries and slides from right to left. A brand uses the image of its newest article (tagged with the brand's name), otherwise its logo." },
+    { "type": "paragraph", "content": "Shows every brand from the Forma Brand entries and slides from right to left. Each brand uses its Brand image. Without one it uses its newest article tagged with the brand name, otherwise its logo." },
     { "type": "text", "id": "heading", "label": "Heading" },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore" },
     { "type": "checkbox", "id": "show_name", "label": "Show brand name", "default": false },

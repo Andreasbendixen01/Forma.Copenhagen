@@ -67,7 +67,8 @@
         "text": "#111111",
         "muted": "#777777",
         "line": "#dcdcdc",
-        "card_background": "#f4f3f0"
+        "card_background": "#f4f3f0",
+        "show_blog_badge": false
       }
     },
     "brand_slider": {

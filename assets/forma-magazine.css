@@ -42,7 +42,7 @@
 .fm-card__badge, .fm-card__caption { position: absolute; color: #111; background: rgba(255, 255, 255, .62); border: 1px solid rgba(255, 255, 255, .7); border-radius: 3px; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 .fm-card__badge { top: 8px; left: 8px; padding: 5px 9px; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
 .fm-card__caption { left: 8px; right: 8px; bottom: 8px; display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; }
-.fm-card__title { font-size: 13px; line-height: 1.35; }
+.fm-card__title { display: -webkit-box; min-height: 2.7em; overflow: hidden; font-size: 13px; line-height: 1.35; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .fm-card__more { font-size: 12px; opacity: .65; }
 .fm-empty { margin: 0; font-size: 13px; color: var(--fm-muted, #777); }
 .fm-empty[hidden] { display: none; }
