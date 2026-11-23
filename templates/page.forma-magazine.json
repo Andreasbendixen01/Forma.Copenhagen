@@ -53,13 +53,15 @@
       "settings": {
         "hero_heading": "Forma Magazine",
         "hero_text": "Stories on wardrobe, lifestyle, home and the brands we love",
-        "hero_height": 60,
+        "hero_height": 35,
         "overlay": 20,
         "blog_1": "forma-journal",
         "blog_2": "forma-places",
+        "blog_3": "",
         "all_label": "All articles",
         "all_description": "Everything from Forma, from wardrobe staples and the way we live to the homes and brands behind it, in one place.",
         "read_label": "Read the article",
+        "show_blog_badge": false,
         "empty_text": "No articles here yet. Check back soon.",
         "columns": 3,
         "max_width": 1920,
@@ -67,14 +69,15 @@
         "text": "#111111",
         "muted": "#777777",
         "line": "#dcdcdc",
-        "card_background": "#f4f3f0",
-        "show_blog_badge": false
+        "card_background": "#f4f3f0"
       }
     },
     "brand_slider": {
       "type": "forma-brand-marquee",
       "settings": {
+        "heading": "",
         "button_label": "Explore",
+        "show_name": false,
         "link_to": "magazine",
         "magazine_page": "magazine",
         "blog_1": "forma-journal",
