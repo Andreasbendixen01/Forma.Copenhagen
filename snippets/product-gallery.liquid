@@ -407,7 +407,7 @@
     if (!carousel) return;
 
     /* Speed in pixels per millisecond. Lower = calmer. */
-    const SPEED = Number(gallery.dataset.formaAutoSliderSpeed || 0.12);
+    const SPEED = Number(gallery.dataset.formaAutoSliderSpeed || 0.10);
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let setWidth = 0;   /* width of one full set of images, including the gap after it */
