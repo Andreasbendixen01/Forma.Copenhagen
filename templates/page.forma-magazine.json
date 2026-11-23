@@ -26,7 +26,7 @@
         "background": "#ffffff",
         "text": "#111111",
         "muted": "#777777",
-        "line": "#ffffff",
+        "line": "#dcdcdc",
         "card_background": "#f4f3f0"
       }
     }
