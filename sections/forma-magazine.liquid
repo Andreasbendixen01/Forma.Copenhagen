@@ -76,8 +76,39 @@
                 endif
               endif
             endfor
+            if badge == ''
+              for brand in shop.metaobjects.forma_brand.values
+                if badge == '' and brand.brand_name.value != blank
+                  assign brand_handle = brand.brand_name.value | handleize
+                  assign needle = ' ' | append: brand_handle | append: ' '
+                  if tag_handles contains needle
+                    assign badge = brand.brand_name.value
+                  endif
+                endif
+              endfor
+            endif
             if badge == '' and article.tags.size > 0
               assign badge = article.tags.first
+            endif
+            if badge == '' and section.settings.show_blog_badge
+              if section.settings.blog_1 != blank
+                assign blog_prefix = section.settings.blog_1.url | append: '/'
+                if article.url contains blog_prefix
+                  assign badge = section.settings.blog_1.title
+                endif
+              endif
+              if badge == '' and section.settings.blog_2 != blank
+                assign blog_prefix = section.settings.blog_2.url | append: '/'
+                if article.url contains blog_prefix
+                  assign badge = section.settings.blog_2.title
+                endif
+              endif
+              if badge == '' and section.settings.blog_3 != blank
+                assign blog_prefix = section.settings.blog_3.url | append: '/'
+                if article.url contains blog_prefix
+                  assign badge = section.settings.blog_3.title
+                endif
+              endif
             endif
           -%}
           <li class="fm-card" data-tags="{{ tag_handles }}">
@@ -227,6 +258,7 @@
     { "type": "text", "id": "all_label", "label": "All articles label", "default": "All articles" },
     { "type": "textarea", "id": "all_description", "label": "All articles intro", "default": "Everything from Forma, from wardrobe staples and the way we live to the homes and brands behind it, in one place." },
     { "type": "text", "id": "read_label", "label": "Read link label", "default": "Read the article" },
+    { "type": "checkbox", "id": "show_blog_badge", "label": "Show blog name on cards without a category", "default": true },
     { "type": "text", "id": "empty_text", "label": "No articles text", "default": "No articles here yet. Check back soon." },
     { "type": "range", "id": "columns", "label": "Columns on desktop", "min": 2, "max": 4, "step": 1, "default": 3 },
     { "type": "range", "id": "max_width", "label": "Max width", "min": 1200, "max": 2400, "step": 40, "unit": "px", "default": 1920 },

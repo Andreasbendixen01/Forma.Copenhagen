@@ -12,12 +12,44 @@
     "magazine": {
       "type": "forma-magazine",
       "blocks": {
-        "wardrobe": { "type": "topic", "settings": { "label": "Wardrobe", "tag": "Wardrobe", "description": "Wardrobe staples, new arrivals and how to wear them." } },
-        "lifestyle": { "type": "topic", "settings": { "label": "The Lifestyle", "tag": "The Lifestyle", "description": "Skincare, grooming, fragrance and the small rituals of everyday life." } },
-        "home": { "type": "topic", "settings": { "label": "The Home", "tag": "The Home", "description": "Furniture, lighting and objects for a home with form." } },
-        "brands": { "type": "brands", "settings": { "label": "Brands", "description": "Stories from the brands we carry. Pick a brand to read more about it." } }
+        "wardrobe": {
+          "type": "topic",
+          "settings": {
+            "label": "Wardrobe",
+            "tag": "Wardrobe",
+            "description": "Wardrobe staples, new arrivals and how to wear them."
+          }
+        },
+        "lifestyle": {
+          "type": "topic",
+          "settings": {
+            "label": "The Lifestyle",
+            "tag": "The Lifestyle",
+            "description": "Skincare, grooming, fragrance and the small rituals of everyday life."
+          }
+        },
+        "home": {
+          "type": "topic",
+          "settings": {
+            "label": "The Home",
+            "tag": "The Home",
+            "description": "Furniture, lighting and objects for a home with form."
+          }
+        },
+        "brands": {
+          "type": "brands",
+          "settings": {
+            "label": "Brands",
+            "description": "Stories from the brands we carry. Pick a brand to read more about it."
+          }
+        }
       },
-      "block_order": ["wardrobe", "lifestyle", "home", "brands"],
+      "block_order": [
+        "wardrobe",
+        "lifestyle",
+        "home",
+        "brands"
+      ],
       "settings": {
         "hero_heading": "Forma Magazine",
         "hero_text": "Stories on wardrobe, lifestyle, home and the brands we love",
@@ -37,7 +69,28 @@
         "line": "#dcdcdc",
         "card_background": "#f4f3f0"
       }
+    },
+    "brand_slider": {
+      "type": "forma-brand-marquee",
+      "settings": {
+        "button_label": "Explore",
+        "link_to": "magazine",
+        "magazine_page": "magazine",
+        "blog_1": "forma-journal",
+        "blog_2": "forma-places",
+        "tile_width": 560,
+        "tile_height": 560,
+        "gap": 2,
+        "seconds_per_tile": 6,
+        "overlay": 20,
+        "background": "#ffffff",
+        "card_background": "#f4f3f0",
+        "text": "#111111"
+      }
     }
   },
-  "order": ["magazine"]
+  "order": [
+    "magazine",
+    "brand_slider"
+  ]
 }
