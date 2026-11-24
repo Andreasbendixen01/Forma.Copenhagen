@@ -31,16 +31,6 @@
             "brand_link": ""
           }
         },
-        "brand_8qVPQh": {
-          "type": "brand",
-          "settings": {
-            "brand_name": "Norse Project",
-            "category": "Wardrobe",
-            "image": "shopify://shop_images/Ikke-navngivet-1_5c92e4fb-ceed-4977-80f4-e4d08f7cf78d.png",
-            "overlay_name": false,
-            "brand_link": ""
-          }
-        },
         "brand_cHcwNk": {
           "type": "brand",
           "settings": {
@@ -70,14 +60,24 @@
             "overlay_name": false,
             "brand_link": ""
           }
+        },
+        "brand_8qVPQh": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "Norse Project",
+            "category": "Wardrobe",
+            "image": "shopify://shop_images/Ikke-navngivet-1_5c92e4fb-ceed-4977-80f4-e4d08f7cf78d.png",
+            "overlay_name": false,
+            "brand_link": ""
+          }
         }
       },
       "block_order": [
         "brand_REkatU",
-        "brand_8qVPQh",
         "brand_cHcwNk",
         "brand_RyrmyJ",
-        "brand_nJDQCi"
+        "brand_nJDQCi",
+        "brand_8qVPQh"
       ],
       "name": "Forma Brand Discover",
       "settings": {
