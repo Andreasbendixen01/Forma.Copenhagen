@@ -50,32 +50,12 @@
             "overlay_name": false,
             "brand_link": ""
           }
-        },
-        "brand_e6UxxH": {
-          "type": "brand",
-          "settings": {
-            "brand_name": "Brand name",
-            "category": "Wardrobe",
-            "overlay_name": true,
-            "brand_link": ""
-          }
-        },
-        "brand_fRUJnX": {
-          "type": "brand",
-          "settings": {
-            "brand_name": "Brand name",
-            "category": "Wardrobe",
-            "overlay_name": true,
-            "brand_link": ""
-          }
         }
       },
       "block_order": [
         "brand_cHcwNk",
         "brand_RyrmyJ",
-        "brand_nJDQCi",
-        "brand_e6UxxH",
-        "brand_fRUJnX"
+        "brand_nJDQCi"
       ],
       "name": "Forma Brand Discover",
       "settings": {
