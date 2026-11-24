@@ -15,7 +15,7 @@
         "slide_aFwN9i": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Ikke-navngivet-1_d60112a2-6207-4d02-aac1-bb0bd3261213.png",
+            "image": "shopify://shop_images/Ikke-navngivet-1_ae811463-a4fd-45c9-8a6a-aa5784161975.png",
             "show_content": true,
             "eyebrow": "#Wardrobe",
             "title": "",
@@ -41,8 +41,9 @@
         "slide_gixrtn": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/Ikke-navngivet-1_bb0cda98-d247-4361-a2c6-fd0ad2705e3a.png",
             "show_content": true,
-            "eyebrow": "",
+            "eyebrow": "#Wardrobe",
             "title": "",
             "description": "",
             "button_text": "",
