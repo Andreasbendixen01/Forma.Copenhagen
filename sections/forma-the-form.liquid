@@ -1,7 +1,7 @@
 {%- comment -%}
   ==========================================================================
   FORMA THE FORM
-  Editorial category grid inspired by premium lifestyle platforms
+  Editorial category grid
 
   Cards:
   1. Wardrobe
@@ -14,12 +14,11 @@
 {%- endcomment -%}
 
 {%- assign overlay_strength = section.settings.overlay | default: 30 | divided_by: 100.0 -%}
-{%- assign pill_radius = section.settings.radius | default: 4 -%}
 
 <section
   id="forma-the-form-{{ section.id }}"
   class="forma-the-form"
-  style="--ftf-overlay: {{ overlay_strength }}; --ftf-radius: {{ pill_radius }}px;"
+  style="--ftf-overlay: {{ overlay_strength }};"
 >
 
   <div class="forma-the-form__header">
@@ -78,17 +77,6 @@
               {{ block.settings.title }}
             </span>
 
-            {%- if block.settings.subtitle != blank -%}
-              <span class="forma-the-form__subtitle">
-                {{ block.settings.subtitle }}
-              </span>
-            {%- endif -%}
-
-            <span class="forma-the-form__explore">
-              Explore
-              <span aria-hidden="true">‚Üí</span>
-            </span>
-
           </div>
 
         </div>
@@ -116,13 +104,12 @@
 
 
   /* ==========================================================================
-     ROOT + GLASS SETTINGS
-     Ret disse to for at matche headeren pr√¶cist.
+     ROOT
+     --ftf-hover-bg styrer knappens farve ved hover (sort med opacity).
      ========================================================================== */
 
   #forma-the-form-{{ section.id }} {
-    --ftf-glass-bg: rgba(12, 12, 12, 0.55);
-    --ftf-glass-blur: 14px;
+    --ftf-hover-bg: rgba(0, 0, 0, 0.6);
 
     width: 100%;
     margin: 0;
@@ -207,7 +194,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.8s cubic-bezier(.22, .61, .36, 1);
   }
 
   #forma-the-form-{{ section.id }} .forma-the-form__placeholder {
@@ -219,7 +205,6 @@
 
   /* ==========================================================================
      IMAGE OVERLAY
-     Flad m√∏rk tone (styres i temaeditoren) + bl√∏d gradient i bunden.
      ========================================================================== */
 
   #forma-the-form-{{ section.id }} .forma-the-form__image-overlay {
@@ -234,22 +219,19 @@
 
   /* ==========================================================================
      CARD CONTENT
+     pointer-events: none p√• laget, s√• kun selve knappen reagerer p√• hover.
      ========================================================================== */
 
   #forma-the-form-{{ section.id }} .forma-the-form__card-content {
     position: absolute;
     inset: 0;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
     padding: 30px;
     color: #fff;
+    pointer-events: none;
   }
-
-
-  /* Eyebrow enkel label √∏verst til venstre (som Opumo) */
 
   #forma-the-form-{{ section.id }} .forma-the-form__eyebrow {
     position: absolute;
@@ -264,118 +246,46 @@
   }
 
 
-  /* Main category hviler som outline, bliver glas ved hover */
+  /* ==========================================================================
+     KATEGORIKNAP
+     Hviler som outline. Ved hover • selve knappen: sort med opacity.
+     ========================================================================== */
 
   #forma-the-form-{{ section.id }} .forma-the-form__card-title {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 14px 26px;
-    background: transparent;
+    background-color: transparent;
     border: 0.5px solid rgba(255, 255, 255, 0.78);
-    border-radius: var(--ftf-radius, 4px);
+    border-radius: 999px;
     font-family: inherit;
     font-size: 13px;
     font-weight: 300;
     line-height: 1;
     letter-spacing: 0.03em;
     color: #fff;
-    -webkit-backdrop-filter: blur(0px);
-    backdrop-filter: blur(0px);
-    transition:
-      background-color 0.4s ease,
-      border-color 0.4s ease,
-      -webkit-backdrop-filter 0.4s ease,
-      backdrop-filter 0.4s ease;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
 
-
-  /* Subtitle */
-
-  #forma-the-form-{{ section.id }} .forma-the-form__subtitle {
-    margin-top: 14px;
-    max-width: 280px;
-    font-size: 11px;
-    line-height: 1.45;
-    color: rgba(255, 255, 255, 0.85);
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.45s ease, transform 0.45s ease;
-  }
-
-
-  /* Explore */
-
-  #forma-the-form-{{ section.id }} .forma-the-form__explore {
-    position: absolute;
-    bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.9);
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.45s ease, transform 0.45s ease;
-  }
-
-  #forma-the-form-{{ section.id }} .forma-the-form__explore span {
-    font-size: 12px;
-    transition: transform 0.35s ease;
-  }
-
-
-  /* ==========================================================================
-     HOVER kun p√• enheder med mus
-     ========================================================================== */
-
-  @media screen and (min-width: 750px) and (hover: hover) {
-
-    #forma-the-form-{{ section.id }} .forma-the-form__card:hover {
-      z-index: 2;
+  @media (hover: hover) {
+    #forma-the-form-{{ section.id }} .forma-the-form__card-title:hover {
+      background-color: var(--ftf-hover-bg);
+      border-color: rgba(255, 255, 255, 0.5);
     }
-
-    #forma-the-form-{{ section.id }} .forma-the-form__card:hover .forma-the-form__image {
-      transform: scale(1.045);
-    }
-
-    /* Glas-effekt: sort med opacity + blur, som headeren */
-    #forma-the-form-{{ section.id }} .forma-the-form__card:hover .forma-the-form__card-title {
-      background-color: var(--ftf-glass-bg);
-      border-color: rgba(255, 255, 255, 0.35);
-      -webkit-backdrop-filter: blur(var(--ftf-glass-blur));
-      backdrop-filter: blur(var(--ftf-glass-blur));
-    }
-
-    #forma-the-form-{{ section.id }} .forma-the-form__card:hover .forma-the-form__subtitle,
-    #forma-the-form-{{ section.id }} .forma-the-form__card:hover .forma-the-form__explore {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    #forma-the-form-{{ section.id }} .forma-the-form__card:hover .forma-the-form__explore span {
-      transform: translateX(4px);
-    }
-
-  }
-
-  #forma-the-form-{{ section.id }} .forma-the-form__card:focus-visible {
-    outline: 2px solid #fff;
-    outline-offset: -4px;
   }
 
   #forma-the-form-{{ section.id }} .forma-the-form__card:focus-visible .forma-the-form__card-title {
-    background-color: var(--ftf-glass-bg);
-    -webkit-backdrop-filter: blur(var(--ftf-glass-blur));
-    backdrop-filter: blur(var(--ftf-glass-blur));
+    background-color: var(--ftf-hover-bg);
+    outline: 2px solid #fff;
+    outline-offset: 3px;
   }
 
 
   /* ==========================================================================
-     MOBILE ingen hover, s√• knappen har glas som standard
+     MOBILE
      ========================================================================== */
 
   @media screen and (max-width: 749px) {
@@ -408,23 +318,8 @@
     }
 
     #forma-the-form-{{ section.id }} .forma-the-form__card-title {
-      padding: 10px 14px;
+      padding: 10px 16px;
       font-size: 11px;
-      background-color: var(--ftf-glass-bg);
-      border-color: rgba(255, 255, 255, 0.35);
-      -webkit-backdrop-filter: blur(var(--ftf-glass-blur));
-      backdrop-filter: blur(var(--ftf-glass-blur));
-    }
-
-    #forma-the-form-{{ section.id }} .forma-the-form__subtitle {
-      display: none;
-    }
-
-    #forma-the-form-{{ section.id }} .forma-the-form__explore {
-      bottom: 13px;
-      font-size: 7px;
-      opacity: 0.85;
-      transform: none;
     }
 
   }
@@ -475,16 +370,6 @@
       "step": 5,
       "unit": "%",
       "default": 30
-    },
-    {
-      "type": "range",
-      "id": "radius",
-      "label": "Button corner radius",
-      "min": 0,
-      "max": 8,
-      "step": 1,
-      "unit": "px",
-      "default": 4
     }
   ],
   "blocks": [
@@ -510,12 +395,6 @@
           "default": "Wardrobe"
         },
         {
-          "type": "text",
-          "id": "subtitle",
-          "label": "Subtitle",
-          "default": "What to wear."
-        },
-        {
           "type": "url",
           "id": "link",
           "label": "Link"
@@ -527,54 +406,12 @@
     {
       "name": "FORMA The Form",
       "blocks": [
-        {
-          "type": "category",
-          "settings": {
-            "eyebrow": "FORMA",
-            "title": "Wardrobe",
-            "subtitle": "What to wear."
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "eyebrow": "FORMA",
-            "title": "The Lifestyle",
-            "subtitle": "How to live."
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "eyebrow": "FORMA",
-            "title": "The Home",
-            "subtitle": "Spaces worth living in."
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "eyebrow": "FORMA",
-            "title": "The Form",
-            "subtitle": "Ideas that shape culture."
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "eyebrow": "FORMA",
-            "title": "Places",
-            "subtitle": "Go somewhere."
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "eyebrow": "FORMA",
-            "title": "Journal",
-            "subtitle": "Stories by Forma."
-          }
-        }
+        { "type": "category", "settings": { "eyebrow": "FORMA", "title": "Wardrobe" } },
+        { "type": "category", "settings": { "eyebrow": "FORMA", "title": "The Lifestyle" } },
+        { "type": "category", "settings": { "eyebrow": "FORMA", "title": "The Home" } },
+        { "type": "category", "settings": { "eyebrow": "FORMA", "title": "The Form" } },
+        { "type": "category", "settings": { "eyebrow": "FORMA", "title": "Places" } },
+        { "type": "category", "settings": { "eyebrow": "FORMA", "title": "Journal" } }
       ]
     }
   ]
