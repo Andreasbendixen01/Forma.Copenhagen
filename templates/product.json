@@ -1,4 +1,12 @@
-
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -101,13 +109,13 @@
         "max_image_zoom_level": 1
       }
     },
-    "forma-brand-spotlight": {
-      "type": "forma-brand-spotlight",
+    "forma_brand_world_p4qFW4": {
+      "type": "forma-brand-world",
+      "name": "Forma brand world",
       "settings": {
-        "fallback_brand_name": "Les Deux",
-        "brand_image": "shopify://shop_images/Skaermbillede_2026-10-05_kl._17.31.41.png",
-        "brand_story": "<p>A closer look at the people, perspective and design language behind the brand.</p>",
-        "brand_link": ""
+        "fallback_color": "#1f3a33",
+        "button_label": "Discover",
+        "chapter_two_label": "Why we chose"
       }
     },
     "related-products": {
@@ -123,14 +131,13 @@
         "horizontal_spacing_factor": 0.2,
         "vertical_spacing_factor": 0.2,
         "subheading": "",
-        "title": "",
-        "content": ""
+        "title": ""
       }
     }
   },
   "order": [
     "main",
-    "forma-brand-spotlight",
+    "forma_brand_world_p4qFW4",
     "related-products"
   ]
 }
