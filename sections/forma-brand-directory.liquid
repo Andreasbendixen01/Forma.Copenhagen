@@ -2,14 +2,10 @@
 {% liquid
   assign brands = shop.metaobjects.forma_brand.values
   assign total_brands = 0
-  assign featured_count = 0
 
   for brand in brands
     if brand.brand_name.value != blank
       assign total_brands = total_brands | plus: 1
-      if brand.featured.value == true
-        assign featured_count = featured_count | plus: 1
-      endif
     endif
   endfor
 %}
@@ -18,120 +14,228 @@
 
   <div class="fbi-shell">
 
-    <!-- DIRECTORY -->
-    <div class="fbi-directory">
+    <!-- HEADER -->
+    <div class="fbi-intro">
 
-      <div class="fbi-directory-top">
+      <div class="fbi-intro-copy">
+        <span class="fbi-kicker">{{ section.settings.kicker }}</span>
+        <h2>{{ section.settings.heading }}</h2>
+        <p>{{ section.settings.intro }}</p>
+      </div>
 
-        <div class="fbi-directory-title">
-          <h2>Explore all brands</h2>
-        </div>
+      <div class="fbi-search-wrap">
+        <input
+          type="search"
+          id="fbi-search-{{ section.id }}"
+          placeholder="Find a brand"
+          aria-label="Search brands"
+          autocomplete="off"
+        >
+        <span class="fbi-search-shortcut">SEARCH</span>
+      </div>
 
-        <div class="fbi-search-wrap">
-          <input
-            type="search"
-            id="fbi-search-{{ section.id }}"
-            placeholder="Find a brand"
-            aria-label="Search brands"
-            autocomplete="off"
+    </div>
+
+    <!-- FILTERS -->
+    <div class="fbi-toolbar">
+
+      <div class="fbi-category-filters" id="fbi-categories-{{ section.id }}">
+        <button
+          class="fbi-category-button is-active"
+          data-category="all"
+          type="button"
+        >
+          All brands
+        </button>
+      </div>
+
+      <div class="fbi-result-count">
+        <span id="fbi-result-count-{{ section.id }}">{{ total_brands }}</span>
+        <span>BRANDS</span>
+      </div>
+
+    </div>
+
+    <!-- ALPHABET -->
+    <div class="fbi-alphabet-wrap">
+
+      <span class="fbi-alphabet-label">INDEX</span>
+
+      <div class="fbi-alphabet" id="fbi-alphabet-{{ section.id }}">
+
+        {% assign alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" | split: "" %}
+
+        {% for letter in alphabet %}
+          <button
+            class="fbi-letter"
+            type="button"
+            data-letter="{{ letter }}"
+            aria-label="Filter brands starting with {{ letter }}"
           >
-          <span class="fbi-search-icon"></span>
-          <span class="fbi-search-shortcut">SEARCH</span>
-        </div>
-
-      </div>
-
-      <!-- CATEGORY FILTERS -->
-      <div class="fbi-filter-row">
-
-        <div class="fbi-category-filters" id="fbi-categories-{{ section.id }}">
-          <button class="fbi-category-button is-active" data-category="all" type="button">
-            All brands
+            {{ letter }}
           </button>
-        </div>
-
-        <div class="fbi-result-count">
-          <span id="fbi-result-count-{{ section.id }}">{{ total_brands }}</span>
-          <span>RESULTS</span>
-        </div>
-
-      </div>
-
-      <!-- ALPHABET -->
-      <div class="fbi-alphabet-wrap">
-
-        <span class="fbi-alphabet-label">INDEX</span>
-
-        <div class="fbi-alphabet" id="fbi-alphabet-{{ section.id }}">
-          {% assign alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" | split: "" %}
-          {% for letter in alphabet %}
-            <button
-              class="fbi-letter"
-              type="button"
-              data-letter="{{ letter }}"
-              aria-label="Filter brands starting with {{ letter }}"
-            >
-              {{ letter }}
-            </button>
-          {% endfor %}
-          <button class="fbi-letter fbi-letter-reset" type="button" data-letter="all" aria-label="Show all letters">
-            ALL
-          </button>
-        </div>
-
-      </div>
-
-      <!-- BRAND GRID -->
-      <div class="fbi-grid" id="fbi-grid-{{ section.id }}">
-
-        {% for brand in brands %}
-          {% if brand.brand_name.value != blank %}
-
-            {% assign b_name = brand.brand_name.value %}
-            {% assign b_logo = brand.logo.value %}
-            {% assign b_category = brand.category.value %}
-            {% assign b_description = brand.description.value %}
-            {% assign b_website = brand.website.value.url %}
-            {% assign b_forma_url = brand.forma_url.value.url %}
-            {% assign b_featured = brand.featured.value %}
-            {% assign b_sort = brand.sort_order.value %}
-
-            <article
-              class="fbi-card"
-              data-name="{{ b_name | escape }}"
-              data-category="{{ b_category | escape }}"
-              data-sort="{{ b_sort | default: 9999 }}"
-            >
-              <div class="fbi-card-visual">
-                {% if b_logo != blank %}
-                  <img src="{{ b_logo | image_url: width: 600 }}" alt="{{ b_name | escape }}" loading="lazy">
-                {% else %}
-                  <span class="fbi-card-fallback">{{ b_name }}</span>
-                {% endif %}
-                {% if b_forma_url != blank or b_website != blank %}
-                  <div class="fbi-card-actions">
-                    {% if b_forma_url != blank %}<a href="{{ b_forma_url }}" class="fbi-action fbi-action--forma">Explore on Forma <span></span></a>{% endif %}
-                    {% if b_website != blank %}<a href="{{ b_website }}" class="fbi-action" target="_blank" rel="noopener noreferrer">Visit website <span></span></a>{% endif %}
-                  </div>
-                {% endif %}
-              </div>
-              <div class="fbi-card-information">
-                <div class="fbi-card-title-row"><h3>{{ b_name }}</h3>{% if b_category != blank %}<span class="fbi-card-category">{{ b_category }}</span>{% endif %}</div>
-                {% if b_description != blank %}<p>{{ b_description | strip_html | truncate: 90 }}</p>{% endif %}
-              </div>
-            </article>
-
-          {% endif %}
         {% endfor %}
 
+        <button
+          class="fbi-letter fbi-letter-reset"
+          type="button"
+          data-letter="all"
+          aria-label="Show all letters"
+        >
+          ALL
+        </button>
+
       </div>
 
-      <!-- EMPTY STATE -->
-      <div class="fbi-empty" id="fbi-empty-{{ section.id }}" hidden>
-        <span class="fbi-empty-title">Nothing found.</span>
-        <p>Try another search or explore a different category.</p>
-        <button type="button" id="fbi-reset-{{ section.id }}">RESET FILTERS</button>
-      </div>
+    </div>
+
+    <!-- BRAND GRID -->
+    <div class="fbi-grid" id="fbi-grid-{{ section.id }}">
+
+      {% for brand in brands %}
+
+        {% if brand.brand_name.value != blank %}
+
+          {% assign b_name = brand.brand_name.value %}
+          {% assign b_logo = brand.logo.value %}
+          {% assign b_category = brand.category.value %}
+          {% assign b_description = brand.description.value %}
+          {% assign b_website = brand.website.value.url %}
+          {% assign b_forma_url = brand.forma_url.value.url %}
+          {% assign b_sort = brand.sort_order.value %}
+
+          <article
+            class="fbi-card"
+            data-name="{{ b_name | escape }}"
+            data-category="{{ b_category | escape }}"
+            data-sort="{{ b_sort | default: 9999 }}"
+          >
+
+            <a
+              {% if b_forma_url != blank %}
+                href="{{ b_forma_url }}"
+              {% elsif b_website != blank %}
+                href="{{ b_website }}"
+                target="_blank"
+                rel="noopener noreferrer"
+              {% else %}
+                href="#"
+              {% endif %}
+              class="fbi-card-main"
+              {% if b_forma_url == blank and b_website == blank %}
+                aria-disabled="true"
+              {% endif %}
+            >
+
+              <!-- BRAND VISUAL -->
+              <div class="fbi-card-visual">
+
+                {% if b_logo != blank %}
+
+                  <img
+                    src="{{ b_logo | image_url: width: 1000 }}"
+                    alt="{{ b_name | escape }}"
+                    loading="lazy"
+                  >
+
+                {% else %}
+
+                  <span class="fbi-card-fallback">
+                    {{ b_name }}
+                  </span>
+
+                {% endif %}
+
+                <div class="fbi-card-overlay">
+
+                  <span class="fbi-overlay-link">
+                    Discover brand
+                    <span class="fbi-arrow">↗</span>
+                  </span>
+
+                </div>
+
+              </div>
+
+              <!-- BRAND INFORMATION -->
+              <div class="fbi-card-information">
+
+                <div class="fbi-card-title-row">
+
+                  <h3>{{ b_name }}</h3>
+
+                  {% if b_category != blank %}
+                    <span class="fbi-card-category">
+                      {{ b_category }}
+                    </span>
+                  {% endif %}
+
+                </div>
+
+                {% if b_description != blank %}
+                  <p>
+                    {{ b_description | strip_html | truncate: 120 }}
+                  </p>
+                {% endif %}
+
+              </div>
+
+            </a>
+
+            <!-- SECONDARY LINKS -->
+            {% if b_forma_url != blank or b_website != blank %}
+
+              <div class="fbi-secondary-links">
+
+                {% if b_forma_url != blank %}
+                  <a
+                    href="{{ b_forma_url }}"
+                    class="fbi-secondary-link"
+                  >
+                    Explore on Forma
+                    <span>↗</span>
+                  </a>
+                {% endif %}
+
+                {% if b_website != blank %}
+                  <a
+                    href="{{ b_website }}"
+                    class="fbi-secondary-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Official website
+                    <span>↗</span>
+                  </a>
+                {% endif %}
+
+              </div>
+
+            {% endif %}
+
+          </article>
+
+        {% endif %}
+
+      {% endfor %}
+
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div class="fbi-empty" id="fbi-empty-{{ section.id }}" hidden>
+
+      <span class="fbi-empty-title">No brands found.</span>
+
+      <p>
+        Try another search or explore a different category.
+      </p>
+
+      <button
+        type="button"
+        id="fbi-reset-{{ section.id }}"
+      >
+        RESET FILTERS
+      </button>
 
     </div>
 
@@ -140,56 +244,549 @@
 </section>
 
 <style>
-#forma-brand-index-{{ section.id }}{--fbi-bg:{{section.settings.background}};--fbi-text:{{section.settings.text}};--fbi-muted:{{section.settings.muted}};--fbi-line:{{section.settings.line}};--fbi-card-bg:{{section.settings.card_background}};background:var(--fbi-bg);color:var(--fbi-text);width:100%;overflow:hidden}
-#forma-brand-index-{{section.id}} *{box-sizing:border-box}
-#forma-brand-index-{{section.id}} .fbi-shell{max-width:{{section.settings.max_width}}px;margin:0 auto;padding:24px 45px 55px}
-#forma-brand-index-{{section.id}} .fbi-directory{padding-top:0}
-#forma-brand-index-{{section.id}} .fbi-directory-top{display:flex;justify-content:space-between;align-items:center;gap:25px;margin-bottom:24px}
-#forma-brand-index-{{section.id}} .fbi-directory-title h2{font-size:clamp(22px,2.5vw,34px);line-height:1;letter-spacing:-.055em;font-weight:400;margin:0}
-#forma-brand-index-{{section.id}} .fbi-search-wrap{position:relative;width:min(100%,340px);border-bottom:1px solid #bdbdbd}
-#forma-brand-index-{{section.id}} .fbi-search-wrap input{width:100%;height:44px;border:0;background:transparent;color:var(--fbi-text);padding:0 65px 0 0;font-size:14px;outline:none}
-#forma-brand-index-{{section.id}} .fbi-search-wrap input::placeholder{color:#888}
-#forma-brand-index-{{section.id}} .fbi-search-icon{position:absolute;right:40px;top:50%;transform:translateY(-50%);font-size:20px;opacity:.6;pointer-events:none}
-#forma-brand-index-{{section.id}} .fbi-search-shortcut{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:9px;letter-spacing:.1em;opacity:.45}
-#forma-brand-index-{{section.id}} .fbi-filter-row{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:0 0 17px;border:0}
-#forma-brand-index-{{section.id}} .fbi-category-filters{display:flex;gap:9px;flex-wrap:wrap}
-#forma-brand-index-{{section.id}} .fbi-category-button{border:1px solid #dedede;border-radius:999px;background:transparent;color:var(--fbi-text);padding:11px 20px;font-size:12px;cursor:pointer;transition:all .22s ease}
-#forma-brand-index-{{section.id}} .fbi-category-button:hover,#forma-brand-index-{{section.id}} .fbi-category-button.is-active{background:var(--fbi-text);color:var(--fbi-bg);border-color:var(--fbi-text)}
-#forma-brand-index-{{section.id}} .fbi-result-count{display:flex;gap:7px;align-items:baseline;font-size:10px;letter-spacing:.1em;white-space:nowrap;color:var(--fbi-muted)}
-#forma-brand-index-{{section.id}} .fbi-result-count span:first-child{font-size:15px;color:var(--fbi-text)}
-#forma-brand-index-{{section.id}} .fbi-alphabet-wrap{display:flex;align-items:center;gap:14px;padding:12px 0 24px;border:0}
-#forma-brand-index-{{section.id}} .fbi-alphabet-label{font-size:9px;letter-spacing:.1em;color:#999;flex-shrink:0}
-#forma-brand-index-{{section.id}} .fbi-alphabet{display:flex;flex-wrap:wrap;align-items:center;gap:2px}
-#forma-brand-index-{{section.id}} .fbi-letter{border:0;border-radius:999px;background:transparent;color:var(--fbi-text);cursor:pointer;padding:5px 7px;font-size:10px;opacity:.45;transition:.2s}
-#forma-brand-index-{{section.id}} .fbi-letter:hover,#forma-brand-index-{{section.id}} .fbi-letter.is-active{opacity:1;background:var(--fbi-text);color:var(--fbi-bg)}
-#forma-brand-index-{{section.id}} .fbi-letter:disabled{opacity:.12;cursor:default;background:transparent;color:var(--fbi-text)}
-#forma-brand-index-{{section.id}} .fbi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 20px}
-#forma-brand-index-{{section.id}} .fbi-card{min-width:0}
-#forma-brand-index-{{section.id}} .fbi-card-visual{position:relative;background:var(--fbi-card-bg);aspect-ratio:1/1;padding:22%;display:flex;align-items:center;justify-content:center;overflow:hidden}
-#forma-brand-index-{{section.id}} .fbi-card-visual img{width:100%;height:100%;object-fit:contain;transition:transform .45s ease}
-#forma-brand-index-{{section.id}} .fbi-card:hover .fbi-card-visual img{transform:scale(1.035)}
-#forma-brand-index-{{section.id}} .fbi-card-fallback{font-size:20px;text-align:center}
-/* Refined hover: discreet bottom action dock, never obscures the logo */
-#forma-brand-index-{{section.id}} .fbi-card-actions{position:absolute;left:50%;bottom:14px;transform:translate(-50%,12px);width:max-content;max-width:calc(100% - 24px);display:flex;flex-wrap:wrap;justify-content:center;gap:7px;padding:7px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:999px;box-shadow:0 5px 20px rgba(0,0,0,.08);opacity:0;transition:opacity .25s ease,transform .25s ease}
-#forma-brand-index-{{section.id}} .fbi-card:hover .fbi-card-actions,#forma-brand-index-{{section.id}} .fbi-card:focus-within .fbi-card-actions{opacity:1;transform:translate(-50%,0)}
-#forma-brand-index-{{section.id}} .fbi-action{display:inline-flex;align-items:center;gap:12px;border-radius:999px;padding:11px 15px;background:#fff;color:#111;text-decoration:none;font-size:11px;white-space:nowrap;transition:background .2s,color .2s}
-#forma-brand-index-{{section.id}} .fbi-action:hover{background:#111;color:#fff}
-#forma-brand-index-{{section.id}} .fbi-action--forma{background:#111;color:#fff}
-#forma-brand-index-{{section.id}} .fbi-action--forma:hover{background:#444}
-#forma-brand-index-{{section.id}} .fbi-card-information{padding-top:13px}
-#forma-brand-index-{{section.id}} .fbi-card-title-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-#forma-brand-index-{{section.id}} .fbi-card-title-row h3{margin:0;font-size:15px;line-height:1.3;font-weight:400;letter-spacing:-.02em}
-#forma-brand-index-{{section.id}} .fbi-card-category{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--fbi-muted);text-align:right}
-#forma-brand-index-{{section.id}} .fbi-card-information p{margin:6px 0 0;font-size:12px;line-height:1.5;color:var(--fbi-muted);max-width:360px}
-#forma-brand-index-{{section.id}} .fbi-empty{text-align:center;padding:50px 20px}#forma-brand-index-{{section.id}} .fbi-empty-title{display:block;font-size:28px}#forma-brand-index-{{section.id}} .fbi-empty p{color:var(--fbi-muted);font-size:13px}
-@media(max-width:1100px){#forma-brand-index-{{section.id}} .fbi-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
-@media(max-width:749px){#forma-brand-index-{{section.id}} .fbi-shell{padding:20px 18px 40px}#forma-brand-index-{{section.id}} .fbi-directory-top{display:block}#forma-brand-index-{{section.id}} .fbi-search-wrap{margin-top:20px;width:100%}#forma-brand-index-{{section.id}} .fbi-filter-row{display:block}#forma-brand-index-{{section.id}} .fbi-result-count{margin-top:15px}#forma-brand-index-{{section.id}} .fbi-alphabet-wrap{display:block;padding:16px 0 20px}#forma-brand-index-{{section.id}} .fbi-alphabet-label{display:block;margin-bottom:8px}#forma-brand-index-{{section.id}} .fbi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 12px}#forma-brand-index-{{section.id}} .fbi-card-visual{padding:17%}#forma-brand-index-{{section.id}} .fbi-card-actions{opacity:1;transform:translate(-50%,0);bottom:8px;max-width:calc(100% - 12px);padding:4px;gap:4px}#forma-brand-index-{{section.id}} .fbi-action{font-size:9px;padding:8px 10px;gap:5px}#forma-brand-index-{{section.id}} .fbi-card-title-row{display:block}#forma-brand-index-{{section.id}} .fbi-card-category{display:block;text-align:left;margin-top:4px}}
+
+#forma-brand-index-{{ section.id }} {
+  background: #FFFFFF;
+  color: #111111;
+  width: 100%;
+  overflow: hidden;
+
+  --fbi-text: #111111;
+  --fbi-muted: #888888;
+  --fbi-line: #E8E8E8;
+  --fbi-white: #FFFFFF;
+}
+
+#forma-brand-index-{{ section.id }} * {
+  box-sizing: border-box;
+}
+
+/* SHELL */
+
+#forma-brand-index-{{ section.id }} .fbi-shell {
+  max-width: {{ section.settings.max_width }}px;
+  margin: 0 auto;
+  padding: 65px 45px 85px;
+}
+
+/* INTRO */
+
+#forma-brand-index-{{ section.id }} .fbi-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 50px;
+  margin-bottom: 55px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-intro-copy {
+  max-width: 720px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-kicker {
+  display: block;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #888888;
+  margin-bottom: 22px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-intro h2 {
+  font-size: clamp(36px, 5vw, 66px);
+  line-height: .98;
+  letter-spacing: -.065em;
+  font-weight: 400;
+  margin: 0;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-intro-copy p {
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 400;
+  color: #777777;
+  max-width: 480px;
+  margin: 22px 0 0;
+}
+
+/* SEARCH */
+
+#forma-brand-index-{{ section.id }} .fbi-search-wrap {
+  position: relative;
+  width: min(100%, 340px);
+  flex-shrink: 0;
+  border-bottom: 1px solid #D8D8D8;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-search-wrap input {
+  width: 100%;
+  height: 48px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #111111;
+  padding: 0 70px 0 0;
+  font-size: 13px;
+  outline: none;
+  box-shadow: none;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-search-wrap input::placeholder {
+  color: #999999;
+  opacity: 1;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-search-shortcut {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: #888888;
+}
+
+/* TOOLBAR */
+
+#forma-brand-index-{{ section.id }} .fbi-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  padding-bottom: 22px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-category-button {
+  border: 1px solid #E5E5E5;
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: #111111;
+  padding: 12px 22px;
+  font-size: 11px;
+  letter-spacing: .01em;
+  cursor: pointer;
+  transition:
+    background .25s ease,
+    color .25s ease,
+    border-color .25s ease;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-category-button:hover,
+#forma-brand-index-{{ section.id }} .fbi-category-button.is-active {
+  background: #111111;
+  color: #FFFFFF;
+  border-color: #111111;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-result-count {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  font-size: 9px;
+  letter-spacing: .14em;
+  color: #888888;
+  white-space: nowrap;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-result-count span:first-child {
+  font-size: 15px;
+  letter-spacing: 0;
+  color: #111111;
+}
+
+/* ALPHABET */
+
+#forma-brand-index-{{ section.id }} .fbi-alphabet-wrap {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 22px 0 38px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-alphabet-label {
+  font-size: 9px;
+  letter-spacing: .15em;
+  color: #888888;
+  flex-shrink: 0;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-alphabet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-letter {
+  border: 0;
+  background: transparent;
+  color: #111111;
+  cursor: pointer;
+  padding: 6px 7px;
+  font-size: 10px;
+  font-weight: 400;
+  opacity: .45;
+  transition: opacity .2s ease;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-letter:hover,
+#forma-brand-index-{{ section.id }} .fbi-letter.is-active {
+  opacity: 1;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-letter.is-active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-letter:disabled {
+  opacity: .12;
+  cursor: default;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-letter:disabled:hover {
+  text-decoration: none;
+}
+
+/* GRID */
+
+#forma-brand-index-{{ section.id }} .fbi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 28px;
+  row-gap: 55px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card {
+  min-width: 0;
+  position: relative;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-main {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-visual {
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid #F0F0F0;
+  aspect-ratio: 4 / 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 19%;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform .65s cubic-bezier(.2,.7,.2,1);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card:hover .fbi-card-visual img {
+  transform: scale(1.045);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-fallback {
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: -.04em;
+}
+
+/* OVERLAY */
+
+#forma-brand-index-{{ section.id }} .fbi-card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 22px;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,.035),
+    rgba(0,0,0,0) 45%
+  );
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card:hover .fbi-card-overlay {
+  opacity: 1;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-overlay-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: .02em;
+  color: #111111;
+  background: rgba(255,255,255,.95);
+  padding: 13px 20px;
+  border-radius: 999px;
+  transform: translateY(8px);
+  transition: transform .3s ease;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card:hover .fbi-overlay-link {
+  transform: translateY(0);
+}
+
+#forma-brand-index-{{ section.id }} .fbi-arrow {
+  font-size: 13px;
+}
+
+/* INFORMATION */
+
+#forma-brand-index-{{ section.id }} .fbi-card-information {
+  padding-top: 16px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-title-row h3 {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.3;
+  font-weight: 400;
+  letter-spacing: -.025em;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-category {
+  font-size: 9px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: #888888;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-card-information p {
+  margin: 9px 0 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #777777;
+  max-width: 400px;
+}
+
+/* SECONDARY LINKS */
+
+#forma-brand-index-{{ section.id }} .fbi-secondary-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-secondary-link {
+  font-size: 10px;
+  color: #777777;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .2s ease;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-secondary-link:hover {
+  color: #111111;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-secondary-link span {
+  font-size: 11px;
+}
+
+/* EMPTY */
+
+#forma-brand-index-{{ section.id }} .fbi-empty {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-empty-title {
+  display: block;
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -.05em;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-empty p {
+  color: #777777;
+  font-size: 13px;
+  margin: 15px 0 25px;
+}
+
+#forma-brand-index-{{ section.id }} .fbi-empty button {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #111111;
+  padding: 8px 0;
+  font-size: 10px;
+  letter-spacing: .12em;
+  cursor: pointer;
+}
+
+/* TABLET */
+
+@media(max-width: 1100px) {
+
+  #forma-brand-index-{{ section.id }} .fbi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 20px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-intro {
+    align-items: flex-start;
+  }
+
+}
+
+/* MOBILE */
+
+@media(max-width: 749px) {
+
+  #forma-brand-index-{{ section.id }} .fbi-shell {
+    padding: 40px 18px 60px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-intro {
+    display: block;
+    margin-bottom: 35px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-kicker {
+    margin-bottom: 16px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-intro h2 {
+    font-size: clamp(38px, 11vw, 55px);
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-intro-copy p {
+    margin-top: 16px;
+    font-size: 13px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-search-wrap {
+    margin-top: 28px;
+    width: 100%;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-toolbar {
+    display: block;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-category-filters {
+    gap: 7px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-category-button {
+    padding: 11px 16px;
+    font-size: 11px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-result-count {
+    margin-top: 18px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-alphabet-wrap {
+    display: block;
+    padding: 20px 0 30px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-alphabet-label {
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-alphabet {
+    gap: 2px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-letter {
+    padding: 7px 7px;
+    font-size: 10px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 12px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-card-visual {
+    aspect-ratio: 4 / 5;
+    padding: 15%;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-card-overlay {
+    opacity: 1;
+    padding: 10px;
+    background: transparent;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-overlay-link {
+    transform: none;
+    padding: 9px 12px;
+    font-size: 9px;
+    gap: 6px;
+    background: rgba(255,255,255,.92);
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-card-title-row {
+    display: block;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-card-title-row h3 {
+    font-size: 14px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-card-category {
+    display: block;
+    text-align: left;
+    margin-top: 6px;
+    font-size: 9px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-card-information p {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-secondary-links {
+    gap: 10px;
+  }
+
+  #forma-brand-index-{{ section.id }} .fbi-secondary-link {
+    font-size: 9px;
+  }
+
+}
+
 </style>
 
 <script>
 (function() {
+
   const root = document.getElementById('forma-brand-index-{{ section.id }}');
+
   if (!root || root.dataset.initialized === 'true') return;
+
   root.dataset.initialized = 'true';
 
   const grid = root.querySelector('#fbi-grid-{{ section.id }}');
@@ -199,7 +796,6 @@
   const emptyEl = root.querySelector('#fbi-empty-{{ section.id }}');
   const resetButton = root.querySelector('#fbi-reset-{{ section.id }}');
   const resultCountEl = root.querySelector('#fbi-result-count-{{ section.id }}');
-  const totalEl = root.querySelector('#fbi-total-{{ section.id }}');
 
   if (!grid || !search || !categoriesEl || !alphabetEl) return;
 
@@ -211,7 +807,10 @@
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 
+  /* SORT */
+
   cards.sort((a, b) => {
+
     const aSort = Number(a.dataset.sort || 9999);
     const bSort = Number(b.dataset.sort || 9999);
 
@@ -219,25 +818,42 @@
       return aSort - bSort;
     }
 
-    return a.dataset.name.localeCompare(b.dataset.name, undefined, {
-      sensitivity: 'base'
-    });
+    return a.dataset.name.localeCompare(
+      b.dataset.name,
+      undefined,
+      { sensitivity: 'base' }
+    );
+
   });
 
   cards.forEach(card => grid.appendChild(card));
 
+  /* CATEGORIES */
+
   const categoryNames = [...new Set(
-    cards.map(card => card.dataset.category.trim()).filter(Boolean)
-  )].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+    cards
+      .map(card => (card.dataset.category || '').trim())
+      .filter(Boolean)
+  )].sort((a, b) => a.localeCompare(
+    b,
+    undefined,
+    { sensitivity: 'base' }
+  ));
 
   categoryNames.forEach(category => {
+
     const button = document.createElement('button');
+
     button.type = 'button';
     button.className = 'fbi-category-button';
     button.dataset.category = category;
     button.textContent = category;
+
     categoriesEl.appendChild(button);
+
   });
+
+  /* LETTERS */
 
   const letterButtons = Array.from(
     alphabetEl.querySelectorAll('.fbi-letter')
@@ -247,11 +863,15 @@
   let selectedLetter = 'all';
   let searchTerm = '';
 
+  /* UPDATE */
+
   function update() {
+
     let visibleCount = 0;
     const visibleLetters = new Set();
 
     cards.forEach(card => {
+
       const name = card.dataset.name || '';
       const category = card.dataset.category || '';
       const firstLetter = name.trim().charAt(0).toUpperCase();
@@ -267,24 +887,37 @@
         selectedLetter === 'all' ||
         firstLetter === selectedLetter;
 
-      const visible = matchesCategory && matchesSearch && matchesLetter;
+      const visible =
+        matchesCategory &&
+        matchesSearch &&
+        matchesLetter;
 
       card.style.display = visible ? '' : 'none';
 
       if (visible) {
+
         visibleCount++;
         visibleLetters.add(firstLetter);
+
       }
+
     });
 
+    /* CATEGORY STATE */
+
     categoriesEl.querySelectorAll('.fbi-category-button').forEach(button => {
+
       button.classList.toggle(
         'is-active',
         normalize(button.dataset.category) === normalize(selectedCategory)
       );
+
     });
 
+    /* LETTER STATE */
+
     letterButtons.forEach(button => {
+
       const letter = button.dataset.letter;
       const isReset = letter === 'all';
 
@@ -292,50 +925,86 @@
 
       button.classList.toggle(
         'is-active',
-        isReset ? selectedLetter === 'all' : selectedLetter === letter
+        isReset
+          ? selectedLetter === 'all'
+          : selectedLetter === letter
       );
+
     });
 
-    if (resultCountEl) resultCountEl.textContent = visibleCount;
-    if (totalEl) totalEl.textContent = cards.length;
+    /* COUNT */
 
-    if (emptyEl) emptyEl.hidden = visibleCount > 0;
+    if (resultCountEl) {
+      resultCountEl.textContent = visibleCount;
+    }
+
+    /* EMPTY */
+
+    if (emptyEl) {
+      emptyEl.hidden = visibleCount > 0;
+    }
+
   }
 
+  /* CATEGORY CLICK */
+
   categoriesEl.addEventListener('click', function(event) {
+
     const button = event.target.closest('.fbi-category-button');
+
     if (!button) return;
 
     selectedCategory = button.dataset.category;
     selectedLetter = 'all';
+
     update();
+
   });
 
+  /* LETTER CLICK */
+
   alphabetEl.addEventListener('click', function(event) {
+
     const button = event.target.closest('.fbi-letter');
+
     if (!button || button.disabled) return;
 
     selectedLetter = button.dataset.letter;
+
     update();
+
   });
+
+  /* SEARCH */
 
   search.addEventListener('input', function() {
+
     searchTerm = search.value;
     selectedLetter = 'all';
+
     update();
+
   });
 
+  /* RESET */
+
   if (resetButton) {
+
     resetButton.addEventListener('click', function() {
+
       search.value = '';
       searchTerm = '';
       selectedCategory = 'all';
       selectedLetter = 'all';
+
       update();
+
     });
+
   }
 
   update();
+
 })();
 </script>
 
@@ -343,46 +1012,32 @@
 {
   "name": "Forma Brand Index",
   "settings": [
-        
-    
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Eyebrow",
+      "default": "THE FORMA DIRECTORY"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Discover our brands."
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Introduction",
+      "default": "A curated collection of brands shaping fashion, design and everyday living."
+    },
     {
       "type": "range",
       "id": "max_width",
       "label": "Maximum width",
       "min": 1000,
       "max": 2000,
-      "step": 100,
+      "step": 50,
       "default": 1600
-    },
-    {
-      "type": "color",
-      "id": "background",
-      "label": "Background",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "text",
-      "label": "Text",
-      "default": "#111111"
-    },
-    {
-      "type": "color",
-      "id": "muted",
-      "label": "Muted text",
-      "default": "#777777"
-    },
-    {
-      "type": "color",
-      "id": "line",
-      "label": "Border",
-      "default": "#DCDCDC"
-    },
-    {
-      "type": "color",
-      "id": "card_background",
-      "label": "Brand image background",
-      "default": "#F4F3F0"
     }
   ],
   "presets": [
@@ -392,4 +1047,3 @@
   ]
 }
 {% endschema %}
-
