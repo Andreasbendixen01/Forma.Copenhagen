@@ -270,6 +270,7 @@
       "blocks": {
         "brand_ARaCEK": {
           "type": "brand",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/Ikke-navngivet-1-Gendannet_9640b604-3775-4dd5-b2ac-e582d88ed3c3.png",
             "recommend": "FORMA RECOMMENDS",
