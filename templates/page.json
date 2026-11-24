@@ -18,21 +18,86 @@
         "page_width": "xs"
       }
     },
-    "forma_brand_directory_7TRRVK": {
-      "type": "forma-brand-directory",
-      "name": "Forma Brand Index",
+    "forma_brand_discover_RYAc8M": {
+      "type": "forma-brand-discover",
+      "blocks": {
+        "brand_cHcwNk": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "ASKET",
+            "category": "Wardrobe",
+            "image": "shopify://shop_images/Ikke-navngivet-1_604616bf-4754-405a-9e64-cd5a2c25dd64.png",
+            "overlay_name": false,
+            "brand_link": ""
+          }
+        },
+        "brand_RyrmyJ": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "FORÉT STUDIOS",
+            "category": "Wardrobe",
+            "image": "shopify://shop_images/Ikke-navngivet-1_bb0cda98-d247-4361-a2c6-fd0ad2705e3a.png",
+            "overlay_name": false,
+            "brand_link": ""
+          }
+        },
+        "brand_nJDQCi": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "LES DEUX",
+            "category": "Wardrobe",
+            "image": "shopify://shop_images/Ikke-navngivet-1_ae811463-a4fd-45c9-8a6a-aa5784161975.png",
+            "overlay_name": false,
+            "brand_link": ""
+          }
+        },
+        "brand_e6UxxH": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "Brand name",
+            "category": "Wardrobe",
+            "overlay_name": true,
+            "brand_link": ""
+          }
+        },
+        "brand_fRUJnX": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "Brand name",
+            "category": "Wardrobe",
+            "overlay_name": true,
+            "brand_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_cHcwNk",
+        "brand_RyrmyJ",
+        "brand_nJDQCi",
+        "brand_e6UxxH",
+        "brand_fRUJnX"
+      ],
+      "name": "Forma Brand Discover",
       "settings": {
-        "max_width": 1600,
-        "background": "#ffffff",
-        "text": "#111111",
-        "muted": "#777777",
-        "line": "#dcdcdc",
-        "card_background": "#f4f3f0"
+        "heading": "Explore all brands",
+        "intro": "",
+        "search_placeholder": "Find a brand",
+        "heading_size": 36,
+        "card_width": 30,
+        "card_width_tablet": 45,
+        "card_width_mobile": 80,
+        "card_gap": 5,
+        "image_ratio": "1/1",
+        "top_padding": 30,
+        "bottom_padding": 40,
+        "side_padding": 10,
+        "mobile_top_padding": 20,
+        "mobile_bottom_padding": 30
       }
     }
   },
   "order": [
     "main",
-    "forma_brand_directory_7TRRVK"
+    "forma_brand_discover_RYAc8M"
   ]
 }
