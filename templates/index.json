@@ -16,75 +16,91 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/LES_DEUX_AW.png",
-            "eyebrow": "FORMA EDIT",
-            "title": "The Forma Edit",
-            "description": "Stories, places, brands and ideas worth knowing.",
-            "button_text": "Explore",
-            "link": ""
+            "show_content": true,
+            "eyebrow": "",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "link": "",
+            "alignment": "left"
           }
         },
         "slide_YFN8j8": {
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/esmee-space-copenhagen_dezeen_2364_col_15.jpg",
-            "eyebrow": "THE LIFESTYLE",
-            "title": "Curated Life",
-            "description": "The places, people and experiences shaping the way we live.",
-            "button_text": "Explore",
-            "link": ""
+            "show_content": true,
+            "eyebrow": "",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "link": "",
+            "alignment": "left"
           }
         },
-        "slide_XjUKaN": {
+        "slide_gixrtn": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Skaermbillede_2026-10-07_kl._18.28.26.png",
-            "eyebrow": "The Home",
-            "title": "Spaces with a point of views",
-            "description": "Objects, interiors and ideas for the spaces around us.",
-            "button_text": "Explore",
-            "link": ""
-          }
-        },
-        "slide_LARAAX": {
-          "type": "slide",
-          "settings": {
-            "eyebrow": "The Form",
-            "title": "Beyond the ordinary",
-            "description": "Design, objects and ideas that challenge the familiar.",
-            "button_text": "Explore",
-            "link": ""
-          }
-        },
-        "slide_4hcTMY": {
-          "type": "slide",
-          "settings": {
-            "eyebrow": "FORMA EDIT",
-            "title": "The Forma Edit",
-            "description": "Stories, places, brands and ideas worth knowing.",
-            "button_text": "Explore",
-            "link": ""
+            "show_content": true,
+            "eyebrow": "",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "link": "",
+            "alignment": "left"
           }
         }
       },
       "block_order": [
         "slide_aFwN9i",
         "slide_YFN8j8",
-        "slide_XjUKaN",
-        "slide_LARAAX",
-        "slide_4hcTMY"
+        "slide_gixrtn"
       ],
       "name": "FORMA Editorial Slider",
       "settings": {
-        "max_width": 1300,
+        "slide_width": 48,
         "desktop_height": 74,
-        "mobile_height": 74,
         "slide_gap": 6,
         "border_radius": 0,
-        "mobile_border_radius": 0,
+        "arrow_offset": 20,
+        "content_left": 50,
+        "content_bottom": 50,
+        "content_max_width": 1000,
+        "mobile_content_left": 25,
+        "mobile_content_right": 25,
+        "mobile_content_bottom": 30,
+        "title_min_size": 55,
+        "title_desktop_size": 7,
+        "title_size": 110,
+        "title_weight": 400,
+        "title_line_height": 90,
+        "title_letter_spacing": -1,
+        "mobile_title_size": 52,
+        "eyebrow_size": 10,
+        "eyebrow_weight": 600,
+        "eyebrow_letter_spacing": 2,
+        "eyebrow_margin": 16,
+        "mobile_eyebrow_size": 10,
+        "description_width": 450,
+        "description_size": 14,
+        "description_line_height": 150,
+        "description_margin": 20,
+        "mobile_description_size": 13,
+        "cta_size": 13,
+        "cta_weight": 500,
+        "cta_letter_spacing": 1,
+        "cta_transform": "none",
+        "cta_margin": 30,
+        "mobile_cta_size": 13,
         "padding_top": 0,
         "padding_bottom": 0,
         "mobile_padding_top": 0,
-        "mobile_padding_bottom": 25
+        "mobile_padding_bottom": 25,
+        "mobile_slide_gap": 12,
+        "mobile_border_radius": 0,
+        "mobile_slide_width": 88,
+        "mobile_height": 74,
+        "background": "#ffffff"
       }
     },
     "featured_collections_KVhnaK": {
@@ -184,7 +200,6 @@
             "image": "shopify://shop_images/Skaermbillede_2026-10-05_kl._14.36.21.png",
             "eyebrow": "",
             "title": "Wardrobe",
-            "subtitle": "What to wear.",
             "link": ""
           }
         },
@@ -194,7 +209,6 @@
             "image": "shopify://shop_images/FRAMA_SCULPTURE_GARDEN_CONTEXT_ESCALIER_HAND_WASH_3_800x_37fd3d2f-7cc6-4e29-b320-232bd6c6d58a.webp",
             "eyebrow": "",
             "title": "The Lifestyle",
-            "subtitle": "How to live.",
             "link": ""
           }
         },
@@ -204,7 +218,6 @@
             "image": "shopify://shop_images/1123257_1104269015_10_jpg.webp",
             "eyebrow": "",
             "title": "The Home",
-            "subtitle": "Spaces worth living in.",
             "link": ""
           }
         },
@@ -214,7 +227,6 @@
             "image": "shopify://shop_images/Skaermbillede_2026-10-07_kl._18.28.26.png",
             "eyebrow": "",
             "title": "The Form",
-            "subtitle": "Ideas that shape culture.",
             "link": ""
           }
         },
@@ -224,7 +236,6 @@
             "image": "shopify://shop_images/Private_back.jpg",
             "eyebrow": "",
             "title": "Places",
-            "subtitle": "Go somewhere.",
             "link": ""
           }
         },
@@ -234,7 +245,6 @@
             "image": "shopify://shop_images/Skaermbillede_2026-10-05_kl._10.01.50.png",
             "eyebrow": "",
             "title": "Journal",
-            "subtitle": "Stories by Forma.",
             "link": ""
           }
         }
@@ -250,7 +260,8 @@
       "name": "FORMA — The Form",
       "settings": {
         "heading": "The Form",
-        "intro": "The world of Forma, curated around the way we live."
+        "intro": "The world of Forma, curated around the way we live.",
+        "overlay": 30
       }
     },
     "forma_brands_jUVW6W": {
