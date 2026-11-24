@@ -1,11 +1,17 @@
 {% comment %}
-  FORMA — EDITORIAL SLIDER
+  FORMA — OPUMO STYLE EDITORIAL SLIDER
 {% endcomment %}
 
 <section
   id="forma-editorial-{{ section.id }}"
   class="forma-editorial"
 >
+
+  {% if section.settings.banner_text != blank %}
+    <div class="forma-editorial__banner">
+      {{ section.settings.banner_text }}
+    </div>
+  {% endif %}
 
   <div class="forma-editorial__viewport">
 
@@ -19,7 +25,6 @@
         <article
           class="forma-editorial__slide"
           data-forma-editorial-slide
-          data-index="{{ forloop.index0 }}"
           {{ block.shopify_attributes }}
         >
 
@@ -27,14 +32,10 @@
             <a
               href="{{ block.settings.link }}"
               class="forma-editorial__slide-link"
-              data-forma-slide-link
             >
           {% else %}
             <div class="forma-editorial__slide-link">
           {% endif %}
-
-
-            <!-- IMAGE -->
 
             <div class="forma-editorial__media">
 
@@ -46,7 +47,7 @@
                   | image_tag:
                     loading: 'lazy',
                     widths: '1000, 1400, 1800, 2200, 2600, 3000, 3200',
-                    sizes: '(min-width: 1500px) 1440px, 100vw',
+                    sizes: '(min-width: 750px) 46vw, 88vw',
                     class: 'forma-editorial__image',
                     alt: block.settings.image.alt | default: block.settings.title,
                     draggable: 'false'
@@ -59,45 +60,31 @@
               {% endif %}
 
               <div class="forma-editorial__overlay"></div>
-
               <div class="forma-editorial__gradient"></div>
 
             </div>
 
-
-            <!-- CONTENT -->
-
             <div class="forma-editorial__content">
 
               {% if block.settings.eyebrow != blank %}
-
                 <div class="forma-editorial__eyebrow">
                   {{ block.settings.eyebrow }}
                 </div>
-
               {% endif %}
 
-
               {% if block.settings.title != blank %}
-
                 <h2 class="forma-editorial__title">
                   {{ block.settings.title }}
                 </h2>
-
               {% endif %}
 
-
               {% if block.settings.description != blank %}
-
                 <div class="forma-editorial__description">
                   {{ block.settings.description }}
                 </div>
-
               {% endif %}
 
-
               {% if block.settings.button_text != blank %}
-
                 <div class="forma-editorial__cta">
 
                   <span>
@@ -109,11 +96,9 @@
                   </span>
 
                 </div>
-
               {% endif %}
 
             </div>
-
 
           {% if block.settings.link != blank %}
             </a>
@@ -126,6 +111,26 @@
       {% endfor %}
 
     </div>
+
+    {% if section.settings.show_arrows %}
+      <button
+        class="forma-editorial__arrow forma-editorial__arrow--left"
+        type="button"
+        aria-label="Previous slide"
+        data-forma-prev
+      >
+        ‹
+      </button>
+
+      <button
+        class="forma-editorial__arrow forma-editorial__arrow--right"
+        type="button"
+        aria-label="Next slide"
+        data-forma-next
+      >
+        ›
+      </button>
+    {% endif %}
 
   </div>
 
@@ -140,38 +145,43 @@
 
   #forma-editorial-{{ section.id }} {
 
-    --forma-max-width:
-      {{ section.settings.max_width }}px;
-
-    --forma-desktop-height:
-      {{ section.settings.desktop_height }}vh;
-
-    --forma-mobile-height:
-      {{ section.settings.mobile_height }}vh;
-
-    --forma-gap:
-      {{ section.settings.slide_gap }}px;
-
-    --forma-radius:
-      {{ section.settings.border_radius }}px;
+    --forma-gap: {{ section.settings.slide_gap }}px;
+    --forma-desktop-height: {{ section.settings.desktop_height }}vh;
+    --forma-mobile-height: {{ section.settings.mobile_height }}vh;
 
     position: relative;
-
     width: 100%;
-
     margin: 0;
-
-    padding-top:
-      {{ section.settings.padding_top }}px;
-
-    padding-bottom:
-      {{ section.settings.padding_bottom }}px;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
 
     overflow: hidden;
 
-    background: #fff;
-
+    background: {{ section.settings.background_color }};
     color: #111;
+
+  }
+
+
+  /* ============================================================
+     BANNER
+     ============================================================ */
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__banner {
+
+    width: 100%;
+    text-align: center;
+
+    padding: 28px 20px;
+
+    font-size: {{ section.settings.banner_font_size }}px;
+    font-weight: 500;
+    line-height: 1.4;
+
+    color: {{ section.settings.banner_color }};
+
+    letter-spacing: {{ section.settings.banner_letter_spacing }}px;
 
   }
 
@@ -184,9 +194,7 @@
   .forma-editorial__viewport {
 
     position: relative;
-
     width: 100%;
-
     overflow: hidden;
 
   }
@@ -194,44 +202,33 @@
 
   /* ============================================================
      TRACK
-
-     IMPORTANT:
-     No left padding.
-     The first slide starts completely at the
-     left edge of the section.
      ============================================================ */
 
   #forma-editorial-{{ section.id }}
   .forma-editorial__track {
 
     display: flex;
-
-    gap:
-      var(--forma-gap);
+    gap: var(--forma-gap);
 
     width: 100%;
 
     overflow-x: auto;
-
     overflow-y: hidden;
 
     padding: 0;
-
     margin: 0;
 
-    scroll-behavior: auto;
-
+    scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
 
-    scroll-padding-left: 0;
-
     scrollbar-width: none;
-
     -ms-overflow-style: none;
 
     overscroll-behavior-x: contain;
 
     cursor: grab;
+
+    -webkit-overflow-scrolling: touch;
 
   }
 
@@ -248,11 +245,9 @@
   .forma-editorial__track.is-dragging {
 
     cursor: grabbing;
-
     scroll-behavior: auto;
 
     user-select: none;
-
     -webkit-user-select: none;
 
   }
@@ -267,33 +262,22 @@
 
     position: relative;
 
-    flex:
-      0 0 min(
-        100vw,
-        var(--forma-max-width)
-      );
+    flex: 0 0 {{ section.settings.slide_width }}vw;
 
-    width:
-      min(
-        100vw,
-        var(--forma-max-width)
-      );
+    width: {{ section.settings.slide_width }}vw;
 
-    height:
-      var(--forma-desktop-height);
+    height: var(--forma-desktop-height);
 
     min-height: 560px;
 
     overflow: hidden;
 
     scroll-snap-align: start;
-
     scroll-snap-stop: always;
 
     flex-shrink: 0;
 
-    border-radius:
-      var(--forma-radius);
+    border-radius: {{ section.settings.border_radius }}px;
 
     background: #111;
 
@@ -310,13 +294,11 @@
   .forma-editorial__slide-link {
 
     position: absolute;
-
     inset: 0;
 
     display: block;
 
     color: inherit;
-
     text-decoration: none;
 
   }
@@ -326,15 +308,22 @@
      MEDIA
      ============================================================ */
 
-  #forma-editorial-{{ section.id }} .forma-editorial__media {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 0;
-  background: transparent;
-}
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__media {
+
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    z-index: 0;
+
+    background: transparent;
+
+  }
 
 
   /* ============================================================
@@ -344,30 +333,26 @@
   #forma-editorial-{{ section.id }}
   .forma-editorial__image {
 
- position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1.001);
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
+    position: absolute;
+    inset: 0;
 
-    transform:
-      scale(1.001)
-      translate3d(
-        var(--forma-parallax-x, 0px),
-        0,
-        0
-      );
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+    object-position: center;
+
+    transform: scale(1.001);
+
+    pointer-events: none;
+
+    user-select: none;
+    -webkit-user-select: none;
 
     transition:
-      transform
-      1.2s
-      cubic-bezier(.22,.61,.36,1);
+      transform 1.2s cubic-bezier(.22,.61,.36,1);
 
     will-change: transform;
 
@@ -382,13 +367,7 @@
   .forma-editorial__slide:hover
   .forma-editorial__image {
 
-    transform:
-      scale(1.025)
-      translate3d(
-        var(--forma-parallax-x, 0px),
-        0,
-        0
-      );
+    transform: scale(1.025);
 
   }
 
@@ -401,13 +380,11 @@
   .forma-editorial__overlay {
 
     position: absolute;
-
     inset: 0;
 
     z-index: 1;
 
-    background:
-      rgba(0,0,0,.025);
+    background: rgba(0,0,0,.025);
 
     pointer-events: none;
 
@@ -422,7 +399,6 @@
   .forma-editorial__gradient {
 
     position: absolute;
-
     inset: 0;
 
     z-index: 2;
@@ -450,11 +426,10 @@
 
     position: absolute;
 
-    left: 48px;
+    left: {{ section.settings.content_left }}px;
+    right: {{ section.settings.content_left }}px;
 
-    right: 48px;
-
-    bottom: 50px;
+    bottom: {{ section.settings.content_bottom }}px;
 
     z-index: 4;
 
@@ -477,7 +452,6 @@
     margin-bottom: 15px;
 
     font-size: 10px;
-
     line-height: 1;
 
     font-weight: 600;
@@ -486,8 +460,7 @@
 
     text-transform: uppercase;
 
-    color:
-      rgba(255,255,255,.88);
+    color: rgba(255,255,255,.88);
 
   }
 
@@ -535,11 +508,9 @@
     margin-top: 20px;
 
     font-size: 14px;
-
     line-height: 1.5;
 
-    color:
-      rgba(255,255,255,.86);
+    color: rgba(255,255,255,.86);
 
   }
 
@@ -561,12 +532,9 @@
 
     padding-bottom: 7px;
 
-    border-bottom:
-      1px solid
-      rgba(255,255,255,.65);
+    border-bottom: 1px solid rgba(255,255,255,.65);
 
     font-size: 10px;
-
     line-height: 1;
 
     font-weight: 600;
@@ -597,7 +565,6 @@
   .forma-editorial__cta-arrow {
 
     font-size: 14px;
-
     line-height: .7;
 
   }
@@ -611,14 +578,81 @@
   .forma-editorial__placeholder {
 
     position: absolute;
-
     inset: 0;
 
     width: 100%;
-
     height: 100%;
 
     background: #e9e9e7;
+
+  }
+
+
+  /* ============================================================
+     ARROWS
+     ============================================================ */
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__arrow {
+
+    position: absolute;
+
+    z-index: 10;
+
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    height: 48px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.15);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    color: white;
+
+    font-size: 35px;
+    font-weight: 300;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+      background .3s ease,
+      opacity .3s ease;
+
+  }
+
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__arrow:hover {
+
+    background: rgba(255,255,255,.35);
+
+  }
+
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__arrow--left {
+
+    left: 20px;
+
+  }
+
+
+  #forma-editorial-{{ section.id }}
+  .forma-editorial__arrow--right {
+
+    right: 20px;
 
   }
 
@@ -631,13 +665,20 @@
 
     #forma-editorial-{{ section.id }} {
 
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+
       --forma-gap: 10px;
 
-      padding-top:
-        {{ section.settings.mobile_padding_top }}px;
+    }
 
-      padding-bottom:
-        {{ section.settings.mobile_padding_bottom }}px;
+
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__banner {
+
+      padding: 22px 20px;
+
+      font-size: {{ section.settings.mobile_banner_font_size }}px;
 
     }
 
@@ -647,27 +688,20 @@
 
       padding: 0;
 
-      scroll-padding-left: 0;
-
     }
 
 
     #forma-editorial-{{ section.id }}
     .forma-editorial__slide {
 
-      flex-basis:
-        100vw;
+      flex-basis: 88vw;
+      width: 88vw;
 
-      width:
-        100vw;
-
-      height:
-        var(--forma-mobile-height);
+      height: var(--forma-mobile-height);
 
       min-height: 520px;
 
-      border-radius:
-        {{ section.settings.mobile_border_radius }}px;
+      border-radius: {{ section.settings.mobile_border_radius }}px;
 
     }
 
@@ -676,7 +710,6 @@
     .forma-editorial__content {
 
       left: 24px;
-
       right: 24px;
 
       bottom: 30px;
@@ -730,6 +763,33 @@
 
     }
 
+
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__arrow {
+
+      width: 38px;
+      height: 38px;
+
+      font-size: 28px;
+
+    }
+
+
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__arrow--left {
+
+      left: 10px;
+
+    }
+
+
+    #forma-editorial-{{ section.id }}
+    .forma-editorial__arrow--right {
+
+      right: 10px;
+
+    }
+
   }
 
 
@@ -737,9 +797,7 @@
      REDUCED MOTION
      ============================================================ */
 
-  @media (
-    prefers-reduced-motion: reduce
-  ) {
+  @media (prefers-reduced-motion: reduce) {
 
     #forma-editorial-{{ section.id }}
     .forma-editorial__track {
@@ -765,505 +823,399 @@
 
   (() => {
 
-    const section =
-      document.getElementById(
-        'forma-editorial-{{ section.id }}'
-      );
+    const section = document.getElementById(
+      'forma-editorial-{{ section.id }}'
+    );
 
     if (!section) return;
 
+    const track = section.querySelector(
+      '[data-forma-editorial-track]'
+    );
 
-    const track =
-      section.querySelector(
-        '[data-forma-editorial-track]'
-      );
+    const slides = Array.from(
+      section.querySelectorAll(
+        '[data-forma-editorial-slide]'
+      )
+    );
 
+    const prevButton = section.querySelector(
+      '[data-forma-prev]'
+    );
 
-    const slides =
-      Array.from(
-        section.querySelectorAll(
-          '[data-forma-editorial-slide]'
-        )
-      );
+    const nextButton = section.querySelector(
+      '[data-forma-next]'
+    );
 
-
-    if (
-      !track ||
-      slides.length === 0
-    ) {
-      return;
-    }
+    if (!track || slides.length === 0) return;
 
 
-    let isDragging = false;
-
-    let startX = 0;
-
-    let startScrollLeft = 0;
-
-    let hasDragged = false;
-
-    let suppressClick = false;
-
-
-    /* ========================================================
+    /* ============================================================
        SLIDE DISTANCE
-       ======================================================== */
+       ============================================================ */
 
     function getSlideDistance() {
 
-      const slide =
-        slides[0];
+      const slide = slides[0];
 
       if (!slide) return 0;
 
+      const styles = window.getComputedStyle(track);
 
-      const styles =
-        window.getComputedStyle(track);
+      const gap = parseFloat(
+        styles.columnGap || styles.gap
+      ) || 0;
 
-
-      const gap =
-        parseFloat(
-          styles.columnGap ||
-          styles.gap
-        ) || 0;
-
-
-      return (
-        slide.getBoundingClientRect().width +
-        gap
-      );
+      return slide.getBoundingClientRect().width + gap;
 
     }
 
 
-    /* ========================================================
-       MOUSE DRAG
-       ======================================================== */
+    function getCurrentIndex() {
 
-    track.addEventListener(
-      'pointerdown',
-      (event) => {
-
-        if (
-          event.pointerType !== 'mouse'
-        ) {
-          return;
-        }
-
-
-        if (
-          event.button !== 0
-        ) {
-          return;
-        }
-
-
-        isDragging = true;
-
-        hasDragged = false;
-
-        startX =
-          event.clientX;
-
-        startScrollLeft =
-          track.scrollLeft;
-
-
-        track.classList.add(
-          'is-dragging'
-        );
-
-
-        track.setPointerCapture(
-          event.pointerId
-        );
-
-      }
-    );
-
-
-    track.addEventListener(
-      'pointermove',
-      (event) => {
-
-        if (!isDragging) {
-          return;
-        }
-
-
-        const delta =
-          event.clientX -
-          startX;
-
-
-        if (
-          Math.abs(delta) > 5
-        ) {
-
-          hasDragged = true;
-
-          suppressClick = true;
-
-        }
-
-
-        track.scrollLeft =
-          startScrollLeft -
-          delta;
-
-      }
-    );
-
-
-    function finishDrag(event) {
-
-      if (!isDragging) {
-        return;
-      }
-
-
-      isDragging = false;
-
-
-      track.classList.remove(
-        'is-dragging'
-      );
-
-
-      try {
-
-        track.releasePointerCapture(
-          event.pointerId
-        );
-
-      } catch (error) {}
-
-
-      if (!hasDragged) {
-        return;
-      }
-
-
-      const distance =
-        getSlideDistance();
-
-
-      if (!distance) {
-        return;
-      }
-
-
-      const target =
-        Math.round(
-          track.scrollLeft /
-          distance
-        );
-
-
-      track.scrollTo({
-
-        left:
-          target *
-          distance,
-
-        behavior:
-          'smooth'
-
-      });
-
-
-      setTimeout(
-        () => {
-
-          suppressClick = false;
-
-        },
-        100
-      );
-
-    }
-
-
-    track.addEventListener(
-      'pointerup',
-      finishDrag
-    );
-
-
-    track.addEventListener(
-      'pointercancel',
-      finishDrag
-    );
-
-
-    /* ========================================================
-       PREVENT LINK CLICK AFTER DRAG
-       ======================================================== */
-
-    section.addEventListener(
-      'click',
-      (event) => {
-
-        if (
-          suppressClick
-        ) {
-
-          event.preventDefault();
-
-          event.stopPropagation();
-
-          suppressClick = false;
-
-        }
-
-      },
-      true
-    );
-
-
-    /* ========================================================
-       PREVENT IMAGE DRAGGING
-       ======================================================== */
-
-    section
-      .querySelectorAll('img')
-      .forEach(
-        (image) => {
-
-          image.addEventListener(
-            'dragstart',
-            (event) => {
-
-              event.preventDefault();
-
-            }
-          );
-
-        }
-      );
-
-
-    /* ========================================================
-       MOUSE PARALLAX
-       ======================================================== */
-
-    track.addEventListener(
-      'pointermove',
-      (event) => {
-
-        if (
-          event.pointerType !==
-          'mouse'
-        ) {
-          return;
-        }
-
-
-        if (isDragging) {
-          return;
-        }
-
-
-        const slide =
-          event.target.closest(
-            '[data-forma-editorial-slide]'
-          );
-
-
-        if (!slide) return;
-
-
-        const image =
-          slide.querySelector(
-            '.forma-editorial__image'
-          );
-
-
-        if (!image) return;
-
-
-        const rect =
-          slide.getBoundingClientRect();
-
-
-        const percentage =
-          (
-            event.clientX -
-            rect.left
-          ) /
-          rect.width -
-          .5;
-
-
-        image.style.setProperty(
-          '--forma-parallax-x',
-          `${percentage * -8}px`
-        );
-
-      }
-    );
-
-
-    /* ========================================================
-       RESET PARALLAX
-       ======================================================== */
-
-    track.addEventListener(
-      'pointerleave',
-      () => {
-
-        slides.forEach(
-          (slide) => {
-
-            const image =
-              slide.querySelector(
-                '.forma-editorial__image'
-              );
-
-
-            if (!image) return;
-
-
-            image.style.setProperty(
-              '--forma-parallax-x',
-              '0px'
-            );
-
-          }
-        );
-
-      }
-    );
-
-        /* ========================================================
-       AUTOPLAY — EVERY 5 SECONDS
-       Pauses on hover and during user interaction
-       ======================================================== */
-
-    let autoplayTimer = null;
-    let isHovered = false;
-    let isInteracting = false;
-
-    const AUTOPLAY_DELAY = 5000;
-
-    function getCurrentSlideIndex() {
       const distance = getSlideDistance();
 
       if (!distance) return 0;
 
       return Math.round(track.scrollLeft / distance);
+
     }
 
-    function goToNextSlide() {
-  if (slides.length <= 1 || isDragging) return;
 
-  const distance = getSlideDistance();
-  if (!distance) return;
+    function goToIndex(index) {
 
-  const currentIndex = getCurrentSlideIndex();
-  const nextIndex = (currentIndex + 1) % slides.length;
+      const distance = getSlideDistance();
 
-  const startPosition = track.scrollLeft;
-  const targetPosition = Math.min(
-    nextIndex * distance,
-    track.scrollWidth - track.clientWidth
-  );
+      if (!distance) return;
 
-  const duration = 1400;
-  const startTime = performance.now();
+      const target = Math.max(
+        0,
+        Math.min(
+          index * distance,
+          track.scrollWidth - track.clientWidth
+        )
+      );
 
-  track.style.setProperty('scroll-snap-type', 'none', 'important');
-  track.style.setProperty('scroll-behavior', 'auto', 'important');
+      track.scrollTo({
+        left: target,
+        behavior: 'smooth'
+      });
 
-  function animate(now) {
-    const progress = Math.min((now - startTime) / duration, 1);
-
-    // Smooth cubic ease-in-out
-    const eased = progress < 0.5
-      ? 4 * progress * progress * progress
-      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-
-    track.scrollLeft =
-      startPosition + (targetPosition - startPosition) * eased;
-
-    if (progress < 1) {
-      requestAnimationFrame(animate);
-    } else {
-      track.scrollLeft = targetPosition;
-
-      track.style.removeProperty('scroll-snap-type');
-      track.style.removeProperty('scroll-behavior');
-    }
-  }
-
-  requestAnimationFrame(animate);
-}
-
-
-    function stopAutoplay() {
-      clearTimeout(autoplayTimer);
-      autoplayTimer = null;
     }
 
-    function scheduleAutoplay() {
-      stopAutoplay();
 
-      if (
-        document.hidden ||
-        isHovered ||
-        isDragging ||
-        isInteracting ||
-        slides.length <= 1
-      ) {
-        return;
+    /* ============================================================
+       NAVIGATION
+       ============================================================ */
+
+    if (nextButton) {
+
+      nextButton.addEventListener('click', () => {
+
+        const currentIndex = getCurrentIndex();
+
+        const maxScroll =
+          track.scrollWidth - track.clientWidth;
+
+        if (track.scrollLeft >= maxScroll - 5) {
+
+          goToIndex(0);
+
+        } else {
+
+          goToIndex(currentIndex + 1);
+
+        }
+
+      });
+
+    }
+
+
+    if (prevButton) {
+
+      prevButton.addEventListener('click', () => {
+
+        const currentIndex = getCurrentIndex();
+
+        if (currentIndex <= 0) {
+
+          goToIndex(slides.length - 1);
+
+        } else {
+
+          goToIndex(currentIndex - 1);
+
+        }
+
+      });
+
+    }
+
+
+    /* ============================================================
+       MOUSE DRAG
+       ============================================================ */
+
+    let isDragging = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+    let hasDragged = false;
+    let suppressClick = false;
+
+
+    track.addEventListener('pointerdown', (event) => {
+
+      if (event.pointerType !== 'mouse') return;
+      if (event.button !== 0) return;
+
+      isDragging = true;
+      hasDragged = false;
+
+      startX = event.clientX;
+      startScrollLeft = track.scrollLeft;
+
+      track.classList.add('is-dragging');
+
+      track.setPointerCapture(event.pointerId);
+
+    });
+
+
+    track.addEventListener('pointermove', (event) => {
+
+      if (!isDragging) return;
+
+      const delta = event.clientX - startX;
+
+      if (Math.abs(delta) > 5) {
+
+        hasDragged = true;
+        suppressClick = true;
+
       }
 
-      autoplayTimer = setTimeout(() => {
-        goToNextSlide();
-        scheduleAutoplay();
-      }, AUTOPLAY_DELAY);
-    }
+      track.scrollLeft = startScrollLeft - delta;
 
-    track.addEventListener('pointerenter', (event) => {
-      if (event.pointerType === 'mouse') {
-        isHovered = true;
-        stopAutoplay();
-      }
     });
 
-    track.addEventListener('pointerleave', () => {
-      isHovered = false;
-      scheduleAutoplay();
-    });
 
-    track.addEventListener('pointerdown', () => {
-      isInteracting = true;
-      stopAutoplay();
-    });
+    function finishDrag(event) {
 
-    track.addEventListener('pointerup', () => {
-      isInteracting = false;
+      if (!isDragging) return;
+
+      isDragging = false;
+
+      track.classList.remove('is-dragging');
+
+      try {
+
+        track.releasePointerCapture(event.pointerId);
+
+      } catch (error) {}
+
+
+      if (!hasDragged) return;
+
+      const distance = getSlideDistance();
+
+      if (!distance) return;
+
+      const target = Math.round(
+        track.scrollLeft / distance
+      );
+
+      track.scrollTo({
+        left: target * distance,
+        behavior: 'smooth'
+      });
 
       setTimeout(() => {
-        scheduleAutoplay();
-      }, 700);
-    });
 
-    track.addEventListener('pointercancel', () => {
-      isInteracting = false;
-      scheduleAutoplay();
-    });
+        suppressClick = false;
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        stopAutoplay();
-      } else {
-        scheduleAutoplay();
+      }, 150);
+
+    }
+
+
+    track.addEventListener('pointerup', finishDrag);
+    track.addEventListener('pointercancel', finishDrag);
+
+
+    /* ============================================================
+       PREVENT LINK CLICK AFTER DRAG
+       ============================================================ */
+
+    section.addEventListener('click', (event) => {
+
+      if (suppressClick) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        suppressClick = false;
+
       }
+
+    }, true);
+
+
+    /* ============================================================
+       PREVENT IMAGE DRAGGING
+       ============================================================ */
+
+    section.querySelectorAll('img').forEach((image) => {
+
+      image.addEventListener('dragstart', (event) => {
+
+        event.preventDefault();
+
+      });
+
     });
 
-    scheduleAutoplay();
+
+    /* ============================================================
+       AUTOPLAY
+       ============================================================ */
+
+    {% if section.settings.autoplay %}
+
+      let autoplayTimer = null;
+      let isHovered = false;
+      let isInteracting = false;
+
+      const AUTOPLAY_DELAY = {{ section.settings.autoplay_delay }} * 1000;
+
+
+      function stopAutoplay() {
+
+        clearTimeout(autoplayTimer);
+        autoplayTimer = null;
+
+      }
+
+
+      function goToNextSlide() {
+
+        if (slides.length <= 1 || isDragging) return;
+
+        const maxScroll =
+          track.scrollWidth - track.clientWidth;
+
+        if (track.scrollLeft >= maxScroll - 5) {
+
+          track.scrollTo({
+            left: 0,
+            behavior: 'smooth'
+          });
+
+        } else {
+
+          const currentIndex = getCurrentIndex();
+
+          goToIndex(currentIndex + 1);
+
+        }
+
+      }
+
+
+      function scheduleAutoplay() {
+
+        stopAutoplay();
+
+        if (
+          document.hidden ||
+          isHovered ||
+          isDragging ||
+          isInteracting ||
+          slides.length <= 1
+        ) {
+
+          return;
+
+        }
+
+        autoplayTimer = setTimeout(() => {
+
+          goToNextSlide();
+          scheduleAutoplay();
+
+        }, AUTOPLAY_DELAY);
+
+      }
+
+
+      track.addEventListener('pointerenter', (event) => {
+
+        if (event.pointerType === 'mouse') {
+
+          isHovered = true;
+          stopAutoplay();
+
+        }
+
+      });
+
+
+      track.addEventListener('pointerleave', () => {
+
+        isHovered = false;
+        scheduleAutoplay();
+
+      });
+
+
+      track.addEventListener('pointerdown', () => {
+
+        isInteracting = true;
+        stopAutoplay();
+
+      });
+
+
+      track.addEventListener('pointerup', () => {
+
+        isInteracting = false;
+
+        setTimeout(() => {
+
+          scheduleAutoplay();
+
+        }, 700);
+
+      });
+
+
+      track.addEventListener('pointercancel', () => {
+
+        isInteracting = false;
+        scheduleAutoplay();
+
+      });
+
+
+      document.addEventListener('visibilitychange', () => {
+
+        if (document.hidden) {
+
+          stopAutoplay();
+
+        } else {
+
+          scheduleAutoplay();
+
+        }
+
+      });
+
+
+      scheduleAutoplay();
+
+    {% endif %}
+
 
   })();
 
@@ -1274,12 +1226,61 @@
 
 {
   "name": "FORMA Editorial Slider",
-
   "tag": "section",
-
   "class": "forma-editorial-slider-section",
 
   "settings": [
+
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Banner text",
+      "default": "Discover brands, places and experiences worth knowing."
+    },
+
+    {
+      "type": "range",
+      "id": "banner_font_size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop banner font size",
+      "default": 18
+    },
+
+    {
+      "type": "range",
+      "id": "mobile_banner_font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile banner font size",
+      "default": 14
+    },
+
+    {
+      "type": "range",
+      "id": "banner_letter_spacing",
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
+      "label": "Banner letter spacing",
+      "default": 0
+    },
+
+    {
+      "type": "color",
+      "id": "banner_color",
+      "label": "Banner color",
+      "default": "#111111"
+    },
 
     {
       "type": "header",
@@ -1288,13 +1289,13 @@
 
     {
       "type": "range",
-      "id": "max_width",
-      "min": 1100,
-      "max": 1600,
-      "step": 20,
-      "unit": "px",
-      "label": "Maximum width",
-      "default": 1480
+      "id": "slide_width",
+      "min": 35,
+      "max": 70,
+      "step": 1,
+      "unit": "vw",
+      "label": "Desktop slide width",
+      "default": 45
     },
 
     {
@@ -1305,7 +1306,7 @@
       "step": 1,
       "unit": "vh",
       "label": "Desktop height",
-      "default": 74
+      "default": 68
     },
 
     {
@@ -1327,7 +1328,7 @@
       "step": 2,
       "unit": "px",
       "label": "Slide gap",
-      "default": 16
+      "default": 6
     },
 
     {
@@ -1350,6 +1351,63 @@
       "unit": "px",
       "label": "Mobile border radius",
       "default": 0
+    },
+
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show slider arrows",
+      "default": true
+    },
+
+    {
+      "type": "header",
+      "content": "Text placement"
+    },
+
+    {
+      "type": "range",
+      "id": "content_left",
+      "min": 10,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Text left position",
+      "default": 24
+    },
+
+    {
+      "type": "range",
+      "id": "content_bottom",
+      "min": 10,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Text bottom position",
+      "default": 40
+    },
+
+    {
+      "type": "header",
+      "content": "Autoplay"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "min": 3,
+      "max": 15,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay delay",
+      "default": 5
     },
 
     {
@@ -1376,7 +1434,7 @@
       "step": 5,
       "unit": "px",
       "label": "Bottom spacing",
-      "default": 30
+      "default": 0
     },
 
     {
@@ -1399,6 +1457,13 @@
       "unit": "px",
       "label": "Mobile bottom spacing",
       "default": 24
+    },
+
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#ffffff"
     }
 
   ],
@@ -1407,7 +1472,6 @@
 
     {
       "type": "slide",
-
       "name": "Slide",
 
       "settings": [
@@ -1422,21 +1486,21 @@
           "type": "text",
           "id": "eyebrow",
           "label": "Eyebrow",
-          "default": "FORMA EDIT"
+          "default": "THE LIFESTYLE"
         },
 
         {
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "The Forma Edit"
+          "default": "Curated Life"
         },
 
         {
           "type": "textarea",
           "id": "description",
           "label": "Description",
-          "default": "Stories, places, brands and ideas worth knowing."
+          "default": "The places, people and experiences shaping the way we live."
         },
 
         {
