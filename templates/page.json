@@ -21,6 +21,16 @@
     "forma_brand_discover_RYAc8M": {
       "type": "forma-brand-discover",
       "blocks": {
+        "brand_REkatU": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "NORSE PROJECT",
+            "category": "Footwear",
+            "image": "shopify://shop_images/Ikke-navngivet-1_5c92e4fb-ceed-4977-80f4-e4d08f7cf78d.png",
+            "overlay_name": false,
+            "brand_link": ""
+          }
+        },
         "brand_8qVPQh": {
           "type": "brand",
           "settings": {
@@ -63,6 +73,7 @@
         }
       },
       "block_order": [
+        "brand_REkatU",
         "brand_8qVPQh",
         "brand_cHcwNk",
         "brand_RyrmyJ",
