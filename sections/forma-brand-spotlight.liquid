@@ -13,28 +13,8 @@
 
   if current_brand != blank
     assign brand_name = current_brand.brand_name.value | default: product.vendor
-    assign image_1 = current_brand.brand_image.value
-    assign image_2 = current_brand.chapter_image_2.value | default: image_1
-    assign image_3 = current_brand.chapter_image_3.value | default: image_1
-
-    assign brand_color = current_brand.brand_color.value | default: section.settings.fallback_color
-    assign brand_brightness = brand_color | color_brightness
-    if brand_brightness > 150
-      assign ink = '#1f1b16'
-      assign ink_soft = 'rgba(31, 27, 22, .68)'
-    else
-      assign ink = '#f3ede3'
-      assign ink_soft = 'rgba(243, 237, 227, .72)'
-    endif
-
-    assign take = current_brand.curator_take.value
-    if take == blank
-      assign take = current_brand.brand_story | metafield_text | strip_html | strip | truncatewords: 30
-    endif
-    assign curator_name = current_brand.curator_name.value
-    assign curator_role = current_brand.curator_role.value
-    assign founded = current_brand.founded.value
-    assign origin = current_brand.origin.value
+    assign brand_image = current_brand.brand_image.value
+    assign story_text = current_brand.brand_story | metafield_text | strip_html | strip | truncatewords: 38
 
     assign brand_collection = collections[product_brand_handle]
     if brand_collection.url != blank
@@ -44,333 +24,200 @@
     endif
 
     assign button_label = section.settings.button_label | default: 'Discover'
-    assign chapter_two_label = section.settings.chapter_two_label | default: 'Why we chose'
-    assign look_count = 0
+    assign section_bg = section.settings.background | default: '#f3ede3'
   endif
 %}
 
 {% if current_brand != blank %}
   <section
-    id="forma-brand-world-{{ section.id }}"
-    class="fbw"
-    style="--fbw-bg: {{ brand_color }}; --fbw-ink: {{ ink }}; --fbw-ink-soft: {{ ink_soft }};"
+    id="forma-brand-spotlight-{{ section.id }}"
+    class="forma-brand-spotlight"
+    style="--fbs-bg: {{ section_bg }};"
     aria-label="{{ button_label | escape }} {{ brand_name | escape }}"
   >
-    <div class="fbw__stage">
+    <div class="forma-brand-spotlight__main">
+      {% if brand_image != blank %}
+        <a
+          class="forma-brand-spotlight__image-link"
+          href="{{ brand_link }}"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          {{
+            brand_image
+            | image_url: width: 1200
+            | image_tag:
+              class: 'forma-brand-spotlight__image',
+              widths: '320, 480, 700, 1000, 1200',
+              sizes: '(max-width: 749px) 100vw, 52vw',
+              loading: 'lazy',
+              alt: brand_name
+          }}
+        </a>
+      {% endif %}
 
-      <div class="fbw__chapter fbw__chapter--one is-active" data-fbw-chapter>
-        {% if image_1 != blank %}
-          <div class="fbw__media">
-            {{
-              image_1
-              | image_url: width: 2000
-              | image_tag:
-                class: 'fbw__img',
-                widths: '480, 750, 1100, 1500, 2000',
-                sizes: '100vw',
-                loading: 'lazy',
-                alt: brand_name
-            }}
-          </div>
+      <div class="forma-brand-spotlight__content">
+        <p class="forma-brand-spotlight__kicker">CURATED BY FORMA</p>
+        <h2 class="forma-brand-spotlight__title">{{ brand_name | escape }}<span class="forma-brand-spotlight__title-period">.</span></h2>
+
+        {% if story_text != blank %}
+          <p class="forma-brand-spotlight__story">{{ story_text | escape }}</p>
+        {% else %}
+          <p class="forma-brand-spotlight__story">Discover the perspective and design behind the piece you‚Äôre looking at.</p>
         {% endif %}
-        <div class="fbw__scrim"></div>
-        <div class="fbw__top">
-          <p class="fbw__kicker">CURATED BY FORMA</p>
-          {% if founded != blank or origin != blank %}
-            <p class="fbw__kicker fbw__kicker--right">
-              {%- if founded != blank %}EST. {{ founded | escape }}{% endif -%}
-              {%- if founded != blank and origin != blank %} ¬∑ {% endif -%}
-              {%- if origin != blank %}{{ origin | upcase | escape }}{% endif -%}
-            </p>
-          {% endif %}
-        </div>
-        <h2 class="fbw__title">{{ brand_name | escape }}<span class="fbw__title-period">.</span></h2>
-      </div>
 
-      <div class="fbw__chapter fbw__chapter--two" data-fbw-chapter>
-        <div class="fbw__split">
-          <div class="fbw__text">
-            <p class="fbw__kicker">{{ chapter_two_label | escape }} {{ brand_name | escape }}</p>
-            <blockquote class="fbw__quote">{{ take | escape }}</blockquote>
-            {% if curator_name != blank %}
-              <p class="fbw__byline">
-                <span>{{ curator_name | escape }}</span>
-                {% if curator_role != blank %}<span class="fbw__byline-role">{{ curator_role | escape }}</span>{% endif %}
-              </p>
-            {% endif %}
-          </div>
-          {% if image_2 != blank %}
-            <div class="fbw__frame">
-              {{
-                image_2
-                | image_url: width: 1400
-                | image_tag:
-                  class: 'fbw__img',
-                  widths: '480, 750, 1100, 1400',
-                  sizes: '(max-width: 749px) 100vw, 46vw',
-                  loading: 'lazy',
-                  alt: brand_name
-              }}
-            </div>
-          {% endif %}
-        </div>
-      </div>
-
-      <div class="fbw__chapter fbw__chapter--three" data-fbw-chapter>
-        {% if image_3 != blank %}
-          <div class="fbw__media">
-            {{
-              image_3
-              | image_url: width: 2000
-              | image_tag:
-                class: 'fbw__img',
-                widths: '480, 750, 1100, 1500, 2000',
-                sizes: '100vw',
-                loading: 'lazy',
-                alt: ''
-            }}
-          </div>
-        {% endif %}
-        <div class="fbw__scrim fbw__scrim--strong"></div>
-        <div class="fbw__shop">
-          <p class="fbw__kicker">THE LOOK</p>
-          {% if brand_collection.url != blank %}
-            <ul class="fbw__cards">
-              {% for p in brand_collection.products limit: 6 %}
-                {% if p.id != product.id and look_count < 3 and p.featured_image != blank %}
-                  <li class="fbw__card">
-                    <a href="{{ p.url }}" class="fbw__card-link">
-                      <span class="fbw__card-img">
-                        {{
-                          p.featured_image
-                          | image_url: width: 480
-                          | image_tag: widths: '240, 360, 480', sizes: '(max-width: 749px) 30vw, 14vw', loading: 'lazy', alt: p.title
-                        }}
-                      </span>
-                      <span class="fbw__card-title">{{ p.title | escape }}</span>
-                      <span class="fbw__card-price">{{ p.price | money }}</span>
-                    </a>
-                  </li>
-                  {% assign look_count = look_count | plus: 1 %}
-                {% endif %}
-              {% endfor %}
-            </ul>
-          {% endif %}
-          <a class="fbw__link" href="{{ brand_link }}">
-            <span>{{ button_label | escape }} {{ brand_name | escape }}</span>
-            <span class="fbw__arrow" aria-hidden="true">
-              <svg viewBox="0 0 16 16" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-          </a>
-        </div>
-      </div>
-
-      <div class="fbw__hud" aria-hidden="true">
-        <span class="fbw__count"><span data-fbw-current>01</span> / 03</span>
-        <span class="fbw__bar"><span class="fbw__bar-fill" data-fbw-bar></span></span>
+        <a class="forma-brand-spotlight__link" href="{{ brand_link }}">
+          <span>{{ button_label | escape }} {{ brand_name | escape }}</span>
+          <span class="forma-brand-spotlight__arrow" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </a>
       </div>
     </div>
   </section>
 
   <style>
-    #shopify-section-{{ section.id }} .fbw {
-      --fbw-serif: Georgia, 'Times New Roman', serif;
-      position: relative;
+    #shopify-section-{{ section.id }} .forma-brand-spotlight {
+      --fbs-ink: #1f1d19;
+      --fbs-body: #3d3a33;
+      --fbs-muted: #7a7468;
+      --fbs-accent: #a18b65;
+      --fbs-serif: Georgia, 'Times New Roman', serif;
       width: 100%;
-      background: var(--fbw-bg);
-      color: var(--fbw-ink);
+      margin: 0;
+      padding: clamp(40px, 6vw, 96px) 0;
+      color: var(--fbs-ink);
+      background: var(--fbs-bg, #f3ede3);
     }
-    #shopify-section-{{ section.id }} .fbw * { box-sizing: border-box; }
-    #shopify-section-{{ section.id }} .fbw__stage { position: relative; width: 100%; }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight * { box-sizing: border-box; }
 
-    #shopify-section-{{ section.id }} .fbw__chapter { position: relative; width: 100%; overflow: hidden; }
-    #shopify-section-{{ section.id }} .fbw__chapter--one { min-height: 88svh; display: flex; flex-direction: column; justify-content: space-between; }
-    #shopify-section-{{ section.id }} .fbw__chapter--two { padding: 72px 0; }
-    #shopify-section-{{ section.id }} .fbw__chapter--three { min-height: 90svh; display: flex; align-items: flex-end; }
-
-    #shopify-section-{{ section.id }} .fbw__media { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: rgba(0, 0, 0, .15); }
-    #shopify-section-{{ section.id }} .fbw__img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 38%; }
-    #shopify-section-{{ section.id }} .fbw__media .fbw__img { transform: scale(calc(1.02 + var(--fbw-p, 0) * .1)); will-change: transform; }
-
-    #shopify-section-{{ section.id }} .fbw__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, rgba(15, 14, 12, .35) 0%, rgba(15, 14, 12, 0) 30%, rgba(15, 14, 12, 0) 55%, rgba(15, 14, 12, .6) 100%); }
-    #shopify-section-{{ section.id }} .fbw__scrim--strong { background: linear-gradient(180deg, rgba(15, 14, 12, .1) 0%, rgba(15, 14, 12, .25) 40%, rgba(15, 14, 12, .75) 100%); }
-
-    #shopify-section-{{ section.id }} .fbw__top { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 24px; padding: 32px clamp(20px, 3vw, 48px) 0; color: #f3ede3; }
-    #shopify-section-{{ section.id }} .fbw__kicker { margin: 0; font-size: 11px; font-weight: 500; letter-spacing: .2em; line-height: 1.5; text-transform: uppercase; }
-    #shopify-section-{{ section.id }} .fbw__kicker--right { text-align: right; }
-
-    #shopify-section-{{ section.id }} .fbw__title {
-      position: relative; z-index: 2; margin: 0; padding: 0 clamp(16px, 2.4vw, 40px) clamp(28px, 4vw, 56px);
-      color: #f3ede3; font-family: var(--fbw-serif); font-size: clamp(64px, 17vw, 300px);
-      font-weight: 400; letter-spacing: -.045em; line-height: .88; overflow-wrap: anywhere;
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      align-items: center;
+      column-gap: clamp(32px, 6vw, 96px);
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 clamp(28px, 4vw, 64px);
     }
-    #shopify-section-{{ section.id }} .fbw__title-period { color: #d9b46a; }
 
-    #shopify-section-{{ section.id }} .fbw__split {
-      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center;
-      gap: clamp(32px, 6vw, 112px); width: 100%; max-width: 1600px; height: 100%;
-      margin: 0 auto; padding: 0 clamp(20px, 4vw, 64px);
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__image-link {
+      display: block;
+      width: 100%;
+      height: clamp(380px, 40vw, 580px);
+      overflow: hidden;
+      background: #e4dccb;
     }
-    #shopify-section-{{ section.id }} .fbw__text { min-width: 0; max-width: 620px; color: var(--fbw-ink); }
-    #shopify-section-{{ section.id }} .fbw__text .fbw__kicker { color: var(--fbw-ink-soft); margin-bottom: 28px; }
-    #shopify-section-{{ section.id }} .fbw__quote { margin: 0; font-family: var(--fbw-serif); font-size: clamp(26px, 3.2vw, 50px); font-weight: 400; letter-spacing: -.02em; line-height: 1.2; }
-    #shopify-section-{{ section.id }} .fbw__byline { display: flex; flex-direction: column; gap: 2px; margin: 28px 0 0; font-size: 14px; line-height: 1.5; }
-    #shopify-section-{{ section.id }} .fbw__byline-role { color: var(--fbw-ink-soft); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
-    #shopify-section-{{ section.id }} .fbw__frame { min-width: 0; width: 100%; height: clamp(360px, 70vh, 760px); overflow: hidden; }
-
-    #shopify-section-{{ section.id }} .fbw__shop { position: relative; z-index: 2; width: 100%; padding: 0 clamp(20px, 3vw, 48px) clamp(36px, 5vw, 64px); color: #f3ede3; }
-    #shopify-section-{{ section.id }} .fbw__shop .fbw__kicker { margin-bottom: 20px; }
-    #shopify-section-{{ section.id }} .fbw__cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; list-style: none; margin: 0 0 32px; padding: 0; max-width: 640px; }
-    #shopify-section-{{ section.id }} .fbw__card { margin: 0; }
-    #shopify-section-{{ section.id }} .fbw__card-link { display: flex; flex-direction: column; gap: 6px; color: inherit; text-decoration: none; }
-    #shopify-section-{{ section.id }} .fbw__card-img { display: block; aspect-ratio: 3 / 4; overflow: hidden; background: rgba(243, 237, 227, .15); }
-    #shopify-section-{{ section.id }} .fbw__card-img img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 600ms cubic-bezier(.2, .65, .3, 1); }
-    #shopify-section-{{ section.id }} .fbw__card-title { font-size: 12px; line-height: 1.4; }
-    #shopify-section-{{ section.id }} .fbw__card-price { font-size: 12px; opacity: .75; }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 38%;
+      transform: scale(1.015);
+      transition: transform 1200ms cubic-bezier(.2, .65, .3, 1);
+    }
     @media (hover: hover) {
-      #shopify-section-{{ section.id }} .fbw__card-link:hover .fbw__card-img img { transform: scale(1.06); }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__image-link:hover .forma-brand-spotlight__image { transform: scale(1.05); }
     }
 
-    #shopify-section-{{ section.id }} .fbw__link {
-      display: inline-flex; align-items: center; gap: 12px; padding: 16px 28px; border-radius: 999px;
-      background: #f3ede3; color: #1f1b16; font-size: 12px; font-weight: 500; letter-spacing: .14em;
-      line-height: 1.2; text-decoration: none; text-transform: uppercase; transition: gap 220ms ease;
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__content {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 440px;
     }
-    #shopify-section-{{ section.id }} .fbw__link:hover,
-    #shopify-section-{{ section.id }} .fbw__link:focus-visible { gap: 18px; }
-    #shopify-section-{{ section.id }} .fbw__link:focus-visible,
-    #shopify-section-{{ section.id }} .fbw__card-link:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
-    #shopify-section-{{ section.id }} .fbw__arrow { display: inline-flex; }
-
-    #shopify-section-{{ section.id }} .fbw__hud { display: none; }
-
-    /* Pinned scroll mode (set by JS on desktop, no reduced motion) */
-    #shopify-section-{{ section.id }} .fbw.is-pinned { height: 420svh; }
-    #shopify-section-{{ section.id }} .fbw.is-pinned .fbw__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
-    #shopify-section-{{ section.id }} .fbw.is-pinned .fbw__chapter {
-      position: absolute; inset: 0; min-height: 0; padding: 0; opacity: 0; visibility: hidden;
-      transition: opacity 900ms ease, visibility 0s linear 900ms;
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__kicker {
+      margin: 0 0 20px;
+      color: var(--fbs-muted);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .2em;
+      line-height: 1.5;
+      text-transform: uppercase;
     }
-    #shopify-section-{{ section.id }} .fbw.is-pinned .fbw__chapter.is-active { opacity: 1; visibility: visible; transition: opacity 900ms ease, visibility 0s; }
-    #shopify-section-{{ section.id }} .fbw.is-pinned .fbw__title,
-    #shopify-section-{{ section.id }} .fbw.is-pinned .fbw__text,
-    #shopify-section-{{ section.id }} .fbw.is-pinned .fbw__shop { transform: translateY(28px); transition: transform 1100ms cubic-bezier(.2, .65, .3, 1) 150ms; }
-    #shopify-section-{{ section.id }} .fbw.is-pinned .is-active .fbw__title,
-    #shopify-section-{{ section.id }} .fbw.is-pinned .is-active .fbw__text,
-    #shopify-section-{{ section.id }} .fbw.is-pinned .is-active .fbw__shop { transform: translateY(0); }
-    #shopify-section-{{ section.id }} .fbw.is-pinned .fbw__frame { clip-path: inset(0 0 100% 0); transition: clip-path 1200ms cubic-bezier(.7, 0, .2, 1) 100ms; }
-    #shopify-section-{{ section.id }} .fbw.is-pinned .is-active .fbw__frame { clip-path: inset(0 0 0 0); }
-    #shopify-section-{{ section.id }} .fbw.is-pinned .fbw__chapter--two { background: var(--fbw-bg); }
-
-    #shopify-section-{{ section.id }} .fbw.is-pinned .fbw__hud {
-      position: absolute; left: clamp(20px, 3vw, 48px); right: clamp(20px, 3vw, 48px); bottom: 20px; z-index: 5;
-      display: flex; align-items: center; gap: 16px; pointer-events: none; color: #f3ede3; mix-blend-mode: difference;
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__title {
+      margin: 0;
+      color: var(--fbs-ink);
+      font-family: var(--fbs-serif);
+      font-size: clamp(44px, 5vw, 68px);
+      font-weight: 400;
+      letter-spacing: -.035em;
+      line-height: 1;
+      overflow-wrap: anywhere;
     }
-    #shopify-section-{{ section.id }} .fbw__count { font-size: 11px; letter-spacing: .2em; }
-    #shopify-section-{{ section.id }} .fbw__bar { position: relative; flex: 1; height: 1px; background: rgba(255, 255, 255, .35); }
-    #shopify-section-{{ section.id }} .fbw__bar-fill { position: absolute; inset: 0; background: #fff; transform: scaleX(0); transform-origin: left center; }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__title-period { color: var(--fbs-accent); }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__story {
+      margin: 24px 0 0;
+      color: var(--fbs-body);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 32px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--fbs-ink);
+      color: var(--fbs-ink);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      line-height: 1.4;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: gap 220ms ease, border-color 220ms ease;
+    }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__link:hover,
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__link:focus-visible { gap: 16px; }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__link:focus-visible { outline: 2px solid var(--fbs-ink); outline-offset: 6px; }
+    #shopify-section-{{ section.id }} .forma-brand-spotlight__arrow { display: inline-flex; align-items: center; }
 
     @media screen and (max-width: 749px) {
-      #shopify-section-{{ section.id }} .fbw__chapter--one { min-height: 80svh; }
-      #shopify-section-{{ section.id }} .fbw__top { padding-top: 20px; }
-      #shopify-section-{{ section.id }} .fbw__kicker { font-size: 10px; }
-      #shopify-section-{{ section.id }} .fbw__chapter--two { padding: 48px 0; }
-      #shopify-section-{{ section.id }} .fbw__split { grid-template-columns: 1fr; gap: 32px; }
-      #shopify-section-{{ section.id }} .fbw__frame { height: auto; aspect-ratio: 4 / 5; }
-      #shopify-section-{{ section.id }} .fbw__chapter--three { min-height: 82svh; }
-      #shopify-section-{{ section.id }} .fbw__cards { gap: 8px; margin-bottom: 24px; }
-      #shopify-section-{{ section.id }} .fbw__link { padding: 14px 22px; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight { padding: 28px 0 40px; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__main {
+        grid-template-columns: 1fr;
+        row-gap: 28px;
+        padding: 0 18px;
+      }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__image-link { height: auto; aspect-ratio: 4 / 5; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__content { padding: 0 2px; max-width: none; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__kicker { margin-bottom: 14px; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__title { font-size: clamp(44px, 12vw, 58px); }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__story { margin-top: 16px; font-size: 14px; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__link { margin-top: 24px; }
     }
     @media (prefers-reduced-motion: reduce) {
-      #shopify-section-{{ section.id }} .fbw * { transition: none !important; }
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__image,
+      #shopify-section-{{ section.id }} .forma-brand-spotlight__link { transition: none; }
     }
   </style>
-
-  <script>
-    (function () {
-      var root = document.getElementById('forma-brand-world-{{ section.id }}');
-      if (!root) return;
-      var chapters = root.querySelectorAll('[data-fbw-chapter]');
-      var counter = root.querySelector('[data-fbw-current]');
-      var bar = root.querySelector('[data-fbw-bar]');
-      var mq = window.matchMedia('(min-width: 750px) and (prefers-reduced-motion: no-preference)');
-      var ticking = false;
-      var last = -1;
-
-      function setChapter(i) {
-        for (var n = 0; n < chapters.length; n++) {
-          chapters[n].classList.toggle('is-active', n === i);
-        }
-        if (counter) counter.textContent = '0' + (i + 1);
-      }
-
-      function update() {
-        ticking = false;
-        if (!mq.matches) {
-          root.classList.remove('is-pinned');
-          root.style.removeProperty('--fbw-p');
-          chapters.forEach(function (c) { c.classList.add('is-active'); });
-          last = -1;
-          return;
-        }
-        if (!root.classList.contains('is-pinned')) {
-          root.classList.add('is-pinned');
-          last = -1;
-        }
-        var rect = root.getBoundingClientRect();
-        var total = rect.height - window.innerHeight;
-        if (total <= 0) return;
-        var p = Math.min(1, Math.max(0, -rect.top / total));
-        var idx = Math.min(chapters.length - 1, Math.floor(p * chapters.length));
-        root.style.setProperty('--fbw-p', p.toFixed(3));
-        if (bar) bar.style.transform = 'scaleX(' + p.toFixed(3) + ')';
-        if (idx !== last) {
-          last = idx;
-          setChapter(idx);
-        }
-      }
-
-      function request() {
-        if (!ticking) {
-          ticking = true;
-          window.requestAnimationFrame(update);
-        }
-      }
-
-      window.addEventListener('scroll', request, { passive: true });
-      window.addEventListener('resize', request);
-      if (mq.addEventListener) mq.addEventListener('change', request);
-      update();
-    })();
-  </script>
 {% endif %}
 
 {% schema %}
 {
-  "name": "Forma brand world",
+  "name": "Forma brand spotlight",
   "settings": [
     {
       "type": "color",
-      "id": "fallback_color",
-      "label": "Fallback brand color",
-      "default": "#1f3a33",
-      "info": "Bruges, hvis brandet ikke har en egen farve i metaobjectet."
+      "id": "background",
+      "label": "Background color",
+      "default": "#f3ede3"
     },
     {
       "type": "text",
       "id": "button_label",
       "label": "Link label (followed by brand name)",
-      "default": "Discover"
-    },
-    {
-      "type": "text",
-      "id": "chapter_two_label",
-      "label": "Chapter 2 label (followed by brand name)",
-      "default": "Why we chose"
+      "default": "Discover",
+      "info": "Fx \"Discover\" eller \"Oplev\" giver \"Discover Les Deux\" / \"Oplev Les Deux\"."
     }
   ],
   "presets": [
-    { "name": "Forma brand world" }
+    { "name": "Forma brand spotlight" }
   ]
 }
 {% endschema %}
