@@ -109,13 +109,12 @@
         "max_image_zoom_level": 1
       }
     },
-    "forma_brand_world_p4qFW4": {
-      "type": "forma-brand-world",
-      "name": "Forma brand world",
+    "forma_product_anatomy_HG8qDJ": {
+      "type": "forma-product-anatomy",
+      "name": "Forma product anatomy",
       "settings": {
-        "fallback_color": "#1f3a33",
-        "button_label": "Discover",
-        "chapter_two_label": "Why we chose"
+        "heading": "The piece",
+        "show_brand_credit": true
       }
     },
     "related-products": {
@@ -137,7 +136,7 @@
   },
   "order": [
     "main",
-    "forma_brand_world_p4qFW4",
+    "forma_product_anatomy_HG8qDJ",
     "related-products"
   ]
 }
