@@ -1,0 +1,203 @@
+{{ 'forma-magazine.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'forma-magazine.js' | asset_url }}" defer></script>
+{%- liquid
+  assign all_articles = '' | split: ''
+  if section.settings.blog_1 != blank
+    assign all_articles = all_articles | concat: section.settings.blog_1.articles
+  endif
+  if section.settings.blog_2 != blank
+    assign all_articles = all_articles | concat: section.settings.blog_2.articles
+  endif
+  if section.settings.blog_3 != blank
+    assign all_articles = all_articles | concat: section.settings.blog_3.articles
+  endif
+  assign all_articles = all_articles | sort: 'published_at' | reverse
+
+  assign hero_image = section.settings.hero_image
+  if hero_image == blank and all_articles.size > 0
+    assign hero_image = all_articles.first.image
+  endif
+-%}
+<div
+  id="fm-{{ section.id }}"
+  class="fm fm--top fm--rows"
+  data-fm-layout="rows"
+  style="--fm-bg: {{ section.settings.background }}; --fm-text: {{ section.settings.text }}; --fm-muted: {{ section.settings.muted }}; --fm-line: {{ section.settings.line }}; --fm-card: {{ section.settings.card_background }}; --fm-max: {{ section.settings.max_width }}px; --fm-cols: {{ section.settings.columns }}; --fm-gap: {{ section.settings.gap }}px; --fm-row-gap: {{ section.settings.gap }}px; --fm-hero-h: {{ section.settings.hero_height }}vh; --fm-overlay: {{ section.settings.overlay | divided_by: 100.0 }};"
+>
+  <div class="fm-hero">
+    {%- if hero_image != blank -%}
+      <div class="fm-hero__media">
+        {{ hero_image | image_url: width: 2800 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '750, 1100, 1500, 2000, 2800', sizes: '100vw', alt: '' }}
+      </div>
+    {%- endif -%}
+    <div class="fm-hero__content">
+      {%- if section.settings.hero_heading != blank -%}
+        <h1 class="fm-hero__title">{{ section.settings.hero_heading | escape }}</h1>
+      {%- endif -%}
+      {%- if section.settings.hero_text != blank -%}
+        <p class="fm-hero__text">{{ section.settings.hero_text | escape }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="fm-topbar" data-fm-topbar>
+    {%- render 'forma-magazine-nav',
+      blocks: section.blocks,
+      all_label: section.settings.all_label,
+      all_description: section.settings.all_description,
+      magazine_url: request.path,
+      active_topic: 'all',
+      active_brand: ''
+    -%}
+  </div>
+
+  <div class="fm-wide">
+    <div class="fm-head fm-head--center" data-fm-head>
+      <div class="fm-head__logo" data-mag-logo hidden></div>
+      <div>
+        <h2 class="fm-head__title" data-mag-heading>{{ section.settings.all_label | escape }}</h2>
+        <p class="fm-head__text" data-mag-description {% if section.settings.all_description == blank %}hidden{% endif %}>{{ section.settings.all_description | escape }}</p>
+      </div>
+    </div>
+
+    <div class="fm-grid2" data-fm-grid>
+      {%- for article in all_articles -%}
+        {%- render 'forma-magazine-card',
+          article: article,
+          blocks: section.blocks,
+          read_label: section.settings.read_label,
+          show_blog_badge: section.settings.show_blog_badge,
+          blog_1: section.settings.blog_1,
+          blog_2: section.settings.blog_2,
+          blog_3: section.settings.blog_3
+        -%}
+      {%- endfor -%}
+      {%- if section.settings.placeholder_count > 0 -%}
+        {%- for i in (1..section.settings.placeholder_count) -%}
+          {%- liquid
+            assign placeholder_mod = i | modulo: 3
+            assign placeholder_name = 'lifestyle-1'
+            if placeholder_mod == 0
+              assign placeholder_name = 'lifestyle-2'
+            elsif placeholder_mod == 2
+              assign placeholder_name = 'image'
+            endif
+          -%}
+          <div class="fm-card fm-card--placeholder" data-fm-card data-tags=" " data-ratio="0.8">
+            <a class="fm-card__link" href="#" tabindex="-1" aria-hidden="true">
+              <span class="fm-card__media">{{ placeholder_name | placeholder_svg_tag: 'fm-placeholder' }}</span>
+              <span class="fm-card__badge">Placeholder</span>
+              <span class="fm-card__caption">
+                <span class="fm-card__title">Placeholder article {{ i }}</span>
+                <span class="fm-card__more">{{ section.settings.read_label | escape }}</span>
+              </span>
+            </a>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+    <p class="fm-empty" data-mag-empty {% if all_articles.size > 0 %}hidden{% endif %}>{{ section.settings.empty_text | escape }}</p>
+
+    <div hidden>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'breaker' -%}
+          {%- liquid
+            assign breaker_tag = 'div'
+            if block.settings.link != blank
+              assign breaker_tag = 'a'
+            endif
+          -%}
+          <{{ breaker_tag }} class="fm-breaker" data-fm-breaker {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} style="--fm-breaker-shade: {{ block.settings.shade | divided_by: 100.0 }};" {{ block.shopify_attributes }}>
+            <span class="fm-breaker__media">
+              {%- if block.settings.video != blank -%}
+                {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, preload: 'metadata' }}
+              {%- elsif block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 2000 | image_tag: loading: 'lazy', widths: '800, 1200, 1600, 2000', sizes: '(min-width: 750px) 50vw, 100vw', alt: block.settings.image.alt | default: '' }}
+              {%- endif -%}
+            </span>
+            {%- if block.settings.eyebrow != blank or block.settings.heading != blank or block.settings.button_label != blank -%}
+              <span class="fm-breaker__content">
+                {%- if block.settings.eyebrow != blank -%}<span class="fm-breaker__eyebrow">{{ block.settings.eyebrow | escape }}</span>{%- endif -%}
+                {%- if block.settings.heading != blank -%}<span class="fm-breaker__title">{{ block.settings.heading | escape }}</span>{%- endif -%}
+                {%- if block.settings.button_label != blank and block.settings.link != blank -%}<span class="fm-breaker__button">{{ block.settings.button_label | escape }}</span>{%- endif -%}
+              </span>
+            {%- endif -%}
+          </{{ breaker_tag }}>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Forma Magazine (rows)",
+  "tag": "section",
+  "class": "shopify-section--forma-magazine",
+  "max_blocks": 24,
+  "settings": [
+    { "type": "header", "content": "Top image" },
+    { "type": "image_picker", "id": "hero_image", "label": "Image", "info": "Uses the newest article's image if empty" },
+    { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Forma Magazine" },
+    { "type": "text", "id": "hero_text", "label": "Text", "default": "Stories on wardrobe, lifestyle, home and the brands we love" },
+    { "type": "range", "id": "hero_height", "label": "Height", "min": 30, "max": 100, "step": 5, "unit": "vh", "default": 60 },
+    { "type": "range", "id": "overlay", "label": "Image overlay", "min": 0, "max": 70, "step": 5, "unit": "%", "default": 20 },
+    { "type": "header", "content": "Articles" },
+    { "type": "blog", "id": "blog_1", "label": "Blog 1" },
+    { "type": "blog", "id": "blog_2", "label": "Blog 2" },
+    { "type": "blog", "id": "blog_3", "label": "Blog 3" },
+    { "type": "paragraph", "content": "Articles appear under a category when they have its tag. Brand articles need the brand's name as a tag, e.g. Les Deux." },
+    { "type": "text", "id": "all_label", "label": "All articles label", "default": "All articles" },
+    { "type": "textarea", "id": "all_description", "label": "All articles intro", "default": "Everything from Forma, from wardrobe staples and the way we live to the homes and brands behind it, in one place." },
+    { "type": "text", "id": "read_label", "label": "Read link label", "default": "Read the article" },
+    { "type": "checkbox", "id": "show_blog_badge", "label": "Show blog name on cards without a category", "default": false },
+    { "type": "text", "id": "empty_text", "label": "No articles text", "default": "No articles here yet. Check back soon." },
+    { "type": "range", "id": "placeholder_count", "label": "Placeholder articles (for testing)", "min": 0, "max": 16, "step": 1, "default": 0, "info": "Adds sample cards so you can see the breakers. Set to 0 before the page goes live." },
+    { "type": "range", "id": "columns", "label": "Columns on desktop", "min": 3, "max": 6, "step": 1, "default": 4 },
+    { "type": "range", "id": "gap", "label": "Space between articles", "min": 0, "max": 24, "step": 1, "unit": "px", "default": 12 },
+    { "type": "range", "id": "max_width", "label": "Max width", "min": 1200, "max": 3000, "step": 40, "unit": "px", "default": 3000 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#777777" },
+    { "type": "color", "id": "line", "label": "Lines", "default": "#dcdcdc" },
+    { "type": "color", "id": "card_background", "label": "Card background", "default": "#f4f3f0" }
+  ],
+  "blocks": [
+    {
+      "type": "topic",
+      "name": "Category",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Wardrobe" },
+        { "type": "text", "id": "tag", "label": "Article tag", "info": "Articles with this tag show up here. Uses the label if empty." },
+        { "type": "textarea", "id": "description", "label": "Intro" }
+      ]
+    },
+    {
+      "type": "brands",
+      "name": "Brands",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Lists every brand from the Forma Brand entries. Tag an article with a brand's name to show it under that brand." },
+        { "type": "text", "id": "label", "label": "Label", "default": "Brands" },
+        { "type": "textarea", "id": "description", "label": "Intro" }
+      ]
+    }
+    ,{
+      "type": "breaker",
+      "name": "Breaker",
+      "settings": [
+        { "type": "paragraph", "content": "Fills two article spaces in every third row, switching between left and right. Several breakers take turns." },
+        { "type": "video", "id": "video", "label": "Video or GIF", "info": "Upload a GIF as a video (MP4) to keep it moving. Shown instead of the image." },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "eyebrow", "label": "Small text" },
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "button_label", "label": "Button label" },
+        { "type": "range", "id": "shade", "label": "Shade behind text", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 45 }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Forma Magazine (rows)" }]
+}
+{% endschema %}

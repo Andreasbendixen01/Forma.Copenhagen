@@ -1,0 +1,100 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "magazine": {
+      "type": "forma-magazine-3",
+      "blocks": {
+        "wardrobe": {
+          "type": "topic",
+          "settings": {
+            "label": "Wardrobe",
+            "tag": "Wardrobe",
+            "description": "Wardrobe staples, new arrivals and how to wear them."
+          }
+        },
+        "lifestyle": {
+          "type": "topic",
+          "settings": {
+            "label": "The Lifestyle",
+            "tag": "The Lifestyle",
+            "description": "Skincare, grooming, fragrance and the small rituals of everyday life."
+          }
+        },
+        "home": {
+          "type": "topic",
+          "settings": {
+            "label": "The Home",
+            "tag": "The Home",
+            "description": "Furniture, lighting and objects for a home with form."
+          }
+        },
+        "brands": {
+          "type": "brands",
+          "settings": {
+            "label": "Brands",
+            "description": "Stories from the brands we carry. Pick a brand to read more about it."
+          }
+        }
+      },
+      "block_order": [
+        "wardrobe",
+        "lifestyle",
+        "home",
+        "brands"
+      ],
+      "settings": {
+        "hero_heading": "Forma Magazine",
+        "hero_text": "Stories on wardrobe, lifestyle, home and the brands we love",
+        "hero_height": 35,
+        "overlay": 20,
+        "blog_1": "forma-journal",
+        "blog_2": "forma-places",
+        "all_label": "All articles",
+        "all_description": "Everything from Forma, from wardrobe staples and the way we live to the homes and brands behind it, in one place.",
+        "read_label": "Read the article",
+        "show_blog_badge": false,
+        "empty_text": "No articles here yet. Check back soon.",
+        "columns": 4,
+        "gap": 12,
+        "max_width": 3000,
+        "background": "#ffffff",
+        "text": "#111111",
+        "muted": "#777777",
+        "line": "#dcdcdc",
+        "card_background": "#f4f3f0"
+      }
+    },
+    "brand_slider": {
+      "type": "forma-brand-marquee",
+      "settings": {
+        "heading": "",
+        "button_label": "Explore",
+        "show_name": false,
+        "link_to": "magazine",
+        "magazine_page": "magazine",
+        "blog_1": "forma-journal",
+        "blog_2": "forma-places",
+        "tile_width": 720,
+        "tile_height": 420,
+        "gap": 0,
+        "seconds_per_tile": 6,
+        "overlay": 35,
+        "background": "#ffffff",
+        "card_background": "#f4f3f0",
+        "text": "#111111"
+      }
+    }
+  },
+  "order": [
+    "magazine",
+    "brand_slider"
+  ]
+}
