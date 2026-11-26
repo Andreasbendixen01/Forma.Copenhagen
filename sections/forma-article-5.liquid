@@ -146,7 +146,35 @@
           </div>
         </div>
         </div>
-        <aside class="fa5-rail" data-fa5-rail aria-label="Products in this article"></aside>
+        <aside class="fa5-rail" data-fa5-rail aria-label="Products in this article">
+          {%- if section.settings.show_product_cards -%}
+            {%- comment -%} Cards for links to the store's own products are rendered here; the script places them next to their link {%- endcomment -%}
+            {%- assign fa5_parts = article.content | split: '/products/' -%}
+            {%- assign fa5_done = '|' -%}
+            {%- for fa5_part in fa5_parts offset: 1 -%}
+              {%- assign fa5_handle = fa5_part | split: '"' | first | split: '?' | first | split: '#' | first | split: '/' | first -%}
+              {%- assign fa5_key = '|' | append: fa5_handle | append: '|' -%}
+              {%- unless fa5_done contains fa5_key -%}
+                {%- assign fa5_done = fa5_done | append: fa5_handle | append: '|' -%}
+                {%- assign fa5_product = all_products[fa5_handle] -%}
+                {%- if fa5_product.id -%}
+                  <a class="fa5-card" href="{{ fa5_product.url }}" data-fa5-handle="{{ fa5_product.handle }}">
+                    <span class="fa5-card__img">
+                      {%- if fa5_product.featured_image -%}
+                        {{ fa5_product.featured_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}
+                      {%- endif -%}
+                    </span>
+                    <span class="fa5-card__body">
+                      <span class="fa5-card__title">{{ fa5_product.title | escape }}</span>
+                      <span class="fa5-card__price">{{ fa5_product.price | money }}</span>
+                      <span class="fa5-card__btn">{{ section.settings.card_button_label | escape }}</span>
+                    </span>
+                  </a>
+                {%- endif -%}
+              {%- endunless -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </aside>
       </div>
     </div>
   </div>
@@ -244,9 +272,13 @@
 
         var match = url.host === window.location.host && url.pathname.match(/\/products\/([^/?#]+)/);
         if (match) {
-          fetch('/products/' + match[1] + '.js').then(function (r) { return r.ok ? r.json() : null; }).then(function (p) {
-            if (p) addCard(a, fromProductJs(p));
-          }).catch(function () {});
+          var pre = rail.querySelector('[data-fa5-handle="' + match[1].replace(/"/g, '') + '"]');
+          if (pre && !usedHandles[match[1]]) {
+            usedHandles[match[1]] = true;
+            pre.setAttribute('data-fa5-used', '');
+            cards.push({ el: pre, anchor: a });
+            if (io) io.observe(a); else pre.classList.add('is-visible');
+          }
           return;
         }
 
@@ -282,6 +314,9 @@
 
     function start() {
       collect();
+      Array.prototype.forEach.call(rail.querySelectorAll("[data-fa5-handle]:not([data-fa5-used])"), function (el) { el.remove(); });
+      cards.sort(function (x, y) { return x.anchor.compareDocumentPosition(y.anchor) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1; });
+      layout();
       window.addEventListener('resize', layout);
       window.addEventListener('load', layout);
       Array.prototype.forEach.call(prose.querySelectorAll('img'), function (img) {
