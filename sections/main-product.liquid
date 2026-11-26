@@ -281,17 +281,7 @@
 }
 
 /* ---------- Lifestyle styling of the left column ---------- */
-#shopify-section-{{ section.id }} [data-block-type="vendor"],
-#shopify-section-{{ section.id }} [data-block-type="title"],
-#shopify-section-{{ section.id }} [data-block-type="price"],
-#shopify-section-{{ section.id }} .forma-brand-buy {
-  background: #f4f1ea !important;
-}
 @media screen and (min-width: 1000px) {
-  /* Tint the whole first column, also the empty space below the button */
-  #shopify-section-{{ section.id }} .product-info__block-list {
-    background-image: linear-gradient(to right, #f4f1ea 0, #f4f1ea 34.375%, transparent 34.375%) !important;
-  }
   #shopify-section-{{ section.id }} [data-block-type="vendor"],
   #shopify-section-{{ section.id }} [data-block-type="title"],
   #shopify-section-{{ section.id }} [data-block-type="price"],
@@ -387,7 +377,7 @@
   transition: background-color 0.2s ease-in, color 0.2s ease-in, transform 0.2s ease-in, box-shadow 0.2s ease-in;
 }
 #shopify-section-{{ section.id }} .forma-brand-buy__link::after {
-  content: "‚";
+  content: "\2192";
   display: inline-block;
   font-size: 12px;
   letter-spacing: 0;
