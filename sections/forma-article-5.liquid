@@ -65,8 +65,7 @@
 
   /* TEST: breaker images in 9:16 */
   #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media img { width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; object-position: center; }
-  #shopify-section-{{ section.id }} .fa5 .forma-article__prose > .forma-media,
-  #shopify-section-{{ section.id }} .fa5 .forma-article__prose > p > .forma-media { width: min(100%, calc(85vh * 9 / 16)) !important; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media:not(.forma-media-pair .forma-media) { width: min(100%, 480px, calc(85vh * 9 / 16)) !important; max-width: 100% !important; }
 
   @media screen and (max-width: 989px) {
     #shopify-section-{{ section.id }} .fa5-body { grid-template-columns: minmax(0, 1fr); gap: 0; }
