@@ -55,6 +55,7 @@
         "more_heading": "More stories",
         "read_label": "Read the article",
         "per_page": 15,
+        "placeholder_count": 0,
         "load_more_label": "Load more articles",
         "empty_text": "No articles here yet. Check back soon.",
         "max_width": 1600,
