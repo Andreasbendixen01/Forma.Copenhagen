@@ -9,6 +9,69 @@
  */
 {
   "sections": {
+    "forma_magazine4_Y6taEX": {
+      "type": "forma-magazine4",
+      "blocks": {
+        "category_CXjCGV": {
+          "type": "category",
+          "settings": {
+            "title": "Wardrobe",
+            "nav_label": "",
+            "tagline": "Style, fits and the pieces worth building an outfit around.",
+            "blog": "forma-journal",
+            "tag": "",
+            "articles_count": 7,
+            "show_view_all": true
+          }
+        },
+        "category_P4qMkn": {
+          "type": "category",
+          "settings": {
+            "title": "The Lifestyle",
+            "nav_label": "",
+            "tagline": "Travel, culture, movement and the small things that make a day better.",
+            "blog": "forma-journal",
+            "tag": "",
+            "articles_count": 7,
+            "show_view_all": true
+          }
+        },
+        "category_cd83ft": {
+          "type": "category",
+          "settings": {
+            "title": "The Home",
+            "nav_label": "",
+            "tagline": "Interiors, design and objects that make a space feel like yours.",
+            "blog": "forma-journal",
+            "tag": "",
+            "articles_count": 7,
+            "show_view_all": true
+          }
+        },
+        "category_daPgAa": {
+          "type": "category",
+          "settings": {
+            "title": "The Form",
+            "nav_label": "",
+            "tagline": "Our take on form, function and the people behind the brands.",
+            "blog": "forma-journal",
+            "tag": "",
+            "articles_count": 7,
+            "show_view_all": true
+          }
+        }
+      },
+      "block_order": [
+        "category_CXjCGV",
+        "category_P4qMkn",
+        "category_cd83ft",
+        "category_daPgAa"
+      ],
+      "name": "Forma Magazine",
+      "settings": {
+        "show_nav": true
+      }
+    },
     "magazine": {
       "type": "forma-magazine",
       "blocks": {
@@ -50,6 +113,7 @@
         "home",
         "brands"
       ],
+      "disabled": true,
       "settings": {
         "hero_heading": "Forma Magazine",
         "hero_text": "Stories on wardrobe, lifestyle, home and the brands we love",
@@ -74,6 +138,7 @@
     },
     "brand_slider": {
       "type": "forma-brand-marquee",
+      "disabled": true,
       "settings": {
         "heading": "",
         "button_label": "Explore",
@@ -94,6 +159,7 @@
     }
   },
   "order": [
+    "forma_magazine4_Y6taEX",
     "magazine",
     "brand_slider"
   ]
