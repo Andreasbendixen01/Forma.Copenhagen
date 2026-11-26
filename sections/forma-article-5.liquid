@@ -67,6 +67,26 @@
   #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: center; }
   #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media:not(.forma-media-pair .forma-media) { width: 100% !important; max-width: 860px !important; }
 
+  /* Even spacing between text, headings and images (margins collapse, so the largest value wins) */
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose > p { margin: 0 0 1.4em; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose h2 { margin: 72px 0 20px; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose h3 { margin: 48px 0 16px; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose > :first-child { margin-top: 0; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .wp-block-gallery { display: block; margin: 48px 0; padding: 0; max-width: 860px; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .wp-block-gallery:not(:has(img)) { display: none; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .wp-block-gallery .blocks-gallery-grid { display: grid; gap: 16px; margin: 0; padding: 0; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .wp-block-gallery figure { margin: 0 !important; padding: 0; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .wp-block-gallery figure:not(:has(img)) { display: none; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .wp-block-gallery .forma-media { margin: 0 !important; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .slider-button-next,
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .slider-button-prev { display: none; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .wp-block-buttons { margin: 0 0 1.4em; }
+
+  /* Photo credit (e.g. @name) right under the image */
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .wp-block-gallery:has(+ p > a[href*="instagram.com"]) { margin-bottom: 12px; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .wp-block-gallery + p:has(> a[href*="instagram.com"]) { margin: 0 0 48px; font-size: 12px; line-height: 1.4; letter-spacing: .04em; color: var(--fa5-muted); }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .wp-block-gallery + p:has(> a[href*="instagram.com"]) a { color: inherit; }
+
   @media screen and (max-width: 989px) {
     #shopify-section-{{ section.id }} .fa5-body { grid-template-columns: minmax(0, 1fr); gap: 0; }
     #shopify-section-{{ section.id }} .fa5-side { display: none; }
