@@ -1,0 +1,135 @@
+{{ 'forma-magazine.css' | asset_url | stylesheet_tag }}
+{{ 'forma-magazine-5.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'forma-magazine-5.js' | asset_url }}" defer></script>
+{%- liquid
+  assign all_articles = '' | split: ''
+  if section.settings.blog_1 != blank
+    assign all_articles = all_articles | concat: section.settings.blog_1.articles
+  endif
+  if section.settings.blog_2 != blank
+    assign all_articles = all_articles | concat: section.settings.blog_2.articles
+  endif
+  if section.settings.blog_3 != blank
+    assign all_articles = all_articles | concat: section.settings.blog_3.articles
+  endif
+  assign all_articles = all_articles | sort: 'published_at' | reverse
+-%}
+<div
+  id="fm-{{ section.id }}"
+  class="fm fm5"
+  data-fm5
+  data-per-page="{{ section.settings.per_page }}"
+  style="--fm-bg: {{ section.settings.background }}; --fm-text: {{ section.settings.text }}; --fm-muted: {{ section.settings.muted }}; --fm-line: {{ section.settings.line }}; --fm-card: {{ section.settings.card_background }}; --fm-max: {{ section.settings.max_width }}px;"
+>
+  <div class="fm5-wrap">
+    <header class="fm5-mast">
+      {%- if section.settings.heading != blank -%}
+        <h1 class="fm5-mast__title">{{ section.settings.heading | escape }}</h1>
+      {%- endif -%}
+      {%- if section.settings.intro != blank -%}
+        <p class="fm5-mast__text">{{ section.settings.intro | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="fm5-body">
+      <aside class="fm5-side">
+        {%- if section.settings.sections_label != blank -%}
+          <p class="fm5-side__label">{{ section.settings.sections_label | escape }}</p>
+        {%- endif -%}
+        {%- render 'forma-magazine-nav',
+          blocks: section.blocks,
+          all_label: section.settings.all_label,
+          all_description: section.settings.all_description,
+          magazine_url: request.path,
+          active_topic: 'all',
+          active_brand: ''
+        -%}
+      </aside>
+
+      <div class="fm5-main">
+        <div class="fm5-head" data-fm5-head>
+          <div class="fm-head__logo" data-mag-logo hidden></div>
+          <div>
+            <h2 class="fm-head__title" data-mag-heading>{{ section.settings.all_label | escape }}</h2>
+            <p class="fm-head__text" data-mag-description {% if section.settings.all_description == blank %}hidden{% endif %}>{{ section.settings.all_description | escape }}</p>
+          </div>
+        </div>
+
+        <div class="fm5-grid">
+          <div class="fm5-divider" data-fm5-divider {% if all_articles.size <= 3 %}hidden{% endif %}>
+            <h3 class="fm5-divider__title">{{ section.settings.more_heading | escape }}</h3>
+          </div>
+          {%- for article in all_articles -%}
+            {%- render 'forma-magazine-5-card',
+              article: article,
+              blocks: section.blocks,
+              read_label: section.settings.read_label
+            -%}
+          {%- endfor -%}
+        </div>
+
+        <p class="fm-empty" data-mag-empty {% if all_articles.size > 0 %}hidden{% endif %}>{{ section.settings.empty_text | escape }}</p>
+
+        <div class="fm5-more" data-fm5-more hidden>
+          <button type="button" class="fm5-more__button">{{ section.settings.load_more_label | escape }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Forma Magazine editorial",
+  "tag": "section",
+  "class": "shopify-section--forma-magazine",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "header", "content": "Top" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Forma Magazine" },
+    { "type": "text", "id": "intro", "label": "Text", "default": "Stories on wardrobe, lifestyle, home and the brands we love." },
+    { "type": "header", "content": "Articles" },
+    { "type": "blog", "id": "blog_1", "label": "Blog 1" },
+    { "type": "blog", "id": "blog_2", "label": "Blog 2" },
+    { "type": "blog", "id": "blog_3", "label": "Blog 3" },
+    { "type": "paragraph", "content": "The newest article is shown large, the next two beside it. Articles appear under a category when they have its tag. Brand articles need the brand's name as a tag, e.g. Les Deux." },
+    { "type": "text", "id": "sections_label", "label": "Category menu label", "default": "Sections" },
+    { "type": "text", "id": "all_label", "label": "All articles label", "default": "All articles" },
+    { "type": "textarea", "id": "all_description", "label": "All articles intro", "default": "Everything from Forma, from wardrobe staples and the way we live to the homes and brands behind it, in one place." },
+    { "type": "text", "id": "more_heading", "label": "Heading above the other articles", "default": "More stories" },
+    { "type": "text", "id": "read_label", "label": "Read link label", "default": "Read the article" },
+    { "type": "range", "id": "per_page", "label": "Articles before \"Load more\"", "min": 7, "max": 31, "step": 4, "default": 15 },
+    { "type": "text", "id": "load_more_label", "label": "Load more label", "default": "Load more articles" },
+    { "type": "text", "id": "empty_text", "label": "No articles text", "default": "No articles here yet. Check back soon." },
+    { "type": "range", "id": "max_width", "label": "Max width", "min": 1200, "max": 2400, "step": 40, "unit": "px", "default": 1600 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#5e5e5e" },
+    { "type": "color", "id": "line", "label": "Lines", "default": "#e3e0db" },
+    { "type": "color", "id": "card_background", "label": "Image background", "default": "#f4f3f0" }
+  ],
+  "blocks": [
+    {
+      "type": "topic",
+      "name": "Category",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Wardrobe" },
+        { "type": "text", "id": "tag", "label": "Article tag", "info": "Articles with this tag show up here. Uses the label if empty." },
+        { "type": "textarea", "id": "description", "label": "Intro" }
+      ]
+    },
+    {
+      "type": "brands",
+      "name": "Brands",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Lists every brand from the Forma Brand entries. Tag an article with a brand's name to show it under that brand." },
+        { "type": "text", "id": "label", "label": "Label", "default": "Brands" },
+        { "type": "textarea", "id": "description", "label": "Intro" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Forma Magazine editorial" }]
+}
+{% endschema %}

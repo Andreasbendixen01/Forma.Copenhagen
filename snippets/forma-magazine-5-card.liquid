@@ -1,0 +1,61 @@
+{%- doc -%}
+  Editorial article card for Forma Magazine 5. Text sits below the image.
+
+  @param {object} article - The article
+  @param {array} blocks - The section's blocks, used to find the category label
+  @param {string} read_label - "Read the article" text, shown on the lead story
+{%- enddoc -%}
+{%- liquid
+  assign tag_handles = ' '
+  for tag in article.tags
+    assign tag_handle = tag | handleize
+    assign tag_handles = tag_handles | append: tag_handle | append: ' '
+  endfor
+
+  assign badge = ''
+  for brand in shop.metaobjects.forma_brand.values
+    if badge == '' and brand.brand_name.value != blank
+      assign brand_handle = brand.brand_name.value | handleize
+      assign needle = ' ' | append: brand_handle | append: ' '
+      if tag_handles contains needle
+        assign badge = brand.brand_name.value
+      endif
+    endif
+  endfor
+  if badge == ''
+    for block in blocks
+      if block.type == 'topic' and badge == ''
+        assign topic_handle = block.settings.tag | default: block.settings.label | handleize
+        assign needle = ' ' | append: topic_handle | append: ' '
+        if tag_handles contains needle
+          assign badge = block.settings.label
+        endif
+      endif
+    endfor
+  endif
+  if badge == '' and article.tags.size > 0
+    assign badge = article.tags.first
+  endif
+
+  assign excerpt = article.excerpt | strip_html | strip
+  if excerpt == blank
+    assign excerpt = article.content | strip_html | strip | truncatewords: 30
+  endif
+-%}
+<article class="fm5-card" data-fm5-card data-tags="{{ tag_handles }}">
+  <a class="fm5-card__link" href="{{ article.url }}">
+    <span class="fm5-card__media">
+      {%- if article.image != blank -%}
+        {{ article.image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1100, 1400, 1600', sizes: '(min-width: 1200px) 50vw, (min-width: 750px) 50vw, 100vw', alt: article.image.alt | default: '' }}
+      {%- endif -%}
+    </span>
+    {%- if badge != blank -%}
+      <span class="fm5-card__kicker">{{ badge | escape }}</span>
+    {%- endif -%}
+    <span class="fm5-card__title">{{ article.title | escape }}</span>
+    {%- if excerpt != blank -%}
+      <span class="fm5-card__excerpt">{{ excerpt | escape }}</span>
+    {%- endif -%}
+    <span class="fm5-card__more" aria-hidden="true">{{ read_label | escape }} →</span>
+  </a>
+</article>

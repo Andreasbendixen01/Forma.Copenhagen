@@ -1,0 +1,70 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "magazine": {
+      "type": "forma-magazine5",
+      "blocks": {
+        "wardrobe": {
+          "type": "topic",
+          "settings": {
+            "label": "Wardrobe",
+            "tag": "Wardrobe",
+            "description": "Wardrobe staples, new arrivals and how to wear them."
+          }
+        },
+        "lifestyle": {
+          "type": "topic",
+          "settings": {
+            "label": "The Lifestyle",
+            "tag": "The Lifestyle",
+            "description": "Skincare, grooming, fragrance and the small rituals of everyday life."
+          }
+        },
+        "home": {
+          "type": "topic",
+          "settings": {
+            "label": "The Home",
+            "tag": "The Home",
+            "description": "Furniture, lighting and objects for a home with form."
+          }
+        },
+        "brands": {
+          "type": "brands",
+          "settings": {
+            "label": "Brands",
+            "description": "Stories from the brands we carry. Pick a brand to read more about it."
+          }
+        }
+      },
+      "block_order": ["wardrobe", "lifestyle", "home", "brands"],
+      "settings": {
+        "heading": "Forma Magazine",
+        "intro": "Stories on wardrobe, lifestyle, home and the brands we love.",
+        "blog_1": "forma-journal",
+        "sections_label": "Sections",
+        "all_label": "All articles",
+        "all_description": "Everything from Forma, from wardrobe staples and the way we live to the homes and brands behind it, in one place.",
+        "more_heading": "More stories",
+        "read_label": "Read the article",
+        "per_page": 15,
+        "load_more_label": "Load more articles",
+        "empty_text": "No articles here yet. Check back soon.",
+        "max_width": 1600,
+        "background": "#ffffff",
+        "text": "#111111",
+        "muted": "#5e5e5e",
+        "line": "#e3e0db",
+        "card_background": "#f4f3f0"
+      }
+    }
+  },
+  "order": ["magazine"]
+}
