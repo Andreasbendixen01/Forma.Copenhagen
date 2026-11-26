@@ -280,6 +280,78 @@
   border-bottom: 0 !important;
 }
 
+/* ---------- Lifestyle styling of the left column ---------- */
+#shopify-section-{{ section.id }} [data-block-type="vendor"],
+#shopify-section-{{ section.id }} [data-block-type="title"],
+#shopify-section-{{ section.id }} [data-block-type="price"],
+#shopify-section-{{ section.id }} .forma-brand-buy {
+  background: #f4f1ea !important;
+}
+@media screen and (min-width: 1000px) {
+  /* Tint the whole first column, also the empty space below the button */
+  #shopify-section-{{ section.id }} .product-info__block-list {
+    background-image: linear-gradient(to right, #f4f1ea 0, #f4f1ea 34.375%, transparent 34.375%) !important;
+  }
+  #shopify-section-{{ section.id }} [data-block-type="vendor"],
+  #shopify-section-{{ section.id }} [data-block-type="title"],
+  #shopify-section-{{ section.id }} [data-block-type="price"],
+  #shopify-section-{{ section.id }} .forma-brand-buy {
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+  }
+  #shopify-section-{{ section.id }} [data-block-type="vendor"] {
+    padding-top: 44px !important;
+    padding-bottom: 18px !important;
+  }
+  #shopify-section-{{ section.id }} .forma-brand-buy {
+    padding-top: 22px !important;
+    padding-bottom: 44px !important;
+  }
+}
+#shopify-section-{{ section.id }} [data-block-type="vendor"] {
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  font-size: 11px !important;
+  color: #8a8478 !important;
+}
+#shopify-section-{{ section.id }} .product-info .product-title {
+  font-family: "Cormorant Garamond", "Times New Roman", Georgia, serif !important;
+  font-weight: 400 !important;
+  font-size: clamp(32px, 3vw, 44px) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.015em !important;
+  text-transform: none !important;
+  color: #1c1b18 !important;
+}
+#shopify-section-{{ section.id }} [data-block-type="price"] {
+  font-size: 14px !important;
+  letter-spacing: 0.14em !important;
+  color: #6d685e !important;
+}
+#shopify-section-{{ section.id }} [data-block-type="price"] * {
+  letter-spacing: inherit !important;
+}
+#shopify-section-{{ section.id }} .forma-brand-buy__link {
+  border-color: #1e3a34 !important;
+  letter-spacing: 0.18em !important;
+  padding: 19px 24px !important;
+}
+
+/* ---------- Middle column: short descriptions get a larger lead text so the column feels filled ---------- */
+#shopify-section-{{ section.id }} .forma-details-col .prose {
+  font-size: 15px !important;
+  line-height: 1.85 !important;
+}
+#shopify-section-{{ section.id }} .forma-details-col .prose.forma-details-intro--lead {
+  font-size: 19px !important;
+  line-height: 1.75 !important;
+  letter-spacing: -0.005em !important;
+}
+#shopify-section-{{ section.id }} .forma-details-col .prose.forma-details-intro--lead p {
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
 /* ---------- Brand buy button (column 1) ---------- */
 #shopify-section-{{ section.id }} .forma-brand-buy {
   grid-column: 1 !important;
@@ -315,7 +387,7 @@
   transition: background-color 0.2s ease-in, color 0.2s ease-in, transform 0.2s ease-in, box-shadow 0.2s ease-in;
 }
 #shopify-section-{{ section.id }} .forma-brand-buy__link::after {
-  content: "";
+  content: "‚";
   display: inline-block;
   font-size: 12px;
   letter-spacing: 0;
@@ -718,7 +790,9 @@ window.formaProduct = {
 
     if (hasHead) {
       var intro = document.createElement('div');
-      intro.className = 'prose forma-details-intro';
+      // Short descriptions get a larger lead text so the column does not look empty
+      var wordCount = (head + ' ' + tail).replace(/<[^>]*>/g, ' ').trim().split(/\s+/).length;
+      intro.className = 'prose forma-details-intro' + (wordCount < 90 ? ' forma-details-intro--lead' : '');
       intro.innerHTML = head;
       col.appendChild(intro);
     }
