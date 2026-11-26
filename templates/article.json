@@ -1,45 +1,45 @@
-
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
-      "type": "main-article",
+      "type": "forma-article-5",
       "settings": {
-        "color_scheme": "",
-        "show_image": true,
-        "enable_parallax": false,
-        "image_size": "medium",
-        "content_width": "xs",
-        "show_date": true,
-        "show_category": true,
-        "show_author": false,
-        "show_share_buttons": false,
-        "show_sticky_bar": false,
-        "toolbar_color_scheme": ""
+        "toc_label": "In this article",
+        "show_excerpt": true,
+        "show_progress": true,
+        "background": "#ffffff",
+        "text": "#111111",
+        "muted": "#5e5e5e",
+        "line": "#e3e0db"
       }
     },
-
-"shop-the-story": {
-  "type": "shop-the-story",
-  "settings": {
-    "color_scheme": "scheme-3",
-    "eyebrow": "Featured in this article",
-    "heading": "Shop the Story"
-  }
-},
-
+    "shop-the-story": {
+      "type": "shop-the-story",
+      "settings": {
+        "heading": "Shop the Story"
+      }
+    },
     "prev-next-blog-posts": {
-  "type": "prev-next-blog-posts",
-  "settings": {
-    "color_scheme": "",
-    "separate_section_with_border": false,
-    "subheading": "Forma Journal",
-    "title": "Discover More",
-    "articles_to_show": 6,
-    "show_category": true,
-    "show_excerpt": false,
-    "show_read_more": true
-  }
-}
+      "type": "prev-next-blog-posts",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": false,
+        "subheading": "Forma Journal",
+        "title": "Discover More",
+        "articles_to_show": 6,
+        "show_category": true,
+        "show_excerpt": false,
+        "show_read_more": true
+      }
+    }
   },
   "order": [
     "main",

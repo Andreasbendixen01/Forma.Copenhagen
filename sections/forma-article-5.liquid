@@ -1,0 +1,125 @@
+{%- comment -%}
+  FORMA ARTICLE
+  Article layout that matches Forma Magazine: article title as the masthead,
+  a sticky "In this article" menu on the left and the article text on the right.
+  The featured image is not shown here; it is only used as the thumbnail in the magazine.
+  The table of contents, reading progress and image layout come from assets/forma-journal.js.
+{%- endcomment -%}
+
+<script src="{{ 'forma-journal.js' | asset_url }}" defer></script>
+
+<style>
+  #shopify-section-{{ section.id }} .fa5 {
+    --fa5-title-font: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+    --fa5-text: {{ section.settings.text }};
+    --fa5-muted: {{ section.settings.muted }};
+    --fa5-line: {{ section.settings.line }};
+    background: {{ section.settings.background }};
+    color: var(--fa5-text);
+  }
+  #shopify-section-{{ section.id }} .fa5-wrap { padding: 0 var(--container-gutter, 20px) clamp(64px, 7vw, 120px); }
+
+  /* Masthead: article title, like "Forma Magazine" on the magazine page */
+  #shopify-section-{{ section.id }} .fa5-mast { padding: clamp(40px, 5vw, 72px) 0 clamp(24px, 3vw, 36px); border-bottom: 1px solid var(--fa5-text); }
+  #shopify-section-{{ section.id }} .fa5-mast__title { max-width: 18ch; margin: 0; font-family: var(--fa5-title-font); font-weight: 400; font-size: clamp(44px, 6.4vw, 96px); line-height: .95; letter-spacing: -.02em; color: inherit; text-wrap: balance; }
+
+  /* Two columns: menu + text */
+  #shopify-section-{{ section.id }} .fa5-body { display: grid; grid-template-columns: minmax(170px, 220px) minmax(0, 1fr); gap: clamp(32px, 4.5vw, 80px); padding-top: clamp(32px, 4vw, 48px); }
+
+  /* "In this article" menu, styled like the magazine category menu */
+  #shopify-section-{{ section.id }} .fa5-side__inner { position: sticky; top: calc(var(--sticky-area-height, 0px) + 32px); }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__toc { position: static; width: auto; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__toc[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__toc-label { margin: 0 0 8px; font-size: 11px; font-weight: 400; line-height: 1.4; letter-spacing: .16em; text-transform: uppercase; color: var(--fa5-muted); opacity: 1; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__toc-nav { position: static; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__toc-list { display: block; margin: 0; padding: 0; list-style: none; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__toc-item { margin: 0; padding: 0; border-bottom: 1px solid var(--fa5-line); }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__toc-link { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 4px; font-size: 15px; line-height: 1.35; letter-spacing: 0; color: var(--fa5-text); text-decoration: none; opacity: 1; transform: none; transition: color .2s ease; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__toc-link:hover { color: var(--fa5-muted); transform: none; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__toc-link.is-active { font-weight: 600; color: var(--fa5-text); transform: none; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__toc-link.is-active::after { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  /* Article text: same setup as before, with the magazine fonts on headings */
+  #shopify-section-{{ section.id }} .fa5-main { min-width: 0; }
+  #shopify-section-{{ section.id }} .fa5-intro { max-width: 760px; margin: 0 0 clamp(32px, 4vw, 48px); font-size: clamp(18px, 1.5vw, 22px); line-height: 1.55; color: var(--fa5-muted); }
+  #shopify-section-{{ section.id }} .fa5-intro > * { margin: 0; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__body { width: auto; max-width: 760px; margin: 0; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose h2,
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose h3,
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose blockquote,
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose > p:first-child::first-letter { font-family: var(--fa5-title-font); }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose h2 { letter-spacing: -.02em; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose > :first-child { margin-top: 0; }
+
+
+  /* Breaker images: span the whole text column and are always visible */
+  #shopify-section-{{ section.id }} .fa5 .forma-article__body { max-width: none; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose > :not(.forma-media):not(.forma-media-pair):not(:has(.forma-media)) { max-width: 760px; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media,
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media.forma-reveal,
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media.forma-reveal.is-visible { width: 100%; max-width: none; margin: clamp(48px, 6vw, 96px) 0; transform: none; opacity: 1; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media-pair,
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media-pair.forma-reveal,
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media-pair.forma-reveal.is-visible { left: auto; width: 100%; max-width: none; margin: clamp(48px, 6vw, 96px) 0; transform: none; opacity: 1; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media-pair .forma-media { margin: 0; }
+
+  @media screen and (max-width: 989px) {
+    #shopify-section-{{ section.id }} .fa5-body { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    #shopify-section-{{ section.id }} .fa5-side { display: none; }
+  }
+</style>
+
+<div class="fa5">
+  {%- if section.settings.show_progress -%}
+    <div class="forma-reading-progress" aria-hidden="true"><span class="forma-reading-progress__bar"></span></div>
+  {%- endif -%}
+
+  <div class="fa5-wrap">
+    <header class="fa5-mast">
+      <h1 class="fa5-mast__title">{{ article.title | escape }}</h1>
+    </header>
+
+    <div class="fa5-body">
+      <aside class="fa5-side">
+        <div class="fa5-side__inner">
+          <div class="forma-article__toc" data-forma-toc hidden>
+            <p class="forma-article__toc-label">{{ section.settings.toc_label | escape }}</p>
+            <nav class="forma-article__toc-nav" aria-label="{{ section.settings.toc_label | escape }}">
+              <ol class="forma-article__toc-list"></ol>
+            </nav>
+          </div>
+        </div>
+      </aside>
+
+      <div class="fa5-main">
+        {%- if section.settings.show_excerpt and article.excerpt != blank -%}
+          <div class="fa5-intro">{{ article.excerpt }}</div>
+        {%- endif -%}
+
+        <div class="forma-article__body">
+          <div class="prose forma-article__prose" data-forma-article-content>
+            {{- article.content -}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Forma Article",
+  "class": "shopify-section--forma-article",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "toc_label", "label": "Menu label", "default": "In this article" },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt above the text", "default": true },
+    { "type": "checkbox", "id": "show_progress", "label": "Show reading progress line", "default": true },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#5e5e5e" },
+    { "type": "color", "id": "line", "label": "Lines", "default": "#e3e0db" }
+  ]
+}
+{% endschema %}
