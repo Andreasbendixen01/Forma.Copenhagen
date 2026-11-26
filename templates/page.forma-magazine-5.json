@@ -47,7 +47,7 @@
       "block_order": ["wardrobe", "lifestyle", "home", "brands"],
       "settings": {
         "heading": "Forma Magazine",
-        "intro": "Stories on wardrobe, lifestyle, home and the brands we love.",
+        "intro": "",
         "blog_1": "forma-journal",
         "sections_label": "Sections",
         "all_label": "All articles",
