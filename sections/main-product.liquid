@@ -315,7 +315,7 @@
   transition: background-color 0.2s ease-in, color 0.2s ease-in, transform 0.2s ease-in, box-shadow 0.2s ease-in;
 }
 #shopify-section-{{ section.id }} .forma-brand-buy__link::after {
-  content: "‚Üí";
+  content: "";
   display: inline-block;
   font-size: 12px;
   letter-spacing: 0;
@@ -788,7 +788,7 @@ window.formaProduct = {
     link.href = brandUrl;
     link.target = '_blank';
     link.rel = 'noopener sponsored';
-    link.textContent = 'Køb hos' + vendor;
+    link.textContent = 'Køb hos ' + vendor;
 
     wrap.appendChild(link);
     desc.parentNode.insertBefore(wrap, desc.nextSibling);
