@@ -87,6 +87,25 @@
   #shopify-section-{{ section.id }} .fa5 .forma-article__prose .wp-block-gallery + p:has(> a[href*="instagram.com"]) { margin: 0 0 48px; font-size: 12px; line-height: 1.4; letter-spacing: .04em; color: var(--fa5-muted); }
   #shopify-section-{{ section.id }} .fa5 .forma-article__prose .wp-block-gallery + p:has(> a[href*="instagram.com"]) a { color: inherit; }
 
+  /* Product cards in a rail to the right of the text */
+  #shopify-section-{{ section.id }} .fa5-rail { display: none; }
+  @media screen and (min-width: 1280px) {
+    #shopify-section-{{ section.id }} .fa5-main { display: grid; grid-template-columns: minmax(0, 860px) 280px; justify-content: space-between; gap: clamp(40px, 4vw, 72px); }
+    #shopify-section-{{ section.id }} .fa5-rail { display: block; position: relative; }
+  }
+  #shopify-section-{{ section.id }} .fa5-card { position: absolute; left: 0; right: 0; display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 16px; align-items: center; padding: 12px; border: 1px solid var(--fa5-line); background: #fff; color: var(--fa5-text); text-decoration: none; opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease, border-color .2s ease; pointer-events: none; }
+  #shopify-section-{{ section.id }} .fa5-card.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+  #shopify-section-{{ section.id }} .fa5-card:hover { border-color: var(--fa5-text); }
+  #shopify-section-{{ section.id }} .fa5-card__img { display: block; width: 84px; aspect-ratio: 4 / 5; overflow: hidden; background: #f4f3f0; }
+  #shopify-section-{{ section.id }} .fa5-card__img img { display: block; width: 100%; height: 100%; margin: 0; object-fit: cover; }
+  #shopify-section-{{ section.id }} .fa5-card__body { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+  #shopify-section-{{ section.id }} .fa5-card__title { font-family: var(--fa5-title-font); font-size: 18px; line-height: 1.15; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  #shopify-section-{{ section.id }} .fa5-card__price { font-size: 12px; letter-spacing: .06em; color: var(--fa5-muted); }
+  #shopify-section-{{ section.id }} .fa5-card__btn { margin-top: 4px; padding: 9px 16px; border-radius: 999px; background: {{ section.settings.card_button_color }}; color: #fff; font-size: 10px; line-height: 1; letter-spacing: .18em; text-transform: uppercase; white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .fa5-card { transition: none; transform: none; }
+  }
+
   @media screen and (max-width: 989px) {
     #shopify-section-{{ section.id }} .fa5-body { grid-template-columns: minmax(0, 1fr); gap: 0; }
     #shopify-section-{{ section.id }} .fa5-side { display: none; }
@@ -116,6 +135,7 @@
       </aside>
 
       <div class="fa5-main">
+        <div class="fa5-content">
         {%- if section.settings.show_excerpt and article.excerpt != blank -%}
           <div class="fa5-intro">{{ article.excerpt }}</div>
         {%- endif -%}
@@ -125,10 +145,158 @@
             {{- article.content -}}
           </div>
         </div>
+        </div>
+        <aside class="fa5-rail" data-fa5-rail aria-label="Products in this article"></aside>
       </div>
     </div>
   </div>
 </div>
+
+
+{%- if section.settings.show_product_cards -%}
+<script>
+  /* FORMA ARTICLE: product cards next to product links in the text.
+     A link to one of the store's products shows that product.
+     Any other text link is matched to a store product through Shopify search (by the link text);
+     links with no matching product get no card. Image links are ignored. */
+  (function () {
+    var root = document.querySelector('#shopify-section-{{ section.id }} .fa5');
+    if (!root) return;
+    var rail = root.querySelector('[data-fa5-rail]');
+    var prose = root.querySelector('[data-forma-article-content]');
+    if (!rail || !prose) return;
+
+    var buttonLabel = {{ section.settings.card_button_label | json }};
+    var searchRoot = {{ routes.predictive_search_url | json }};
+    var currency = (window.Shopify && Shopify.currency && Shopify.currency.active) || {{ cart.currency.iso_code | json }};
+    var cards = [];
+    var usedHandles = {};
+
+    function money(cents) {
+      try {
+        return new Intl.NumberFormat(document.documentElement.lang || 'da-DK', { style: 'currency', currency: currency }).format(cents / 100);
+      } catch (e) {
+        return (cents / 100).toFixed(2) + ' ' + currency;
+      }
+    }
+    function sized(src) {
+      if (!src) return '';
+      if (src.indexOf('//') === 0) src = 'https:' + src;
+      return src + (src.indexOf('?') > -1 ? '&' : '?') + 'width=240';
+    }
+
+    function addCard(anchor, product) {
+      if (!product || usedHandles[product.handle]) return;
+      usedHandles[product.handle] = true;
+      var card = document.createElement('a');
+      card.className = 'fa5-card';
+      card.href = product.url;
+      card.innerHTML = '<span class="fa5-card__img"></span><span class="fa5-card__body"><span class="fa5-card__title"></span><span class="fa5-card__price"></span><span class="fa5-card__btn"></span></span>';
+      card.querySelector('.fa5-card__title').textContent = product.title;
+      card.querySelector('.fa5-card__price').textContent = product.price;
+      card.querySelector('.fa5-card__btn').textContent = buttonLabel;
+      if (product.image) {
+        var img = document.createElement('img');
+        img.src = sized(product.image);
+        img.alt = '';
+        img.loading = 'lazy';
+        img.addEventListener('load', layout);
+        card.querySelector('.fa5-card__img').appendChild(img);
+      }
+      cards.push({ el: card, anchor: anchor });
+      cards.sort(function (a, b) {
+        return a.anchor.compareDocumentPosition(b.anchor) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+      });
+      rail.appendChild(card);
+      layout();
+      if (io) io.observe(anchor); else card.classList.add('is-visible');
+    }
+
+    function fromProductJs(p) {
+      return {
+        handle: p.handle,
+        title: p.title,
+        url: '/products/' + p.handle,
+        price: money(p.price),
+        image: p.featured_image || ''
+      };
+    }
+    function fromSearch(p) {
+      var price = p.price || '';
+      if (/^\d+(\.\d+)?$/.test(String(price))) price = money(Math.round(parseFloat(price) * 100));
+      return {
+        handle: p.handle,
+        title: p.title,
+        url: p.url,
+        price: price,
+        image: p.featured_image && p.featured_image.url ? p.featured_image.url : (p.image || '')
+      };
+    }
+
+    function collect() {
+      var seenText = {};
+      Array.prototype.forEach.call(prose.querySelectorAll('a[href]'), function (a) {
+        if (a.querySelector('img') || a.closest('.wp-block-buttons, .wp-block-gallery, .forma-media')) return;
+        var text = (a.textContent || '').trim();
+        if (!text || text.charAt(0) === '@') return;
+        var url;
+        try { url = new URL(a.href, window.location.href); } catch (e) { return; }
+
+        var match = url.host === window.location.host && url.pathname.match(/\/products\/([^/?#]+)/);
+        if (match) {
+          fetch('/products/' + match[1] + '.js').then(function (r) { return r.ok ? r.json() : null; }).then(function (p) {
+            if (p) addCard(a, fromProductJs(p));
+          }).catch(function () {});
+          return;
+        }
+
+        var key = text.toLowerCase();
+        if (seenText[key]) return;
+        seenText[key] = true;
+        var q = searchRoot + '.json?q=' + encodeURIComponent(text) + '&resources[type]=product&resources[limit]=1&resources[options][unavailable_products]=last';
+        fetch(q).then(function (r) { return r.ok ? r.json() : null; }).then(function (data) {
+          var list = data && data.resources && data.resources.results && data.resources.results.products;
+          if (list && list.length) addCard(a, fromSearch(list[0]));
+        }).catch(function () {});
+      });
+    }
+
+    function layout() {
+      if (!cards.length || rail.offsetParent === null) return;
+      var railTop = rail.getBoundingClientRect().top;
+      var next = 0;
+      cards.forEach(function (c) {
+        var top = Math.max(c.anchor.getBoundingClientRect().top - railTop - 8, next);
+        c.el.style.top = top + 'px';
+        next = top + c.el.offsetHeight + 16;
+      });
+    }
+
+    var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        cards.forEach(function (c) { if (c.anchor === entry.target) c.el.classList.add('is-visible'); });
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -25% 0px' }) : null;
+
+    function start() {
+      collect();
+      window.addEventListener('resize', layout);
+      window.addEventListener('load', layout);
+      Array.prototype.forEach.call(prose.querySelectorAll('img'), function (img) {
+        if (!img.complete) img.addEventListener('load', layout);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () { setTimeout(start, 50); });
+    } else {
+      setTimeout(start, 50);
+    }
+  })();
+</script>
+{%- endif -%}
 
 {% schema %}
 {
@@ -139,6 +307,10 @@
     { "type": "text", "id": "toc_label", "label": "Menu label", "default": "In this article" },
     { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt above the text", "default": true },
     { "type": "checkbox", "id": "show_progress", "label": "Show reading progress line", "default": true },
+    { "type": "header", "content": "Product cards" },
+    { "type": "checkbox", "id": "show_product_cards", "label": "Show product cards next to product links", "default": true },
+    { "type": "text", "id": "card_button_label", "label": "Card button label", "default": "Se produkt" },
+    { "type": "color", "id": "card_button_color", "label": "Card button color", "default": "#1e3a34" },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
     { "type": "color", "id": "text", "label": "Text", "default": "#111111" },
