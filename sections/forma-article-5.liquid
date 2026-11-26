@@ -41,7 +41,7 @@
 
   /* Article text: same setup as before, with the magazine fonts on headings */
   #shopify-section-{{ section.id }} .fa5-main { min-width: 0; }
-  #shopify-section-{{ section.id }} .fa5-intro { max-width: 760px; margin: 0 0 clamp(32px, 4vw, 48px); font-size: clamp(18px, 1.5vw, 22px); line-height: 1.55; color: var(--fa5-muted); }
+  #shopify-section-{{ section.id }} .fa5-intro { max-width: 810px; margin: 0 0 clamp(32px, 4vw, 48px); font-size: clamp(18px, 1.5vw, 22px); line-height: 1.55; color: var(--fa5-muted); }
   #shopify-section-{{ section.id }} .fa5-intro > * { margin: 0; }
   #shopify-section-{{ section.id }} .fa5 .forma-article__body { width: auto; max-width: 760px; margin: 0; }
   #shopify-section-{{ section.id }} .fa5 .forma-article__prose h2,
@@ -54,7 +54,7 @@
 
   /* Breaker images: span the whole text column and are always visible */
   #shopify-section-{{ section.id }} .fa5 .forma-article__body { max-width: none; }
-  #shopify-section-{{ section.id }} .fa5 .forma-article__prose > :not(.forma-media):not(.forma-media-pair):not(:has(.forma-media)) { max-width: 760px; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose > :not(.forma-media):not(.forma-media-pair):not(:has(.forma-media)) { max-width: 810px; }
   #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media,
   #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media.forma-reveal,
   #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media.forma-reveal.is-visible { width: 100%; max-width: none; margin: clamp(48px, 6vw, 96px) 0; transform: none; opacity: 1; }
@@ -65,7 +65,7 @@
 
   /* Breaker images in 16:9 across the whole text column */
   #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: center; }
-  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media:not(.forma-media-pair .forma-media) { width: 100% !important; max-width: 100% !important; }
+  #shopify-section-{{ section.id }} .fa5 .forma-article__prose .forma-media:not(.forma-media-pair .forma-media) { width: 100% !important; max-width: 810px !important; }
 
   @media screen and (max-width: 989px) {
     #shopify-section-{{ section.id }} .fa5-body { grid-template-columns: minmax(0, 1fr); gap: 0; }
