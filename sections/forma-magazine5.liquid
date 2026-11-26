@@ -197,6 +197,40 @@
               </a>
             </article>
           {%- endfor -%}
+          {%- comment -%} Placeholder stories: preview only. Set "Placeholder articles" to 0 to remove them. {%- endcomment -%}
+          {%- if section.settings.placeholder_count > 0 -%}
+            {%- liquid
+              assign ph_data = 'Skaermbillede_2026-10-05_kl._14.36.21.png~Wardrobe~~The New Uniform: Ten Pieces That Carry a Whole Season|FRAMA_SCULPTURE_GARDEN_CONTEXT_ESCALIER_HAND_WASH_3_800x_37fd3d2f-7cc6-4e29-b320-232bd6c6d58a.webp~The Lifestyle~~Slow Mornings: Rituals Worth Keeping|1123257_1104269015_10_jpg.webp~The Home~~Living With Less, But Better|LES_DEUX_AW.png~Wardrobe~Les Deux~Inside the Les Deux Autumn Collection|noora-eida-acorn-funo-grove-falda-classic-cushion_aw25_jpg.avif~The Home~~Soft Textures for the Darker Months|VINNYs_PENNY_LOAFER_LEE_05_jpg.webp~Wardrobe~~The Penny Loafer Is Back, and It Never Really Left|Private_back.jpg~The Lifestyle~~A Weekend in Copenhagen, the Forma Way|Skaermbillede_2026-10-07_kl._18.28.26.png~The Home~~The Studio Apartment That Feels Twice Its Size|Ikke-navngivet-1_ae811463-a4fd-45c9-8a6a-aa5784161975.png~Wardrobe~NN07~How NN07 Builds a Wardrobe That Lasts|Selskaber-esmee.jpg~The Lifestyle~~Long Tables and Late Dinners|Skaermbillede_2026-10-07_kl._18.34.27.png~The Home~~Five Lamps That Change a Room|Ikke-navngivet-1_604616bf-4754-405a-9e64-cd5a2c25dd64.png~Wardrobe~Norse Projects~Norse Projects and the Everyday Jacket|Skaermbillede_2026-10-05_kl._10.01.50.png~The Lifestyle~~What We Are Reading This Month|DSC06851-Edit-1-1024x683.jpg~The Lifestyle~~The Best New Tables in Copenhagen|Ikke-navngivet-1_bb0cda98-d247-4361-a2c6-fd0ad2705e3a.png~Wardrobe~~Layering 101: Knitwear Under Outerwear|Skaermbillede_2026-11-21_kl._16.24.02.png~The Lifestyle~~A Gift Guide for People Who Have Everything'
+              assign ph_items = ph_data | split: '|'
+            -%}
+            {%- for ph_item in ph_items limit: section.settings.placeholder_count -%}
+              {%- liquid
+                assign ph = ph_item | split: '~'
+                assign ph_image = images[ph[0]]
+                assign ph_topic = ph[1] | handleize
+                assign ph_tags = ' ' | append: ph_topic | append: ' '
+                assign ph_badge = ph[1]
+                if ph[2] != blank
+                  assign ph_brand = ph[2] | handleize
+                  assign ph_tags = ph_tags | append: ph_brand | append: ' '
+                  assign ph_badge = ph[2]
+                endif
+              -%}
+              <article class="fm5-card" data-fm5-card data-fm5-placeholder data-tags="{{ ph_tags }}">
+                <a class="fm5-card__link" href="#" onclick="return false;">
+                  <span class="fm5-card__media">
+                    {%- if ph_image != blank -%}
+                      {{ ph_image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1100, 1400, 1600', sizes: '(min-width: 750px) 50vw, 100vw', alt: '' }}
+                    {%- endif -%}
+                  </span>
+                  <span class="fm5-card__kicker">{{ ph_badge | escape }}</span>
+                  <span class="fm5-card__title">{{ ph[3] | escape }}</span>
+                  <span class="fm5-card__excerpt">A placeholder story that shows how this category looks with more articles. Replace it with a real article.</span>
+                  <span class="fm5-card__more" aria-hidden="true">{{ section.settings.read_label | escape }} →</span>
+                </a>
+              </article>
+            {%- endfor -%}
+          {%- endif -%}
         </div>
 
         <p class="fm-empty" data-mag-empty {% if all_articles.size > 0 %}hidden{% endif %}>{{ section.settings.empty_text | escape }}</p>
@@ -394,6 +428,7 @@
     { "type": "text", "id": "more_heading", "label": "Heading above the other articles", "default": "More stories" },
     { "type": "text", "id": "read_label", "label": "Read link label", "default": "Read the article" },
     { "type": "range", "id": "per_page", "label": "Articles before \"Load more\"", "min": 7, "max": 31, "step": 4, "default": 15 },
+    { "type": "range", "id": "placeholder_count", "label": "Placeholder articles", "info": "Preview only. Set to 0 to hide them.", "min": 0, "max": 16, "step": 1, "default": 16 },
     { "type": "text", "id": "load_more_label", "label": "Load more label", "default": "Load more articles" },
     { "type": "text", "id": "empty_text", "label": "No articles text", "default": "No articles here yet. Check back soon." },
     { "type": "range", "id": "max_width", "label": "Max width", "min": 1200, "max": 2400, "step": 40, "unit": "px", "default": 1600 },
